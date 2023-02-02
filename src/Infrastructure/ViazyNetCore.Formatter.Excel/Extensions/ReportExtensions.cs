@@ -83,13 +83,13 @@ namespace ViazyNetCore.Formatter.Excel.Extensions
             var columns = table.Columns.Count;
             var rows = table.Rows.Count;
 
-            using(var workbook = new XLWorkbook(XLEventTracking.Disabled))
+            using(var workbook = new XLWorkbook())
             {
                 var ws = workbook.Worksheets.Add(table);
 
                 ws.Tables.FirstOrDefault().Theme = XLTableTheme.None;
 
-                ws.Author = "yuantuitui.com";
+                ws.Author = "";
                 ws.ShowGridLines = true;
                 ws.Tables.FirstOrDefault().ShowAutoFilter = false;
                 ws.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
@@ -164,7 +164,7 @@ namespace ViazyNetCore.Formatter.Excel.Extensions
                 hasImages = true;
             }
 
-            using(var workbook = new XLWorkbook(XLEventTracking.Disabled))
+            using(var workbook = new XLWorkbook())
             {
                 var ws = workbook.Worksheets.Add(table);
 

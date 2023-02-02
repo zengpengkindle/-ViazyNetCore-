@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using NSwag.Annotations;
 
-namespace ViazyNetCore.Swagger
+namespace ViazyNetCore
 {
-    public class StatusSwaggerResponseAttribute : SwaggerResponseAttribute
+    public class SwaggerStatusCodeResponseAttribute : SwaggerResponseAttribute
     {
-        public StatusSwaggerResponseAttribute(int statusCode, string? description = null, Type? type = null) : base(statusCode, type)
+        public SwaggerStatusCodeResponseAttribute(int statusCode, string? description = null, Type? type = null) : base(statusCode, type)
         {
             Description = "err_code:[" + statusCode + "]" + description;
         }
