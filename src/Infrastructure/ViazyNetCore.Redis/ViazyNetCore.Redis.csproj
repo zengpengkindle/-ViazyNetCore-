@@ -15,4 +15,8 @@
     <ProjectReference Include="..\ViazyNetCore.Utils\ViazyNetCore.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Implementations\" />
+  </ItemGroup>
+
 </Project>
