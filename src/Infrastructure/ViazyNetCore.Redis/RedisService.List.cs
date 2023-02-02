@@ -23,19 +23,8 @@ namespace ViazyNetCore.Redis
 
         public List<T?> ListRangeAsync<T>(string redisKey)
         {
-            return this._database.ListRange(redisKey).Select(p => JSON.Parse<T>(p!)).ToList();
+            return this._database.ListRange(redisKey).Select(p => JsonConvert.DeserializeObject<T>(p!)).ToList();
         }
-
-        public List<T?> GetRangeFromList<T>(string redisKey, int startingFrom, int endingAt, int? db = null)
-        {
-            return this._database.ListRange(redisKey, startingFrom, endingAt).Select(p => JSON.Parse<T>(p!)).ToList();
-        }
-
-        public void AddItemToList<T>(string redisKey, T value, int? db = null)
-        {
-            this._database.SetAdd(redisKey, JSON.Stringify(value));
-        }
-
 
         /// <summary>
         /// 在列表头部插入值。如果键不存在，先创建再插入值
@@ -176,7 +165,6 @@ namespace ViazyNetCore.Redis
         {
             await _database.ListTrimAsync(redisKey, 1, 0);
         }
-
 
         /// <summary>
         /// 有序集合/定时任务延迟队列用的多
