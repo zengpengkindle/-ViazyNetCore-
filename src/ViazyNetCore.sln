@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C4361258-EF21-4643-9BBC-4B2F756144D0}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\Works\Codes\caesar\.editorconfig = ..\..\..\..\Works\Codes\caesar\.editorconfig
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Manage.WebApi", "Presentation\ViazyNetCore.Manage.WebApi\ViazyNetCore.Manage.WebApi.csproj", "{6A4DAEA8-665C-41D6-8915-6129FE8F1A14}"
