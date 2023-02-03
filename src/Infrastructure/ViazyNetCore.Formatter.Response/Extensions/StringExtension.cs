@@ -52,7 +52,7 @@ namespace ViazyNetCore.Formatter.Response.Extensions
         {
             if (!string.IsNullOrEmpty(str) && str.Length > 1)
             {
-                return Char.ToLowerInvariant(str[0]) + str.Substring(1);
+                return char.ToLowerInvariant(str[0]) + str[1..];
             }
             return str;
         }

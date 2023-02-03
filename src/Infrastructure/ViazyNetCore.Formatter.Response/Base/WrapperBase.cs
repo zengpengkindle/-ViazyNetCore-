@@ -117,7 +117,7 @@ namespace ViazyNetCore.Formatter.Response
         private void LogHttpRequest(HttpContext context, string requestBody, string? reponseBody, Stopwatch stopWatch, bool isRequestOk)
         {
             stopWatch.Stop();
-            if (_options.EnableResponseLogging)
+            if (this._options.EnableResponseLogging)
             {
                 bool shouldLogRequestData = ShouldLogRequestData(context);
 

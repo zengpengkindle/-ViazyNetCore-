@@ -21,4 +21,8 @@
     <PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ViazyNetCore.Annotations\ViazyNetCore.Annotations.csproj" />
+  </ItemGroup>
+
 </Project>

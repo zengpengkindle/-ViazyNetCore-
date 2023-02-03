@@ -11,7 +11,7 @@ namespace ViazyNetCore
     {
         public SwaggerStatusCodeResponseAttribute(int statusCode, string? description = null, Type? type = null) : base(statusCode, type)
         {
-            Description = "err_code:[" + statusCode + "]" + description;
+            this.Description = "err_code:[" + statusCode + "]" + description;
         }
     }
 }

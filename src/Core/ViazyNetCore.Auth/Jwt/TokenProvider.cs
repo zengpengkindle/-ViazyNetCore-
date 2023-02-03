@@ -104,7 +104,7 @@ namespace ViazyNetCore.Auth.Jwt
                 //用户在其他设备登录
                 if (!this._option.MultiPort && currentJti != jti)
                 {
-                    //throw new SingleSignOnException();
+                    throw new SingleSignOnException();
                 }
             }
         }

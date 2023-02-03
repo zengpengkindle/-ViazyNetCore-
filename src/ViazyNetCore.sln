@@ -16,37 +16,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Manage.WebApi", "Presentation\ViazyNetCore.Manage.WebApi\ViazyNetCore.Manage.WebApi.csproj", "{6A4DAEA8-665C-41D6-8915-6129FE8F1A14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Manage.WebApi", "Presentation\ViazyNetCore.Manage.WebApi\ViazyNetCore.Manage.WebApi.csproj", "{6A4DAEA8-665C-41D6-8915-6129FE8F1A14}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Swagger", "Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj", "{B7F842C6-33BD-46D9-9247-FFE40F01002E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Swagger", "Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj", "{B7F842C6-33BD-46D9-9247-FFE40F01002E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.EventBus", "Infrastructure\ViazyNetCore.EventBus\ViazyNetCore.EventBus.csproj", "{33B931E0-B011-45F9-952B-47443BB358FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.NLog", "Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj", "{ECE81E9D-8343-4EDC-BA3A-034A9D7F8C01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.NLog", "Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj", "{ECE81E9D-8343-4EDC-BA3A-034A9D7F8C01}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Http", "Infrastructure\ViazyNetCore.Http\ViazyNetCore.Http.csproj", "{0F82EC7A-EF6C-4F39-8411-54BBB1849F38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Http", "Infrastructure\ViazyNetCore.Http\ViazyNetCore.Http.csproj", "{0F82EC7A-EF6C-4F39-8411-54BBB1849F38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Redis", "Infrastructure\ViazyNetCore.Redis\ViazyNetCore.Redis.csproj", "{DBE654F4-2C88-4CD0-A817-63D6A5ACB758}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Redis", "Infrastructure\ViazyNetCore.Redis\ViazyNetCore.Redis.csproj", "{DBE654F4-2C88-4CD0-A817-63D6A5ACB758}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Utils", "Infrastructure\ViazyNetCore.Utils\ViazyNetCore.Utils.csproj", "{CEF08A86-C2B5-4861-A4E4-CF82F489C017}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Utils", "Infrastructure\ViazyNetCore.Utils\ViazyNetCore.Utils.csproj", "{CEF08A86-C2B5-4861-A4E4-CF82F489C017}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Auth", "Core\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj", "{E73F361E-D937-47A1-8805-3049489821D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Filter", "Core\ViazyNetCore.Filter\ViazyNetCore.Filter.csproj", "{CF7E788E-BEBB-4A7E-95E6-BA5BE940730A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Filter", "Core\ViazyNetCore.Filter\ViazyNetCore.Filter.csproj", "{CF7E788E-BEBB-4A7E-95E6-BA5BE940730A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Caching", "Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj", "{3D136A0D-627D-4340-A80D-78DB10F45669}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Caching", "Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj", "{3D136A0D-627D-4340-A80D-78DB10F45669}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Model", "src\ViazyNetCore.Model\ViazyNetCore.Model.csproj", "{822D24D8-BFF1-4C61-9249-EC7BACB182E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Model", "src\ViazyNetCore.Model\ViazyNetCore.Model.csproj", "{822D24D8-BFF1-4C61-9249-EC7BACB182E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Modules", "src\ViazyNetCore.Modules\ViazyNetCore.Modules.csproj", "{28E78A94-49AF-4207-8910-3711874F745D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Modules", "src\ViazyNetCore.Modules\ViazyNetCore.Modules.csproj", "{28E78A94-49AF-4207-8910-3711874F745D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Core", "src\ViazyNetCore.Core\ViazyNetCore.Core.csproj", "{C8620FA4-B014-45D2-9BAA-42C18E68DD2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Core", "src\ViazyNetCore.Core\ViazyNetCore.Core.csproj", "{C8620FA4-B014-45D2-9BAA-42C18E68DD2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Formatter.Excel", "Infrastructure\ViazyNetCore.Formatter.Excel\ViazyNetCore.Formatter.Excel.csproj", "{EBA7E6DA-4888-43B6-9B2A-F8074708344C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Formatter.Response", "Infrastructure\ViazyNetCore.Formatter.Response\ViazyNetCore.Formatter.Response.csproj", "{F7182F0F-9E26-4DE4-A41A-871F805499F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Formatter.Excel", "Infrastructure\ViazyNetCore.Formatter.Excel\ViazyNetCore.Formatter.Excel.csproj", "{EBA7E6DA-4888-43B6-9B2A-F8074708344C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Web.DevServer", "Infrastructure\ViazyNetCore.Web.DevServer\ViazyNetCore.Web.DevServer.csproj", "{E1BB9EDD-16D2-4D8F-A424-1A5D8B0FF3B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Formatter.Response", "Infrastructure\ViazyNetCore.Formatter.Response\ViazyNetCore.Formatter.Response.csproj", "{F7182F0F-9E26-4DE4-A41A-871F805499F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Annotations", "Infrastructure\ViazyNetCore.Annotations\ViazyNetCore.Annotations.csproj", "{5BBB1F39-D8D2-4E5C-ADFC-BC2EDF63AE35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,14 +112,18 @@ Global
 		{EBA7E6DA-4888-43B6-9B2A-F8074708344C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBA7E6DA-4888-43B6-9B2A-F8074708344C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBA7E6DA-4888-43B6-9B2A-F8074708344C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7182F0F-9E26-4DE4-A41A-871F805499F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7182F0F-9E26-4DE4-A41A-871F805499F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7182F0F-9E26-4DE4-A41A-871F805499F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7182F0F-9E26-4DE4-A41A-871F805499F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E1BB9EDD-16D2-4D8F-A424-1A5D8B0FF3B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E1BB9EDD-16D2-4D8F-A424-1A5D8B0FF3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1BB9EDD-16D2-4D8F-A424-1A5D8B0FF3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1BB9EDD-16D2-4D8F-A424-1A5D8B0FF3B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7182F0F-9E26-4DE4-A41A-871F805499F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7182F0F-9E26-4DE4-A41A-871F805499F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7182F0F-9E26-4DE4-A41A-871F805499F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7182F0F-9E26-4DE4-A41A-871F805499F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BBB1F39-D8D2-4E5C-ADFC-BC2EDF63AE35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BBB1F39-D8D2-4E5C-ADFC-BC2EDF63AE35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BBB1F39-D8D2-4E5C-ADFC-BC2EDF63AE35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BBB1F39-D8D2-4E5C-ADFC-BC2EDF63AE35}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,8 +143,9 @@ Global
 		{28E78A94-49AF-4207-8910-3711874F745D} = {987C4986-66FA-4984-90E6-76B9CD4C73E4}
 		{C8620FA4-B014-45D2-9BAA-42C18E68DD2B} = {987C4986-66FA-4984-90E6-76B9CD4C73E4}
 		{EBA7E6DA-4888-43B6-9B2A-F8074708344C} = {F6265F54-C50B-4D42-A77F-218326BF6241}
-		{F7182F0F-9E26-4DE4-A41A-871F805499F9} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{E1BB9EDD-16D2-4D8F-A424-1A5D8B0FF3B5} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{F7182F0F-9E26-4DE4-A41A-871F805499F9} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{5BBB1F39-D8D2-4E5C-ADFC-BC2EDF63AE35} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

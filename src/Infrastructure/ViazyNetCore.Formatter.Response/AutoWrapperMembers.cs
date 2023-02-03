@@ -64,56 +64,44 @@ namespace ViazyNetCore.Formatter.Response
         {
             int httpStatusCode;
             string? exceptionMessage = default;
-            string? jsonString = default;
-
-            if(exception is ApiException apiException)
+            string? jsonString;
+            if (exception is ApiException apiException)
             {
                 if(apiException.StatusCode == Status404NotFound)
                 {
                     httpStatusCode = Status404NotFound;
-                    jsonString = ConvertToNotFoundExceptionString();
+                    jsonString = this.ConvertToNotFoundExceptionString();
                 }
                 else if(apiException.StatusCode == Status403Forbidden)
                 {
                     httpStatusCode = Status403Forbidden;
-                    jsonString = ConvertToForbiddenExceptionString();
+                    jsonString = this.ConvertToForbiddenExceptionString();
                 }
                 else if(apiException.StatusCode == Status406NotAcceptable)
                 {
                     httpStatusCode = Status406NotAcceptable;
-                    jsonString = ConvertToNotAcceptableExceptionString();
+                    jsonString = this.ConvertToNotAcceptableExceptionString();
                 }
                 else if(apiException.StatusCode == Status400BadRequest)
                 {
                     httpStatusCode = Status400BadRequest;
-                    jsonString = ConvertToFailJSONString(context, exception.Message, context.Request.Method);
+                    jsonString = this.ConvertToFailJSONString(context, exception.Message, context.Request.Method);
                 }
                 else
                 {
                     httpStatusCode = Status200OK;
-                    jsonString = ConvertToFailJSONString(context, exception.Message, context.Request.Method, apiException.StatusCode);
+                    jsonString = this.ConvertToFailJSONString(context, exception.Message, context.Request.Method, apiException.StatusCode);
                 }
             }
             else if(exception is UnauthorizedAccessException)
             {
                 httpStatusCode = Status401Unauthorized;
-                jsonString = ConvertToUnauthorizedAccessExceptionString();
+                jsonString = this.ConvertToUnauthorizedAccessExceptionString();
             }
             else if(exception is SingleSignOnException)
             {
                 httpStatusCode = Status409Conflict;
-                jsonString = ConvertToSingleSignOnExceptionString();
-            }
-            else if(exception is PaymentRequiredException)
-            {
-                httpStatusCode = Status402PaymentRequired;
-                jsonString = ConvertToPaymentRequiredExceptionString();
-            }
-            else if(exception is BusinessException bex)
-            {
-                httpStatusCode = Status200OK;
-                jsonString = ConvertToBusinessExceptionString(bex);
-
+                jsonString = this.ConvertToSingleSignOnExceptionString();
             }
             else
             {
@@ -133,7 +121,6 @@ namespace ViazyNetCore.Formatter.Response
 
                 jsonString = ConvertToExceptionJSONString(exceptionMessage, stackTrace);
             }
-
 
             await WriteFormattedResponseToHttpContextAsync(context, httpStatusCode, jsonString);
         }
@@ -273,20 +260,6 @@ namespace ViazyNetCore.Formatter.Response
             };
 
             return JsonConvert.SerializeObject(apiResponse, _jsonSettings);
-        }
-
-
-        private string ConvertToBusinessExceptionString(BusinessException exception)
-        {
-            var apiResponse = new ApiResponse()
-            {
-                StatusCode = exception.Code,
-                Message = exception.Message,
-                Version = GetApiVersion()
-            };
-
-            return JsonConvert.SerializeObject(apiResponse, _jsonSettings);
-
         }
 
         private string ConvertToPaymentRequiredExceptionString()
