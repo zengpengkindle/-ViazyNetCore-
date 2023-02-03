@@ -124,7 +124,7 @@ namespace ViazyNetCore.Formatter.Response
                 var request = shouldLogRequestData
                             ? isRequestOk
                                 ? $"{context.Request.Method} {context.Request.Scheme} {context.Request.Host}{context.Request.Path} {context.Request.QueryString} {requestBody}"
-                                : (!isRequestOk && _options.LogRequestDataOnException)
+                                : (!isRequestOk && this._options.LogRequestDataOnException)
                                    ? $"{context.Request.Method} {context.Request.Scheme} {context.Request.Host}{context.Request.Path} {context.Request.QueryString} {requestBody}"
                                    : $"{context.Request.Method} {context.Request.Scheme} {context.Request.Host}{context.Request.Path}"
                             : $"{context.Request.Method} {context.Request.Scheme} {context.Request.Host}{context.Request.Path}";
