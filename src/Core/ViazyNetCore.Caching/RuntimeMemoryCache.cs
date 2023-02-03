@@ -11,15 +11,15 @@ namespace ViazyNetCore.Caching
 
         public RuntimeMemoryCache(IMemoryCache cache)
         {
-            _cache = cache;
+            this._cache = cache;
         }
 
         public void Clear()
         {
-            var l = GetCacheKeys();
+            var l = this.GetCacheKeys();
             foreach (var s in l)
             {
-                Remove(s);
+                this.Remove(s);
             }
         }
 
@@ -27,16 +27,15 @@ namespace ViazyNetCore.Caching
         /// 获取所有缓存键
         /// </summary>
         /// <returns></returns>
-        public List<string> GetCacheKeys()
+        public List<string?> GetCacheKeys()
         {
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-            var entries = _cache.GetType().GetField("_entries", flags).GetValue(_cache);
-            var keys = new List<string>();
-            var cacheItems = entries as IDictionary;
-            if (cacheItems == null) return keys;
+            var entries = this._cache.GetType().GetField("_entries", flags)?.GetValue(this._cache);
+            var keys = new List<string?>();
+            if (entries is not IDictionary cacheItems) return keys;
             foreach (DictionaryEntry cacheItem in cacheItems)
             {
-                keys.Add(cacheItem.Key.ToString());
+                keys.Add(cacheItem.Key?.ToString());
             }
             return keys;
         }
@@ -46,25 +45,25 @@ namespace ViazyNetCore.Caching
         /// </summary>
         /// <param name="cacheKey">缓存Key</param>
         /// <returns></returns>
-        public object Get(string cacheKey)
+        public object? Get(string cacheKey)
         {
             if (cacheKey == null)
                 throw new ArgumentNullException(nameof(cacheKey));
 
-            return _cache.Get(cacheKey);
+            return this._cache.Get(cacheKey);
         }
 
-        public T Get<T>(string cacheKey)
+        public T? Get<T>(string cacheKey)
         {
             if (cacheKey == null)
                 throw new ArgumentNullException(nameof(cacheKey));
 
-            return _cache.Get<T>(cacheKey);
+            return this._cache.Get<T>(cacheKey);
         }
 
         public void MarkDeletion(string key, object value, TimeSpan timeSpan)
         {
-            Remove(key);
+            this.Remove(key);
         }
 
         public void Remove(string cacheKey)

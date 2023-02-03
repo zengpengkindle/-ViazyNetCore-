@@ -7,16 +7,16 @@ namespace ViazyNetCore.Formatter.Response
 {
     internal class AutoWrapperMiddleware : WrapperBase
     {
-        private readonly AutoWrapperMembers _awm;
+        private readonly AutoWrapperMembers _wapperMember;
         public AutoWrapperMiddleware(RequestDelegate next, ResponseWrapperOptions options, ILogger<AutoWrapperMiddleware> logger, IActionResultExecutor<ObjectResult> executor) : base(next, options, logger, executor)
         {
-            var jsonSettings = Helpers.JSONHelper.GetJSONSettings();
-            _awm = new AutoWrapperMembers(options, logger, jsonSettings);
+            var jsonSettings = JSON.SerializerSettings;
+            this._wapperMember = new AutoWrapperMembers(options, logger, jsonSettings);
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            await InvokeAsyncBase(context, _awm);
+            await this.InvokeAsyncBase(context, this._wapperMember);
         }
     }
 

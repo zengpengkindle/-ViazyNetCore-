@@ -4,7 +4,7 @@
     {
         void Clear();
         object Get(string cacheKey);
-        T Get<T>(string cacheKey);
+        T? Get<T>(string cacheKey);
         T LockGet<T>(string cacheKey, Func<T> setFunc, CachingExpirationType cachingExpirationType);
         Task<T> LockGetFirstLevelAsync<T>(string cacheKey, Func<Task<T>> setFunc, CachingExpirationType cachingExpirationType);
         Task<T> LockGetAsync<T>(string cacheKey, Func<Task<T>> setFunc, CachingExpirationType cachingExpirationType);

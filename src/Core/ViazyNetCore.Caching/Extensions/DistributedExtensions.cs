@@ -9,12 +9,12 @@ namespace System
 {
     public static class DistributedExtensions
     {
-        public static T Get<T>(this IDistributedCache distributedCache, string key)
+        public static T? Get<T>(this IDistributedCache distributedCache, string key)
         {
-            byte[] array = distributedCache.Get(key);
+            byte[]? array = distributedCache.Get(key);
             if (array == null || array.Length == 0)
             {
-                return default(T);
+                return default;
             }
 
             return array.Bytes2Object<T>();

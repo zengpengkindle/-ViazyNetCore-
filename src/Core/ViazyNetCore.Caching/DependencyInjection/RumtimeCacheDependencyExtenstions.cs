@@ -27,7 +27,7 @@ namespace ViazyNetCore.Caching.DependencyInjection
                 var distributedCache = sp.GetService<IDistributedCache>();
                 bool enableDistributedCache = false;
                 ICache cache;
-                if(distributedCache != null)
+                if (distributedCache != null)
                 {
                     enableDistributedCache = true;
                     cache = new RuntimeDistributedCacheCache(distributedCache);
@@ -52,17 +52,16 @@ namespace ViazyNetCore.Caching.DependencyInjection
         {
             services.AddMemoryCache();
             services.AddSingleton<RuntimeMemoryCache>();
-            services.AddSingleton(typeof(ICacheService), sp =>
+            _ = services.AddSingleton(typeof(ICacheService), sp =>
             {
                 var localCache = sp.GetService<RuntimeMemoryCache>();
                 var distributedCache = sp.GetService<IDistributedCache>();
-                if(localCache == null)
-                    throw new ArgumentNullException(nameof(localCache));
-                if(distributedCache == null)
+                if (localCache == null)
+                    throw new ArgumentNullException(nameof(RuntimeMemoryCache));
+                if (distributedCache == null)
                     throw new ArgumentNullException(nameof(IDistributedCache));
-                
-                ICache cache;
-                cache = new RuntimeDistributedCacheCache(distributedCache);
+
+                ICache cache = new RuntimeDistributedCacheCache(distributedCache);
                 return new DefaultCacheService(localCache, localCache, 1, false);
             });
 

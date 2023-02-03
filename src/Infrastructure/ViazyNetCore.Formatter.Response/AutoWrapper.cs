@@ -4,10 +4,14 @@ namespace ViazyNetCore.Formatter.Response
 {
     public static class AutoWrapperExtension
     {
-        public static IApplicationBuilder UseApiResponseWrapper(this IApplicationBuilder builder, ResponseWrapperOptions? options = default)
+        public static IApplicationBuilder UseApiResponseWrapper(this IApplicationBuilder builder, Action<ResponseWrapperOptions>? options = default)
         {
-            options ??= new ResponseWrapperOptions();
-            return builder.UseMiddleware<AutoWrapperMiddleware>(options);
+            var wapperOptions = new ResponseWrapperOptions();
+            if (options != null)
+            {
+                options.Invoke(wapperOptions);
+            }
+            return builder.UseMiddleware<AutoWrapperMiddleware>(wapperOptions);
         }
     }
 }

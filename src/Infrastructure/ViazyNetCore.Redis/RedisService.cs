@@ -11,10 +11,10 @@ namespace ViazyNetCore.Redis
     public partial class RedisService : IRedisCache
     {
         private readonly ILogger<RedisService> _logger;
-        private readonly ConnectionMultiplexer _redis;
+        private readonly IConnectionMultiplexer _redis;
         private readonly IDatabase _database;
 
-        public RedisService(ILogger<RedisService> logger, ConnectionMultiplexer redis)
+        public RedisService(ILogger<RedisService> logger, IConnectionMultiplexer redis)
         {
             _logger = logger;
             _redis = redis;

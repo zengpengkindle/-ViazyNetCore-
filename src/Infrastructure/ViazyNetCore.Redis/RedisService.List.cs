@@ -9,7 +9,7 @@ using StackExchange.Redis;
 
 namespace ViazyNetCore.Redis
 {
-    public partial class RedisService
+    public partial class RedisService : IRedisListCache
     {
         /// <summary>
         /// 根据key获取RedisValue
@@ -21,9 +21,33 @@ namespace ViazyNetCore.Redis
             return await _database.ListRangeAsync(redisKey);
         }
 
-        public List<T?> ListRangeAsync<T>(string redisKey)
+        public async Task<List<T?>> ListRangeAsync<T>(string redisKey)
         {
-            return this._database.ListRange(redisKey).Select(p => JsonConvert.DeserializeObject<T>(p!)).ToList();
+            return (await this.ListRangeAsync(redisKey)).Select(p => JsonConvert.DeserializeObject<T>(p!)).ToList();
+        }
+
+        /// <summary>
+        /// 返回在该列表上键所对应的元素
+        /// </summary>
+        /// <param name="redisKey"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<string>> ListRangeAsync(string redisKey, int db = -1)
+        {
+            var result = await _database.ListRangeAsync(redisKey);
+            return result.Select(o => o.ToString());
+        }
+
+        /// <summary>
+        /// 根据索引获取指定位置数据
+        /// </summary>
+        /// <param name="redisKey"></param>
+        /// <param name="start"></param>
+        /// <param name="stop"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<string>> ListRangeAsync(string redisKey, int start, int stop)
+        {
+            var result = await _database.ListRangeAsync(redisKey, start, stop);
+            return result.Select(o => o.ToString());
         }
 
         /// <summary>
@@ -119,30 +143,6 @@ namespace ViazyNetCore.Redis
         public async Task<long> ListLengthAsync(string redisKey)
         {
             return await _database.ListLengthAsync(redisKey);
-        }
-
-        /// <summary>
-        /// 返回在该列表上键所对应的元素
-        /// </summary>
-        /// <param name="redisKey"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<string>> ListRangeAsync(string redisKey, int db = -1)
-        {
-            var result = await _database.ListRangeAsync(redisKey);
-            return result.Select(o => o.ToString());
-        }
-
-        /// <summary>
-        /// 根据索引获取指定位置数据
-        /// </summary>
-        /// <param name="redisKey"></param>
-        /// <param name="start"></param>
-        /// <param name="stop"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<string>> ListRangeAsync(string redisKey, int start, int stop)
-        {
-            var result = await _database.ListRangeAsync(redisKey, start, stop);
-            return result.Select(o => o.ToString());
         }
 
         /// <summary>

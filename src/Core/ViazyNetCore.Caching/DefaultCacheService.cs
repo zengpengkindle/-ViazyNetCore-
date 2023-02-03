@@ -2,7 +2,6 @@
 
 namespace ViazyNetCore.Caching
 {
-    [Serializable]
     public class DefaultCacheService : ICacheService
     {
         private readonly ICache _cache;
@@ -53,9 +52,9 @@ namespace ViazyNetCore.Caching
             return obj2;
         }
 
-        public T Get<T>(string cacheKey)
+        public T? Get<T>(string cacheKey)
         {
-            T obj2 = default;
+            T? obj2 = default;
             if (EnableDistributedCache)
             {
                 obj2 = _localCache.Get<T>(cacheKey);

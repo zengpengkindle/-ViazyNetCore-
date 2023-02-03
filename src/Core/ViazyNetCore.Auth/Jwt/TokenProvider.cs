@@ -14,17 +14,21 @@ namespace ViazyNetCore.Auth.Jwt
 
         public TokenProvider(JwtOption option, IServiceProvider serviceProvider)
         {
-            _option = option;
+            this._option = option;
             this._cacheService = serviceProvider.GetService<IDistributedHashCache>();
         }
 
-        public JwtTokenResult GenerateToken(int userId)
+#pragma warning disable IDE1006 // 命名样式
+        private const string HashCachePrefix = "JwtToken:";
+#pragma warning restore IDE1006 // 命名样式
+
+        public async Task<JwtTokenResult> IssueToken(long userId, object[] roleIds)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var expires = DateTime.UtcNow.Add(TimeSpan.FromSeconds(_option.ExpiresIn));
 
             var jti = Guid.NewGuid().ToShortId();
-            var clientName = this._option.AppName ?? "小程序";
+            var clientName = this._option.AppName ?? "app";
 
             var tokenDescripor = new SecurityTokenDescriptor
             {
@@ -39,6 +43,7 @@ namespace ViazyNetCore.Auth.Jwt
                      new Claim(JwtRegisteredClaimNames.Sid, userId.ToString()),
                      new Claim(JwtRegisteredClaimNames.Aud, clientName),
                      new Claim(JwtRegisteredClaimNames.Iss, _option.Issuer),
+                     new Claim(ClaimTypes.Role, string.Join(",", roleIds.Select(t => t.CastTo<int>()))),
                      //new Claim(JwtRegisteredClaimNames.Typ, )
                 })
             };
@@ -51,63 +56,65 @@ namespace ViazyNetCore.Auth.Jwt
                 ExpiresIn = _option.ExpiresIn,
             };
 
-            var key = GenerateCacheKey(userId);
-            if (this._cacheService != null)
-            { 
+            if (this._option.UseDistributedCache)
+            {
+                var redisFieldKey = GenerateCacheKey(userId);
+                if (this._cacheService != null)
+                {
+                    await this._cacheService.HashSetAsync(HashCachePrefix + clientName, redisFieldKey, jti);
+                }
             }
             return result;
         }
 
-        public Task ValidToken(JwtSecurityToken token)
+        public async Task ValidToken(JwtSecurityToken token)
         {
             var jti = token.Id;
             var sid = token.Claims.FirstOrDefault(t => t.Type == JwtRegisteredClaimNames.Sid)?.Value;
-            var loginClient = token.Claims.FirstOrDefault(t => t.Type == JwtRegisteredClaimNames.Aud)?.Value;
+            var clientName = token.Claims.FirstOrDefault(t => t.Type == JwtRegisteredClaimNames.Aud)?.Value;
 
-            if(jti.IsNullOrEmpty() || sid.IsNullOrEmpty() || loginClient.IsNullOrEmpty())
+            if (jti.IsNullOrEmpty() || sid.IsNullOrEmpty() || clientName.IsNullOrEmpty())
             {
                 throw new UnauthorizedAccessException();
             }
 
             _ = int.TryParse(sid, out var userId);
-            if(userId <= 0)
+            if (userId <= 0)
             {
                 throw new UnauthorizedAccessException();
             }
-            if(userId == 38)
-                return Task.CompletedTask;
 
             var type = token.Claims.FirstOrDefault(t => t.Type == JwtRegisteredClaimNames.Typ)?.Value ?? "";
 
             //模拟登录
-            if(type == "mock")
+            if (type == "mock")
             {
-                return Task.CompletedTask;
+                return;
             }
 
-            var key = GenerateCacheKey(userId);
-            //var currentJti = redis.GetValueFromHash<string>(key, loginClient);
+            var redisFieldKey = this.GenerateCacheKey(userId);
+            if (this._option.UseDistributedCache && this._cacheService != null)
+            {
+                var currentJti = await this._cacheService.HashGetAsync<string>(HashCachePrefix + clientName, redisFieldKey);
 
-            //if(currentJti.IsNullOrEmpty())
-            //{
-            //    throw new UnauthorizedAccessException();
-            //}
-
-            ////用户在其他设备登录
-            //if(currentJti != jti)
-            //{
-            //    throw new SingleSignOnException();
-            //}
-
-            return Task.CompletedTask;
+                if (currentJti.IsNullOrEmpty())
+                {
+                    throw new UnauthorizedAccessException();
+                }
+                //用户在其他设备登录
+                if (!this._option.MultiPort && currentJti != jti)
+                {
+                    //throw new SingleSignOnException();
+                }
+            }
         }
 
-        private string GenerateCacheKey(int userId)
+        private string GenerateCacheKey(long userId)
         {
             return $"Caesar:JwtToken:{userId}";
         }
 
-        public void RemoveToken(int userId)
+        public void RemoveToken(long userId)
         {
             var key = GenerateCacheKey(userId);
             //redis.Remove(key);

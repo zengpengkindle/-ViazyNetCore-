@@ -153,11 +153,6 @@ namespace ViazyNetCore.Formatter.Response
                 Version = GetApiVersion()
             };
 
-            //if (httpStatusCode == Status401Unauthorized)
-            //{
-            //    apiResponse.Message += $" :{context?.Request?.GetDisplayUrl()}";
-            //}
-
             var jsonString = JsonConvert.SerializeObject(apiResponse, _jsonSettings);
 
             await WriteFormattedResponseToHttpContextAsync(context, httpStatusCode, jsonString);

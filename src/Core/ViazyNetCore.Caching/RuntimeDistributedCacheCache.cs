@@ -17,12 +17,12 @@ namespace ViazyNetCore.Caching
             throw new NotImplementedException();
         }
 
-        public object Get(string cacheKey)
+        public object? Get(string cacheKey)
         {
             return _distributedCache.Get(cacheKey);
         }
 
-        public T Get<T>(string cacheKey)
+        public T? Get<T>(string cacheKey)
         {
             return _distributedCache.Get<T>(cacheKey);
         }

@@ -24,6 +24,7 @@ namespace ViazyNetCore.Formatter.Response
                 {
                     return input;
                 }
+                
                 using(RijndaelManaged rijndaelManaged = new RijndaelManaged())
                 {
                     rijndaelManaged.Mode = CipherMode.CBC;
