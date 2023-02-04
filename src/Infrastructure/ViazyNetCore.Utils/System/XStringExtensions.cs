@@ -362,5 +362,27 @@ namespace System
             var str = Convert.ToBase64String(guid.ToByteArray());
             return str.Replace("/", "").Replace("+", "").Replace("=", "");
         }
+
+        #region MD5加密
+        /// <summary>
+        /// MD5 加密(小写)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToMd5(this string value)
+        {
+            byte[] bytes;
+            using (var md5 = System.Security.Cryptography.MD5.Create())
+            {
+                bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(value));
+            }
+            var result = new StringBuilder();
+            foreach (byte t in bytes)
+            {
+                result.Append(t.ToString("x2"));
+            }
+            return result.ToString();
+        }
+        #endregion
     }
 }
