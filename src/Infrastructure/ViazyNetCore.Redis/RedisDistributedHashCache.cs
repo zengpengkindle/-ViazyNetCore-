@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using ViazyNetCore.Redis;
+using ViazyNetCore.Caching;
 
-namespace ViazyNetCore.Caching
+namespace ViazyNetCore.Redis
 {
-    public class RedisDistributedHashCache : RedisCache, IDistributedHashCache
+    public class RedisDistributedHashCache : RedisCache, IDistributedHashCache, IRedisCache
     {
         private readonly IRedisCache _redisCache;
 

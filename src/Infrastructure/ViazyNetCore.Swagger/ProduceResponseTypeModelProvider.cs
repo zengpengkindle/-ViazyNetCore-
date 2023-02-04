@@ -39,7 +39,8 @@ namespace ViazyNetCore.Swagger
 
                             //忽略原先旧接口返回类型,后续可移除
                             var returnType = action.ActionMethod.ReturnType;
-                            if (returnType == typeof(IActionResult)) {
+                            if (returnType.GetInterface("IActionResult") != null)
+                            {
                                 action.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
                                 continue;
                             }

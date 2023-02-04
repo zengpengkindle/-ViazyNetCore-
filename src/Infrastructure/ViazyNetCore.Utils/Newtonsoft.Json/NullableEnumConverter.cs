@@ -25,7 +25,8 @@ namespace Newtonsoft.Json
             this._type = objectType;
             return (objectType.IsNullable() ? Nullable.GetUnderlyingType(objectType) : objectType).IsEnum;
         }
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {
@@ -43,11 +44,11 @@ namespace Newtonsoft.Json
                 }
             }
 
-            object obj = null;
+            object? obj = default;
 
             bool flag = objectType.IsNullable();
-            Type enumType = (flag ? Nullable.GetUnderlyingType(objectType) : objectType);
-            Type underlyingType = Enum.GetUnderlyingType(enumType);
+            Type? enumType = (flag ? Nullable.GetUnderlyingType(objectType) : objectType);
+            Type? underlyingType = Enum.GetUnderlyingType(enumType);
             try
             {
                 obj = Convert.ChangeType(reader.Value, underlyingType, CultureInfo.InvariantCulture);
@@ -65,7 +66,7 @@ namespace Newtonsoft.Json
             return null;
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (value is null) writer.WriteNull();
             else

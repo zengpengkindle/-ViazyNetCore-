@@ -19,7 +19,7 @@ namespace Newtonsoft.Json
         {
             return objectType == typeof(long) || objectType == typeof(long?);
         }
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {
@@ -38,7 +38,7 @@ namespace Newtonsoft.Json
             return Convert.ChangeType(reader.Value, typeof(long));// objectType); ;
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (value is null) writer.WriteNull();
             else
@@ -56,7 +56,7 @@ namespace Newtonsoft.Json
             return objectType == typeof(Guid) || objectType == typeof(Guid?);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {
@@ -76,7 +76,7 @@ namespace Newtonsoft.Json
             return Convert.ChangeType(reader.Value, objectType);
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (value is null) writer.WriteNull();
             else if (value is Guid g)

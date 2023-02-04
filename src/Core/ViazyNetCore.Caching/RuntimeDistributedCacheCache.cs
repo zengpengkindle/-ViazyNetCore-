@@ -19,29 +19,29 @@ namespace ViazyNetCore.Caching
 
         public object? Get(string cacheKey)
         {
-            return _distributedCache.Get(cacheKey);
+            return this._distributedCache.Get(cacheKey);
         }
 
         public T? Get<T>(string cacheKey)
         {
-            return _distributedCache.Get<T>(cacheKey);
+            return this._distributedCache.Get<T>(cacheKey);
         }
 
         public void MarkDeletion(string cacheKey, object value, TimeSpan expiresIn)
         {
-            Set(cacheKey, value, expiresIn);
-            _distributedCache.Refresh(cacheKey);
+            this.Set(cacheKey, value, expiresIn);
+            this._distributedCache.Refresh(cacheKey);
             //this.Remove(cacheKey);
         }
 
         public void Remove(string cacheKey)
         {
-            _distributedCache.Remove(cacheKey);
+            this._distributedCache.Remove(cacheKey);
         }
 
         public void Set(string cacheKey, object value, TimeSpan expiresIn)
         {
-            _distributedCache.Set(cacheKey, value.Object2Bytes(), new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = expiresIn });
+            this._distributedCache.Set(cacheKey, value.Object2Bytes(), new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = expiresIn });
         }
     }
 }

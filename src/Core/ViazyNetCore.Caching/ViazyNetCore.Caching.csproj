@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Redis\ViazyNetCore.Redis.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Utils\ViazyNetCore.Utils.csproj" />
   </ItemGroup>
 
 </Project>
