@@ -38,7 +38,7 @@ namespace ViazyNetCore.Http
         /// Returns a string that represents the current object, using CultureInfo.InvariantCulture where possible.
         /// Dates are represented in IS0 8601.
         /// </summary>
-        public static string ToInvariantString(this object obj)
+        public static string? ToInvariantString(this object obj)
         {
             // inspired by: http://stackoverflow.com/a/19570016/62600
             return
@@ -102,7 +102,7 @@ namespace ViazyNetCore.Http
 
         private static IEnumerable<(string Key, object Value)> CollectionToKV(IEnumerable col)
         {
-            bool TryGetProp(object obj, string name, out object value)
+            bool TryGetProp(object obj, string name, out object? value)
             {
                 var prop = obj.GetType().GetProperty(name);
                 var field = obj.GetType().GetField(name);
@@ -121,7 +121,7 @@ namespace ViazyNetCore.Http
                 return false;
             }
 
-            bool IsTuple2(object item, out object name, out object val)
+            bool IsTuple2(object item, out object? name, out object? val)
             {
                 name = null;
                 val = null;
@@ -132,7 +132,7 @@ namespace ViazyNetCore.Http
                     !TryGetProp(item, "Item3", out _);
             }
 
-            bool LooksLikeKV(object item, out object name, out object val)
+            bool LooksLikeKV(object item, out object? name, out object? val)
             {
                 name = null;
                 val = null;
@@ -171,7 +171,7 @@ namespace ViazyNetCore.Http
         /// <summary>
         /// True if the given string is a valid IPv4 address.
         /// </summary>
-        public static bool IsIP(this string s)
+        public static bool IsIPv4(this string s)
         {
             // based on https://stackoverflow.com/a/29942932/62600
             if (string.IsNullOrEmpty(s))

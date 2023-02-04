@@ -105,11 +105,11 @@ namespace ViazyNetCore.Http
 			}
 
 			if (!string.IsNullOrEmpty(cookie.Domain)) {
-				if (cookie.Domain.IsIP()) {
+				if (cookie.Domain.IsIPv4()) {
 					reason = "Domain cannot be an IP address.";
 					return false;
 				}
-				if (cookie.OriginUrl.Host.IsIP()) {
+				if (cookie.OriginUrl.Host.IsIPv4()) {
 					reason = "Domain cannot be set when origin URL is an IP address.";
 					return false;
 				}

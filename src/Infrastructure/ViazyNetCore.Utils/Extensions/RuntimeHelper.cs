@@ -41,6 +41,7 @@ namespace ViazyNetCore.Ioc
         {
             var list = new List<Assembly>();
             var deps = DependencyContext.Default;
+            if(deps==null) return list;
             //var libs = deps.CompileLibraries.Where(lib => !lib.Serviceable && lib.Type != "package" && lib.Type!= "referenceassembly");//排除所有的系统程序集、Nuget下载包
             var libs = deps.CompileLibraries.Where(lib => lib.Type == AssembleTypeConsts.Project);
             foreach(var lib in libs)

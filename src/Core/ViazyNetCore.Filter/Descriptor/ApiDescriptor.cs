@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using System.Collections.Generic;
 
-namespace ViazyNetCore.APIs
+namespace ViazyNetCore.Filter
 {
     /// <summary>
     /// API实体。
@@ -16,24 +16,21 @@ namespace ViazyNetCore.APIs
         /// <summary>
         /// 路由地址(API接口地址)唯一标识Guid初始化构造函数
         /// </summary>
-        /// <param name="serviceName"></param>
-        /// <param name="apiVersion"></param>
-        /// <param name="routeTemplate"></param>
         public ApiDescriptor(string serviceName, string apiVersion, string routeTemplate)
         {
-            ServiceName = serviceName;
-            ApiVersion = apiVersion;
-            RouteTemplate = routeTemplate;
+            this.ServiceName = serviceName;
+            this.ApiVersion = apiVersion;
+            this.RouteTemplate = routeTemplate;
         }
-        
+
         /// <summary>
         /// 唯一标识Guid（服务名称+路由地址）
         /// </summary>
-        public string Id => ($"{ServiceName}{RoutePath}").ToMd5();
+        public string Id => $"{this.ServiceName}{this.RoutePath}".ToMd5();
         /// <summary>
         /// 服务名称
         /// </summary>
-        public string ServiceName { get; set; }
+        public string? ServiceName { get; set; }
         /// <summary>
         /// API版本
         /// </summary>
@@ -41,40 +38,40 @@ namespace ViazyNetCore.APIs
         /// <summary>
         /// 控制名称。
         /// </summary>
-        public string ControllerName { get; set; }
+        public string? ControllerName { get; set; }
         /// <summary>
         /// 显示控制器名称
         /// </summary>
-        public string DisplayControllerName { get; set; }
+        public string? DisplayControllerName { get; set; }
         /// <summary>
         /// 英文控制器名称
         /// </summary>
-        public string EnDisplayControllerName { get; set; }
+        public string? EnDisplayControllerName { get; set; }
         /// <summary>
         /// 方法名称。
         /// </summary>
-        public string ActionName { get; set; }
+        public string? ActionName { get; set; }
         /// <summary>
         /// 显示方法名称
         /// </summary>
-        public string DisplayActionName { get; set; }
+        public string? DisplayActionName { get; set; }
         /// <summary>
         /// 英文显示方法名称
         /// </summary>
-        public string EnDisplayActionName { get; set; }
+        public string? EnDisplayActionName { get; set; }
         /// <summary>
         /// 方法描述
         /// </summary>
-        public string ActionDescriptor { get; set; }
+        public string? ActionDescriptor { get; set; }
         /// <summary>
         /// 路由模板。
         /// </summary>
-        public string RouteTemplate { get; set; }
+        public string? RouteTemplate { get; set; }
 
         /// <summary>
         /// 路由完整地址
         /// </summary>
-        public string RoutePath => string.IsNullOrEmpty(ApiVersion) ? RouteTemplate : RouteTemplate?.Replace("{v:apiVersion}", ApiVersion);
+        public string? RoutePath => this.ApiVersion.IsNull() ? this.RouteTemplate : this.RouteTemplate?.Replace("{v:apiVersion}", this.ApiVersion);
 
         /// <summary>
         /// HTTP方法。

@@ -24,17 +24,17 @@ namespace ViazyNetCore
         /// <summary>
         /// 英文显示名称
         /// </summary>
-        public string EnDisplayName { get; }
+        public string? EnDisplayName { get; }
 
         /// <summary>
         /// 初始化构造函数
         /// </summary>
         /// <param name="displayName">显示名称</param>
         /// <param name="enDisplayName">英文显示名称</param>
-        public ApiDescriptorAttribute([NotNull] string displayName, string enDisplayName = default)
+        public ApiDescriptorAttribute([NotNull] string displayName, string? enDisplayName = default)
         {
-            DisplayName = displayName;
-            EnDisplayName = enDisplayName;
+            this.DisplayName = displayName;
+            this.EnDisplayName = enDisplayName;
         }
 
         /// <summary>

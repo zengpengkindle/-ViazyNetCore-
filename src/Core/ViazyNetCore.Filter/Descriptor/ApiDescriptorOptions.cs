@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.APIs
+namespace ViazyNetCore.Filter
 {
     /// <summary>
     /// API描述配置
