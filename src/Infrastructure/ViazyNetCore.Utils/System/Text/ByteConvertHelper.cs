@@ -45,5 +45,21 @@ namespace System
             }
             return obj;
         }
+
+
+        /// <summary>
+        /// 将byte数组转换成对象
+        /// </summary>
+        /// <param name="buff">被转换byte数组</param>
+        /// <returns>转换完成后的对象</returns>
+        public static object? Bytes2Object(this byte[] buff,Type type)
+        {
+            object? obj;
+            using (MemoryStream ms = new MemoryStream(buff))
+            {
+                obj = JsonSerializer.Deserialize(ms, type, DEFAULT_JsonSerializerOptions);
+            }
+            return obj;
+        }
     }
 }

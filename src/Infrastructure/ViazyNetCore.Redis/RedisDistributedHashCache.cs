@@ -1,17 +1,157 @@
-﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
+﻿using System.Net;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
 using ViazyNetCore.Caching;
 
 namespace ViazyNetCore.Redis
 {
-    public class RedisDistributedHashCache : RedisCache, IDistributedHashCache, IRedisCache
+    public class RedisDistributedHashCache : RedisCache, IDistributedHashCache
     {
+        private readonly RedisCacheOptions _options;
+        private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(1, 1);
+        private volatile IConnectionMultiplexer _connection;
         private readonly IRedisCache _redisCache;
+        private IDatabase _cache;
+        private bool _disposed;
+        private string _setScript = "\r\n                redis.call('HSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])\r\n                if ARGV[3] ~= '-1' then\r\n                  redis.call('EXPIRE', KEYS[1], ARGV[3])\r\n                end\r\n                return 1";
+
+        private static readonly Version ServerVersionWithExtendedSetCommand = new Version(4, 0, 0);
 
         public RedisDistributedHashCache(IOptions<RedisCacheOptions> optionsAccessor, IRedisCache redisCache) : base(optionsAccessor)
         {
+            this._options = optionsAccessor.Value;
             this._redisCache = redisCache;
+        }
+        private void Connect()
+        {
+            CheckDisposed();
+            if (_cache != null)
+            {
+                return;
+            }
+
+            _connectionLock.Wait();
+            try
+            {
+                if (_cache != null)
+                {
+                    return;
+                }
+
+                if (_options.ConnectionMultiplexerFactory == null)
+                {
+                    if (_options.ConfigurationOptions != null)
+                    {
+                        _connection = ConnectionMultiplexer.Connect(_options.ConfigurationOptions);
+                    }
+                    else
+                    {
+                        _connection = ConnectionMultiplexer.Connect(_options.Configuration);
+                    }
+                }
+                else
+                {
+                    _connection = _options.ConnectionMultiplexerFactory!().GetAwaiter().GetResult();
+                }
+
+                PrepareConnection();
+                _cache = _connection.GetDatabase();
+            }
+            finally
+            {
+                _connectionLock.Release();
+            }
+        }
+
+
+        private async Task ConnectAsync(CancellationToken token = default(CancellationToken))
+        {
+            CheckDisposed();
+            token.ThrowIfCancellationRequested();
+            if (_cache != null)
+            {
+                return;
+            }
+
+            await _connectionLock.WaitAsync(token).ConfigureAwait(continueOnCapturedContext: false);
+            try
+            {
+                if (_cache != null)
+                {
+                    return;
+                }
+
+                if (_options.ConnectionMultiplexerFactory == null)
+                {
+                    if (_options.ConfigurationOptions != null)
+                    {
+                        _connection = await ConnectionMultiplexer.ConnectAsync(_options.ConfigurationOptions).ConfigureAwait(continueOnCapturedContext: false);
+                    }
+                    else
+                    {
+                        _connection = await ConnectionMultiplexer.ConnectAsync(_options.Configuration).ConfigureAwait(continueOnCapturedContext: false);
+                    }
+                }
+                else
+                {
+                    _connection = await _options.ConnectionMultiplexerFactory!().ConfigureAwait(continueOnCapturedContext: false);
+                }
+
+                PrepareConnection();
+                _cache = _connection.GetDatabase();
+            }
+            finally
+            {
+                _connectionLock.Release();
+            }
+        }
+
+        private void PrepareConnection()
+        {
+            ValidateServerFeatures();
+            TryRegisterProfiler();
+        }
+
+        private void ValidateServerFeatures()
+        {
+            if (_connection == null)
+            {
+                throw new InvalidOperationException("_connection cannot be null.");
+            }
+
+            try
+            {
+                EndPoint[] endPoints = _connection.GetEndPoints();
+                foreach (EndPoint endpoint in endPoints)
+                {
+                    if (_connection.GetServer(endpoint).Version < ServerVersionWithExtendedSetCommand)
+                    {
+                        _setScript = "\r\n                redis.call('HMSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])\r\n                if ARGV[3] ~= '-1' then\r\n                  redis.call('EXPIRE', KEYS[1], ARGV[3])\r\n                end\r\n                return 1";
+                        break;
+                    }
+                }
+            }
+            catch (NotSupportedException exception)
+            {
+                _setScript = "\r\n                redis.call('HMSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])\r\n                if ARGV[3] ~= '-1' then\r\n                  redis.call('EXPIRE', KEYS[1], ARGV[3])\r\n                end\r\n                return 1";
+            }
+        }
+
+        private void TryRegisterProfiler()
+        {
+            if (_connection == null)
+            {
+                throw new InvalidOperationException("_connection cannot be null.");
+            }
+
+            if (_options.ProfilingSession != null)
+            {
+                _connection.RegisterProfiler(_options.ProfilingSession);
+            }
         }
 
         public Task Clear()
@@ -29,9 +169,81 @@ namespace ViazyNetCore.Redis
             return this._redisCache.Get<TEntity>(key);
         }
 
+        public byte[]? HashGet(string redisKey, string field)
+        {
+            Connect();
+            return this._cache.HashGet(redisKey, field);
+        }
+
+        public T? HashGet<T>(string redisKey, string field)
+        {
+            Connect();
+            var value = this._cache.HashGet(redisKey, field);
+            if (value == RedisValue.Null)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<T>(value!);
+        }
+
+        public T? HashGetAll<T>(string redisKey)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T?> HashGetAllAsync<T>(string key)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<T?> HashGetAsync<T>(string redisKey, string key)
         {
             return this._redisCache.HashGetAsync<T>(redisKey, key);
+        }
+
+        public async Task<byte[]?> HashGetAsync(string redisKey, string field, CancellationToken token = default)
+        {
+            await ConnectAsync().ConfigureAwait(false);
+            return await this._cache.HashGetAsync(redisKey, field);
+        }
+
+        public async Task<T?> HashGetAsync<T>(string redisKey, string field, CancellationToken token = default)
+        {
+            await ConnectAsync().ConfigureAwait(false);
+            var value = await this._cache.HashGetAsync(redisKey, field);
+            if (value == RedisValue.Null)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<T>(value!);
+        }
+
+        public void HashRemove(string redisKey, string field)
+        {
+            Connect();
+            this._cache.HashDelete(redisKey, field);
+        }
+
+        public async Task HashRemoveAsync(string redisKey, string field, CancellationToken token = default)
+        {
+            await ConnectAsync().ConfigureAwait(false);
+            await this._cache.HashDeleteAsync(redisKey, field).ConfigureAwait(false);
+        }
+
+        public void HashSet(string redisKey, string field, byte[]? value, DistributedCacheEntryOptions options)
+        {
+            this.Connect();
+            this._cache.HashSet(redisKey, field, value);
+        }
+
+        public void HashSetAll(string redisKey, object? value, DistributedCacheEntryOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task HashSetAllAsync(string key, object? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<bool> HashSetAsync(string redisKey, string key, string value)
@@ -42,6 +254,11 @@ namespace ViazyNetCore.Redis
         public Task<bool> HashSetAsync<T>(string redisKey, string key, T value)
         {
             return this._redisCache.HashSetAsync<T>(redisKey, key, value);
+        }
+
+        public Task HashSetAsync(string key, string field, byte[]? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
         }
 
         public Task ListClearAsync(string redisKey)
@@ -118,15 +335,13 @@ namespace ViazyNetCore.Redis
         {
             return this._redisCache.SortedSetAddAsync(redisKey, redisValue, score);
         }
-
-        Task<string?> IRedisCache.Get(string key)
+        private void CheckDisposed()
         {
-            return this._redisCache.Get(key);
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(GetType().FullName);
+            }
         }
 
-        Task IRedisCache.Remove(string key)
-        {
-            return this._redisCache.Remove(key);
-        }
     }
 }

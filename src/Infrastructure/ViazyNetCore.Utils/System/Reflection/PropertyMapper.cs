@@ -14,12 +14,12 @@ namespace System.Reflection
     {
         private readonly Lazy<DynamicMemberSetter> _lazySetter;
         private readonly Lazy<DynamicMemberGetter> _lazyGetter;
-        private readonly Lazy<object> _LazyTypeDefaultValue;
+        private readonly Lazy<object?> _LazyTypeDefaultValue;
 
         /// <summary>
         /// 获取类型的默认值。
         /// </summary>
-        public object TypeDefaultValue => this._LazyTypeDefaultValue.Value;
+        public object? TypeDefaultValue => this._LazyTypeDefaultValue.Value;
 
         /// <summary>
         /// 获取成员的属性元数据。
@@ -73,7 +73,7 @@ namespace System.Reflection
 
             this._lazySetter = new Lazy<DynamicMemberSetter>(property.CreatePropertySetter);
             this._lazyGetter = new Lazy<DynamicMemberGetter>(property.CreatePropertyGetter);
-            this._LazyTypeDefaultValue = new Lazy<object>(property.PropertyType.GetDefaultValue);
+            this._LazyTypeDefaultValue = new Lazy<object?>(property.PropertyType.GetDefaultValue);
 
             this.PropertyName = property.Name;
 
@@ -81,13 +81,9 @@ namespace System.Reflection
             this.DatabaseGeneratedOption = databaseGeneratedAttr is null ? DatabaseGeneratedOption.None : databaseGeneratedAttr.DatabaseGeneratedOption;
 
             var columnAttr = property.GetAttribute<ColumnAttribute>();
-            this.Name = columnAttr?.Name;
-            if (this.Name is null)
-            {
-                var nameAttr = property.GetAttribute<NameAttribute>();
-                this.Name = nameAttr?.Name;
-            }
-            if (this.Name is null) this.Name = this.PropertyName;
+            this.Name = columnAttr?.Name
+               ?? property.GetAttribute<NameAttribute>()?.Name
+               ?? property.Name;
 
             this.DisplayName = property.GetAttribute<ComponentModel.DisplayNameAttribute>()?.DisplayName ?? this.Name;
 
@@ -102,7 +98,7 @@ namespace System.Reflection
         /// </summary>
         /// <param name="instance">一个实例，null 值表示设置静态属性。</param>
         /// <param name="value">属性的值。</param>
-        public void SetValue(object instance, object value)
+        public void SetValue(object? instance, object? value)
         {
             this._lazySetter.Value(instance, value);
         }
