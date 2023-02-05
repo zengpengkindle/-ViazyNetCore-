@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using ViazyNetCore.Swagger;
@@ -19,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class SwaggerExtensions
     {
         private const string AUTHENTICATION_SCHEME = "Bearer";
-        public static void AddSwagger(this IServiceCollection services, string apiName, params Assembly[] assemblies)
+        public static void AddSwagger(this IServiceCollection services, string apiName)
         {
             services.TryAddEnumerable(ServiceDescriptor.Transient<IApplicationModelProvider, ProduceResponseTypeModelProvider>());
 
@@ -84,13 +85,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void UseSwaggerAndUI(this WebApplication app, string apiName, Action<List<OpenApiServer>> action = null)
         {
-            var versionProvider = app.Services.GetService<IApiVersionDescriptionProvider>();
 
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger(c =>
+                var versionProvider = app.Services.GetService<IApiVersionDescriptionProvider>();
+                app.UseSwagger(options =>
                 {
-                    c.PreSerializeFilters.Add((swagger, httpReq) =>
+                    options.PreSerializeFilters.Add((swagger, httpReq) =>
                     {
                         var servers = new List<OpenApiServer>();
                         if (httpReq.IsLocal())
@@ -102,17 +103,16 @@ namespace Microsoft.Extensions.DependencyInjection
                     });
                 });
 
-                app.UseKnife4UI(c =>
+                app.UseKnife4UI(options =>
                 {
-                    c.RoutePrefix = ""; // serve the UI at root
-                    c.SwaggerEndpoint("/v1/api-docs", "V1 Docs");
+                    options.RoutePrefix = "swagger"; // serve the UI at root
+                    foreach (var description in versionProvider.ApiVersionDescriptions)
+                    {
+                        options.SwaggerEndpoint($"{description.GroupName}/swagger.json", "HTTP API" + description.GroupName);
+                    }
                 });
 
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                    endpoints.MapSwagger("{documentName}/api-docs");
-                });
+                //app.MapSwagger("/k4/{documentName}/swagger.json");
             }
         }
     }
