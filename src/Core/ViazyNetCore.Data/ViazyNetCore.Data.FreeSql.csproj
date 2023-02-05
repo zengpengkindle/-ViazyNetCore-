@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FreeSql" Version="3.2.687" />
+    <PackageReference Include="FreeSql.DbContext" Version="3.2.687" />
+    <PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.687" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
+  </ItemGroup>
+
+</Project>

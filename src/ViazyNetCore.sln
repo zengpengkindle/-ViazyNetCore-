@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Annotations", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Core", "Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj", "{C91C3E73-474A-41F3-9224-D66066CE9915}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Data.FreeSql", "Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj", "{56A26CC8-A967-47BE-9DAB-E31762A3812E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,10 @@ Global
 		{C91C3E73-474A-41F3-9224-D66066CE9915}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C91C3E73-474A-41F3-9224-D66066CE9915}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C91C3E73-474A-41F3-9224-D66066CE9915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56A26CC8-A967-47BE-9DAB-E31762A3812E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56A26CC8-A967-47BE-9DAB-E31762A3812E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56A26CC8-A967-47BE-9DAB-E31762A3812E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56A26CC8-A967-47BE-9DAB-E31762A3812E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +146,7 @@ Global
 		{F7182F0F-9E26-4DE4-A41A-871F805499F9} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{5BBB1F39-D8D2-4E5C-ADFC-BC2EDF63AE35} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{C91C3E73-474A-41F3-9224-D66066CE9915} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
+		{56A26CC8-A967-47BE-9DAB-E31762A3812E} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}
