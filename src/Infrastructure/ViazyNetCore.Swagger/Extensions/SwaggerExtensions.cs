@@ -129,9 +129,10 @@ namespace Microsoft.Extensions.DependencyInjection
         public static bool IsLocal(this HttpRequest req)
         {
             ConnectionInfo connection = req.HttpContext.Connection;
+            if (connection.RemoteIpAddress == null) return false;
             if (connection.RemoteIpAddress.IsSet())
             {
-                if (!connection.LocalIpAddress.IsSet())
+                if (connection.LocalIpAddress?.IsSet() == false)
                 {
                     return IPAddress.IsLoopback(connection.RemoteIpAddress);
                 }
