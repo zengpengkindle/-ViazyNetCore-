@@ -108,7 +108,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     options.RoutePrefix = "swagger"; // serve the UI at root
                     foreach (var description in versionProvider.ApiVersionDescriptions)
                     {
-                        options.SwaggerEndpoint($"{description.GroupName}/swagger.json", "HTTP API" + description.GroupName);
+                        options.SwaggerEndpoint($"{description.GroupName}/swagger.json", "HTTP API " + description.GroupName);
                     }
                 });
 

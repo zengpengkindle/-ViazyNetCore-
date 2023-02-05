@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ViazyNetCore.Manage.WebApi.ViewModel;
 
 namespace ViazyNetCore.Manage.WebApi.Controllers
 {
@@ -28,6 +29,12 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpPost(Name = "TestPost")]
+        public TestModel PostModel(TestModel test)
+        {
+            return test;
         }
     }
 }
