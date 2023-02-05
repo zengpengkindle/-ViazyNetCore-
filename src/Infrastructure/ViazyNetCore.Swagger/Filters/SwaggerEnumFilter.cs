@@ -1,34 +1,97 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Components.CompilerServices;
+using Microsoft.OpenApi.Any;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace ViazyNetCore.Swagger.Filters
 {
     /// <summary>
-    /// 
+    /// Swagger Enum 枚举类型返回描述
     /// </summary>
     public class SwaggerEnumFilter : IDocumentFilter
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="swaggerDoc"></param>
-        /// <param name="context"></param>
+        /// <inheritdoc/>
         public void Apply(Microsoft.OpenApi.Models.OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
-            foreach (var schemaDictionaryItem in swaggerDoc.Components.Schemas)
+            Dictionary<string, Type> dict = GetAllEnum();
+            foreach (var propertyDictionaryItem in swaggerDoc.Components.Schemas)
             {
-                var schema = schemaDictionaryItem.Value;
-                foreach (var propertyDictionaryItem in schema.Properties)
+                var typeName = propertyDictionaryItem.Key;
+                var property = propertyDictionaryItem.Value;
+                var propertyEnums = property.Enum;
+                Type? itemType = null;
+                if (propertyEnums != null && propertyEnums.Count > 0)
                 {
-                    var property = propertyDictionaryItem.Value;
-                    var propertyEnums = property.Enum;
-                    if (propertyEnums != null && propertyEnums.Count > 0)
+                    if (dict.ContainsKey(typeName))
                     {
-                        property.Description += DescribeEnum(propertyEnums);
+                        itemType = dict[typeName];
                     }
+                    else
+                    {
+                        itemType = null;
+                    }
+                    List<OpenApiInteger> list = new List<OpenApiInteger>();
+
+                    foreach (var val in property.Enum)
+                    {
+                        list.Add((OpenApiInteger)val);
+                    }
+                    propertyEnums.Clear();
+
+                    DescribeEnum(itemType, list).ToList().ForEach(item =>
+                    {
+                        property.Enum.Add(item);
+                    });
                 }
             }
         }
+
+        private static Dictionary<string, Type> GetAllEnum()
+        {
+            var assemblies = RuntimeHelper.GetAllAssemblies();
+
+            Dictionary<string, Type> dict = new Dictionary<string, Type>();
+            foreach (var ass in assemblies)
+            {
+                Type[] types = ass.GetTypes();
+                foreach (Type item in types)
+                {
+                    if (item.IsEnum)
+                    {
+                        dict.Add(item.Name, item);
+                    }
+                }
+            }
+            return dict;
+        }
+
+        private static IEnumerable<IOpenApiAny> DescribeEnum(Type? type, List<OpenApiInteger> enums)
+        {
+            if (type == null)
+            {
+                foreach (var item in enums)
+                {
+                    yield return item;
+                }
+                yield break;
+            }
+
+            foreach (var enumOption in enums)
+            {
+                var value = Enum.Parse(type, enumOption.Value.ToString());
+                var desc = GetDescription(type, value);
+
+                if (string.IsNullOrEmpty(desc))
+                    desc = $"{enumOption.Value},/** {Enum.GetName(type, value)} */;";
+                else
+                    desc = $"{enumOption.Value},/** {Enum.GetName(type, value)}_{desc} */";
+
+                yield return new OpenApiString(desc);
+            }
+        }
+
 
         /// <summary>
         /// 描述枚举

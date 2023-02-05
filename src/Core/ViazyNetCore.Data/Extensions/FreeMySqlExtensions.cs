@@ -4,11 +4,10 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FreeSql;
 using FreeSql.DataAnnotations;
 using static FreeSql.SqlExtExtensions;
 
-namespace Free
+namespace FreeSql
 {
     /// <summary>
     /// 自定义解析

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyModel;
 
-namespace ViazyNetCore.Ioc
+namespace ViazyNetCore
 {
     /// <summary>
     /// 表示一个程序集类别常量

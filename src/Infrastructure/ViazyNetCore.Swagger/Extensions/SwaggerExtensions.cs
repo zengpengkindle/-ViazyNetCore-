@@ -43,6 +43,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     options.IncludeXmlComments(file.FullName, true);
                 }
+                options.DocumentFilter<SwaggerEnumFilter>();
+
                 // 启用 SwaggerResponse 备注
                 options.EnableAnnotations();
                 options.CustomOperationIds(apiDesc =>
@@ -52,8 +54,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     else
                         return string.Empty;
                 });
-
-                options.DocumentFilter<SwaggerEnumFilter>();
 
                 #region Jwt Authentication
 
@@ -106,9 +106,16 @@ namespace Microsoft.Extensions.DependencyInjection
                 app.UseKnife4UI(options =>
                 {
                     options.RoutePrefix = "swagger"; // serve the UI at root
-                    foreach (var description in versionProvider.ApiVersionDescriptions)
+                    if (versionProvider == null)
                     {
-                        options.SwaggerEndpoint($"{description.GroupName}/swagger.json", "HTTP API " + description.GroupName);
+                        options.SwaggerEndpoint($"v1/swagger.json", "HTTP API v1");
+                    }
+                    else
+                    {
+                        foreach (var description in versionProvider.ApiVersionDescriptions)
+                        {
+                            options.SwaggerEndpoint($"{description.GroupName}/swagger.json", "HTTP API " + description.GroupName);
+                        }
                     }
                 });
 
@@ -143,15 +150,6 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             return false;
-        }
-    }
-
-    internal class AutoRestSchemaFilter : ISchemaFilter
-    {
-        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
-        {
-            //schema.Extensions.Add("format", null);
-            schema.Format = null;
         }
     }
 }

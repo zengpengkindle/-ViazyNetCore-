@@ -14,7 +14,7 @@ namespace ViazyNetCore.Manage.WebApi.ViewModel
 
     public enum TestEnum
     {
-        [Description("Default默认")]
+        [Description("默认")]
         Default=0,
         [Description("测试")]
         Test = 1,
