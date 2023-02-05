@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ViazyNetCore.Formatter.Response.Extensions;
 using ViazyNetCore.Formatter.Response.Helpers;
-using ViazyNetCore.Formatter.Response.Wrappers;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace ViazyNetCore.Formatter.Response
@@ -147,11 +146,11 @@ namespace ViazyNetCore.Formatter.Response
 
         public async Task HandleSuccessfulRequestAsync(HttpContext context, object body)
         {
-            var bodyText = !body.ToString().IsValidJson() ? ConvertToJSONString(body) : body.ToString();
+            var bodyText = !body.ToString().IsValidJson() ? this.ConvertToJSONString(body) : body.ToString();
 
-            dynamic bodyContent = JsonConvert.DeserializeObject<dynamic>(bodyText);
+            dynamic? bodyContent = JsonConvert.DeserializeObject<dynamic>(bodyText);
 
-            Type type = bodyContent?.GetType();
+            Type? type = bodyContent?.GetType();
 
             string jsonString;
             if(type == typeof(JObject))

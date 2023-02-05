@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ViazyNetCore.Formatter.Response.Wrappers
+namespace ViazyNetCore
 {
     public class ApiResponse
     {

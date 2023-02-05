@@ -15,5 +15,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Wrappers\" />
+	</ItemGroup>
 
 </Project>
