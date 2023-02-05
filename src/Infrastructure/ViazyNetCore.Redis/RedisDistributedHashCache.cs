@@ -21,11 +21,15 @@ namespace ViazyNetCore.Redis
 
         private static readonly Version ServerVersionWithExtendedSetCommand = new Version(4, 0, 0);
 
+        private readonly string _instance;
+
         public RedisDistributedHashCache(IOptions<RedisCacheOptions> optionsAccessor, IRedisCache redisCache) : base(optionsAccessor)
         {
             this._options = optionsAccessor.Value;
             this._redisCache = redisCache;
+            this._instance = this._options.InstanceName ?? string.Empty;
         }
+
         private void Connect()
         {
             CheckDisposed();
@@ -66,7 +70,6 @@ namespace ViazyNetCore.Redis
                 _connectionLock.Release();
             }
         }
-
 
         private async Task ConnectAsync(CancellationToken token = default(CancellationToken))
         {
@@ -151,6 +154,55 @@ namespace ViazyNetCore.Redis
             if (_options.ProfilingSession != null)
             {
                 _connection.RegisterProfiler(_options.ProfilingSession);
+            }
+        }
+
+        private void Refresh(IDatabase cache, string key, DateTimeOffset? absExpr, TimeSpan? sldExpr)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException("key");
+            }
+
+            if (sldExpr.HasValue)
+            {
+                TimeSpan? expiry;
+                if (absExpr.HasValue)
+                {
+                    TimeSpan timeSpan = absExpr.Value - DateTimeOffset.Now;
+                    expiry = ((timeSpan <= sldExpr.Value) ? new TimeSpan?(timeSpan) : sldExpr);
+                }
+                else
+                {
+                    expiry = sldExpr;
+                }
+
+                cache.KeyExpire(_instance + key, expiry, CommandFlags.None);
+            }
+        }
+
+        private async Task RefreshAsync(IDatabase cache, string key, DateTimeOffset? absExpr, TimeSpan? sldExpr, CancellationToken token = default(CancellationToken))
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException("key");
+            }
+
+            token.ThrowIfCancellationRequested();
+            if (sldExpr.HasValue)
+            {
+                TimeSpan? expiry;
+                if (absExpr.HasValue)
+                {
+                    TimeSpan timeSpan = absExpr.Value - DateTimeOffset.Now;
+                    expiry = ((timeSpan <= sldExpr.Value) ? new TimeSpan?(timeSpan) : sldExpr);
+                }
+                else
+                {
+                    expiry = sldExpr;
+                }
+
+                await cache.KeyExpireAsync(_instance + key, expiry, CommandFlags.None).ConfigureAwait(continueOnCapturedContext: false);
             }
         }
 

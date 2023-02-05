@@ -17,7 +17,6 @@
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Utils\ViazyNetCore.Utils.csproj" />
 		<ProjectReference Include="..\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
 	</ItemGroup>
 

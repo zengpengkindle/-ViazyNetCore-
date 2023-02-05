@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
-    <ProjectReference Include="..\ViazyNetCore.Utils\ViazyNetCore.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

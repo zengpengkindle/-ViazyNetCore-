@@ -61,7 +61,10 @@ namespace ViazyNetCore.Auth.Jwt
                 var redisFieldKey = GenerateCacheKey(userId);
                 if (this._cacheService != null)
                 {
-                    await this._cacheService.HashSetAsync(HashCachePrefix + clientName, redisFieldKey, jti);
+                    await this._cacheService.HashSetAsync(HashCachePrefix + clientName, redisFieldKey, jti.Object2Bytes(), new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(this._option.ExpiresIn)
+                    }) ;
                 }
             }
             return result;

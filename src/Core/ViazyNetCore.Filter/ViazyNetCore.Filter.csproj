@@ -16,6 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Utils\ViazyNetCore.Utils.csproj" />
+	  <ProjectReference Include="..\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
 	</ItemGroup>
 </Project>
