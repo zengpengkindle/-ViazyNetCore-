@@ -42,7 +42,9 @@ namespace ViazyNetCore.Auth.Jwt
                      new Claim(JwtRegisteredClaimNames.Jti, jti),
                      new Claim(JwtRegisteredClaimNames.Sid, userId.ToString()),
                      new Claim(JwtRegisteredClaimNames.Aud, clientName),
-                     new Claim(JwtRegisteredClaimNames.Iss, _option.Issuer),
+                     new Claim(JwtRegisteredClaimNames.Iss, this._option.Issuer),
+                     new Claim(JwtRegisteredClaimNames.Exp, expires.ConvertToJsTime().ToString()),
+                     new Claim(JwtRegisteredClaimNames.Nbf, DateTime.UtcNow.ConvertToJsTime().ToString()),
                      new Claim(ClaimTypes.Role, string.Join(",", roleIds.Select(t => t.CastTo<int>()))),
                      //new Claim(JwtRegisteredClaimNames.Typ, )
                 })
@@ -64,7 +66,7 @@ namespace ViazyNetCore.Auth.Jwt
                     await this._cacheService.HashSetAsync(HashCachePrefix + clientName, redisFieldKey, jti.Object2Bytes(), new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
                     {
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(this._option.ExpiresIn)
-                    }) ;
+                    });
                 }
             }
             return result;
@@ -114,13 +116,18 @@ namespace ViazyNetCore.Auth.Jwt
 
         private string GenerateCacheKey(long userId)
         {
-            return $"Caesar:JwtToken:{userId}";
+            return $"JwtToken:{userId}";
         }
 
         public void RemoveToken(long userId)
         {
-            var key = GenerateCacheKey(userId);
-            //redis.Remove(key);
+            if (this._option.UseDistributedCache)
+            {
+                var redisFieldKey = GenerateCacheKey(userId);
+                if (this._cacheService != null)
+                {
+                }
+            }
         }
     }
 }
