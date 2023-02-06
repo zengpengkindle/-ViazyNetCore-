@@ -20,3 +20,4 @@ bld/
 
 App_Data
 PublishProfiles
+yarn.lock

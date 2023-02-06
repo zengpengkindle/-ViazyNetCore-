@@ -7,7 +7,99 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.Knife4jUI" Version="1.0.6" />
+    <None Remove="knife4j\css\app.3e27f817.css" />
+    <None Remove="knife4j\favicon.ico" />
+    <None Remove="knife4j\fonts\fontawesome-webfont.706450d7.ttf" />
+    <None Remove="knife4j\fonts\fontawesome-webfont.97493d3f.woff2" />
+    <None Remove="knife4j\fonts\fontawesome-webfont.d9ee23d5.woff" />
+    <None Remove="knife4j\fonts\fontawesome-webfont.f7c2b4b7.eot" />
+    <None Remove="knife4j\img\editormd-logo.84b6c2a9.svg" />
+    <None Remove="knife4j\img\fontawesome-webfont.139e74e2.svg" />
+    <None Remove="knife4j\img\iconfont.d7f37005.svg" />
+    <None Remove="knife4j\img\icons\android-chrome-192x192.png" />
+    <None Remove="knife4j\img\icons\android-chrome-512x512.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-120x120.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-152x152.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-180x180.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-60x60.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-76x76.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon.png" />
+    <None Remove="knife4j\img\icons\favicon-16x16.png" />
+    <None Remove="knife4j\img\icons\favicon-32x32.png" />
+    <None Remove="knife4j\img\icons\msapplication-icon-144x144.png" />
+    <None Remove="knife4j\img\icons\mstile-150x150.png" />
+    <None Remove="knife4j\img\icons\safari-pinned-tab.svg" />
+    <None Remove="knife4j\img\loading%402x.695405a9.gif" />
+    <None Remove="knife4j\img\loading%403x.65eacf61.gif" />
+    <None Remove="knife4j\img\loading.c929501e.gif" />
+    <None Remove="knife4j\img\logo.d03f7d43.png" />
+    <None Remove="knife4j\index.html" />
+    <None Remove="knife4j\js\app.2ed46856.js" />
+    <None Remove="knife4j\js\app.2ed46856.js.map" />
+    <None Remove="knife4j\js\app.6fd00967.js" />
+    <None Remove="knife4j\js\app.6fd00967.js.map" />
+    <None Remove="knife4j\js\app.9beccb56.js" />
+    <None Remove="knife4j\js\app.9beccb56.js.map" />
+    <None Remove="knife4j\js\app.a5ab7b68.js" />
+    <None Remove="knife4j\js\app.a5ab7b68.js.map" />
+    <None Remove="knife4j\js\app.ae05131c.js" />
+    <None Remove="knife4j\js\app.ae05131c.js.map" />
+    <None Remove="knife4j\js\app.c4466ac2.js" />
+    <None Remove="knife4j\js\app.c4466ac2.js.map" />
+    <None Remove="knife4j\js\app.daad4e82.js" />
+    <None Remove="knife4j\js\app.daad4e82.js.map" />
+    <None Remove="knife4j\js\chunk-vendors.754ed614.js" />
+    <None Remove="knife4j\js\chunk-vendors.754ed614.js.map" />
+    <None Remove="knife4j\js\chunk-vendors.a36c5836.js" />
+    <None Remove="knife4j\js\chunk-vendors.a36c5836.js.map" />
+    <None Remove="knife4j\js\chunk-vendors.b11e7792.js" />
+    <None Remove="knife4j\js\chunk-vendors.b11e7792.js.map" />
+    <None Remove="knife4j\js\chunk-vendors.ef4f1c28.js" />
+    <None Remove="knife4j\js\chunk-vendors.ef4f1c28.js.map" />
+    <None Remove="knife4j\manifest.json" />
+    <None Remove="knife4j\precache-manifest.27315333d26f47e50c30bc75a1d0c28e.js" />
+    <None Remove="knife4j\precache-manifest.2a944dd63a2413f2434def9479c5108b.js" />
+    <None Remove="knife4j\precache-manifest.8c7ccfee2cb98d858f14620bb4e97e39.js" />
+    <None Remove="knife4j\service-worker.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="knife4j\css\app.3e27f817.css" />
+    <EmbeddedResource Include="knife4j\favicon.ico" />
+    <EmbeddedResource Include="knife4j\fonts\fontawesome-webfont.706450d7.ttf" />
+    <EmbeddedResource Include="knife4j\fonts\fontawesome-webfont.97493d3f.woff2" />
+    <EmbeddedResource Include="knife4j\fonts\fontawesome-webfont.d9ee23d5.woff" />
+    <EmbeddedResource Include="knife4j\fonts\fontawesome-webfont.f7c2b4b7.eot" />
+    <EmbeddedResource Include="knife4j\img\editormd-logo.84b6c2a9.svg" />
+    <EmbeddedResource Include="knife4j\img\fontawesome-webfont.139e74e2.svg" />
+    <EmbeddedResource Include="knife4j\img\iconfont.d7f37005.svg" />
+    <EmbeddedResource Include="knife4j\img\icons\android-chrome-192x192.png" />
+    <EmbeddedResource Include="knife4j\img\icons\android-chrome-512x512.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-120x120.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-152x152.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-180x180.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-60x60.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-76x76.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon.png" />
+    <EmbeddedResource Include="knife4j\img\icons\favicon-16x16.png" />
+    <EmbeddedResource Include="knife4j\img\icons\favicon-32x32.png" />
+    <EmbeddedResource Include="knife4j\img\icons\msapplication-icon-144x144.png" />
+    <EmbeddedResource Include="knife4j\img\icons\mstile-150x150.png" />
+    <EmbeddedResource Include="knife4j\img\icons\safari-pinned-tab.svg" />
+    <EmbeddedResource Include="knife4j\img\loading.c929501e.gif" />
+    <EmbeddedResource Include="knife4j\img\loading@2x.695405a9.gif" />
+    <EmbeddedResource Include="knife4j\img\loading@3x.65eacf61.gif" />
+    <EmbeddedResource Include="knife4j\img\logo.d03f7d43.png" />
+    <EmbeddedResource Include="knife4j\index.html" />
+    <EmbeddedResource Include="knife4j\js\app.2ed46856.js" />
+    <EmbeddedResource Include="knife4j\js\app.2ed46856.js.map" />
+    <EmbeddedResource Include="knife4j\js\chunk-vendors.a36c5836.js" />
+    <EmbeddedResource Include="knife4j\js\chunk-vendors.a36c5836.js.map" />
+    <EmbeddedResource Include="knife4j\manifest.json" />
+    <EmbeddedResource Include="knife4j\service-worker.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />

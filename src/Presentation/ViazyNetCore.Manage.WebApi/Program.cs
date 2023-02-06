@@ -18,7 +18,8 @@ app.MapControllers();
 // Configure the HTTP request pipeline.
 if(app.Environment.IsDevelopment())
 {
-    app.UseSwaggerAndUI("ViazyNetCore-Manage");
+    app.UseSwaggerAndUI();
 }
+app.UseStaticFiles();
 
 app.Run();

@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Reflection;
-using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -14,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using ViazyNetCore.Swagger;
 using ViazyNetCore.Swagger.Filters;
+using ViazyNetCore.Swagger.Knife4jUI;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -50,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.CustomOperationIds(apiDesc =>
                 {
                     if (apiDesc.ActionDescriptor is ControllerActionDescriptor controllerAction)
-                        return controllerAction.ControllerName + "-" + controllerAction.ActionName;
+                        return controllerAction.ControllerName.Replace("Controller", "") + "-" + controllerAction.ActionName;
                     else
                         return string.Empty;
                 });
@@ -83,7 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }).AddSwaggerGenNewtonsoftSupport();
         }
 
-        public static void UseSwaggerAndUI(this WebApplication app, string apiName, Action<List<OpenApiServer>> action = null)
+        public static void UseSwaggerAndUI(this WebApplication app, Action<List<OpenApiServer>> action = null)
         {
 
             if (app.Environment.IsDevelopment())
