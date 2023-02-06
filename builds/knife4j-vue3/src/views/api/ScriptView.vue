@@ -46,8 +46,8 @@ export default {
   },
   created() {
     // 格式化api数据
+    console.log("open api",this.api);
     const config = formatApi(this.api);
-
     let jsComment = '';
     let jsFun = '';
     let interfaceName = '';

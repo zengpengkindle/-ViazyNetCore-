@@ -236,7 +236,7 @@ function initSpringDocOpenApi() {
           locale.value = tmpI18n;
           state.enableVersion = settings.enableVersion;
           initSwagger({
-            springdoc: true,
+            springdoc: false,
             baseSpringFox: true,
             localStore: localStore,
             settings: settings,

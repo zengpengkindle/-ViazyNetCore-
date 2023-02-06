@@ -149,6 +149,7 @@ export function formatApi(api) {
   };
   if(Array.isArray(api.parameters)) {
     api.parameters.map(p => {
+      console.log("parameters",p);
       switch(p.in) {
         case 'path':
           config.pathParams.push({
@@ -162,16 +163,20 @@ export function formatApi(api) {
             type:  getBaseType(p.type)
           });
           break;
-        default:
+        case 'body':
           config.bodyParams.push({
             name: 'params',
             type:  p.type === 'array' ? 'array' : 'object',
             children: p.children
           });
           break;
+        default:
+          break;
       }
     })
   }
+  console.log(api.parameters);
+  console.log(config.bodyParams);
   if(Array.isArray(api.responseCodes)) {
     // let loopObj = {}; // 被循环引用的对象
     // const resRefParamsTemp = api.responseRefParameters.map(ref =>
@@ -414,6 +419,7 @@ export function getJsFunctionDeclaration(api) {
       )
     ]))
   return generate(t.exportNamedDeclaration(declaration)).code;
+  // return t.exportNamedDeclaration(declaration)
 }
 
 /**
@@ -446,6 +452,7 @@ export function getTsInterfaceDeclaration(prop, interfaceName, openOptional) {
     )
   }
   return generate(t.exportNamedDeclaration(declaration)).code + '\n\n';
+  // return t.exportNamedDeclaration(declaration) +'\r\n';
 }
 
 /**
@@ -472,14 +479,18 @@ export function getTsInterfaceDeclaration(prop, interfaceName, openOptional) {
   [].concat(pathParams, queryParams).map(param => {
     funParams.push(getTypeAnnotation(param));
   })
+  console.log(bodyParams);
+  let index=0;
   bodyParams.map(param => {
     // 指定接口类型名称
+    index++;
+    console.log("type",param.type)
     if(param.type === 'array') {
-      funParams.push(getTypeAnnotation({name: param.name, type: `any[]`}));
+      funParams.push(getTypeAnnotation({name: param.name+index, type: `any[]`}));
     } else if(param.type === 'object') {
-      funParams.push(getTypeAnnotation({name: param.name, type: `${interfaceName}Params`}));
+      funParams.push(getTypeAnnotation({name: param.name+index, type: `${interfaceName}Params`}));
     }
-    requestParams.push(t.identifier(param.name));
+    requestParams.push(t.identifier(param.name+index));
   })
   const declaration = t.functionDeclaration(
     t.identifier(name),
@@ -508,4 +519,5 @@ export function getTsInterfaceDeclaration(prop, interfaceName, openOptional) {
     )
   )
   return generate(t.exportNamedDeclaration(declaration)).code;
+  // return  t.exportNamedDeclaration(declaration);
 }

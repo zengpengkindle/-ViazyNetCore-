@@ -6,6 +6,15 @@ import router from '@/router/index.js'
 import { setupI18n } from '@/lang/index.js'
 import { createFromIconfontCN } from '@ant-design/icons-vue'
 
+import * as buffer from "buffer";
+ 
+if (typeof (window).global === "undefined"){  
+   (window).global = window;
+}
+if (typeof (window).Buffer === "undefined") { 
+   (window).Buffer = buffer.Buffer;
+}
+
 String.prototype.gblen = function () {
   let len = 0
   for (let i = 0; i < this.length; i++) {

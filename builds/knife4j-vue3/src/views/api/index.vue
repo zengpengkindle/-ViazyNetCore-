@@ -21,9 +21,12 @@
           <OpenApi :api="api" :swaggerInstance="swaggerInstance" />
         </a-tab-pane>
         <!-- TODO 暂时不知道vite怎么支持 -->
-<!--        <a-tab-pane v-if="settings.enableOpenApi" key="script" tab="Script">-->
-<!--          <ScriptView :api="api" :swaggerInstance="swaggerInstance" />-->
-<!--        </a-tab-pane>-->
+       <a-tab-pane v-if="settings.enableOpenApi" key="script">
+        <template #tab>
+            <file-text-outlined/><span>Script</span>
+          </template>
+         <ScriptView :api="api" :swaggerInstance="swaggerInstance" />
+       </a-tab-pane>
 
       </a-tabs>
     </a-row>
@@ -48,7 +51,7 @@ export default {
     "Document": defineAsyncComponent(() => import("./Document.vue")),
     "Debug": defineAsyncComponent(() => import("./Debug.vue")),
     "OpenApi": defineAsyncComponent(() => import("./OpenApi.vue")),
-    // "ScriptView": defineAsyncComponent(() => import("./ScriptView.vue")),
+    "ScriptView": defineAsyncComponent(() => import("./ScriptView.vue")),
     FileTextOutlined,
   },
   props: {
@@ -86,6 +89,7 @@ export default {
     // console(this.data);
     // 根据当前的分组id、接口id找出apiInfo信息
     let instance = this.data.instance;
+    console.log("instance+++",instance);
     let apiInfo = null;
     instance.paths.forEach(function (path) {
       if (path.operationId == params.summary) {

@@ -31,7 +31,8 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             .ToArray();
         }
 
-        [HttpPost(Name = "TestPost")]
+        [HttpPost,Route("TestPost")]
+        [SwaggerStatusCodeResponse(10021,"´íÎó×´Ì¬ÂëÏìÓ¦")]
         public TestModel PostModel(TestModel test)
         {
             return test;

@@ -15,15 +15,18 @@ export default defineConfig({
     vueJsx(),
     Components({
       resolvers: [AntDesignVueResolver()]
-    }),
-    viteCompression({
-      deleteOriginFile: false, //删除源文件
-      threshold: 10240, //压缩前最小文件大小
-      algorithm: 'gzip', //压缩算法
-      ext: '.gz', //文件类型
-    }),
+    })
+    // viteCompression({
+    //   deleteOriginFile: false, //删除源文件
+    //   threshold: 10240, //压缩前最小文件大小
+    //   algorithm: 'gzip', //压缩算法
+    //   ext: '.gz', //文件类型
+    // }),
     // removeConsole()
   ],
+  define:{
+    'process.env':{}
+  },
   resolve: {
     alias: [
       { find: '@', replacement: resolve(__dirname, 'src') },
@@ -39,12 +42,14 @@ export default defineConfig({
     }
   },
   server: {
+    port: 5173,
     host: true,
     proxy: {
-      '/api': {
-        target: `http://localhost:7284`,
+      '^/proxyApi': {
+        target: `https://localhost:7284/`,
+        secure: false,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/proxyApi/, '/swagger')
       }
     }
   },

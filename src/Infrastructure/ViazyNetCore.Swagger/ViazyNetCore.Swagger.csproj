@@ -7,9 +7,140 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="doc.html" />
+    <None Remove="favicon.ico" />
+    <None Remove="knife4j\css\Debug-9664381c.css" />
+    <None Remove="knife4j\css\doc-5be93158.css" />
+    <None Remove="knife4j\css\doc-5be93158.css.gz" />
+    <None Remove="knife4j\css\Document-2394b5d6.css" />
+    <None Remove="knife4j\img\icons\android-chrome-192x192.png" />
+    <None Remove="knife4j\img\icons\android-chrome-512x512.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-120x120.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-152x152.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-180x180.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-60x60.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon-76x76.png" />
+    <None Remove="knife4j\img\icons\apple-touch-icon.png" />
+    <None Remove="knife4j\img\icons\favicon-16x16.png" />
+    <None Remove="knife4j\img\icons\favicon-32x32.png" />
+    <None Remove="knife4j\img\icons\msapplication-icon-144x144.png" />
+    <None Remove="knife4j\img\icons\mstile-150x150.png" />
+    <None Remove="knife4j\img\icons\safari-pinned-tab.svg" />
+    <None Remove="knife4j\js\ace-d54cf035.js" />
+    <None Remove="knife4j\js\ace-d54cf035.js.gz" />
+    <None Remove="knife4j\js\clipboard-67f02212.js" />
+    <None Remove="knife4j\js\clipboard-a986ff16.js" />
+    <None Remove="knife4j\js\CopyOutlined-15e05e4f.js" />
+    <None Remove="knife4j\js\CopyOutlined-64388d30.js" />
+    <None Remove="knife4j\js\DataType-755417df.js" />
+    <None Remove="knife4j\js\DataType-f1748ca1.js" />
+    <None Remove="knife4j\js\Debug-2614f667.js" />
+    <None Remove="knife4j\js\Debug-2614f667.js.gz" />
+    <None Remove="knife4j\js\Debug-9a1433fc.js" />
+    <None Remove="knife4j\js\DebugResponse-52262a85.js" />
+    <None Remove="knife4j\js\DebugResponse-82538844.js" />
+    <None Remove="knife4j\js\doc-1f7e1a7e.js" />
+    <None Remove="knife4j\js\doc-25fb603f.js" />
+    <None Remove="knife4j\js\doc-25fb603f.js.gz" />
+    <None Remove="knife4j\js\Document-3fe6d84c.js" />
+    <None Remove="knife4j\js\Document-4fd76e92.js" />
+    <None Remove="knife4j\js\Document-4fd76e92.js.gz" />
+    <None Remove="knife4j\js\EditorDebugShow-41ca7c7b.js" />
+    <None Remove="knife4j\js\EditorDebugShow-41ca7c7b.js.gz" />
+    <None Remove="knife4j\js\EditorDebugShow-424ba835.js" />
+    <None Remove="knife4j\js\EditorScript-08b490db.js" />
+    <None Remove="knife4j\js\EditorScript-08b490db.js.gz" />
+    <None Remove="knife4j\js\EditorScript-8e7d623e.js" />
+    <None Remove="knife4j\js\EditorShow-0d3c8981.js" />
+    <None Remove="knife4j\js\EditorShow-c8f3afc7.js" />
+    <None Remove="knife4j\js\ext-language_tools-51d0f057.js" />
+    <None Remove="knife4j\js\ext-language_tools-93f7a052.js" />
+    <None Remove="knife4j\js\ext-language_tools-93f7a052.js.gz" />
+    <None Remove="knife4j\js\ext-language_tools-bf1decbd.js" />
+    <None Remove="knife4j\js\ext-language_tools-bf1decbd.js.gz" />
+    <None Remove="knife4j\js\mode-json-999f5be9.js" />
+    <None Remove="knife4j\js\mode-json-999f5be9.js.gz" />
+    <None Remove="knife4j\js\mode-json5-368a455d.js" />
+    <None Remove="knife4j\js\mode-json5-368a455d.js.gz" />
+    <None Remove="knife4j\js\mode-xml-6468964d.js" />
+    <None Remove="knife4j\js\mode-xml-6468964d.js.gz" />
+    <None Remove="knife4j\js\OAuth2-8267b58b.js" />
+    <None Remove="knife4j\js\OAuth2-8a563ec9.js" />
+    <None Remove="knife4j\js\OpenApi-3d0ea98a.js" />
+    <None Remove="knife4j\js\OpenApi-ed70152c.js" />
+    <None Remove="knife4j\oauth\axios.min.js" />
+    <None Remove="knife4j\oauth\axios.min.js.gz" />
+    <None Remove="knife4j\oauth\oauth2.html" />
     <None Remove="knife4j\precache-manifest.27315333d26f47e50c30bc75a1d0c28e.js" />
     <None Remove="knife4j\precache-manifest.2a944dd63a2413f2434def9479c5108b.js" />
     <None Remove="knife4j\precache-manifest.8c7ccfee2cb98d858f14620bb4e97e39.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="doc.html" />
+    <EmbeddedResource Include="favicon.ico" />
+    <EmbeddedResource Include="knife4j\css\Debug-9664381c.css" />
+    <EmbeddedResource Include="knife4j\css\doc-5be93158.css" />
+    <EmbeddedResource Include="knife4j\css\doc-5be93158.css.gz" />
+    <EmbeddedResource Include="knife4j\css\Document-2394b5d6.css" />
+    <EmbeddedResource Include="knife4j\img\icons\android-chrome-192x192.png" />
+    <EmbeddedResource Include="knife4j\img\icons\android-chrome-512x512.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-120x120.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-152x152.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-180x180.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-60x60.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon-76x76.png" />
+    <EmbeddedResource Include="knife4j\img\icons\apple-touch-icon.png" />
+    <EmbeddedResource Include="knife4j\img\icons\favicon-16x16.png" />
+    <EmbeddedResource Include="knife4j\img\icons\favicon-32x32.png" />
+    <EmbeddedResource Include="knife4j\img\icons\msapplication-icon-144x144.png" />
+    <EmbeddedResource Include="knife4j\img\icons\mstile-150x150.png" />
+    <EmbeddedResource Include="knife4j\img\icons\safari-pinned-tab.svg" />
+    <EmbeddedResource Include="knife4j\js\ace-d54cf035.js" />
+    <EmbeddedResource Include="knife4j\js\ace-d54cf035.js.gz" />
+    <EmbeddedResource Include="knife4j\js\clipboard-67f02212.js" />
+    <EmbeddedResource Include="knife4j\js\clipboard-a986ff16.js" />
+    <EmbeddedResource Include="knife4j\js\CopyOutlined-15e05e4f.js" />
+    <EmbeddedResource Include="knife4j\js\CopyOutlined-64388d30.js" />
+    <EmbeddedResource Include="knife4j\js\DataType-755417df.js" />
+    <EmbeddedResource Include="knife4j\js\DataType-f1748ca1.js" />
+    <EmbeddedResource Include="knife4j\js\Debug-2614f667.js" />
+    <EmbeddedResource Include="knife4j\js\Debug-2614f667.js.gz" />
+    <EmbeddedResource Include="knife4j\js\Debug-9a1433fc.js" />
+    <EmbeddedResource Include="knife4j\js\DebugResponse-52262a85.js" />
+    <EmbeddedResource Include="knife4j\js\DebugResponse-82538844.js" />
+    <EmbeddedResource Include="knife4j\js\doc-1f7e1a7e.js" />
+    <EmbeddedResource Include="knife4j\js\doc-25fb603f.js" />
+    <EmbeddedResource Include="knife4j\js\doc-25fb603f.js.gz" />
+    <EmbeddedResource Include="knife4j\js\Document-3fe6d84c.js" />
+    <EmbeddedResource Include="knife4j\js\Document-4fd76e92.js" />
+    <EmbeddedResource Include="knife4j\js\Document-4fd76e92.js.gz" />
+    <EmbeddedResource Include="knife4j\js\EditorDebugShow-41ca7c7b.js" />
+    <EmbeddedResource Include="knife4j\js\EditorDebugShow-41ca7c7b.js.gz" />
+    <EmbeddedResource Include="knife4j\js\EditorDebugShow-424ba835.js" />
+    <EmbeddedResource Include="knife4j\js\EditorScript-08b490db.js" />
+    <EmbeddedResource Include="knife4j\js\EditorScript-08b490db.js.gz" />
+    <EmbeddedResource Include="knife4j\js\EditorScript-8e7d623e.js" />
+    <EmbeddedResource Include="knife4j\js\EditorShow-0d3c8981.js" />
+    <EmbeddedResource Include="knife4j\js\EditorShow-c8f3afc7.js" />
+    <EmbeddedResource Include="knife4j\js\ext-language_tools-51d0f057.js" />
+    <EmbeddedResource Include="knife4j\js\ext-language_tools-93f7a052.js" />
+    <EmbeddedResource Include="knife4j\js\ext-language_tools-93f7a052.js.gz" />
+    <EmbeddedResource Include="knife4j\js\ext-language_tools-bf1decbd.js" />
+    <EmbeddedResource Include="knife4j\js\ext-language_tools-bf1decbd.js.gz" />
+    <EmbeddedResource Include="knife4j\js\mode-json-999f5be9.js" />
+    <EmbeddedResource Include="knife4j\js\mode-json-999f5be9.js.gz" />
+    <EmbeddedResource Include="knife4j\js\mode-json5-368a455d.js" />
+    <EmbeddedResource Include="knife4j\js\mode-json5-368a455d.js.gz" />
+    <EmbeddedResource Include="knife4j\js\mode-xml-6468964d.js" />
+    <EmbeddedResource Include="knife4j\js\mode-xml-6468964d.js.gz" />
+    <EmbeddedResource Include="knife4j\js\OAuth2-8267b58b.js" />
+    <EmbeddedResource Include="knife4j\js\OAuth2-8a563ec9.js" />
+    <EmbeddedResource Include="knife4j\js\OpenApi-3d0ea98a.js" />
+    <EmbeddedResource Include="knife4j\js\OpenApi-ed70152c.js" />
+    <EmbeddedResource Include="knife4j\oauth\axios.min.js" />
+    <EmbeddedResource Include="knife4j\oauth\axios.min.js.gz" />
+    <EmbeddedResource Include="knife4j\oauth\oauth2.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,10 +154,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="knife4j\" />
   </ItemGroup>
 
 </Project>

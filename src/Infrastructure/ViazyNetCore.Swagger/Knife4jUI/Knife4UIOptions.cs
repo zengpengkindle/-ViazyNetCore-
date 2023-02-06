@@ -18,7 +18,7 @@ namespace ViazyNetCore.Swagger.Knife4jUI
         /// Gets or sets a Stream function for retrieving the swagger-ui page
         /// </summary>
         public Func<Stream> IndexStream { get; set; } = () => typeof(Knife4UIOptions).GetTypeInfo().Assembly
-            .GetManifestResourceStream("ViazyNetCore.Swagger.knife4j.index.html");
+            .GetManifestResourceStream("ViazyNetCore.Swagger.doc.html");
 
         /// <summary>
         /// Gets or sets a title for the swagger-ui page

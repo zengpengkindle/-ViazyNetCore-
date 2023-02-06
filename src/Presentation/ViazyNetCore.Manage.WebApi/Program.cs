@@ -14,12 +14,12 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 if(app.Environment.IsDevelopment())
 {
     app.UseSwaggerAndUI();
 }
-app.UseStaticFiles();
+app.MapControllers();
 
 app.Run();

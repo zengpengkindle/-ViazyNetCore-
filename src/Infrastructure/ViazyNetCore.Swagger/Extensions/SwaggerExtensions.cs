@@ -50,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.CustomOperationIds(apiDesc =>
                 {
                     if (apiDesc.ActionDescriptor is ControllerActionDescriptor controllerAction)
-                        return controllerAction.ControllerName.Replace("Controller", "") + "-" + controllerAction.ActionName;
+                        return controllerAction.ControllerName.Replace("Controller", "") + controllerAction.ActionName;
                     else
                         return string.Empty;
                 });
