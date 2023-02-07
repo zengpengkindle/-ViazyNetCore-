@@ -16,6 +16,8 @@
 import { defineAsyncComponent} from 'vue'
 import KUtils from "@/core/utils";
 import swaggerBuilder from '@/core/swaggerGenerator'
+import { useGlobalsStore } from '@/store/modules/global'
+import { computed } from 'vue'
 
 export default {
   name: "ScriptView",
@@ -38,10 +40,27 @@ export default {
       tsCode: ''
     };
   },
+  setup(){
+    const store = useGlobalsStore()
+    const swagger = computed(() => {
+      return store.swagger
+    })
+    const swaggerCurrentInstance = computed(() => {
+      return store.swaggerCurrentInstance
+    })
+
+    return {
+      swagger,
+      swaggerCurrentInstance
+    }
+  },
   async created() {
     console.log('paramters',this.api.parameters);
+      var openApi = this.swaggerCurrentInstance.swaggerData;
+      
     let swaggerDoc=await swaggerBuilder({
-      SwaggerUrl:KUtils.json5stringify(this.api.openApiRaw)
+      // SwaggerUrl:KUtils.json5stringify(this.api.openApiRaw)
+      SwaggerUrl:KUtils.json5stringify(openApi)
     })
     this.tsCode=swaggerDoc;
   },

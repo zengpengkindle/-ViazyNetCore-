@@ -2186,6 +2186,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionRefTableModel = function (instanc
       }
     }
   }
+  console.log('originalTreeTableModel',instanceId,treeTableModel, originalTreeTableModel)
   return originalTreeTableModel;
 }
 

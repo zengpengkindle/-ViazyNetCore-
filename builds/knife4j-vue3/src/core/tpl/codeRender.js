@@ -9,7 +9,7 @@ function codeRender(modelType, data) {
     console.log(data)
     switch (modelType) {
         case 1:
-            return ejs.render(modelTpl, data,{async: true})
+            return ejs.render(modelTpl, data)
         case 2:
             return ejs.render(methodTpl, data)
     }

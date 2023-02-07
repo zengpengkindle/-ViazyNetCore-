@@ -84,9 +84,9 @@ namespace ViazyNetCore.Swagger.Filters
                 var desc = GetDescription(type, value);
 
                 if (string.IsNullOrEmpty(desc))
-                    desc = $"{enumOption.Value},/** {Enum.GetName(type, value)} */;";
+                    desc = $"{enumOption.Value},{Enum.GetName(type, value)}";
                 else
-                    desc = $"{enumOption.Value},/** {Enum.GetName(type, value)}_{desc} */";
+                    desc = $"{enumOption.Value}, /** {desc} */{Enum.GetName(type, value)}";
 
                 yield return new OpenApiString(desc);
             }

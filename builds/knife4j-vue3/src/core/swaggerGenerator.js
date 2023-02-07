@@ -256,11 +256,16 @@ function formatData(swagger, options) {
           Description: removeLineBreak(definition.description),
           Items: []
         }
-        const enums = lodash.zipObject(definition['x-enumNames'], definition.enum)
-        lodash.forEach(enums, function (enumValue, enumName) {
+        let enums = lodash.zipObject(definition['x-enumNames'], definition.enum)
+        // console.log('x-enumNames',enums,definition.enum);
+        enums= enums.length>0?enums:definition.enum;
+        lodash.forEach(enums, function (enumSource) {
+          const enumItem= enumSource.split(',');
+          const hasDes= enumItem.length>1;
+          const enumValue=Number(enumItem[0]);
           const item = {
-            Name: enumName,
-            Value: Number(enumValue)
+            Name: hasDes?enumItem[1]:('_'+enumValue),
+            Value:Number(enumItem[0])
           }
           e.Items.push(item)
         })
@@ -460,7 +465,7 @@ function getApiData(swaggerData, options) {
 function codeBuild(apiData, options) {
     // 生成-dto对象
     let code='';
-    // code = codeRender(1, { apiData: apiData, options: options });
+    code = codeRender(1, { apiData: apiData, options: options });
     // 按模块生成接口
     apiData.Controllers.forEach(function (controller) {
         code+= codeRender(2, { controller: controller, options: options });

@@ -780,7 +780,7 @@
            }
          }
        }
-       // console.log(that.multipData);
+       console.log('Document multipData',that.multipData);
      },
      showResponseEditFieldDescription(p) {
        // 显示说明
