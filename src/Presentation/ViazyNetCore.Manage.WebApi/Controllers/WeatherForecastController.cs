@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Manage.WebApi.ViewModel;
 
@@ -19,6 +20,10 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// »ñÈ¡get
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
@@ -31,11 +36,36 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             .ToArray();
         }
 
-        [HttpPost,Route("TestPost")]
-        [SwaggerStatusCodeResponse(10021,"´íÎó×´Ì¬ÂëÏìÓ¦")]
+        /// <summary>
+        /// ¶à×´Ì¬Âë·µ»Ø²âÊÔ
+        /// </summary>
+        /// <param name="test"></param>
+        /// <returns></returns>
+        [HttpPost, Route("TestPost")]
+        [SwaggerStatusCodeResponse(10021, "´íÎó×´Ì¬ÂëÏìÓ¦")]
         public TestModel PostModel(TestModel test)
         {
             return test;
+        }
+
+        /// <summary>
+        /// ·µ»ØÖµÇ¶Ì×²âÊÔ
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost, Route("GetInnerModel")]
+        public InnerTestModel GetInnerTestModel(TestModel model)
+        {
+            return new InnerTestModel
+            {
+                Enum1 = model.Value1,
+                WeatherForecast = new WeatherForecast
+                {
+                    Date = DateTime.Now,
+                    TemperatureC = Random.Shared.Next(-20, 55),
+                    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                }
+            };
         }
     }
 }

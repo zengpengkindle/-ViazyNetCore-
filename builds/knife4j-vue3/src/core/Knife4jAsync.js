@@ -1653,7 +1653,6 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
  */
 SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud, oas2) {
   var that = this;
-   console.log('analysisDefinitionAsyncOAS3',swud)
   var modelName = swud.name;
   var definitions = {};
   if (KUtils.checkUndefined(menu) && menu.hasOwnProperty('components')) {
@@ -1673,10 +1672,9 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
         /* swud = new SwaggerBootstrapUiDefinition();
         swud.name = name;
         swud.ignoreFilterName = name; */
-        // console.log('开始解析Definition:' + name);
+        console.log('开始解析Definition:' + name);
         // 获取value
         var value = definitions[name];
-        console.log('analysisDefinitionAsyncOAS3 value',value)
         if (KUtils.checkUndefined(value)) {
           swud.description = KUtils.propValue('description', value, '');
           swud.type = KUtils.propValue('type', value, '');
@@ -1918,7 +1916,6 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
             // console.log('proValue:', defiTypeValue)
             swud.value = defiTypeValue;
           }
-          
         }
         // //console('开始递归---------------deepTreeTableRefParameter')
         deepTreeTableRefParameter(swud, that, swud, swud, oas2);
@@ -5410,7 +5407,6 @@ SwaggerBootstrapUi.prototype.assembleParameter = function (m, swpinfo) {
  * @param {*} requireArray 必须数组
  */
 SwaggerBootstrapUi.prototype.assembleParameterOAS3 = function (m, swpinfo, requireArray) {
-  console.log( "model oas3",m,swpinfo)
   var that = this;
   var originalName = KUtils.propValue('name', m, '');
   var inType = KUtils.propValue('in', m, '');

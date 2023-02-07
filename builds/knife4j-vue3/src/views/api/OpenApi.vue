@@ -31,6 +31,8 @@ import modeXml from "ace-builds/src-noconflict/mode-xml?url";
 import themeEclipse from "ace-builds/src-noconflict/theme-eclipse?url";
 import extLanguageTools from "ace-builds/src-noconflict/ext-language_tools?url";
 
+import swaggerBuilder from '@/core/swaggerGenerator'
+
 ace.config.setModuleUrl('ace/mode/json', modeJson)
 ace.config.setModuleUrl('ace/mode/json', modeJson5)
 ace.config.setModuleUrl('ace/mode/xml', modeXml)
@@ -73,7 +75,7 @@ export default {
       name: "OpenAPI.json"
     }
   },
-  created() {
+  async created() {
     this.openApiRaw = KUtils.json5stringify(this.api.openApiRaw);
     this.name = this.api.summary + "_OpenAPI.json";
     // console.log(this.api);
