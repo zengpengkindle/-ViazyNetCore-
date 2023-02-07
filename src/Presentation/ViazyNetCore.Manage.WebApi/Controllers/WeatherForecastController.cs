@@ -20,6 +20,10 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// »ñÈ¡get
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
@@ -32,6 +36,11 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             .ToArray();
         }
 
+        /// <summary>
+        /// ¶à×´Ì¬Âë·µ»Ø²âÊÔ
+        /// </summary>
+        /// <param name="test"></param>
+        /// <returns></returns>
         [HttpPost, Route("TestPost")]
         [SwaggerStatusCodeResponse(10021, "´íÎó×´Ì¬ÂëÏìÓ¦")]
         public TestModel PostModel(TestModel test)
@@ -39,6 +48,11 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             return test;
         }
 
+        /// <summary>
+        /// ·µ»ØÖµÇ¶Ì×²âÊÔ
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost, Route("GetInnerModel")]
         public InnerTestModel GetInnerTestModel(TestModel model)
         {

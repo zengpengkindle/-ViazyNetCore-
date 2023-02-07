@@ -1,10 +1,10 @@
 <template>
   <div class="generate">
     <!--js脚本示例-->
-    <div>
+    <!-- <div>
       <div class="api-title" v-html="$t('script.JSExample')"></div>
       <editor-script :value="jsCode"></editor-script>
-    </div>
+    </div> -->
     <!--ts脚本示例-->
     <div>
       <div class="api-title" v-html="$t('script.TSExample')"></div>
@@ -13,15 +13,9 @@
   </div>
 </template>
 <script>
-import {
-  formatApi,
-  getComment,
-  upperFirstCase,
-  getJsFunctionDeclaration,
-  getTsInterfaceDeclaration,
-  getTsFunctionDeclaration
-} from '@/core/ScriptGenerator.js';
 import { defineAsyncComponent} from 'vue'
+import KUtils from "@/core/utils";
+import swaggerBuilder from '@/core/swaggerGenerator'
 
 export default {
   name: "ScriptView",
@@ -44,35 +38,12 @@ export default {
       tsCode: ''
     };
   },
-  created() {
-    // 格式化api数据
-    console.log("open api",this.api);
-    const config = formatApi(this.api);
-    let jsComment = '';
-    let jsFun = '';
-    let interfaceName = '';
-    let tsParamsInterface = '';
-    let tsResInterface = '';
-    let tsComment = '';
-    let tsFun = '';
-    try {
-      jsComment = getComment(this.api);
-      jsFun =  getJsFunctionDeclaration(config);
-
-      interfaceName = upperFirstCase(`${config.name}`);
-      tsParamsInterface = config.bodyParams[0]
-        ? '// 参数接口\n' + getTsInterfaceDeclaration(config.bodyParams[0], `${interfaceName}Params`, true)
-        : ''; // 参数interface
-      tsResInterface = config.resParam
-        ? '// 响应接口\n' + getTsInterfaceDeclaration(config.resParam, `${interfaceName}Res`, false)
-        : ''; // 响应interface
-      tsComment = getComment(this.api); // 函数注释
-      tsFun = getTsFunctionDeclaration(config, interfaceName); // 函数本体
-    } catch(err) {
-      console.error(err);
-    }
-    this.jsCode = jsComment + jsFun;
-    this.tsCode = tsParamsInterface + tsResInterface + tsComment + tsFun; // 函数本体
+  async created() {
+    console.log('paramters',this.api.parameters);
+    let swaggerDoc=await swaggerBuilder({
+      SwaggerUrl:KUtils.json5stringify(this.api.openApiRaw)
+    })
+    this.tsCode=swaggerDoc;
   },
   methods: {}
 };
