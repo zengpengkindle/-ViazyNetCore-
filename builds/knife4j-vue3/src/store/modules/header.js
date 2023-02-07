@@ -9,7 +9,7 @@ export const useHeadersStore = defineStore('Headers',{
   actions: {
     getCurrentUser() {
       this.userCurrent = {
-        name: '八一菜刀',
+        name: '',
         avatar: ''
       }
     }

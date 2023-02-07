@@ -2,26 +2,24 @@
   <div class="BasicLayout">
     <a-layout class="ant-layout-has-sider">
       <a-layout-sider :trigger="null" collapsible :collapsed="state.collapsed" breakpoint="lg"
-                      @collapse="handleMenuCollapse"
-                      :width="state.menuWidth" class="sider" style="background: #1e282c;">
+        @collapse="handleMenuCollapse" :width="state.menuWidth" class="sider" style="background: #1e282c;">
         <div class="knife4j-logo-data" key="logo" v-if="!state.collapsed && settings.enableGroup">
           <a to="/" style="float:left;">
             <a-select show-search :value="defaultServiceOption" style="width: 300px" :options="serviceOptions"
-                      optionFilterProp="children" @change="serviceChange">
+              optionFilterProp="children" @change="serviceChange">
             </a-select>
           </a>
         </div>
         <div class="knife4j-logo" key="logo" v-if="state.collapsed && settings.enableGroup">
           <a to="/" style="float:left;" v-if="state.collapsed">
-            <img :src="state.logo" alt="logo"/>
+            <img :src="state.logo" alt="logo" />
           </a>
         </div>
         <div :class="settings.enableGroup ? 'knife4j-menu' : 'knife4j-menu-all'">
-          <a-menu key="Menu" theme="dark" mode="inline" :collapsed="state.collapsed"
-                  @openChange="handleOpenChange"
-                  @select="selected" :openKeys="state.openKeys" :selectedKeys="state.selectedKeys"
-                  style="padding: 2px 0; width: 100%">
-            <three-menu :menuData="state.localMenuData" :collapsed="state.collapsed"/>
+          <a-menu key="Menu" theme="dark" mode="inline" :collapsed="state.collapsed" @openChange="handleOpenChange"
+            @select="selected" :openKeys="state.openKeys" :selectedKeys="state.selectedKeys"
+            style="padding: 2px 0; width: 100%">
+            <three-menu :menuData="state.localMenuData" :collapsed="state.collapsed" />
           </a-menu>
         </div>
       </a-layout-sider>
@@ -29,19 +27,19 @@
       <a-layout>
         <a-layout-header style="padding: 0;background: #fff;    height: 56px; line-height: 56px;">
           <GlobalHeader @searchKey="searchKey" @searchClear="searchClear" :documentTitle="state.documentTitle"
-                        :collapsed="state.collapsed" :headerClass="state.headerClass" :currentUser="currentUser"
-                        :onCollapse="handleMenuCollapse" :onMenuClick="item => handleMenuClick(item)"/>
+            :collapsed="state.collapsed" :headerClass="state.headerClass" :currentUser="currentUser"
+            :onCollapse="handleMenuCollapse" :onMenuClick="item => handleMenuClick(item)" />
         </a-layout-header>
-        <context-menu :itemList="state.menuItemList" v-model:visible="state.menuVisible" @select="onMenuSelect"/>
+        <context-menu :itemList="state.menuItemList" v-model:visible="state.menuVisible" @select="onMenuSelect" />
         <a-tabs hideAdd v-model:activeKey="state.activeKey" @contextmenu="e => onContextmenu(e)" type="editable-card"
-                @change="tabChange" @edit="tabEditCallback" class="knife4j-tab">
+          @change="tabChange" @edit="tabEditCallback" class="knife4j-tab">
           <a-tab-pane v-for="pane in state.panels" :key="pane.key" :tab="pane.title" :closable="pane.closable">
             <component :is="componentMap[pane.content]" :data="pane" @childrenMethods="childrenEmitMethod">
             </component>
           </a-tab-pane>
         </a-tabs>
         <a-layout-footer style="padding: 0">
-          <GlobalFooter/>
+          <GlobalFooter />
         </a-layout-footer>
       </a-layout>
     </a-layout>
@@ -495,14 +493,14 @@ const searchClear = () => {
   state.localMenuData = currentMenuData.value;
 }
 
-watch(() => language.value, () =>{
+watch(() => language.value, () => {
   initI18n();
   updateMenuI18n();
 })
 let hasInit = false
 watch(() => MenuData.value, () => {
   state.localMenuData = globalsStore.currentMenuData;
-  if(!hasInit) {
+  if (!hasInit) {
     openDefaultTabByPath()
     hasInit = true
   }
@@ -603,22 +601,22 @@ function onContextmenu(e) {
   }
 }
 
-function  getPageKey(target, depth) {
+function getPageKey(target, depth) {
   depth = depth || 0;
   if (depth > 2) {
     return null;
   }
   let pageKey = target.getAttribute("pagekey");
   pageKey =
-      pageKey ||
-      (target.previousElementSibling
-          ? target.previousElementSibling.getAttribute("pagekey")
-          : null);
+    pageKey ||
+    (target.previousElementSibling
+      ? target.previousElementSibling.getAttribute("pagekey")
+      : null);
   return (
-      pageKey ||
-      (target.firstElementChild
-          ? getPageKey(target.firstElementChild, ++depth)
-          : null)
+    pageKey ||
+    (target.firstElementChild
+      ? getPageKey(target.firstElementChild, ++depth)
+      : null)
   );
 }
 
@@ -691,7 +689,7 @@ function getDefaultBrowserPath() {
   return url;
 }
 
-function  openDefaultTabByPath() {
+function openDefaultTabByPath() {
   //根据地址栏打开Tab选项卡
   const panes = state.panels;
   /* var url = this.$route.path;
@@ -861,7 +859,12 @@ function menuClick(key) {
 }
 
 function tabEditCallback(targetKey, action) {
-  state[action](targetKey);
+  console.log(action, targetKey)
+  // state[action](targetKey);
+  switch (action) {
+    case 'remove': remove(targetKey); break;
+    case 'tabChange': tabChange(targetKey); break;
+  }
 }
 
 const router = useRouter()
@@ -960,4 +963,5 @@ function collapsedChange(val, oldVal) {
 </script>
 
 <style lang="less" scoped>
+
 </style>
