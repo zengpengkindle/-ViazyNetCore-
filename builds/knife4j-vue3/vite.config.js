@@ -55,6 +55,12 @@ export default defineConfig({
   },
   build: {
     outDir: '../../src/Infrastructure/ViazyNetCore.Swagger/',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       input: 'doc.html',
       output: {

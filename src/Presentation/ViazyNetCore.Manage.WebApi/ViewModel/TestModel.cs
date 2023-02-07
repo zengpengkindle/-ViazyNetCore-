@@ -15,8 +15,27 @@ namespace ViazyNetCore.Manage.WebApi.ViewModel
     public enum TestEnum
     {
         [Description("默认")]
-        Default=0,
+        Default = 0,
         [Description("测试")]
         Test = 1,
+    }
+
+    public class InnerTestModel
+    {
+        /// <summary>
+        /// 枚举类型
+        /// </summary>
+        public TestEnum Enum1 { get; set; }
+
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string? Name { get; set; }
+
+        /// <summary>
+        /// 数字类型
+        /// </summary>
+        public int Number { get; set; }
+        public WeatherForecast WeatherForecast { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Manage.WebApi.ViewModel;
 
@@ -31,11 +32,26 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             .ToArray();
         }
 
-        [HttpPost,Route("TestPost")]
-        [SwaggerStatusCodeResponse(10021,"´íÎó×´Ì¬ÂëÏìÓ¦")]
+        [HttpPost, Route("TestPost")]
+        [SwaggerStatusCodeResponse(10021, "´íÎó×´Ì¬ÂëÏìÓ¦")]
         public TestModel PostModel(TestModel test)
         {
             return test;
+        }
+
+        [HttpPost, Route("GetInnerModel")]
+        public InnerTestModel GetInnerTestModel(TestModel model)
+        {
+            return new InnerTestModel
+            {
+                Enum1 = model.Value1,
+                WeatherForecast = new WeatherForecast
+                {
+                    Date = DateTime.Now,
+                    TemperatureC = Random.Shared.Next(-20, 55),
+                    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                }
+            };
         }
     }
 }

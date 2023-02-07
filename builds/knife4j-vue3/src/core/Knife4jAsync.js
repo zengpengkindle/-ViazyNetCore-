@@ -1653,7 +1653,6 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS2 = function (menu, swud,
  */
 SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud, oas2) {
   var that = this;
-  // console.log('analysisDefinitionAsyncOAS3')
   var modelName = swud.name;
   var definitions = {};
   if (KUtils.checkUndefined(menu) && menu.hasOwnProperty('components')) {
@@ -1673,7 +1672,7 @@ SwaggerBootstrapUi.prototype.analysisDefinitionAsyncOAS3 = function (menu, swud,
         /* swud = new SwaggerBootstrapUiDefinition();
         swud.name = name;
         swud.ignoreFilterName = name; */
-        // console.log('开始解析Definition:' + name);
+        console.log('开始解析Definition:' + name);
         // 获取value
         var value = definitions[name];
         if (KUtils.checkUndefined(value)) {
