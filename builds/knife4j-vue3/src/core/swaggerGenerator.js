@@ -1,5 +1,5 @@
 import codeRender from './tpl/codeRender'
-import lodash from 'lodash'
+import _ from 'lodash'
 import KUtils from './utils';
 
 var defaultOptions = {
@@ -27,8 +27,9 @@ function formatMethodName(name) {
     if (name === '/' || name === '') {
         return ''
     }
-    const fnName = name.substring(name.lastIndexOf('/'))
-    return lodash.camelCase(fnName)
+    // const fnName = name.substring(name.lastIndexOf('/'))
+    const fnName=name.replaceAll('/','_');
+    return _.camelCase(name)
 }
 /**
  * 格式化dto对象、枚举名称（默认：只会去除特殊字符）
@@ -112,7 +113,7 @@ function getParameterName(oldName) {
     if (oldName === 'string') {
         newName = 'str';
     }
-    newName = lodash.camelCase(oldName);
+    newName = _.camelCase(oldName);
     return newName;
 }
 /**
@@ -122,10 +123,10 @@ function getParameterName(oldName) {
  */
 function reName(name, list) {
     // 方法名称-重名处理
-    if (lodash.findIndex(list, { Name: name }) !== -1) {
+    if (_.findIndex(list, { Name: name }) !== -1) {
         let i = 1
         while (true) {
-            if (lodash.findIndex(list, { Name: name + '_' + i }) !== -1) {
+            if (_.findIndex(list, { Name: name + '_' + i }) !== -1) {
                 i++
             } else {
                 name = name + '_' + i
@@ -239,7 +240,7 @@ function formatData(swagger, options) {
 
     // 格式化属性方法
     function fmProperties(properties, model) {
-        lodash.forEach(properties, function (propertie, name) {
+        _.forEach(properties, function (propertie, name) {
             const newp = {
                 Name: name,
                 Description: removeLineBreak(propertie.description),
@@ -250,17 +251,17 @@ function formatData(swagger, options) {
     }
 
     // dto对象 / enum对象
-    lodash.forEach(isOpenApi ? swagger.components.schemas : swagger.definitions, function (definition, name) {
+    _.forEach(isOpenApi ? swagger.components.schemas : swagger.definitions, function (definition, name) {
         if (definition.hasOwnProperty('enum')) {
             const e = {
                 Name: options.FormatModelName(name),
                 Description: removeLineBreak(definition.description),
                 Items: []
             }
-            let enums = lodash.zipObject(definition['x-enumNames'], definition.enum)
+            let enums = _.zipObject(definition['x-enumNames'], definition.enum)
             // console.log('x-enumNames',enums,definition.enum);
             enums = enums.length > 0 ? enums : definition.enum;
-            lodash.forEach(enums, function (enumSource) {
+            _.forEach(enums, function (enumSource) {
                 const enumItem = enumSource.split(',');
                 const hasDes = enumItem.length > 1;
                 const enumValue = Number(enumItem[0]);
@@ -283,7 +284,7 @@ function formatData(swagger, options) {
 
             // 格式化属性
             if (definition.hasOwnProperty('allOf')) {
-                lodash.forEach(definition.allOf, function (propertie) {
+                _.forEach(definition.allOf, function (propertie) {
                     if (propertie.hasOwnProperty('$ref')) {
                         m.BaseModel = options.FormatModelName(propertie.$ref.substring(propertie.$ref.lastIndexOf('/') + 1))
                     } else {
@@ -301,7 +302,7 @@ function formatData(swagger, options) {
     })
 
     // 模块
-    lodash.mapKeys(swagger.ControllerDesc, function (value, key) {
+    _.mapKeys(swagger.ControllerDesc, function (value, key) {
         apiData.Controllers.push({
             Name: options.FormatControllerName(key),
             Description: removeLineBreak(value) || '',
@@ -312,12 +313,12 @@ function formatData(swagger, options) {
     })
 
     // 方法
-    lodash.forEach(swagger.paths, function (api, url) {
-        lodash.forEach(api, function (md, requestName) {
+    _.forEach(swagger.paths, function (api, url) {
+        _.forEach(api, function (md, requestName) {
             // 模块名称
             const cName = options.FormatControllerName(md.tags[0])
             // 当前模块
-            let currController = lodash.find(apiData.Controllers, { Name: cName })
+            let currController = _.find(apiData.Controllers, { Name: cName })
             if (!currController) {
                 // 没有就新加一个模块
                 const newController = { Name: cName, Description: '', Methods: [], ImportModels: [] }
@@ -360,7 +361,7 @@ function formatData(swagger, options) {
                 )
             }
             let pindex = 1;
-            lodash.forEach(md.parameters, (parameter) => {
+            _.forEach(md.parameters, (parameter) => {
                 let pName = parameter.name || ('param' + pindex++);
                 let pa = {
                     Name: pName,
@@ -395,14 +396,14 @@ function formatData(swagger, options) {
                 if (pa.Type.Ref && currController && currController.ImportModels.indexOf(pa.Type.Ref) == -1) {
                     currController.ImportModels.push(pa.Type.Ref)
                     // 标记为输入参数对象
-                    const d = lodash.find(apiData.Models, { Name: pa.Type.Ref })
+                    const d = _.find(apiData.Models, { Name: pa.Type.Ref })
                     if (d) {
                         d.IsParameter = true
                     }
                 }
             })
             // 排序一下参数，把非必填参数排后面
-            method.Parameters = lodash.orderBy(method.Parameters, ['Required'], ['asc'])
+            method.Parameters = _.orderBy(method.Parameters, ['Required'], ['asc'])
 
             // 返回值：存在引用型参数&没有没添加到引用列表的则添加到引用列表
             method.Responses.Ref && currController && currController.ImportModels.indexOf(method.Responses.Ref) == -1 && currController.ImportModels.push(method.Responses.Ref)
@@ -417,12 +418,12 @@ function formatData(swagger, options) {
 
     // 调整方法顺序，因为mock时 有可能匹配错误的mock拦截
     apiData.Controllers.map(c => {
-        c.Methods = lodash.orderBy(c.Methods, ['Name'], ['desc'])
+        c.Methods = _.orderBy(c.Methods, ['Name'], ['desc'])
         return c
     })
 
     // 清理无方法空模块
-    lodash.remove(apiData.Controllers, (c) => {
+    _.remove(apiData.Controllers, (c) => {
         return c.Methods.length <= 0
     })
 
@@ -522,15 +523,15 @@ export function findSwaggerDependency(swagger, apiUrl, options) {
     var options = Object.assign(defaultOptions, options);
     const isOpenApi = swagger.hasOwnProperty('openapi')
     if (typeof apiUrl === 'object') {
-        lodash.forEach(apiUrl, function (api, url) {
+        _.forEach(apiUrl, function (api, url) {
             apiUrl = url;
         })
     }
     let currController = { Name: '', Description: '', Methods: [], ImportModels: [] };
-    lodash.forEach(swagger.paths, function (api, url) {
+    _.forEach(swagger.paths, function (api, url) {
         if (apiUrl != url)
             return;
-        lodash.forEach(api, function (md, requestName) {
+        _.forEach(api, function (md, requestName) {
             console.log('md', md);
             // 模块名称
             const cName = options.FormatControllerName(md.tags[0])
@@ -571,7 +572,7 @@ export function findSwaggerDependency(swagger, apiUrl, options) {
                 )
             }
             let pindex = 1;
-            lodash.forEach(md.parameters, (parameter) => {
+            _.forEach(md.parameters, (parameter) => {
                 let pName = parameter.name || ('param' + pindex++);
                 let pa = {
                     Name: pName,
@@ -613,7 +614,7 @@ export function findSwaggerDependency(swagger, apiUrl, options) {
                 }
             })
             // 排序一下参数，把非必填参数排后面
-            method.Parameters = lodash.orderBy(method.Parameters, ['Required'], ['asc'])
+            method.Parameters = _.orderBy(method.Parameters, ['Required'], ['asc'])
 
             // 返回值：存在引用型参数&没有没添加到引用列表的则添加到引用列表
             method.Responses.Ref && currController && currController.ImportModels.indexOf(method.Responses.Ref) == -1 && currController.ImportModels.push(method.Responses.Ref)
