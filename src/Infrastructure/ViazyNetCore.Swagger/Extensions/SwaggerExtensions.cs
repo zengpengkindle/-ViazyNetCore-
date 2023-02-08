@@ -83,7 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }).AddSwaggerGenNewtonsoftSupport();
         }
 
-        public static void UseSwaggerAndUI(this WebApplication app, Action<List<OpenApiServer>> action = null)
+        public static void UseSwaggerAndUI(this WebApplication app, Action<List<OpenApiServer>>? action = null)
         {
 
             if (app.Environment.IsDevelopment())
