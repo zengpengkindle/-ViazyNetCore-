@@ -454,7 +454,7 @@ function getApiData(swaggerData, options) {
     return new Promise(function (resolve, reject) {
         getSwaggerData(swaggerData)
             .then(function (r) {
-                var apiData = formatData(r, options);qr
+                var apiData = formatData(r, options);
                 resolve(apiData);
             })
             .catch(function (e) {

@@ -1,4 +1,4 @@
-import{B as t,C as e}from"./doc-381f7261.js";var n={exports:{}};
+import{B as t,C as e}from"./doc-5d0d315e.js";var n={exports:{}};
 /*!
  * clipboard.js v2.0.11
  * https://clipboardjs.com/
