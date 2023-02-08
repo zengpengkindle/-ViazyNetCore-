@@ -548,22 +548,5 @@ namespace System
             var task = state as Task;
             await task;
         }
-
-        /// <summary>
-        /// 指定当前内容绝对不能出现 null 值。
-        /// </summary>
-        /// <typeparam name="T">值的数据类型。</typeparam>
-        /// <param name="t">内容。</param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        public static T MustBe<T>(this T? t)
-        {
-            if (t == null)
-            {
-                throw new InvalidOperationException("The content '" + typeof(T).FullName + "' is must be not null value.");
-            }
-
-            return t;
-        }
     }
 }
