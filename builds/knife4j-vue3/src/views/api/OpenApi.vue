@@ -31,8 +31,6 @@ import modeXml from "ace-builds/src-noconflict/mode-xml?url";
 import themeEclipse from "ace-builds/src-noconflict/theme-eclipse?url";
 import extLanguageTools from "ace-builds/src-noconflict/ext-language_tools?url";
 
-import swaggerBuilder from '@/core/swaggerGenerator'
-
 ace.config.setModuleUrl('ace/mode/json', modeJson)
 ace.config.setModuleUrl('ace/mode/json', modeJson5)
 ace.config.setModuleUrl('ace/mode/xml', modeXml)

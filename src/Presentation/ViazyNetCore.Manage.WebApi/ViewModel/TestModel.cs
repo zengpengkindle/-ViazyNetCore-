@@ -14,8 +14,14 @@ namespace ViazyNetCore.Manage.WebApi.ViewModel
 
     public enum TestEnum
     {
+        /// <summary>
+        /// 默认
+        /// </summary>
         [Description("默认")]
         Default = 0,
+        /// <summary>
+        /// 测试
+        /// </summary>
         [Description("测试")]
         Test = 1,
     }

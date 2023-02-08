@@ -4981,7 +4981,7 @@ function readOpenAPIModel(model, modelArrays, definitions, oas2) {
       if (oas2) {
         reg = new RegExp('\'#/definitions/(.*?)\'', 'ig');
       } else {
-        reg = new RegExp('\'#/components/schemas/(.*?)\'', 'ig');
+        reg = new RegExp('"#/components/schemas/(.*?)"', 'ig');
       }
       let result;
       while ((result = reg.exec(defStr)) != null) {

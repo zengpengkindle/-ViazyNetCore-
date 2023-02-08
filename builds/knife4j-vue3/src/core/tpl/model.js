@@ -1,7 +1,10 @@
-export let modelTpl=`
-<% apiData.Models.forEach( m => { %>// <%= m.Description || '' %>
+export let modelTpl=
+`<% apiData.Models.forEach( m => { %>
+/**
+* <%= m.Description || m.Name %>
+*/
 export interface <%= m.Name + (m.BaseModel?' extends '+m.BaseModel:'') %> {<% m.Properties.forEach( p => { %>
-  // <%= p.Description || '' %>
+  <% if(p.Description){ %>/** <%=p.Description %> */ <% } %>
   <%= p.Name %>: <%- p.Type.TsType %><%=m.IsParameter?' | null':''%><% }) %>
 }
 <% }) %>
@@ -16,14 +19,13 @@ export enum <%= m.Name %> { <% -%>
 <%}) -%>
 
 }
-<% }) %>
-`;
+<% }) %>`;
 
 export let methodTpl=`
 <% if(controller.ImportModels && controller.ImportModels.length>0){%>import { <% controller.ImportModels.forEach( (item,index) => {%><%= item+(index<controller.ImportModels.length-1?', ':'') %><% }) %> } from './model'<% } %>
-/**
- * <%=controller.Description || '无' %>
- */
+<% if(controller.Description){ %> /**
+ * <%=controller.Description || '' %>
+ */ <% } %>
 export class <%=controller.Name%> extends Base {<% controller.Methods.forEach( m => {
   // 判断是否为导出函数
   let isDownload=m.Responses.TsType=='any'
@@ -67,7 +69,9 @@ export class <%=controller.Name%> extends Base {<% controller.Methods.forEach( m
     return this.<%=isDownload?'download':'request'%>({
       url: '<%-url%>',
       method: '<%=m.RequestName%>'<% if(dt) { %><%- ','%>
-<%-((dt?('      data: '+dt):'')+(qr?(',      params: { '+qr+' }'):''))-%>
+<%- '      data: '+dt -%>
+<% } %><% if(qr) { %><%- ',' %>
+<%- '      params: { '+qr+' }' -%>
 <% } %>
     })
   }<%})%>

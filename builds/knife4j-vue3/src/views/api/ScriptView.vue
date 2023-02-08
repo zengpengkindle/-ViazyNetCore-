@@ -13,9 +13,9 @@
   </div>
 </template>
 <script>
-import { defineAsyncComponent} from 'vue'
+import { defineAsyncComponent } from 'vue'
 import KUtils from "@/core/utils";
-import swaggerBuilder from '@/core/swaggerGenerator'
+import swaggerBuilder, { findSwaggerDependency } from '@/core/swaggerGenerator'
 import { useGlobalsStore } from '@/store/modules/global'
 import { computed } from 'vue'
 
@@ -40,7 +40,7 @@ export default {
       tsCode: ''
     };
   },
-  setup(){
+  setup() {
     const store = useGlobalsStore()
     const swagger = computed(() => {
       return store.swagger
@@ -55,14 +55,16 @@ export default {
     }
   },
   async created() {
-    console.log('paramters',this.api.parameters);
-      var openApi = this.swaggerCurrentInstance.swaggerData;
-      
-    let swaggerDoc=await swaggerBuilder({
+    // 复制一份
+    var openApi =KUtils.json5parse( KUtils.json5stringify(this.swaggerCurrentInstance.swaggerData));
+    var apiData = KUtils.json5parse(KUtils.json5stringify(this.api.openApiRaw));
+    var schemas = findSwaggerDependency(openApi, this.api.openApiRaw.paths);
+    apiData.components.schemas=schemas;
+    let swaggerDoc = await swaggerBuilder({
       // SwaggerUrl:KUtils.json5stringify(this.api.openApiRaw)
-      SwaggerUrl:KUtils.json5stringify(openApi)
+      SwaggerUrl: KUtils.json5stringify(apiData)
     })
-    this.tsCode=swaggerDoc;
+    this.tsCode = swaggerDoc;
   },
   methods: {}
 };

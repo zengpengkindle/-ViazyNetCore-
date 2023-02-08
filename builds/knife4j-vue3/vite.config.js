@@ -55,6 +55,7 @@ export default defineConfig({
   },
   build: {
     outDir: '../../src/Infrastructure/ViazyNetCore.Swagger/',
+    minify:'terser',
     terserOptions: {
       compress: {
         drop_console: true,
