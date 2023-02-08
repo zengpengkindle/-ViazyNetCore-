@@ -96,6 +96,33 @@ namespace System
             stream.Write(bytes, 0, bytes.Length);
         }
 
+
+        /// <summary>
+        /// 指定当前内容绝对不能出现 <see langword="null"/> 值。
+        /// </summary>
+        /// <typeparam name="T">值的数据类型。</typeparam>
+        /// <param name="t">内容。</param>
+        /// <exception cref="InvalidOperationException">当 <paramref name="t"/> 为 <see langword="null"/> 值引发的错误。</exception>
+        /// <returns>内容。</returns>
+        public static T MustBe<T>(this T? t)
+        {
+            if (t is null) throw new InvalidOperationException($"The content '{typeof(T).FullName}' is must be not null value.");
+            return t;
+        }
+
+        /// <summary>
+        /// 指定当前内容必须是 <typeparamref name="T"/> 类型。
+        /// </summary>
+        /// <typeparam name="T">值的数据类型。</typeparam>
+        /// <param name="obj">内容。</param>
+        /// <exception cref="InvalidCastException">当 <paramref name="obj"/> 不为 <typeparamref name="T"/> 类型引发的错误。</exception>
+        /// <returns>一个<typeparamref name="T"/> 类型的值。</returns>
+        public static T MustBe<T>(this object? obj)
+        {
+            if (obj is T t) return t;
+            throw new InvalidCastException($"Cannot convert from object to '{typeof(T).FullName}' type.");
+        }
+
         ///// <summary>
         ///// 安全锁定指定种子。
         ///// </summary>

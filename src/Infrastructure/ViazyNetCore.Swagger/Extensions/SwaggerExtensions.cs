@@ -88,7 +88,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             if (app.Environment.IsDevelopment())
             {
-                var versionProvider = app.Services.GetService<IApiVersionDescriptionProvider>();
+                var swaggerGenOptions = app.Services.GetService<IOptions<SwaggerGenOptions>>();
                 app.UseSwagger(options =>
                 {
                     options.PreSerializeFilters.Add((swagger, httpReq) =>
@@ -106,15 +106,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 app.UseKnife4UI(options =>
                 {
                     options.RoutePrefix = "swagger"; // serve the UI at root
-                    if (versionProvider == null)
+                    if (swaggerGenOptions?.Value == null)
                     {
                         options.SwaggerEndpoint($"v1/swagger.json", "HTTP API v1");
                     }
                     else
                     {
-                        foreach (var description in versionProvider.ApiVersionDescriptions)
+                        foreach (var description in swaggerGenOptions.Value.SwaggerGeneratorOptions.SwaggerDocs)
                         {
-                            options.SwaggerEndpoint($"{description.GroupName}/swagger.json", "HTTP API " + description.GroupName);
+                            options.SwaggerEndpoint($"{description.Key}/swagger.json", description.Value.Description);
                         }
                     }
                 });

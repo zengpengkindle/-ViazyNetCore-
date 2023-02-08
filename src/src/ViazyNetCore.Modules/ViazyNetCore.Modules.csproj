@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.Model\ViazyNetCore.Model.csproj" />
+  </ItemGroup>
+
 </Project>

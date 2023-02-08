@@ -17,7 +17,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Formatter.Response\ViazyNetCore.Formatter.Response.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Web.DevServer\ViazyNetCore.Web.DevServer.csproj" />
+    <ProjectReference Include="..\..\src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
+    <ProjectReference Include="..\..\src\ViazyNetCore.Modules\ViazyNetCore.Modules.csproj" />
   </ItemGroup>
 
 </Project>

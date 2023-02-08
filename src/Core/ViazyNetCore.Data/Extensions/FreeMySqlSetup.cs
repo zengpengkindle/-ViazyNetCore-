@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class FreeMySqlSetup
     {
-        public static void AddFreeMySql(this IServiceCollection services, IConfiguration configuration)
+        public static void AddFreeMySqlDb(this IServiceCollection services, IConfiguration configuration)
         {
 #pragma warning disable IDE0039 // 使用本地函数
             Func<IServiceProvider, IFreeSql> fsqlFunc = r =>
@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var fsql = new FreeSqlBuilder().UseConnectionString(DataType.MySql, configuration.GetConnectionString("master"))
 #if DEBUG
               //监听SQL语句
-              .UseMonitorCommand(cmd => Console.WriteLine($"Sql：{cmd.CommandText}"))
+              .UseMonitorCommand(cmd => Console.WriteLine($"[master]Sql：{cmd.CommandText}"))
               //.UseAutoSyncStructure(true) //自动同步实体结构到数据库，FreeSql不会扫描程序集，只有CRUD时才会生成表。
 #endif
               .Build();

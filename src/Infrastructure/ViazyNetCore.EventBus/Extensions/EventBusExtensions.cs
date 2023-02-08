@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-using ViazyNetCore;
-using ViazyNetCore.Ioc;
-
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ViazyNetCore;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -18,7 +9,6 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         IServiceCollection Services { get; }
     }
-
 
     public static class EventBusExtensions
     {
@@ -57,10 +47,11 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection RegisterEventHanldersDependencies(this IServiceCollection services, Assembly[] assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
+        public static IServiceCollection RegisterEventHanldersDependencies(this IServiceCollection services, Assembly?[] assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
         {
             foreach(var assembly in assemblies)
             {
+                if (assembly == null) continue;
                 foreach(var t in assembly.DefinedTypes)
                 {
                     if(t.IsAbstract) continue;

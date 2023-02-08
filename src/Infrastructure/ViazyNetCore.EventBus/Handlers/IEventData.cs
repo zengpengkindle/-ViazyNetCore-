@@ -30,7 +30,7 @@ namespace ViazyNetCore
         /// <summary>
         /// 触发事件的对象
         /// </summary>
-        public TData EventSource { get; set; }
+        public TData Data { get; set; }
 
         public CommonEventData()
         {

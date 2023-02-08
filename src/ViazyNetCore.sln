@@ -49,7 +49,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Annotations", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Core", "Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj", "{C91C3E73-474A-41F3-9224-D66066CE9915}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Data.FreeSql", "Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj", "{56A26CC8-A967-47BE-9DAB-E31762A3812E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Data.FreeSql", "Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj", "{56A26CC8-A967-47BE-9DAB-E31762A3812E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Business.Core", "src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj", "{8930CFC6-C865-4F6B-8EAF-44A62DE1BD5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.DI", "Infrastructure\ViazyNetCore.DI\ViazyNetCore.DI.csproj", "{418AC4CD-55AA-4637-B260-C6A3DFB4E96E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Domain", "src\ViazyNetCore.Domain\ViazyNetCore.Domain.csproj", "{954A9763-C2A3-4B96-94FA-B1590033632D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +131,18 @@ Global
 		{56A26CC8-A967-47BE-9DAB-E31762A3812E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56A26CC8-A967-47BE-9DAB-E31762A3812E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56A26CC8-A967-47BE-9DAB-E31762A3812E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8930CFC6-C865-4F6B-8EAF-44A62DE1BD5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8930CFC6-C865-4F6B-8EAF-44A62DE1BD5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8930CFC6-C865-4F6B-8EAF-44A62DE1BD5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8930CFC6-C865-4F6B-8EAF-44A62DE1BD5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{418AC4CD-55AA-4637-B260-C6A3DFB4E96E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{418AC4CD-55AA-4637-B260-C6A3DFB4E96E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{418AC4CD-55AA-4637-B260-C6A3DFB4E96E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{418AC4CD-55AA-4637-B260-C6A3DFB4E96E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{954A9763-C2A3-4B96-94FA-B1590033632D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{954A9763-C2A3-4B96-94FA-B1590033632D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{954A9763-C2A3-4B96-94FA-B1590033632D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{954A9763-C2A3-4B96-94FA-B1590033632D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,6 +165,9 @@ Global
 		{5BBB1F39-D8D2-4E5C-ADFC-BC2EDF63AE35} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{C91C3E73-474A-41F3-9224-D66066CE9915} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
 		{56A26CC8-A967-47BE-9DAB-E31762A3812E} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
+		{8930CFC6-C865-4F6B-8EAF-44A62DE1BD5F} = {987C4986-66FA-4984-90E6-76B9CD4C73E4}
+		{418AC4CD-55AA-4637-B260-C6A3DFB4E96E} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{954A9763-C2A3-4B96-94FA-B1590033632D} = {987C4986-66FA-4984-90E6-76B9CD4C73E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

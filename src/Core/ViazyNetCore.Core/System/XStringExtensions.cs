@@ -143,7 +143,7 @@ namespace System
         /// </summary>
         /// <param name="input">当前字符串。</param>
         /// <returns>如果字符串为 null、空 或 空白，将返回 true，否则返回 false。</returns>
-        public static bool IsNull(this string input)
+        public static bool IsNull(this string? input)
             => string.IsNullOrWhiteSpace(input);
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace System
         /// </summary>
         /// <param name="input">当前字符串。</param>
         /// <returns>如果字符串为 null、空 或 空白，将返回 true，否则返回 false。</returns>
-        public static bool IsNotNull(this string input)
+        public static bool IsNotNull(this string? input)
             => !string.IsNullOrWhiteSpace(input);
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace System
         /// <param name="maxLength">字符串的最大长度（含）。</param>
         /// <param name="ellipsis">指定省略号的字符串，默认为“...”。</param>
         /// <returns>新的字符串 -或- 原字符串，该字符串的最大长度不超过 <paramref name="maxLength"/>。</returns>
-        public static string CutString(this string input, int maxLength, string ellipsis = "...")
+        public static string? CutString(this string? input, int maxLength, string ellipsis = "...")
         {
             if(maxLength <= 0) throw new ArgumentOutOfRangeException(nameof(maxLength));
             if(string.IsNullOrWhiteSpace(ellipsis)) throw new ArgumentNullException(nameof(ellipsis));
