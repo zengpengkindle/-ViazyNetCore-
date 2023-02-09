@@ -13,6 +13,7 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+import { ApiResponse, ApiReponseError } from "@/api/models/apiResponseBase";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -45,7 +46,17 @@ class PureHttp {
 
   /** 初始化配置对象 */
   private static initConfig: PureHttpRequestConfig<any> = {
-    headers: null
+    headers: null,
+    beforeResponseCallback: (response) => {
+      const apiResponse = response.data as ApiResponse;
+      if (apiResponse.code == 200) {
+        if (apiResponse.result.success) {
+          return apiResponse.result.data;
+        } else {
+          throw new ApiReponseError(apiResponse.code, apiResponse.result?.err_code || 0, apiResponse.message, apiResponse.result.message)
+        }
+      }
+    }
   };
 
   /** 保存当前Axios实例对象 */
@@ -81,37 +92,37 @@ class PureHttp {
         return whiteList.some(v => config.url.indexOf(v) > -1)
           ? config
           : new Promise(resolve => {
-              const data = getToken();
-              if (data) {
-                const now = new Date().getTime();
-                const expired = parseInt(data.expires) - now <= 0;
-                if (expired) {
-                  if (!PureHttp.isRefreshing) {
-                    PureHttp.isRefreshing = true;
-                    // token过期刷新
-                    useUserStoreHook()
-                      .handRefreshToken({ refreshToken: data.refreshToken })
-                      .then(res => {
-                        const token = res.data.accessToken;
-                        config.headers["Authorization"] = formatToken(token);
-                        PureHttp.requests.forEach(cb => cb(token));
-                        PureHttp.requests = [];
-                      })
-                      .finally(() => {
-                        PureHttp.isRefreshing = false;
-                      });
-                  }
-                  resolve(PureHttp.retryOriginalRequest(config));
-                } else {
-                  config.headers["Authorization"] = formatToken(
-                    data.accessToken
-                  );
-                  resolve(config);
+            const data = getToken();
+            if (data) {
+              const now = new Date().getTime();
+              const expired = parseInt(data.expires) - now <= 0;
+              if (expired) {
+                if (!PureHttp.isRefreshing) {
+                  PureHttp.isRefreshing = true;
+                  // token过期刷新
+                  useUserStoreHook()
+                    .handRefreshToken({ refreshToken: data.refreshToken })
+                    .then(res => {
+                      const token = res.data.accessToken;
+                      config.headers["Authorization"] = formatToken(token);
+                      PureHttp.requests.forEach(cb => cb(token));
+                      PureHttp.requests = [];
+                    })
+                    .finally(() => {
+                      PureHttp.isRefreshing = false;
+                    });
                 }
+                resolve(PureHttp.retryOriginalRequest(config));
               } else {
+                config.headers["Authorization"] = formatToken(
+                  data.accessToken
+                );
                 resolve(config);
               }
-            });
+            } else {
+              resolve(config);
+            }
+          });
       },
       error => {
         return Promise.reject(error);
@@ -151,14 +162,10 @@ class PureHttp {
 
   /** 通用请求工具函数 */
   public request<T>(
-    method: RequestMethods,
-    url: string,
-    param?: AxiosRequestConfig,
+    param: AxiosRequestConfig,
     axiosConfig?: PureHttpRequestConfig
   ): Promise<T> {
     const config = {
-      method,
-      url,
       ...param,
       ...axiosConfig
     } as PureHttpRequestConfig;
@@ -182,7 +189,7 @@ class PureHttp {
     params?: AxiosRequestConfig<T>,
     config?: PureHttpRequestConfig
   ): Promise<P> {
-    return this.request<P>("post", url, params, config);
+    return this.request<P>({ method: "post", url, ...params }, config);
   }
 
   /** 单独抽离的get工具函数 */
@@ -191,7 +198,7 @@ class PureHttp {
     params?: AxiosRequestConfig<T>,
     config?: PureHttpRequestConfig
   ): Promise<P> {
-    return this.request<P>("get", url, params, config);
+    return this.request<P>({ method: "get", url, ...params });
   }
 }
 
