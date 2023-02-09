@@ -36,7 +36,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [AllowAnonymous]
         [Route("login"), HttpPost]
-        public async Task<string?> LoginAsync([Required] UserLoginArgs args)
+        public async Task<JwtTokenResult?> LoginAsync([Required] UserLoginArgs args)
         {
             OperationLog operationLog = new OperationLog();
             operationLog.CreateTime = DateTime.Now;
@@ -62,7 +62,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
                     operationLog.ObjectId = identity.Id;
                     operationLog.Description = $"登录用户：{args.Username},登陆成功";
 
-                    return token.AccessToken;
+                    return token;
                 }
             }
             catch (Exception ex)

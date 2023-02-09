@@ -45,13 +45,11 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       useUserStoreHook()
         .loginByUsername({ username: ruleForm.username, password: "admin123" })
         .then(res => {
-          if (res.success) {
             // 获取后端路由
             initRouter().then(() => {
               router.push("/");
               message("登录成功", { type: "success" });
             });
-          }
         });
     } else {
       loading.value = false;

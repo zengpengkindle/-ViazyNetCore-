@@ -13,7 +13,7 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
-import { ApiResponse, ApiReponseError } from "@/api/models/apiResponseBase";
+import { ApiResponse, ApiReponseError } from "@/api/model/apiResponseBase";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -30,7 +30,7 @@ const defaultConfig: AxiosRequestConfig = {
   }
 };
 
-const whiteList = ["/refreshToken", "/login"];
+const whiteList = ["/refreshToken","/login", "/acount/login"];
 
 class PureHttp {
   constructor() {
@@ -170,6 +170,8 @@ class PureHttp {
       ...axiosConfig
     } as PureHttpRequestConfig;
 
+    const baseURL= param.baseURL|| import.meta.env.VITE_APP_BASE_URL;
+    config.baseURL=baseURL;
     // 单独处理自定义请求/响应回掉
     return new Promise((resolve, reject) => {
       PureHttp.axiosInstance

@@ -56,9 +56,10 @@ namespace Microsoft.Extensions.DependencyInjection
             if (t.IsAbstract || t.IsInterface || t.IsAnonymous()) return;
 
             var iattr = t.GetAttribute<IInjectionAttribute>();
-            var interfaceType = iattr is null ? t.GetInterface(GetServiceName(t.Name)) : null;
 
+            var interfaceType = iattr is not null ? t.GetInterface(GetServiceName(t.Name)) : null;
             if (iattr is null && interfaceType is not null) iattr = interfaceType.GetAttribute<IInjectionAttribute>();
+
             if (iattr is null) return;
 
             if (iattr is InjectionAttribute attr)

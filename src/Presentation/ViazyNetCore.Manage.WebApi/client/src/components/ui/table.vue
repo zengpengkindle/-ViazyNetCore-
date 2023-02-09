@@ -240,7 +240,7 @@ function onRefresh(force) {
         && lastPage.size == lastParams.pageSize) return;
 
     loading.value = true;
-    const fc = typeof props.url === 'function' ? props.url(lastParams) : apiManager.call(props.url, lastParams);
+    const fc = typeof props.url === 'function' ? props.url(lastParams) : http.post(props.url,{data: lastParams});
     fc.then(resp => {
         if (test(resp)) {
             lastPage.number = lastParams.pageNumber;

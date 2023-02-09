@@ -8,16 +8,22 @@ using ViazyNetCore.Formatter.Response;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Logging.ClearProviders();
-builder.Logging.SetMinimumLevel(LogLevel.Trace);
-builder.Host.UseNLog();
+builder.WebHost.ConfigureLogging(logging =>
+{
+    logging.ClearProviders(); //移除已经注册的其他日志处理程序
+    logging.SetMinimumLevel(LogLevel.Trace); //设置最小的日志级别
+})
+.UseDefaultServiceProvider((context, options) =>
+{
+    options.ValidateScopes = false;
+})
+    .UseNLog();
 
 
 // Add services to the container.
 var ServiceAssemblies = new Assembly?[]
 {
-    RuntimeHelper.GetAssembly("Caesar.Modules")
+    RuntimeHelper.GetAssembly("ViazyNetCore.Modules")
 };
 
 builder.Services.AddCustomApiVersioning();
@@ -29,7 +35,8 @@ builder.Services.AddSwagger("ViazyNetCore-Manage");
 
 builder.Services.AddFreeMySqlDb(builder.Configuration);
 builder.Services.AddEventBus();
-builder.Services.AddLocalCacheService();
+builder.Services.AddRumtimeCacheService();
+
 
 builder.Services.AddApiDescriptor(option =>
 {
@@ -49,27 +56,29 @@ app.UseAuthorization();
 
 app.UseStaticFiles();
 // Configure the HTTP request pipeline.
+app.MapControllers();
+app.UseApiResponseWrapper(option =>
+{
+    //option.IsApiOnly = false;
+    option.EnableResponseLogging = true;
+    option.EnableExceptionLogging = true;
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerAndUI();
 }
-app.UseApiResponseWrapper(option =>
-{
-    option.EnableResponseLogging = true;
-    option.EnableExceptionLogging = true;
-});
-app.MapControllers();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSpa(spa =>
-    {
-        spa.Options.SourcePath = "client";
-        //spa.Options.PackageManagerCommand = "pnpm";
-        spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions()
-        {
-             //Host= "172.23.48.1",
-        });
-    });
+    //app.UseSpa(spa =>
+    //{
+    //    spa.Options.SourcePath = "client";
+    //    //spa.Options.PackageManagerCommand = "pnpm";
+    //    spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions()
+    //    {
+    //        //Host= "172.23.48.1",
+    //    });
+    //});
 }
 else
 {

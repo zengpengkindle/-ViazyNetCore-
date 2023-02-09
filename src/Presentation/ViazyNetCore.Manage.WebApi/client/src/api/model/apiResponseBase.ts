@@ -11,7 +11,7 @@ interface ApiResponseData {
     data: any
 }
 
-class ApiReponseError extends Error {
+export class ApiReponseError extends Error {
     code: number;
     err_code: number;
     message: string;

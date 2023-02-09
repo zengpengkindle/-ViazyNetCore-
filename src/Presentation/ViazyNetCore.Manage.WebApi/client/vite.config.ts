@@ -37,13 +37,23 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     },
     // 服务端渲染
     server: {
+      //hmr: {
+      //  clientPort: parseInt(process.env.ASPNETCORE_HTTPS_PORT || '3000')
+      //}
       // 是否开启 https
       https: false,
       // 端口号
       port: VITE_PORT,
       host: "0.0.0.0",
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
-      proxy: {}
+      proxy: {
+        "^/proxyApi": {
+          // target: "https://crm-api.kaogujia.com",
+          target: `https://localhost:7284/`,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/proxyApi/, ""),
+        },
+      }
     },
     plugins: getPluginsList(command, VITE_CDN, VITE_COMPRESSION),
     // https://cn.vitejs.dev/config/dep-optimization-options.html#dep-optimization-options

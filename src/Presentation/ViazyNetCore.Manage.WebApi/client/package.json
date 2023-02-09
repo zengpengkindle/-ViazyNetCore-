@@ -3,7 +3,7 @@
   "version": "3.9.7",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode development",
     "pdev": "NODE_OPTIONS=--max-old-space-size=4096 vite",
     "serve": "pnpm dev",
     "build": "rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build",
@@ -43,12 +43,14 @@
     "js-cookie": "^3.0.1",
     "mitt": "^3.0.0",
     "mockjs": "^1.1.0",
+    "moment": "^2.29.4",
     "nprogress": "^0.2.0",
     "path": "^0.12.7",
     "pinia": "^2.0.28",
     "qs": "^6.11.0",
     "responsive-storage": "^2.1.0",
     "vue": "^3.2.45",
+    "vue-clipboard3": "^2.0.0",
     "vue-router": "^4.1.6",
     "vue-types": "^4.2.1"
   },
