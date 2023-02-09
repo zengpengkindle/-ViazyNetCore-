@@ -24,14 +24,15 @@ builder.Services.AddCustomApiVersioning();
 builder.Services.AddJwtAuthentication(option => option = builder.Configuration.GetSection("Jwt").Get<JwtOption>());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger("ViazyNetCore-Manage");
 
 builder.Services.AddFreeMySqlDb(builder.Configuration);
 builder.Services.AddEventBus();
 builder.Services.AddLocalCacheService();
 
-builder.Services.AddApiDescriptor(option => {
+builder.Services.AddApiDescriptor(option =>
+{
     option.CachePrefix = "Viazy";
     option.ServiceName = "BMS";
 });
@@ -58,5 +59,22 @@ app.UseApiResponseWrapper(option =>
     option.EnableExceptionLogging = true;
 });
 app.MapControllers();
-
+if (app.Environment.IsDevelopment())
+{
+    app.UseSpa(spa =>
+    {
+        spa.Options.SourcePath = "client";
+        //spa.Options.PackageManagerCommand = "pnpm";
+        spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions()
+        {
+             //Host= "172.23.48.1",
+        });
+    });
+}
+else
+{
+    app.UseHsts()
+        //.UseThreadsPreheat()
+        .UseHistoryFallback();
+}
 app.Run();
