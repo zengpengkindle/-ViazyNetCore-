@@ -22,7 +22,7 @@ namespace ViazyNetCore.Formatter.Response
         private IActionResultExecutor<ObjectResult> _executor { get; }
         public WrapperBase(RequestDelegate next, ResponseWrapperOptions options, ILogger<AutoWrapperMiddleware> logger, IActionResultExecutor<ObjectResult> executor)
         {
-            _next = next;
+            this._next = next;
             _options = options;
             _logger = logger;
             _executor = executor;
@@ -31,7 +31,7 @@ namespace ViazyNetCore.Formatter.Response
         public virtual async Task InvokeAsyncBase(HttpContext context, AutoWrapperMembers awm)
         {
             if (awm.IsSwagger(context) || !awm.IsApi(context))
-                await _next(context);
+                await this._next(context);
             else if (context.WebSockets.IsWebSocketRequest || context.Request.Path.StartsWithSegments("/messageHub", StringComparison.CurrentCultureIgnoreCase))
             {
                 await _next(context);
@@ -63,7 +63,6 @@ namespace ViazyNetCore.Formatter.Response
 
                     if (context.Response.StatusCode != Status304NotModified && context.Response.StatusCode != Status204NoContent)
                     {
-
                         if (!_options.IsApiOnly && (responseBody.IsHtml() && !_options.BypassHTMLValidation) && context.Response.StatusCode == Status200OK)
                         {
                             context.Response.StatusCode = Status404NotFound;
@@ -114,7 +113,7 @@ namespace ViazyNetCore.Formatter.Response
             return false;
         }
 
-        private void LogHttpRequest(HttpContext context, string requestBody, string? reponseBody, Stopwatch stopWatch, bool isRequestOk)
+        private void LogHttpRequest(HttpContext context, string? requestBody, string? reponseBody, Stopwatch stopWatch, bool isRequestOk)
         {
             stopWatch.Stop();
             if (this._options.EnableResponseLogging)

@@ -31,10 +31,10 @@ namespace ViazyNetCore.Modules
         /// <returns>模型的编号。</returns>
         public async Task<long> ManageAsync(UserModel model, string randPwd)
         {
-            if(await _userRepository.UserExistAsync(model.Username, model.Id))
+            if (await _userRepository.UserExistAsync(model.Username, model.Id))
                 throw new ApiException("用户账号已存在。");
 
-            if(model.Id == 0)
+            if (model.Id == 0)
             {
 
                 var password = DataSecurity.GenerateSaltedHash(randPwd.ToMd5(), out var salt);
@@ -102,7 +102,7 @@ namespace ViazyNetCore.Modules
         /// <returns>模型的集合。</returns>
         public Task<PageData<UserFindAllModel>> FindAllAsync(UserFindAllArgs args)
         {
-            return _userRepository.FindAllAsync(args.UsernameLike, args.RoleId??0, args.Status, args);
+            return _userRepository.FindAllAsync(args.UsernameLike, args.RoleId ?? 0, args.Status, args);
         }
 
         /// <summary>
@@ -110,16 +110,16 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="args">登录模型参数。</param>
         /// <returns>登录标识。</returns>
-        public async Task<BmsIdentity> GetUserLoginIdentityAsync(UserLoginArgs args,string ip, bool enableGoogleToken)
+        public async Task<BmsIdentity> GetUserLoginIdentityAsync(UserLoginArgs args, string ip, bool enableGoogleToken)
         {
             var user = await _userRepository.GetUserRoleByUserName(args.Username);
-            if(user != null && user.Status != ComStatus.Deleted)
+            if (user != null && user.Status != ComStatus.Deleted)
             {
                 args.Auditor = user.Id;
-                if(user.Status != ComStatus.Enabled) throw new ApiException("Account has been disabled!");
+                if (user.Status != ComStatus.Enabled) throw new ApiException("Account has been disabled!");
                 //谷歌校验码
                 var res = this.CheckGoogleKey(user.GoogleKey, args.Code, enableGoogleToken);
-                if(!res)
+                if (!res)
                 {
                     this.GetByUsernameCache(args.Username, false);
                     throw new ApiException("The verification code is wrong or expired.");
@@ -130,9 +130,9 @@ namespace ViazyNetCore.Modules
                 var permissions = userpermissions.Union(rolepermissions).Distinct().ToList();
 
                 //管理员 授权所有按钮权限
-                if(user.RoleId == Globals.ADMIN_ROLE_ID) permissions = new List<string>() { ((int)BMSPermissionCode.All).ToString() };
+                if (user.RoleId == Globals.ADMIN_ROLE_ID) permissions = new List<string>() { ((int)BMSPermissionCode.All).ToString() };
 
-                if(user.Password == DataSecurity.GenerateSaltedHash(args.Password, user.PasswordSalt))
+                if (user.Password == DataSecurity.GenerateSaltedHash(args.Password, user.PasswordSalt))
                 {
                     this.GetByUsernameCache(args.Username, true);
                     return new BmsIdentity
@@ -148,7 +148,7 @@ namespace ViazyNetCore.Modules
                 }
             }
 
-            if(user == null)
+            if (user == null)
             {
                 this._eventBus.Publish(new OperationLogEventData()
                 {
@@ -166,7 +166,7 @@ namespace ViazyNetCore.Modules
 
             //密码错误 和 账号不存在 都统一一个提示语，防止强行试账号
             var userLoginCheck = this.GetByUsernameCache(args.Username, false, ip, args.Auditor);
-            if(LOGIN_MAXCOUNT - userLoginCheck.ErrorCount == 0)
+            if (LOGIN_MAXCOUNT - userLoginCheck.ErrorCount == 0)
                 throw new ApiException($"Your account has been lock,try again in {LOGIN_TIME} minutes");
             else
                 throw new ApiException(string.Format("The account or password what you enter is error,you can only try it for {0} times", LOGIN_MAXCOUNT - userLoginCheck.ErrorCount));
@@ -179,8 +179,7 @@ namespace ViazyNetCore.Modules
         /// <returns>重置成功返回 随机密码,否则抛出异常</returns>
         public async Task<string> ResetPasswordAsync(long id)
         {
-            //string randPwd = Globals.GetRandomPassword();
-            string randPwd = Globals.DefaultRandomPassword;
+            string randPwd = Globals.GetRandomPassword();
             var password = DataSecurity.GenerateSaltedHash(randPwd.ToMd5(), out var salt);
             await _userRepository.ModifyPasswordAsync(password, salt, id);
             return randPwd;
@@ -197,7 +196,7 @@ namespace ViazyNetCore.Modules
         {
             var user = await _userRepository.GetEnabledUserByIdAsync(id);
 
-            if(user != null && DataSecurity.GenerateSaltedHash(args.OldPassword, user.PasswordSalt) == user.Password)
+            if (user != null && DataSecurity.GenerateSaltedHash(args.OldPassword, user.PasswordSalt) == user.Password)
             {
                 var password = DataSecurity.GenerateSaltedHash(args.NewPassword, out var salt);
                 await _userRepository.ModifyPasswordAsync(password, salt, id);
@@ -219,10 +218,10 @@ namespace ViazyNetCore.Modules
             var result = this._cacheService.GetFromFirstLevel<UserLoginCheck>(cacheKey);
 
             //此账号此时还没有缓存
-            if(result == null)
+            if (result == null)
             {
                 //正确直接返回
-                if(state == true) { return result; };
+                if (state == true) { return result; };
                 //错误的话初始值为1
                 UserLoginCheck userLoginCheck = new UserLoginCheck();
                 userLoginCheck.ErrorCount = 1;
@@ -235,11 +234,11 @@ namespace ViazyNetCore.Modules
                 TimeSpan minuteSpan = new TimeSpan(DateTime.Now.Ticks - result.LastForbiddenTime.Ticks);
                 var PastMinutes = minuteSpan.TotalMinutes;
                 //大于规定时间，直接清除缓存，此时是允许继续登录操作的
-                if(PastMinutes >= LOGIN_TIME)
+                if (PastMinutes >= LOGIN_TIME)
                 {
                     this.ClearCache(username);
                     //正确可以直接登录，所以直接返回即可
-                    if(state == true) { return result; }
+                    if (state == true) { return result; }
                     UserLoginCheck userLoginCheck = new UserLoginCheck();
                     userLoginCheck.ErrorCount = 1;
                     userLoginCheck.LastForbiddenTime = DateTime.Now;
@@ -249,7 +248,7 @@ namespace ViazyNetCore.Modules
                 else
                 {
                     //未成功次数超过规定次数直接抛出，阻止登录
-                    if(result.ErrorCount >= LOGIN_MAXCOUNT)
+                    if (result.ErrorCount >= LOGIN_MAXCOUNT)
                     {
                         //次数已超出，不管正确还是错误都是抛出
                         throw new ApiException(string.Format("Your continuous login times have exceeded the limit，please try again after {0} minutes！", Math.Ceiling(LOGIN_TIME - PastMinutes)));
@@ -257,11 +256,11 @@ namespace ViazyNetCore.Modules
                     else
                     {
                         //限制次数限制时间内登录，正确直接返回即可，api有清除缓存
-                        if(state == true) { return result; }
+                        if (state == true) { return result; }
                         //有缓存我们就讲count+1，并且将最后时间更新即可
                         ++result.ErrorCount;
                         result.LastForbiddenTime = DateTime.Now;
-                        if(result.ErrorCount == 5)
+                        if (result.ErrorCount == 5)
                         {
                             var objectId = userId?.ToString() ?? username;
                             //this._eventBus.Publish(new OperationLogEventData()
@@ -317,7 +316,7 @@ namespace ViazyNetCore.Modules
 
         public Task<bool> BindGoogleAuthenticator(long id, string secretKey)
         {
-            if(secretKey.IsNull()) throw new ApiException("secretKey can't be null");
+            if (secretKey.IsNull()) throw new ApiException("secretKey can't be null");
             return this._userRepository.BindGoogleAuthenticator(id, secretKey);
         }
 
@@ -328,12 +327,12 @@ namespace ViazyNetCore.Modules
 
         public bool CheckGoogleKey(string googleKey, string code, bool enableGoogleToken)
         {
-            if(googleKey.IsNotNull() && code.IsNull() && enableGoogleToken) throw new ApiException("Please enter the google PIN!");
-            if(googleKey.IsNotNull() && enableGoogleToken)
+            if (googleKey.IsNotNull() && code.IsNull() && enableGoogleToken) throw new ApiException("Please enter the google PIN!");
+            if (googleKey.IsNotNull() && enableGoogleToken)
             {
                 //GoogleAuthenticator googleAuthenticator = new GoogleAuthenticator();
                 //if(!googleAuthenticator.ValidateTwoFactorPIN(googleKey, code, false))
-                    return false;
+                return false;
                 //throw new ApiException("The verification code is wrong or expired.");
             }
             return true;

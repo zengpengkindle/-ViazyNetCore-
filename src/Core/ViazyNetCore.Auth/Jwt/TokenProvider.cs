@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ViazyNetCore.Caching;
 
@@ -12,9 +13,9 @@ namespace ViazyNetCore.Auth.Jwt
         private readonly JwtOption _option;
         private readonly IDistributedHashCache? _cacheService;
 
-        public TokenProvider(JwtOption option, IServiceProvider serviceProvider)
+        public TokenProvider(IOptions<JwtOption> option, IServiceProvider serviceProvider)
         {
-            this._option = option;
+            this._option = option.Value;
             this._cacheService = serviceProvider.GetService<IDistributedHashCache>();
         }
 
@@ -22,7 +23,7 @@ namespace ViazyNetCore.Auth.Jwt
         private const string HashCachePrefix = "JwtToken:";
 #pragma warning restore IDE1006 // 命名样式
 
-        public async Task<JwtTokenResult> IssueToken(long userId, object[] roleIds)
+        public async Task<JwtTokenResult> IssueToken(string userId, object[] roleIds)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var expires = DateTime.UtcNow.Add(TimeSpan.FromSeconds(_option.ExpiresIn));
@@ -83,8 +84,7 @@ namespace ViazyNetCore.Auth.Jwt
                 throw new UnauthorizedAccessException();
             }
 
-            _ = int.TryParse(sid, out var userId);
-            if (userId <= 0)
+            if (sid.IsNull())
             {
                 throw new UnauthorizedAccessException();
             }
@@ -97,7 +97,7 @@ namespace ViazyNetCore.Auth.Jwt
                 return;
             }
 
-            var redisFieldKey = this.GenerateCacheKey(userId);
+            var redisFieldKey = this.GenerateCacheKey(sid);
             if (this._option.UseDistributedCache && this._cacheService != null)
             {
                 var currentJti = await this._cacheService.HashGetAsync<string>(HashCachePrefix + clientName, redisFieldKey);
@@ -114,12 +114,12 @@ namespace ViazyNetCore.Auth.Jwt
             }
         }
 
-        private string GenerateCacheKey(long userId)
+        private string GenerateCacheKey(string userId)
         {
             return $"JwtToken:{userId}";
         }
 
-        public void RemoveToken(long userId)
+        public void RemoveToken(string userId)
         {
             if (this._option.UseDistributedCache)
             {

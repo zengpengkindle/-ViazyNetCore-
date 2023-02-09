@@ -17,7 +17,7 @@ namespace ViazyNetCore.Swagger.Knife4jUI
         }
         public static IApplicationBuilder UseKnife4UI(
              this IApplicationBuilder app,
-             Action<Knife4UIOptions> setupAction = null)
+             Action<Knife4UIOptions>? setupAction = null)
         {
             var options = new Knife4UIOptions();
             using (var scope = app.ApplicationServices.CreateScope())

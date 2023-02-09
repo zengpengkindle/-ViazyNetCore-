@@ -123,7 +123,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="options"></param>
         /// <param name="expression"></param>
-        public static void EnableFilter(this Knife4UIOptions options, string expression = null)
+        public static void EnableFilter(this Knife4UIOptions options, string? expression = null)
         {
             options.ConfigObject.Filter = expression ?? "";
         }

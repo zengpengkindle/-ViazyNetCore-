@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using ViazyNetCore.Formatter.Response;
 
-namespace ViazyNetCore.Formatter.Response
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class AutoWrapperExtension
     {

@@ -8,15 +8,25 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using ViazyNetCore.Auth.Jwt;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class AuthConfiguraionSteup
     {
-        public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+        public static void AddJwtAuthentication(this IServiceCollection services,Action<JwtOption> jwtOptions)
         {
-            services.Configure<JwtOption>(configuration);
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (jwtOptions == null)
+            {
+                throw new ArgumentNullException(nameof(jwtOptions));
+            }
+            services.Configure(jwtOptions);
             services.AddSingleton<TokenProvider>();
             services.AddAuthentication(options =>
             {
@@ -27,7 +37,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 var provider = services.BuildServiceProvider();
                 var tokenProvider = provider.GetRequiredService<TokenProvider>();
                 var jwtConfig = provider.GetRequiredService<IOptions<JwtOption>>();
-
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

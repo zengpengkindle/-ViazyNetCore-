@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Modules.Logs;
 using Microsoft.AspNetCore.Http;
-using ViazyNetCore.Auth.Extensions;
 
 namespace ViazyNetCore.Modules.EventHandler
 {
@@ -13,10 +12,10 @@ namespace ViazyNetCore.Modules.EventHandler
     public class OperationLogEventHandler : IEventHandler<OperationLogEventData>
     {
         private readonly IOperationLogService _logService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor? _httpContextAccessor;
         private readonly AuthUser? _authUser;
 
-        public OperationLogEventHandler(IOperationLogService logService, IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor)
+        public OperationLogEventHandler(IOperationLogService logService, IHttpContextAccessor httpContextAccessor)
         {
             this._logService = logService;
             this._httpContextAccessor = httpContextAccessor;
@@ -24,16 +23,16 @@ namespace ViazyNetCore.Modules.EventHandler
         }
         public void HandleEvent(OperationLogEventData eventData)
         {
-            if(eventData != null && eventData.Data != null)
+            if (eventData != null && eventData.Data != null)
             {
                 eventData.Data.CreateTime = eventData.EventTime;
-                if(this._authUser != null)
+                if (this._authUser != null)
                 {
                     eventData.Data.OperateUserId = this._authUser.UserKey;
                     eventData.Data.Operator = this._authUser.UserName;
-                   
+
                 }
-                if(this._httpContextAccessor != null)
+                if (this._httpContextAccessor != null)
                 {
                     eventData.Data.OperatorIP = this._httpContextAccessor.HttpContext?.GetRequestIP();
                 }

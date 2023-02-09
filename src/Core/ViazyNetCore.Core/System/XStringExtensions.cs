@@ -21,7 +21,7 @@ namespace System
         /// <param name="value">当前字符串。</param>
         /// <param name="encoding">编码。为 null 值表示 UTF8 的编码。</param>
         /// <returns>字节组。</returns>
-        public static byte[] ToBytes(this string value, Encoding encoding = null)
+        public static byte[] ToBytes(this string value, Encoding? encoding = null)
             => (encoding ?? Encoding.UTF8).GetBytes(value);
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace System
         /// <param name="bytes">当前字节组。</param>
         /// <param name="encoding">编码。为 null 值表示 UTF8 的编码。</param>
         /// <returns>字符串。</returns>
-        public static string GetString(this byte[] bytes, Encoding encoding = null)
+        public static string GetString(this byte[] bytes, Encoding? encoding = null)
             => (encoding ?? Encoding.UTF8).GetString(bytes);
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace System
         ///   <param name="encoding"></param> 
         ///   <param name="isEncoded"></param> 
         ///   <returns></returns> 
-        public static NameValueCollection GetQueryString(string queryString, Encoding encoding, bool isEncoded)
+        public static NameValueCollection GetQueryString(string queryString, Encoding? encoding, bool isEncoded)
         {
             queryString = queryString.Replace("?", "");
             NameValueCollection result = new NameValueCollection(StringComparer.OrdinalIgnoreCase);
@@ -296,9 +296,10 @@ namespace System
                         }
                         i++;
                     }
-                    string key = null;
-                    string value = null;
-                    if(index >= 0)
+
+                    string? value = null;
+                    string? key;
+                    if (index >= 0)
                     {
                         key = queryString.Substring(startIndex, index - startIndex);
                         value = queryString.Substring(index + 1, (i - index) - 1);
@@ -307,7 +308,7 @@ namespace System
                     {
                         key = queryString.Substring(startIndex, i - startIndex);
                     }
-                    if(isEncoded)
+                    if (isEncoded)
                     {
                         result[MyUrlDeCode(key, encoding)] = MyUrlDeCode(value, encoding);
                     }
@@ -329,15 +330,15 @@ namespace System
         ///   <param name="encoding"> null为自动选择编码 </param> 
         ///   <param name="str"></param> 
         ///   <returns></returns> 
-        public static string MyUrlDeCode(string str, Encoding encoding)
+        public static string? MyUrlDeCode(string? str, Encoding? encoding)
         {
             if(encoding == null)
             {
                 Encoding utf8 = Encoding.UTF8;
                 // 首先用utf-8进行解码                      
-                string code = HttpUtility.UrlDecode(str.ToUpper(), utf8);
+                string? code = HttpUtility.UrlDecode(str?.ToUpper(), utf8);
                 // 将已经解码的字符再次进行编码. 
-                string encode = HttpUtility.UrlEncode(code, utf8).ToUpper();
+                string? encode = HttpUtility.UrlEncode(code, utf8)?.ToUpper();
                 if(str == encode)
                     encoding = Encoding.UTF8;
                 else

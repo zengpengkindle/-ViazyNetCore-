@@ -43,7 +43,7 @@ namespace ViazyNetCore.Caching
             }
             if (obj2 == null)
             {
-                obj2 = _cache.Get(cacheKey);
+                obj2 = this._cache.Get(cacheKey);
                 if (EnableDistributedCache)
                 {
                     _localCache.Set(cacheKey, obj2, _cachingExpirationDictionary[CachingExpirationType.SingleObject]);

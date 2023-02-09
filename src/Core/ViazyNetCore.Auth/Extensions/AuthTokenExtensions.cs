@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using ViazyNetCore.Auth;
 
-namespace ViazyNetCore.Auth.Extensions
+namespace Microsoft.AspNetCore.Http
 {
 
     /// <summary>
@@ -50,6 +45,15 @@ namespace ViazyNetCore.Auth.Extensions
                 Nbf = claims.GetNbf(),
                 UserName = claims.GetUserName(),
             };
+        }
+
+        public static int[] GetAuthUserRoleIds(this HttpContext context)
+        {
+            var roles = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            if(roles.IsNull())
+                return new int[0];
+            else
+                return roles!.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(p=>p.CastTo<int>()).ToArray();
         }
         #endregion
 

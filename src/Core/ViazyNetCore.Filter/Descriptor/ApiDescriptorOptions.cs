@@ -17,7 +17,7 @@ namespace ViazyNetCore.Filter
         /// 缓存前缀
         /// </summary>
         [NotNull]
-        public string CachePrefix { get; set; }
+        public string CachePrefix { get; set; } = "ViazyNetCore";
         /// <summary>
         /// 服务名称
         /// </summary>
