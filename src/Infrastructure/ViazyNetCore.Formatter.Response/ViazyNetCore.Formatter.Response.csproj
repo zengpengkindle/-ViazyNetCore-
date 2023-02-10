@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Wrappers\**" />
+	  <EmbeddedResource Remove="Wrappers\**" />
+	  <None Remove="Wrappers\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
@@ -14,9 +20,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Wrappers\" />
 	</ItemGroup>
 
 </Project>
