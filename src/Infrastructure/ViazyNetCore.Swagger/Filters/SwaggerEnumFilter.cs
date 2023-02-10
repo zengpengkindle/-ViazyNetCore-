@@ -39,11 +39,11 @@ namespace ViazyNetCore.Swagger.Filters
                         list.Add((OpenApiInteger)val);
                     }
                     propertyEnums.Clear();
-
                     DescribeEnum(itemType, list).ToList().ForEach(item =>
                     {
                         property.Enum.Add(item);
                     });
+                    //property.Description += DescribeEnumString(itemType, list);
                 }
             }
         }
@@ -92,23 +92,26 @@ namespace ViazyNetCore.Swagger.Filters
             }
         }
 
-
-        /// <summary>
-        /// 描述枚举
-        /// </summary>
-        /// <param name="enums"></param>
-        /// <returns></returns>
-        private static string DescribeEnum(IEnumerable<object> enums)
+        private static string DescribeEnumString(Type? type, List<OpenApiInteger> enums)
         {
-            var enumDescriptions = new List<string>();
-            Type? type = null;
+            if (type == null)
+            {
+                return string.Empty;
+            }
+            var alldesc = string.Empty;
             foreach (var enumOption in enums)
             {
-                if (type == null) type = enumOption.GetType();
-                enumDescriptions.Add($"{Convert.ChangeType(enumOption, type.GetEnumUnderlyingType())} = {Enum.GetName(type, enumOption)}，{GetDescription(type, enumOption)}");
-            }
+                var value = Enum.Parse(type, enumOption.Value.ToString());
+                var desc = GetDescription(type, value);
 
-            return $"{Environment.NewLine}{string.Join(Environment.NewLine, enumDescriptions)}";
+                if (string.IsNullOrEmpty(desc))
+                    desc = $"{enumOption.Value}:{Enum.GetName(type, value)}";
+                else
+                    desc = $"{enumOption.Value}:{Enum.GetName(type, value)} {desc} ";
+
+                alldesc += desc + ",";
+            }
+            return alldesc.TrimEnd(',');
         }
 
         /// <summary>
