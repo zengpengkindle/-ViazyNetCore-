@@ -17,6 +17,7 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
+import { ApiReponseError } from "@/api/model/apiResponseBase";
 
 defineOptions({
   name: "Login"
@@ -43,13 +44,20 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
-        .then(res => {
-            // 获取后端路由
-            initRouter().then(() => {
-              router.push("/");
-              message("登录成功", { type: "success" });
-            });
+        .loginByUsername({
+          username: ruleForm.username,
+          password: ruleForm.password
+        })
+        .then(_ => {
+          // 获取后端路由
+          initRouter().then(() => {
+            router.push("/");
+            message("登录成功", { type: "success" });
+          });
+        })
+        .catch((response: ApiReponseError) => {
+          if (response?.err_code) msg.alert(response.err_msg);
+          loading.value = false;
         });
     } else {
       loading.value = false;

@@ -11,6 +11,6 @@ namespace ViazyNetCore.Formatter.Response
         /// <summary>
         /// 必须生产环境且开启，才会开启加密
         /// </summary>
-        public bool EnableCipher { get; set; } = true;
+        public bool EnableCipher { get; set; } = false;
     }
 }

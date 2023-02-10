@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Auth;
 using ViazyNetCore.Domain;
@@ -17,8 +18,9 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
     /// <summary>
     /// 角色管理
     /// </summary>
+    [Authorize]
     [ApiController]
-    [Route("role")]
+    [Route("api/[controller]")]
     public class RoleController:ControllerBase
     {
         private readonly IRoleService _roleService;

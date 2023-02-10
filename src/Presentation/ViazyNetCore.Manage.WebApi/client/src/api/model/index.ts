@@ -1,27 +1,18 @@
 ﻿/**
-* UserLoginArgs
-*/
+ * UserLoginArgs
+ */
 export interface UserLoginArgs {
-  
-    username: string | null
-    
-    password: string | null
-    
-    code: string | null
-    
-    mark: string | null
-    
-    auditor: number | null
-  }
-
+  username: string | null;
+  password: string | null;
+  code?: string | null;
+  mark?: string | null;
+  auditor?: number | null;
+}
 
 /**
-* JwtTokenResult
-*/
+ * JwtTokenResult
+ */
 export interface JwtTokenResult {
-  
-    accessToken: string
-    
-    expiresIn: number
-  }
-  
+  accessToken: string;
+  expiresIn: number;
+}

@@ -4,10 +4,8 @@ import { userType } from "./types";
 import { routerArrays } from "@/layout/types";
 import { router, resetRouter } from "@/router";
 import { storageSession } from "@pureadmin/utils";
-import { getLogin, refreshTokenApi } from "@/api/user";
 import AccountApi from "@/api/account";
-import {UserLoginArgs,JwtTokenResult} from "@/api/model"
-import { UserResult, RefreshTokenResult } from "@/api/user";
+import { UserLoginArgs, JwtTokenResult } from "@/api/model";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, sessionKey } from "@/utils/auth";
 
@@ -30,15 +28,15 @@ export const useUserStore = defineStore({
       this.roles = roles;
     },
     /** 登入 */
-    async loginByUsername(data:UserLoginArgs) {
+    async loginByUsername(data: UserLoginArgs) {
       return new Promise<JwtTokenResult>((resolve, reject) => {
         AccountApi.accountLogin(data)
           .then(data => {
-              setToken({
-                accessToken: data.accessToken,
-                expires:data.expiresIn
-              });
-              resolve(data);
+            setToken({
+              accessToken: data.accessToken,
+              expires: data.expiresIn
+            });
+            resolve(data);
           })
           .catch(error => {
             reject(error);
@@ -55,18 +53,9 @@ export const useUserStore = defineStore({
       router.push("/login");
     },
     /** 刷新`token` */
-    async handRefreshToken(data) {
-      return new Promise<RefreshTokenResult>((resolve, reject) => {
-        refreshTokenApi(data)
-          .then(data => {
-            if (data) {
-              setToken(data.data);
-              resolve(data);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
+    async handRefreshToken() {
+      return new Promise<any>((resolve, reject) => {
+        reject(null);
       });
     }
   }

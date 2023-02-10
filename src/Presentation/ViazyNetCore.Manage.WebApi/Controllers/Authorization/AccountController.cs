@@ -17,8 +17,9 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
     /// <summary>
     /// 账号管理
     /// </summary>
+    [Authorize]
     [ApiController]
-    [Route("account")]
+    [Route("api/account")]
     public class AccountController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -38,12 +39,15 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         [Route("login"), HttpPost]
         public async Task<JwtTokenResult?> LoginAsync([Required] UserLoginArgs args)
         {
-            OperationLog operationLog = new OperationLog();
-            operationLog.CreateTime = DateTime.Now;
-            operationLog.OperateUserId = args.Username;
-            operationLog.OperationType = "登录";
-            operationLog.OperatorType = OperatorTypeEnum.Bms;
             var ip = this._httpContextAccessor.HttpContext!?.GetRequestIP();
+            OperationLog operationLog = new OperationLog
+            {
+                CreateTime = DateTime.Now,
+                OperateUserId = args.Username,
+                OperationType = "登录",
+                OperatorType = OperatorTypeEnum.Bms,
+                OperatorIP = ip,
+            };
             if (args.Mark.IsNotNull() && args.Mark != "tools")
             {
                 throw new ApiException("无效登录方式!");
@@ -53,7 +57,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
                 //using (_lockProvider.Lock<UserLoginArgs>(args.Username))
                 {
                     var identity = await this._userService.GetUserLoginIdentityAsync(args, ip, false);
-                    var token = await this._tokenProvider.IssueToken(identity.Id, Array.Empty<object>());
+                    var token = await this._tokenProvider.IssueToken(identity.Id, identity.Permissions.ToArray());
                     //登陆成功，清空缓存
                     _userService.ClearCache(args.Username);
 
@@ -64,6 +68,10 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
                     return token;
                 }
+            }
+            catch (ApiException ex)
+            {
+                throw ex;
             }
             catch (Exception ex)
             {
@@ -77,7 +85,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         }
 
 
-        [Authorize, ApiTitle("获取用户标识")]
+        [ApiTitle("获取用户标识")]
         [Route("getuserinfo"), HttpPost]
         public Task<AuthUser> GetIdentityAsync()
         {

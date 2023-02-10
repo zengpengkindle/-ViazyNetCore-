@@ -25,7 +25,8 @@ export interface PureHttpResponse extends AxiosResponse {
 
 export interface PureHttpRequestConfig<D = any> extends InternalAxiosRequestConfig<D> {
   beforeRequestCallback?: (request: PureHttpRequestConfig) => void;
-  beforeResponseCallback?: (response: PureHttpResponse) => void;
+  beforeResponseCallback?: (response: PureHttpResponse) => any;
+  beforeResponseErrorCallback?:(error:PureHttpError)=>void;
 }
 
 export default class PureHttp {

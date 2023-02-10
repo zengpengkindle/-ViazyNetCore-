@@ -1,17 +1,16 @@
-
-import { http } from '@/utils/http'
+import { http } from '@/utils/http';
 import { UserLoginArgs, JwtTokenResult } from './model'
 
-export class AccountApi  {
+export class AccountApi {
   /**
    * 无
    */
   public accountLogin(param1: UserLoginArgs): Promise<JwtTokenResult> {
     return http.request({
-      url: '/account/login',
+      url: '/api/account/login',
       method: 'post',
       data: param1
-    })
+    });
   }
 }
-export default new AccountApi()
+export default new AccountApi();

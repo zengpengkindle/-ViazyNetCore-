@@ -1,10 +1,8 @@
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 using NLog.Web;
 using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Caching.DependencyInjection;
-using ViazyNetCore.Formatter.Response;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +15,7 @@ builder.WebHost.ConfigureLogging(logging =>
 {
     options.ValidateScopes = false;
 })
-    .UseNLog();
+.UseNLog();
 
 
 // Add services to the container.
@@ -27,7 +25,13 @@ var ServiceAssemblies = new Assembly?[]
 };
 
 builder.Services.AddCustomApiVersioning();
-builder.Services.AddJwtAuthentication(option => option = builder.Configuration.GetSection("Jwt").Get<JwtOption>());
+builder.Services.AddJwtAuthentication(option => {
+    var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
+    option.Secret= optionJson.Secret;
+    option.ExpiresIn= optionJson.ExpiresIn;
+    option.Issuer= optionJson.Issuer;
+    option.AppName= optionJson.AppName;
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
@@ -51,34 +55,36 @@ builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLif
 var app = builder.Build();
 app.UseFreeSql();
 app.UseHttpsRedirection();
-app.UseRouting();
-app.UseAuthorization();
-
 app.UseStaticFiles();
-// Configure the HTTP request pipeline.
-app.MapControllers();
+app.UseRouting();
+// Configure the HTTP response wrapper.
 app.UseApiResponseWrapper(option =>
 {
-    //option.IsApiOnly = false;
+    option.IsApiOnly = false;
     option.EnableResponseLogging = true;
     option.EnableExceptionLogging = true;
+});
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
 });
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerAndUI();
-}
-if (app.Environment.IsDevelopment())
-{
-    //app.UseSpa(spa =>
-    //{
-    //    spa.Options.SourcePath = "client";
-    //    //spa.Options.PackageManagerCommand = "pnpm";
-    //    spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions()
-    //    {
-    //        //Host= "172.23.48.1",
-    //    });
-    //});
+    app.UseSpa(spa =>
+    {
+        spa.Options.SourcePath = "client";
+        //spa.Options.PackageManagerCommand = "pnpm";
+        spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions()
+        {
+            //Host= "172.0.0.1",
+        });
+    });
 }
 else
 {

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Domain;
@@ -16,8 +17,9 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
     /// <summary>
     /// 用户管理
     /// </summary>
+    [Authorize]
     [ApiController]
-    [Route("user")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

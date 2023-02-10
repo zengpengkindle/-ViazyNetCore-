@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Domain;
 using ViazyNetCore.Modules;
@@ -13,8 +14,9 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
     /// <summary>
     /// 页面组管理
     /// </summary>
+    [Authorize]
     [ApiController]
-    [Route("pageGroup")]
+    [Route("api/[controller]")]
     public class PageGroupController: ControllerBase
     {
         private readonly IPageGroupService _pageGroupService;

@@ -65,7 +65,7 @@ namespace Microsoft.AspNetCore.Builder
             //- 所有 GET 请求并且没有后缀名的请求默认为 SPA 模式
             return appBuilder.Use((context, next) =>
             {
-                if (HttpMethods.IsGet(context.Request.Method)&&!context.Request.Path.StartsWithSegments("swagger") && context.IsSpaRequest())
+                if (HttpMethods.IsGet(context.Request.Method) && context.IsSpaRequest())
                 {
                     context.Request.Path = defaultPath;
                 }

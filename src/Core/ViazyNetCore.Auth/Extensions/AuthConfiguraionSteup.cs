@@ -26,7 +26,10 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(jwtOptions));
             }
-            services.Configure(jwtOptions);
+            var jwtOption = new JwtOption();
+            jwtOptions.Invoke(jwtOption);
+            services.AddSingleton(jwtOption);
+
             services.AddSingleton<TokenProvider>();
             services.AddAuthentication(options =>
             {
@@ -36,15 +39,15 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var provider = services.BuildServiceProvider();
                 var tokenProvider = provider.GetRequiredService<TokenProvider>();
-                var jwtConfig = provider.GetRequiredService<IOptions<JwtOption>>();
+                var jwtConfig = provider.GetRequiredService<JwtOption>();
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Value.Secret)),
+                    ValidateIssuerSigningKey = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Secret)),
                     ValidateLifetime = true,
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    RequireAudience = true,
+                    RequireAudience = false,
                     ClockSkew = TimeSpan.FromMinutes(1)
                 };
 

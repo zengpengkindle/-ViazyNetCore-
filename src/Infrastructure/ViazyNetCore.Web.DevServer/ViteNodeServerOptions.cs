@@ -8,7 +8,7 @@
         /// <inheritdoc />
         public override string GenerateArguments()
         {
-            return FormattableString.Invariant($"--open false --clearScreen false --host {this.Host} --port {this.Port} --strictPort");
+            return FormattableString.Invariant($" --clearScreen false --host {this.Host} --port {this.Port} --strictPort true");
         }
     }
 }

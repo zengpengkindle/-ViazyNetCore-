@@ -125,9 +125,9 @@ namespace ViazyNetCore.Modules
                     throw new ApiException("The verification code is wrong or expired.");
                 }
 
-                var userpermissions = (user.ExtendData?.Split(",")) ?? new string[0];
-                var rolepermissions = (user.RoleExtendData?.Split(",")) ?? new string[0];
-                var permissions = userpermissions.Union(rolepermissions).Distinct().ToList();
+                //var userpermissions = (user.ExtendData?.Split(",")) ?? Array.Empty<string>();
+                var rolepermissions = (user.RoleExtendData?.Split(",")) ?? Array.Empty<string>();
+                var permissions = rolepermissions.Distinct().ToList();
 
                 //管理员 授权所有按钮权限
                 if (user.RoleId == Globals.ADMIN_ROLE_ID) permissions = new List<string>() { ((int)BMSPermissionCode.All).ToString() };
@@ -155,7 +155,7 @@ namespace ViazyNetCore.Modules
                     Data = new OperationLog("", args.Username, args.Username, OperatorTypeEnum.Bms)
                     {
                         ObjectName = "用户登录",
-                        ObjectId = args.Auditor?.ToString(),
+                        ObjectId = args.Auditor.ToString(),
                         OperationType = "不存在用户",
                         Description = $"用户账号:{args.Username}",
                         LogLevel = LogRecordLevel.Error

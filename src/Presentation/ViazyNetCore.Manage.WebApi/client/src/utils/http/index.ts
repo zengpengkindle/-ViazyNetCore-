@@ -1,18 +1,17 @@
 import Axios, {
   AxiosInstance,
   AxiosRequestConfig,
-  CustomParamsSerializer
+  CustomParamsSerializer,
 } from "axios";
 import {
   PureHttpError,
-  RequestMethods,
   PureHttpResponse,
   PureHttpRequestConfig
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
-import { useUserStoreHook } from "@/store/modules/user";
+import { message } from "@/utils/message";
 import { ApiResponse, ApiReponseError } from "@/api/model/apiResponseBase";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
@@ -30,7 +29,7 @@ const defaultConfig: AxiosRequestConfig = {
   }
 };
 
-const whiteList = ["/refreshToken","/login", "/acount/login"];
+const whiteList = ["/refreshToken", "/login", "/acount/login"];
 
 class PureHttp {
   constructor() {
@@ -45,15 +44,27 @@ class PureHttp {
   private static isRefreshing = false;
 
   /** 初始化配置对象 */
-  private static initConfig: PureHttpRequestConfig<any> = {
+  private static initConfig: PureHttpRequestConfig = {
     headers: null,
-    beforeResponseCallback: (response) => {
+    beforeResponseCallback: (response: PureHttpResponse) => {
       const apiResponse = response.data as ApiResponse;
       if (apiResponse.code == 200) {
-        if (apiResponse.result.success) {
-          return apiResponse.result.data;
+        if (apiResponse.data.success) {
+          return apiResponse.data.result;
         } else {
-          throw new ApiReponseError(apiResponse.code, apiResponse.result?.err_code || 0, apiResponse.message, apiResponse.result.message)
+          throw new ApiReponseError(
+            apiResponse.code,
+            apiResponse.data.err_code,
+            apiResponse.message,
+            apiResponse.data.message
+          );
+          // throw new AxiosError(
+          //   apiResponse.message,
+          //   "200",
+          //   null,
+          //   null,
+          //   response
+          // );
         }
       }
     }
@@ -63,7 +74,9 @@ class PureHttp {
   private static axiosInstance: AxiosInstance = Axios.create(defaultConfig);
 
   /** 重连原始请求 */
-  private static retryOriginalRequest(config: PureHttpRequestConfig): Promise<PureHttpRequestConfig<any>> {
+  private static retryOriginalRequest(
+    config: PureHttpRequestConfig
+  ): Promise<PureHttpRequestConfig<any>> {
     return new Promise(resolve => {
       PureHttp.requests.push((token: string) => {
         config.headers["Authorization"] = formatToken(token);
@@ -71,7 +84,6 @@ class PureHttp {
       });
     });
   }
-
 
   /** 请求拦截 */
   private httpInterceptorsRequest(): void {
@@ -92,37 +104,35 @@ class PureHttp {
         return whiteList.some(v => config.url.indexOf(v) > -1)
           ? config
           : new Promise(resolve => {
-            const data = getToken();
-            if (data) {
-              const now = new Date().getTime();
-              const expired = parseInt(data.expires) - now <= 0;
-              if (expired) {
-                if (!PureHttp.isRefreshing) {
-                  PureHttp.isRefreshing = true;
-                  // token过期刷新
-                  useUserStoreHook()
-                    .handRefreshToken({ refreshToken: data.refreshToken })
-                    .then(res => {
-                      const token = res.data.accessToken;
-                      config.headers["Authorization"] = formatToken(token);
-                      PureHttp.requests.forEach(cb => cb(token));
-                      PureHttp.requests = [];
-                    })
-                    .finally(() => {
-                      PureHttp.isRefreshing = false;
-                    });
-                }
-                resolve(PureHttp.retryOriginalRequest(config));
+              const data = getToken();
+              if (data) {
+                // const now = new Date().getTime();
+                // const expired = parseInt(data.expires) - now <= 0;
+                // if (expired) {
+                //   if (!PureHttp.isRefreshing) {
+                //     PureHttp.isRefreshing = true;
+                //     // token过期刷新
+                //     useUserStoreHook()
+                //       .handRefreshToken({ refreshToken: data.refreshToken })
+                //       .then(res => {
+                //         const token = res.data.accessToken;
+                //         config.headers["Authorization"] = formatToken(token);
+                //         PureHttp.requests.forEach(cb => cb(token));
+                //         PureHttp.requests = [];
+                //       })
+                //       .finally(() => {
+                //         PureHttp.isRefreshing = false;
+                //       });
+                //   }
+                //   resolve(PureHttp.retryOriginalRequest(config));
+                // } else {
+                config.headers["Authorization"] = formatToken(data.accessToken);
+                resolve(config);
+                // }
               } else {
-                config.headers["Authorization"] = formatToken(
-                  data.accessToken
-                );
                 resolve(config);
               }
-            } else {
-              resolve(config);
-            }
-          });
+            });
       },
       error => {
         return Promise.reject(error);
@@ -138,10 +148,11 @@ class PureHttp {
         const $config = response.config;
         // 关闭进度条动画
         NProgress.done();
+        console.log(`api resquest success`);
         // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
         if (typeof $config.beforeResponseCallback === "function") {
-          $config.beforeResponseCallback(response);
-          return response.data;
+          return $config.beforeResponseCallback(response);
+          // return response.data;
         }
         if (PureHttp.initConfig.beforeResponseCallback) {
           PureHttp.initConfig.beforeResponseCallback(response);
@@ -154,6 +165,36 @@ class PureHttp {
         $error.isCancelRequest = Axios.isCancel($error);
         // 关闭进度条动画
         NProgress.done();
+        if (!error.response) {
+          return Promise.reject($error);
+        } else {
+          const response = error.response.data as ApiResponse;
+          // console.log(`error message:`, response.data?.message);
+          if (response.code === 0) {
+            return Promise.reject($error);
+          } else if (response.code === 200) {
+            message(response.data?.message, {
+              type: "error",
+              customClass: "antd"
+            });
+            return;
+          } else if (response.code === 401) {
+            message(response.data?.message || `登录过期`, { type: "error" });
+            return;
+          } else if (response.code === 403) {
+            msg.error(`您的权限不足！`);
+            return;
+          } else if (response.code === 406) {
+            msg.error(response.data?.message || ``);
+            return;
+          } else if (response.code === 409) {
+            msg.warning(`您的账号已在其他地方登录！`);
+            return;
+          } else if (response.code === 500) {
+            msg.error(`Oop~ 服务器繁忙,请稍候再试`);
+            return;
+          }
+        }
         // 所有的响应异常 区分来源为取消请求/非取消请求
         return Promise.reject($error);
       }
@@ -170,8 +211,8 @@ class PureHttp {
       ...axiosConfig
     } as PureHttpRequestConfig;
 
-    const baseURL= param.baseURL|| import.meta.env.VITE_APP_BASE_URL;
-    config.baseURL=baseURL;
+    const baseURL = param.baseURL || import.meta.env.VITE_APP_BASE_URL;
+    config.baseURL = baseURL;
     // 单独处理自定义请求/响应回掉
     return new Promise((resolve, reject) => {
       PureHttp.axiosInstance
@@ -200,7 +241,7 @@ class PureHttp {
     params?: AxiosRequestConfig<T>,
     config?: PureHttpRequestConfig
   ): Promise<P> {
-    return this.request<P>({ method: "get", url, ...params });
+    return this.request<P>({ method: "get", url, ...params }, config);
   }
 }
 
