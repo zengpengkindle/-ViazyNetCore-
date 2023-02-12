@@ -13,7 +13,7 @@ using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Dtos;
 using ViazyNetCore.Modules;
 
-namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
+namespace ViazyNetCore.Controllers.Authorization
 {
     /// <summary>
     /// 账号管理
@@ -117,7 +117,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
             try
             {
-                var res = await this._userService.ModifyPasswordAsync(authUser.UserKey.CastTo<long>(), args);
+                var res = await this._userService.ModifyPasswordAsync(authUser.UserKey, args);
                 //if (res)
                 //{
                 //    this._eventBus.Publish(new OperationLogEventData()

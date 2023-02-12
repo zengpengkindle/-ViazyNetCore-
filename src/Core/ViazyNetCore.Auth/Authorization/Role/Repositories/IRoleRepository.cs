@@ -6,6 +6,8 @@
     [Injection]
     public interface IRoleRepository : IBaseRepository<BmsRole, string>
     {
+        Task<PageData<RoleFindAllModel>> FindAllAsync(string nameLike, ComStatus enabled, Pagination pagination);
+
         ///// <summary>
         ///// 根据BmsRole新增
         ///// </summary>
@@ -73,5 +75,6 @@
         //void ClearPermissionIdsByRoleIdCache(long roleId);
         //Task<IList<string>?> GetRoleIdsOfUser(string userId);
         //Task<List<RoleSimpleModel>> GetAllAsync();
+        Task<List<RoleSimpleModel>> GetAllAsync();
     }
 }

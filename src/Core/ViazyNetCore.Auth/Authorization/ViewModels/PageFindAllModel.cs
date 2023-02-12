@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ViazyNetCore.Dtos
+namespace ViazyNetCore.ViewModels
 {
     /// <summary>
     /// 表示一个平台页面的查询模型。

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization.Modules
 {
+    [Injection]
     public class AuthorizationService : IAuthorizationService
     {
         private readonly PermissionService _permissionService;

@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using FreeSql.Internal.Model;
-using ViazyNetCore.Authorization;
+﻿using ViazyNetCore.Authorization.Dtos;
 using ViazyNetCore.Authorization.Modules;
 
 namespace ViazyNetCore.Modules
@@ -133,7 +129,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns></returns>
-        public Task<UserRoleDTO> GetUserRoleByUserName(string userName)
+        public Task<UserRoleDto> GetUserByUserName(string userName)
         {
             throw new NotImplementedException();
             //return this.Select.From<BmsRole, BmsUserRole>().InnerJoin((u, r, ur) => u.Id == ur.UserId && r.Id == ur.RoleId)
@@ -269,6 +265,11 @@ namespace ViazyNetCore.Modules
         }
 
         public Task<bool> ResetPassword(BmsUser user, string storedPassword)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<UserRoleDto> IUserRepository.GetUserByUserName(string userName)
         {
             throw new NotImplementedException();
         }

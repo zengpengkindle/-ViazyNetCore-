@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ViazyNetCore.Dtos;
+using Microsoft.Extensions.Options;
+using ViazyNetCore.Auth;
+using ViazyNetCore.Authorization.Dtos;
 using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
@@ -35,7 +37,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("单个查询")]
         [Route("find"), HttpPost]
-        public Task<UserFindModel> FindAsync([Required] long id)
+        public Task<UserFindModel> FindAsync([Required] string id)
         {
             return this._userService.FindAsync(id);
         }
@@ -45,9 +47,9 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         public async Task<UserManageDto> ManageAsync([Required] UserModel model)
         {
             //if (!await this._roleService.ExistsAsync(model.RoleId)) throw new ApiException("角色不存在。");
-            var describe = model.Id != 0 ? "修改" : "添加";
+            var describe = model.Id.IsNull() ? "添加" : "修改";
 
-            string randPwd = model.Id != 0 ? null :"1231123";// Globals.GetRandomPassword();
+            string randPwd = model.Id.IsNotNull() ? null : "1231123";// Globals.GetRandomPassword();
             var userId = await this._userService.ManageAsync(model, randPwd);
 
             var authUser = this.HttpContext.GetAuthUser();
@@ -70,7 +72,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("删除")]
         [Route("remove"), HttpPost]
-        public async Task RemoveAsync([Required] long id)
+        public async Task RemoveAsync([Required] string id)
         {
             await this._userService.RemoveAsync(id);
 
@@ -97,7 +99,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         /// <returns></returns>
         [ApiTitle("重置密码")]
         [Route("restPassword"), HttpPost]
-        public async Task<string> ResetPasswordAsync(long id)
+        public async Task<string> ResetPasswordAsync(string id)
         {
             //var authUser = this.HttpContext.GetAuthUser();
             var res = await this._userService.ResetPasswordAsync(id);

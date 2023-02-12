@@ -112,7 +112,7 @@ namespace ViazyNetCore.Modules
         /// <returns>登录标识。</returns>
         public async Task<BmsIdentity> GetUserLoginIdentityAsync(UserLoginArgs args, string ip, bool enableGoogleToken)
         {
-            var user = await _userRepository.GetUserRoleByUserName(args.Username);
+            var user = await _userRepository.GetUserByUserName(args.Username);
             if (user != null && user.Status != ComStatus.Deleted)
             {
                 args.Auditor = user.Id;

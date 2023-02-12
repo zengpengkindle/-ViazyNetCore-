@@ -1,4 +1,4 @@
-﻿namespace ViazyNetCore.Dtos
+﻿namespace ViazyNetCore.ViewModels
 {
     /// <summary>
     /// 表示一个平台页面的模型。

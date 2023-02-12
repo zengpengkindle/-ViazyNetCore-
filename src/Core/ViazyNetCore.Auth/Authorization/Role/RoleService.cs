@@ -1,5 +1,4 @@
 ﻿using ViazyNetCore.Authorization.Models;
-using ViazyNetCore.Authorization.Modules.Role.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +7,12 @@ using System.Threading.Tasks;
 using ViazyNetCore;
 using ViazyNetCore.Authrozation;
 using ViazyNetCore.Caching;
-using ViazyNetCore.Dtos;
 using ViazyNetCore.Modules;
 using ViazyNetCore.Authorization.Modules.Repositories;
 
 namespace ViazyNetCore.Authorization.Modules
 {
+    [Injection]
     public class RoleService
     {
         private readonly ICacheService _cacheService;
@@ -33,7 +32,7 @@ namespace ViazyNetCore.Authorization.Modules
             var roleIds = this._cacheService.Get<IList<string>>(cacheKeyUserInRole);
             if (roleIds == null)
             {
-                roleIds = await this._roleRepository.GetRoleIdsOfUser(userId);
+                roleIds = await this._userRoleRepository.GetRoleIdsOfUser(userId);
                 this._cacheService.Set(cacheKeyUserInRole, roleIds, CachingExpirationType.ObjectCollection);
             }
 

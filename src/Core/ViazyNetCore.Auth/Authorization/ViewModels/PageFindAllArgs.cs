@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using ViazyNetCore.Authorization;
 
-namespace ViazyNetCore.Dtos
+namespace ViazyNetCore.ViewModels
 {
     /// <summary>
     /// 表示一个平台页面的查询参数。

@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ViazyNetCore.Authorization;
 
-namespace ViazyNetCore.Dtos
+namespace ViazyNetCore.ViewModels
 {
     /// <summary>
-    /// 表示一个简单平台页面的模型。
+    /// 表示页面分组的模型。
     /// </summary>
-    public class PageSimpleModel
+    public class PageGroupModel
     {
         /// <summary>
         /// 设置或获取一个值，表示编号。
@@ -14,32 +15,32 @@ namespace ViazyNetCore.Dtos
         public long Id { get; set; }
 
         /// <summary>
-        /// 设置或获取一个值，表示页面分组编号。
+        /// 设置或获取一个值，表示上级编号。
         /// </summary>
-        [MaxLength(50), Required]
-        public long GroupId { get; set; }
+        [MaxLength(50)]
+        public long ParentId { get; set; }
 
         /// <summary>
-        /// 设置或获取一个值，表示页面标题。
+        /// 设置或获取一个值，表示分组标题。
         /// </summary>
         [MaxLength(100), Required]
         public string Title { get; set; }
 
         /// <summary>
-        /// 设置或获取一个值，表示页面图标。
+        /// 设置或获取一个值，表示分组图标。
         /// </summary>
         [MaxLength(100)]
         public string Icon { get; set; }
 
         /// <summary>
-        /// 设置或获取一个值，表示页面路径。
-        /// </summary>
-        [MaxLength(100), Required]
-        public string Url { get; set; }
-
-        /// <summary>
-        /// 设置或获取一个值，表示页面排序。
+        /// 获取或设置一个值，表示分组排序。
         /// </summary>
         public int Sort { get; set; }
+
+        /// <summary>
+        /// 设置或获取一个值，表示状态（0禁用，1启用，-1删除）。
+        /// </summary>
+        public ComStatus Status { get; set; }
+
     }
 }

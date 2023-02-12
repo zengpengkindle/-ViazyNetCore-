@@ -13,6 +13,30 @@ namespace ViazyNetCore.Modules
         public RoleRepository(IFreeSql fsql) : base(fsql)
         {
         }
+
+        public Task<PageData<RoleFindAllModel>> FindAllAsync(string nameLike, ComStatus enabled, Pagination pagination)
+        {
+            return this.Select.WhereIf(nameLike.IsNotNull(), p => p.Name.Contains(nameLike) && p.Status == enabled)
+                 .WithTempQuery(p => new RoleFindAllModel
+                 {
+                     Id = p.Id,
+                     CreateTime = p.CreateTime,
+                     ModifyTime = p.ModifyTime,
+                     Name = p.Name,
+                     Status = p.Status
+                 }).ToPageAsync(pagination);
+        }
+
+        public Task<List<RoleSimpleModel>> GetAllAsync()
+        {
+            return this.Select
+                 .WithTempQuery(p => new RoleSimpleModel
+                 {
+                     Id = p.Id,
+                     Name = p.Name,
+                 }).ToListAsync();
+        }
+
         //private const string ROLE_ROLEMODEL_ID = "ROLE_ROLEMODEL_ID_{0}";
         //private readonly IRolePageRepository _rolePageRepository;
         //private readonly IRolePermissionRepository _rolePermissionRepository;

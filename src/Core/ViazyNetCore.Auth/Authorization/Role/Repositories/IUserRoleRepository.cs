@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization.Modules.Repositories
 {
-    public interface IUserRoleRepository
+    [Injection]
+    public interface IUserRoleRepository : IBaseRepository<BmsUserRole, string>
     {
         Task AddUserToRoles(string userId, List<string> roleIds);
+        Task<List<string>?> GetRoleIdsOfUser(string userId);
     }
 }

@@ -14,12 +14,13 @@ namespace ViazyNetCore.Authrozation
 {
     [Permission(PermissionIds.User)]
     [Authorize]
+    [ApiController]
     public class PermissionController : ControllerBase
     {
         private readonly RoleService _roleService;
-        private readonly PermissionService _permissionService;
+        private readonly IPermissionService _permissionService;
 
-        public PermissionController(RoleService roleService, PermissionService permissionService)
+        public PermissionController(RoleService roleService, IPermissionService permissionService)
         {
             this._roleService = roleService;
             this._permissionService = permissionService;

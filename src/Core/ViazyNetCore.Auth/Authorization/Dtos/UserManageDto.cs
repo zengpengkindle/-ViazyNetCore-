@@ -1,4 +1,4 @@
-﻿namespace ViazyNetCore.Dtos
+﻿namespace ViazyNetCore.Authorization.Dtos
 {
     /// <summary>
     /// 表示一个 用户管理使用Dto
@@ -8,7 +8,7 @@
         /// <summary>
         /// 用户编码
         /// </summary>
-        public long UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// 用户账号

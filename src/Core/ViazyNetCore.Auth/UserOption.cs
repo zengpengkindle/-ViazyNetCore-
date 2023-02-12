@@ -103,7 +103,7 @@ namespace ViazyNetCore.Auth
         /// <remarks>
         /// 多个用户名之间用逗号分割
         /// </remarks>
-        public string DisallowedUserNames { get; set; } = "administrator，super";
+        public string DisallowedUserNames { get; set; } = "administrator,super,admin";
 
         /// <summary>
         /// 超级管理员角色Id

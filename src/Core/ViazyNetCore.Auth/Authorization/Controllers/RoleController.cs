@@ -9,9 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ViazyNetCore.Authrozation
 {
+    [Authorize]
+    [ApiController]
     [Permission(PermissionIds.User)]
     public class RoleController : ControllerBase
     {

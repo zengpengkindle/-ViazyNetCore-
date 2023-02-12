@@ -1,9 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using ViazyNetCore.Authorization.Models;
-using FreeSql;
-using ViazyNetCore.Authorization;
+﻿using ViazyNetCore.Authorization.Dtos;
 using ViazyNetCore.Authorization.Modules;
 
 namespace ViazyNetCore.Modules
@@ -62,7 +57,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns></returns>
-        Task<UserRoleDTO> GetUserRoleByUserName(string userName);
+        Task<UserRoleDto> GetUserByUserName(string userName);
 
         /// <summary>
         /// 重置指定用户编号的密码。

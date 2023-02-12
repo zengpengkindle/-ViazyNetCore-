@@ -2,12 +2,12 @@
 using System.Text.Json.Serialization;
 using ViazyNetCore.Authorization;
 
-namespace ViazyNetCore.Dtos
+namespace ViazyNetCore.Authorization.Dtos
 {
     /// <summary>
     /// 表示一个三方银行信息。
     /// </summary>
-    public partial class UserRoleDTO 
+    public partial class UserRoleDto
     {
         /// <summary>
         /// 设置或获取一个值，表示编号
@@ -34,15 +34,6 @@ namespace ViazyNetCore.Dtos
         /// </summary>
         public string Nickname { get; set; }
 
-        /// <summary>
-        /// 设置或获取一个值，表示角色编号。
-        /// </summary>
-        public string RoleId { get; set; }
-
-        /// <summary>
-        /// 设置或获取一个值，表示角色名称。
-        /// </summary>
-        public string RoleName { get; set; }
         /// <summary>
         /// 设置或获取一个值，表示状态。
         /// </summary>

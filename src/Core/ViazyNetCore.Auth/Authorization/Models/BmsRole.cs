@@ -22,5 +22,7 @@ namespace ViazyNetCore.Authorization.Models
         /// </summary>
         public string Exdata { get; set; }
         public string ExtraData { get; internal set; }
+        public DateTime CreateTime { get; internal set; }
+        public DateTime ModifyTime { get; internal set; }
     }
 }

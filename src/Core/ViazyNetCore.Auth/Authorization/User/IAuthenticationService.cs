@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization.Modules
 {
+    //[Injection]
     public interface IAuthenticationService
     {
         /// <summary>
@@ -26,6 +27,6 @@ namespace ViazyNetCore.Authorization.Modules
         /// <returns>
         /// 当前用户未通过认证则返回null
         /// </returns>
-        IUser<string> GetAuthenticatedUser();
+        IUser GetAuthenticatedUser();
     }
 }
