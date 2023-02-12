@@ -155,8 +155,8 @@ class PureHttp {
           // return response.data;
         }
         if (PureHttp.initConfig.beforeResponseCallback) {
-          PureHttp.initConfig.beforeResponseCallback(response);
-          return response.data;
+          return PureHttp.initConfig.beforeResponseCallback(response);
+          // response.data;
         }
         return response.data;
       },
@@ -210,7 +210,6 @@ class PureHttp {
       ...param,
       ...axiosConfig
     } as PureHttpRequestConfig;
-
     const baseURL = param.baseURL || import.meta.env.VITE_APP_BASE_URL;
     config.baseURL = baseURL;
     // 单独处理自定义请求/响应回掉

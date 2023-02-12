@@ -32,12 +32,12 @@ namespace ViazyNetCore.Swagger.Knife4jUI
         {
             _options = options ?? new Knife4UIOptions();
 
-            _staticFileMiddleware = CreateStaticFileMiddleware(next, hostingEnv, loggerFactory, options);
+            this._staticFileMiddleware = this.CreateStaticFileMiddleware(next, hostingEnv, loggerFactory, options);
 
             _jsonSerializerOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                IgnoreNullValues = true
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             };
             _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
         }
@@ -77,7 +77,7 @@ namespace ViazyNetCore.Swagger.Knife4jUI
 
         private async Task RespondWithConfig(HttpResponse response)
         {
-            await response.WriteAsync(JsonSerializer.Serialize(_options.ConfigObject.Urls, _jsonSerializerOptions));
+            await response.WriteAsync(JsonSerializer.Serialize(this._options.ConfigObject.Urls, _jsonSerializerOptions));
         }
 
         private StaticFileMiddleware CreateStaticFileMiddleware(
@@ -106,18 +106,16 @@ namespace ViazyNetCore.Swagger.Knife4jUI
             response.StatusCode = 200;
             response.ContentType = "text/html;charset=utf-8";
 
-            using (var stream = _options.IndexStream())
+            using var stream = this._options.IndexStream();
+            // Inject arguments before writing to response
+            var htmlBuilder = new StringBuilder(new StreamReader(stream).ReadToEnd());
+
+            foreach (var entry in this.GetIndexArguments())
             {
-                // Inject arguments before writing to response
-                var htmlBuilder = new StringBuilder(new StreamReader(stream).ReadToEnd());
-
-                foreach (var entry in GetIndexArguments())
-                {
-                    htmlBuilder.Replace(entry.Key, entry.Value);
-                }
-
-                await response.WriteAsync(htmlBuilder.ToString(), Encoding.UTF8);
+                htmlBuilder.Replace(entry.Key, entry.Value);
             }
+
+            await response.WriteAsync(htmlBuilder.ToString(), Encoding.UTF8);
         }
 
 
@@ -125,8 +123,8 @@ namespace ViazyNetCore.Swagger.Knife4jUI
         {
             return new Dictionary<string, string>()
             {
-                { "%(DocumentTitle)", _options.DocumentTitle },
-                { "%(HeadContent)", _options.HeadContent },
+                { "%(DocumentTitle)", this._options.DocumentTitle },
+                { "%(HeadContent)", this._options.HeadContent },
                 //{ "%(OAuthConfigObject)", JsonSerializer.Serialize(_options.OAuthConfigObject, _jsonSerializerOptions) }
             };
         }

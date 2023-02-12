@@ -4,10 +4,10 @@ export interface ApiResponse {
   data?: ApiResponseData;
 }
 
-interface ApiResponseData {
+export interface ApiResponseData {
   success: boolean;
   message?: string;
-  err_code: number;
+  err_code?: number;
   result: any;
 }
 
