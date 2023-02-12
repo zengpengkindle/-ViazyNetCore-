@@ -4,6 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,7 +18,9 @@
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.EventBus\ViazyNetCore.EventBus.csproj" />
 		<ProjectReference Include="..\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
+		<ProjectReference Include="..\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
 	</ItemGroup>
 
 </Project>

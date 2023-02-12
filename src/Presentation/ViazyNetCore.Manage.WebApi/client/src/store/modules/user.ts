@@ -34,7 +34,9 @@ export const useUserStore = defineStore({
           .then(data => {
             setToken({
               accessToken: data.accessToken,
-              expires: data.expiresIn
+              expires: data.expiresIn,
+              roles:['admin'],
+              username:'ad'
             });
             resolve(data);
           })

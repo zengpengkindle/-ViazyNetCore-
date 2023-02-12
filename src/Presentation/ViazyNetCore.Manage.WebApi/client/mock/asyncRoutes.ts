@@ -1,5 +1,6 @@
 // 模拟后端动态生成路由
 import { MockMethod } from "vite-plugin-mock";
+import { ApiResponseMockDefault } from "./mockResBase";
 
 /**
  * roles：页面级别权限，这里模拟二种 "admin"、"common"
@@ -40,10 +41,7 @@ export default [
     url: "/getAsyncRoutes",
     method: "get",
     response: () => {
-      return {
-        success: true,
-        data: [permissionRouter]
-      };
+      return new ApiResponseMockDefault([permissionRouter]);
     }
   }
 ] as MockMethod[];

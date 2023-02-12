@@ -201,7 +201,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="value"></param>
         public static void OAuthClientId(this Knife4UIOptions options, string value)
         {
+#pragma warning disable CS0612 // 类型或成员已过时
             options.OAuthConfigObject.ClientId = value;
+#pragma warning restore CS0612 // 类型或成员已过时
         }
 
         /// <summary>
@@ -211,7 +213,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="value"></param>
         public static void OAuthClientSecret(this Knife4UIOptions options, string value)
         {
+#pragma warning disable CS0612 // 类型或成员已过时
             options.OAuthConfigObject.ClientSecret = value;
+#pragma warning restore CS0612 // 类型或成员已过时
         }
 
         /// <summary>
@@ -221,7 +225,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="value"></param>
         public static void OAuthRealm(this Knife4UIOptions options, string value)
         {
+#pragma warning disable CS0612 // 类型或成员已过时
             options.OAuthConfigObject.Realm = value;
+#pragma warning restore CS0612 // 类型或成员已过时
         }
 
         /// <summary>
@@ -231,7 +237,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="value"></param>
         public static void OAuthAppName(this Knife4UIOptions options, string value)
         {
+#pragma warning disable CS0612 // 类型或成员已过时
             options.OAuthConfigObject.AppName = value;
+#pragma warning restore CS0612 // 类型或成员已过时
         }
 
         /// <summary>
@@ -241,7 +249,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="value"></param>
         public static void OAuthScopeSeparator(this Knife4UIOptions options, string value)
         {
+#pragma warning disable CS0612 // 类型或成员已过时
             options.OAuthConfigObject.ScopeSeparator = value;
+#pragma warning restore CS0612 // 类型或成员已过时
         }
 
         /// <summary>
@@ -253,7 +263,9 @@ namespace Microsoft.AspNetCore.Builder
             this Knife4UIOptions options,
             Dictionary<string, string> value)
         {
+#pragma warning disable CS0612 // 类型或成员已过时
             options.OAuthConfigObject.AdditionalQueryStringParams = value;
+#pragma warning restore CS0612 // 类型或成员已过时
         }
 
         /// <summary>
@@ -264,7 +276,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="options"></param>
         public static void OAuthUseBasicAuthenticationWithAccessCodeGrant(this Knife4UIOptions options)
         {
+#pragma warning disable CS0612 // 类型或成员已过时
             options.OAuthConfigObject.UseBasicAuthenticationWithAccessCodeGrant = true;
+#pragma warning restore CS0612 // 类型或成员已过时
         }
 
         /// <summary>
@@ -274,7 +288,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="options"></param>
         public static void OAuthUsePkce(this Knife4UIOptions options)
         {
+#pragma warning disable CS0612 // 类型或成员已过时
             options.OAuthConfigObject.UsePkceWithAuthorizationCodeGrant = true;
+#pragma warning restore CS0612 // 类型或成员已过时
         }
     }
 }
