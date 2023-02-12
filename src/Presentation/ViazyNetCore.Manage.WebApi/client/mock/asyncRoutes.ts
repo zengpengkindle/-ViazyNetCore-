@@ -36,12 +36,50 @@ const permissionRouter = {
   ]
 };
 
+const systemRouter = {
+  path: "/system",
+  meta: {
+    icon: "lollipop",
+    title: "系统管理",
+    rank: 11
+  },
+  children: [
+    {
+      path: "/system/user/index",
+      name: "User",
+      meta: {
+        icon: "flUser",
+        title: "用户管理",
+        roles: ["admin"]
+      }
+    },
+    // {
+    //   path: "/system/role/index",
+    //   name: "Role",
+    //   meta: {
+    //     icon: "role",
+    //     title: "角色管理",
+    //     roles: ["admin"]
+    //   }
+    // },
+    // {
+    //   path: "/system/dept/index",
+    //   name: "Dept",
+    //   meta: {
+    //     icon: "dept",
+    //     title: "部门管理",
+    //     roles: ["admin"]
+    //   }
+    // }
+  ]
+};
+
 export default [
   {
     url: "/getAsyncRoutes",
     method: "get",
     response: () => {
-      return new ApiResponseMockDefault([permissionRouter]);
+      return new ApiResponseMockDefault([permissionRouter,systemRouter]);
     }
   }
 ] as MockMethod[];

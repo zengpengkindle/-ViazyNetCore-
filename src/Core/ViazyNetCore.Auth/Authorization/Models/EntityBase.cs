@@ -1,6 +1,6 @@
 ﻿using FreeSql.DataAnnotations;
 
-namespace ViazyNetCore.Authorization.Model
+namespace ViazyNetCore.Authorization.Models
 {
 
     public class EntityBase : EntityBase<long>

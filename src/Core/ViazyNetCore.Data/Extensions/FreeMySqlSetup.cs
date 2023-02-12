@@ -55,7 +55,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // FreeSql 必须使用单例注入
             services.AddSingleton(fsqlFunc);
-
+            services.AddScoped(sp =>
+            {
+                var freeSql = sp.GetRequiredService<IFreeSql>();
+                return new UnitOfWorkManager(freeSql);
+            });
             services.AddScoped(typeof(IBaseRepository<>), typeof(GuidRepository<>));
             services.AddScoped(typeof(BaseRepository<>), typeof(GuidRepository<>));
 

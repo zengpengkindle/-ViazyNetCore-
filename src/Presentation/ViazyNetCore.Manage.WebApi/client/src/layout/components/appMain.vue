@@ -143,6 +143,12 @@ const transitionMain = defineComponent({
 }
 
 .main-content {
-  margin: 24px;
+  margin: 16px;
+}
+.main-content :deep(.el-form){
+  border-radius: 4px;
+}
+.main-content :deep(.table-content){
+  border-radius: 4px;
 }
 </style>

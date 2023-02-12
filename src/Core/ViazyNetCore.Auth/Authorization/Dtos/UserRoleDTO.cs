@@ -7,7 +7,7 @@ namespace ViazyNetCore.Authorization.Dtos
     /// <summary>
     /// 表示一个三方银行信息。
     /// </summary>
-    public partial class UserRoleDto
+    public partial class UserDto
     {
         /// <summary>
         /// 设置或获取一个值，表示编号
@@ -43,10 +43,10 @@ namespace ViazyNetCore.Authorization.Dtos
         /// 
         /// </summary>
         [JsonIgnore]
-        public string GoogleKey { get; set; }
+        public string? GoogleKey { get; set; }
 
-        public string ExtendData { get; set; }
+        public string? ExtendData { get; set; }
 
-        public string RoleExtendData { get; set; }
+        public string? RoleExtendData { get; set; }
     }
 }

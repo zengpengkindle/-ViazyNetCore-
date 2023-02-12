@@ -1,14 +1,7 @@
-﻿using ViazyNetCore.Authorization;
-using ViazyNetCore.Authorization.Models;
-using ViazyNetCore.Authorization.Modules;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
+using ViazyNetCore;
+using ViazyNetCore.Authorization.Modules;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

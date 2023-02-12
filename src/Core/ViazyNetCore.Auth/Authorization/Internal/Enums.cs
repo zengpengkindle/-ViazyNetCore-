@@ -6,22 +6,6 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization
 {
-    public enum ComStatus
-    {
-        /// <summary>
-        /// 表示实体已启用（1）。
-        /// </summary>
-        Enabled = 1,
-        /// <summary>
-        /// 表示实体已禁用（0）。
-        /// </summary>
-        Disabled = 0,
-        /// <summary>
-        /// 表示实体已被逻辑删除（-1）。
-        /// </summary>
-        Deleted = -1
-    }
-
     public enum MenuType
     {
         /// <summary>

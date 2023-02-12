@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ViazyNetCore.Authorization.Model
+namespace ViazyNetCore.Authorization.Models
 {
     /// <summary>
     /// 表示一个角色页面。

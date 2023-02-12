@@ -1,5 +1,3 @@
-using ViazyNetCore.Authorization.Model;
-
 namespace ViazyNetCore.Authorization.Models
 {
     /// <summary>

@@ -57,7 +57,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns></returns>
-        Task<UserRoleDto> GetUserByUserName(string userName);
+        Task<UserDto> GetUserByUserName(string userName);
 
         /// <summary>
         /// 重置指定用户编号的密码。

@@ -2,10 +2,10 @@
 
 namespace ViazyNetCore.Dtos
 {
-    public class RouterModel
-    {
-        public List<PageGroupModel> Groups { get; set; }
+    //public class RouterModel
+    //{
+    //    public List<PageGroupModel> Groups { get; set; }
 
-        public List<PageSimpleModel> Pages { get; set; }
-    }
+    //    public List<PageSimpleModel> Pages { get; set; }
+    //}
 }

@@ -9,10 +9,10 @@ namespace ViazyNetCore.Authorization.Modules
     [Injection]
     public class AuthorizationService : IAuthorizationService
     {
-        private readonly PermissionService _permissionService;
+        private readonly IPermissionService _permissionService;
         private readonly RoleService _roleService;
 
-        public AuthorizationService(PermissionService permissionService, RoleService roleService)
+        public AuthorizationService(IPermissionService permissionService, RoleService roleService)
         {
             this._permissionService = permissionService;
             this._roleService = roleService;

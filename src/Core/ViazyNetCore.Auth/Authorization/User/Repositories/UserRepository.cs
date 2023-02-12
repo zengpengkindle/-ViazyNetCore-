@@ -129,9 +129,20 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns></returns>
-        public Task<UserRoleDto> GetUserByUserName(string userName)
+        public Task<UserDto> GetUserByUserName(string userName)
         {
-            throw new NotImplementedException();
+            return this.Select.Where(u => u.Username == userName).WithTempQuery(u => new UserDto
+            {
+                Id = u.Id,
+                Username = u.Username,
+                Password = u.Password,
+                PasswordSalt = u.PasswordSalt,
+                Nickname = u.Nickname,
+                Status = u.Status,
+                GoogleKey = u.GoogleKey,
+                ExtendData = u.ExtraData,
+            }).FirstAsync();
+
             //return this.Select.From<BmsRole, BmsUserRole>().InnerJoin((u, r, ur) => u.Id == ur.UserId && r.Id == ur.RoleId)
             //    .Where((u, r,ur) => u.Username == userName)
             //    .WithTempQuery((u, r,ur) => new UserRoleDTO
@@ -268,12 +279,6 @@ namespace ViazyNetCore.Modules
         {
             throw new NotImplementedException();
         }
-
-        Task<UserRoleDto> IUserRepository.GetUserByUserName(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
     }

@@ -106,5 +106,10 @@ namespace ViazyNetCore.Authorization.Modules
         {
             return this._roleRepository.UpdateDiy.Set(p => p.Status == ComStatus.Deleted).Where(p => p.Id == id).ExecuteAffrowsAsync();
         }
+
+        public Task UpdateAsync(BmsRole item)
+        {
+            return this._roleRepository.InsertOrUpdateAsync(item);
+        }
     }
 }

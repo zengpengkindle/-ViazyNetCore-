@@ -7,11 +7,10 @@ using ViazyNetCore.Authorization.Model;
 namespace ViazyNetCore.Authorization.Models
 {
     /// <summary>
-    /// 表示一个员工。
+    /// 表示一个管理用户。
     /// </summary>
     public partial class BmsUser : EntityBase<string>
     {
-
         /// <summary>
         /// 设置或获取一个值，表示账号。
         /// </summary>

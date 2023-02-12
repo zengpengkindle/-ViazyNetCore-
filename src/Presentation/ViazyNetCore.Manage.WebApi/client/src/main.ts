@@ -9,7 +9,7 @@ import createGlobal from '@/utils/globals';
 // import { useEcharts } from "@/plugins/echarts";
 import { injectResponsiveStorage } from "@/utils/responsive";
 
-// import Table from "@pureadmin/table";
+import Table from "@pureadmin/table";
 // import PureDescriptions from "@pureadmin/descriptions";
 
 // 引入重置样式
@@ -51,9 +51,10 @@ getServerConfig(app).then(async config => {
   injectResponsiveStorage(app, config);
   setupStore(app);
   app.use(MotionPlugin).use(ElementPlus);
-  app.use(createGlobal());
-  // .use(useEcharts);
-  // .use(Table);
-  // .use(PureDescriptions);
+  app.use(createGlobal())
+  // .use(useEcharts)
+  .use(Table)
+  // .use(PureDescriptions)
+  ;
   app.mount("#app");
 });

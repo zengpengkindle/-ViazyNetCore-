@@ -10,12 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using ViazyNetCore.Auth.Authorization.ViewModels;
 
 namespace ViazyNetCore.Authrozation
 {
     [Authorize]
     [ApiController]
     [Permission(PermissionIds.User)]
+    [Route("api/[controller]")]
     public class RoleController : ControllerBase
     {
         private readonly RoleService _roleService;
@@ -27,18 +29,19 @@ namespace ViazyNetCore.Authrozation
             this._permissionService = permissionService;
         }
 
-
+        [HttpPost, Route("getUserMenus")]
         public Task<PageData<RoleFindAllModel>> FindRoles(FindRolesParameters args)
         {
-           return this._roleService.FindRoles(args);
+            return this._roleService.FindRoles(args);
         }
 
-
+        [HttpPost, Route("getAll")]
         public Task<List<RoleSimpleModel>> GetAll()
         {
             return this._roleService.GetAllAsync();
         }
 
+        [HttpPost, Route("removeRole")]
         public async Task RemoveRole(string id)
         {
             if (id == RoleIds.Instance().SuperAdministrator())
@@ -51,7 +54,8 @@ namespace ViazyNetCore.Authrozation
 
         }
 
-        public async Task UpdateRole(BmsRole item, string[] keys)
+        [HttpPost, Route("updateRole")]
+        public async Task UpdateRole(UpdateBmsRoleArgs args)
         {
             //var query = this._engine.Table<BmsRole>();
             //if (await query.AnyAsync(r => r.Name == item.Name && r.Id != item.Id)) throw new ApiException($"角色名称【{item.Name}】已存在！");
@@ -66,11 +70,11 @@ namespace ViazyNetCore.Authrozation
             //{
             //    await query.ModifyAsync(item);
             //}
-
-            //await _permissionService.UpdatePermissionsInUserRole(keys, item.Id, OwnerType.Role);
+            await this._roleService.UpdateAsync(args.Item);
+            await _permissionService.UpdatePermissionsInUserRole(args.Keys, args.Item.Id, OwnerType.Role);
         }
 
-
+        [HttpPost, Route("findRole")]
         public async Task<BmsRole> FindRole(string id)
         {
             var role = await this._roleService.GetAsync(id);

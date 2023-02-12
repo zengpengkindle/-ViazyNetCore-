@@ -12,9 +12,10 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authrozation
 {
-    [Permission(PermissionIds.User)]
     [Authorize]
+    [Permission(PermissionIds.User)]
     [ApiController]
+    [Route("api/[controller]")]
     public class PermissionController : ControllerBase
     {
         private readonly RoleService _roleService;
@@ -26,6 +27,7 @@ namespace ViazyNetCore.Authrozation
             this._permissionService = permissionService;
         }
 
+        [HttpGet, Route("getAll")]
         public async Task<List<PermissionKey>> GetAll()
         {
             var result = await this._permissionService.GetAll();
@@ -33,6 +35,7 @@ namespace ViazyNetCore.Authrozation
             return result;
         }
 
+        [HttpGet, Route("getRolePermission")]
         public async Task<List<string>> GetRolePermission(string roleId)
         {
             var result = await this._permissionService.GetPermissionsInUserRole(roleId, OwnerType.Role);
@@ -40,11 +43,18 @@ namespace ViazyNetCore.Authrozation
             return result.Select(p => p.PermissionItemKey).ToList();
         }
 
+        [HttpPost, Route("updatePermissionsInRole")]
         public async Task UpdatePermissionsInRole(string roleId, string[] key)
         {
             await _permissionService.UpdatePermissionsInUserRole(key, roleId, OwnerType.Role);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="permissionModel"></param>
+        /// <returns></returns>
+        [HttpPost, Route("addPermission")]
         public async Task<int> AddPermission(PermissionModel permissionModel)
         {
             await this._permissionService.AddPermission(permissionModel.Name, permissionModel.Key);
@@ -53,12 +63,15 @@ namespace ViazyNetCore.Authrozation
             return permission.Id;
         }
 
+        [HttpPost, Route("getMenuKeysInPermissionKey")]
         public async Task<List<string>> GetMenuKeysInPermissionKey(string permissionKey)
         {
             var result = await this._permissionService.GetMenusInPermissionKey(permissionKey);
 
             return result.Select(p => p.Id).ToList();
         }
+
+        [HttpPost, Route("updateMenusInPermission")]
         public async Task UpdateMenusInPermission(string permissionKey, string[] menuIds)
         {
             await this._permissionService.UpdateMenusInPermission(permissionKey, menuIds);
@@ -66,6 +79,7 @@ namespace ViazyNetCore.Authrozation
 
 
         #region 功能菜单管理
+        [HttpPost, Route("getMenus")]
         public async Task<MenuTreeModel> GetMenus()
         {
             var result = await this._permissionService.GetAllMenu();
@@ -83,12 +97,14 @@ namespace ViazyNetCore.Authrozation
             return tree;
         }
 
+        [HttpPost, Route("getMenu")]
         public async Task<BmsMenus> GetMenu(string id)
         {
             var result = await this._permissionService.GetMenu(id);
             return result;
         }
 
+        [HttpPost, Route("bindTree")]
         private void BindTree(MenuTreeModel treeModel, List<BmsMenus> source)
         {
             var menus = source.Where(p => p.ParentId == treeModel.Id).OrderBy(p => p.OrderId);
@@ -109,11 +125,13 @@ namespace ViazyNetCore.Authrozation
             }
         }
 
+        [HttpPost, Route("updateMenu")]
         public Task UpdateMenu(BmsMenus item)
         {
             return this._permissionService.UpdateMenus(item);
         }
 
+        [HttpPost, Route("removeMenu")]
         public Task RemoveMenu(string menuId) {
             return this._permissionService.RemoveMenu(menuId);
         }
@@ -123,6 +141,7 @@ namespace ViazyNetCore.Authrozation
         #region 菜单
 
         [Permission(PermissionIds.Anonymity)]
+        [HttpPost, Route("getUserMenus")]
         public async Task<List<PrivTreeModel>> GetUserMenus()
         {
             var auth = this.HttpContext.GetAuthUser();
