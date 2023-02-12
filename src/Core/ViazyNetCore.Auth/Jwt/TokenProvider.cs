@@ -55,7 +55,7 @@ namespace ViazyNetCore.Auth.Jwt
             var result = new JwtTokenResult()
             {
                 AccessToken = tokenString,
-                ExpiresIn = _option.ExpiresIn,
+                ExpiresIn = expires.ConvertToJsTime(),
             };
 
             if (this._option.UseDistributedCache)
