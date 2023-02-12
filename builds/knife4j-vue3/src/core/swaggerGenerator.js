@@ -28,7 +28,7 @@ function formatMethodName(name) {
         return ''
     }
     // const fnName = name.substring(name.lastIndexOf('/'))
-    const fnName=name.replaceAll('/','_');
+    const fnName=name.replace('/api/','/').replaceAll('/','_');
     return _.camelCase(name)
 }
 /**

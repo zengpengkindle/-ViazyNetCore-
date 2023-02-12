@@ -21,7 +21,7 @@ export enum <%= m.Name %> { <% -%>
 }
 <% }) %>`;
 
-export let methodTpl=`
+export let methodTpl=`import { http } from '@/utils/http';
 <% if(controller.ImportModels && controller.ImportModels.length>0){%>import { <% controller.ImportModels.forEach( (item,index) => {%><%= item+(index<controller.ImportModels.length-1?', ':'') %><% }) %> } from './model'<% } %>
 <% if(controller.Description){ %> /**
  * <%=controller.Description || '' %>
@@ -66,7 +66,7 @@ export class <%=controller.Name%> extends Base {<% controller.Methods.forEach( m
 <% }) %>
    */
   public <%=m.Name %>(<%-pss%>): <%-isDownload?'void':'Promise<'+m.Responses.TsType+'>' %> {
-    return this.<%=isDownload?'download':'request'%>({
+    return http.<%=isDownload?'download':'request'%>({
       url: '<%-url%>',
       method: '<%=m.RequestName%>'<% if(dt) { %><%- ','%>
 <%- '      data: '+dt -%>
