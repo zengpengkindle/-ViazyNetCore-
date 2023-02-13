@@ -41,7 +41,7 @@ namespace ViazyNetCore.Modules
                 var password = DataSecurity.GenerateSaltedHash(randPwd.ToMd5(), out var salt);
                 var user = new BmsUser
                 {
-                    Id = model.Id,
+                    Id = Snowflake.NextIdString(),
                     Username = model.Username,
                     Password = password,
                     PasswordSalt = salt,

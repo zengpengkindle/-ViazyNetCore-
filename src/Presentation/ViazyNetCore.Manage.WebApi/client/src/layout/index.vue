@@ -55,7 +55,7 @@ function setTheme(layoutModel: string) {
   window.document.body.setAttribute("layout", layoutModel);
   $storage.layout = {
     layout: `${layoutModel}`,
-    theme: $storage.layout?.theme,
+    theme: $storage.layout?.theme||'light',
     darkMode: $storage.layout?.darkMode,
     sidebarStatus: $storage.layout?.sidebarStatus,
     epThemeColor: $storage.layout?.epThemeColor

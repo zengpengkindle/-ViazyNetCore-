@@ -177,22 +177,18 @@ class PureHttp {
               type: "error",
               customClass: "antd"
             });
-            return;
+          } else if (response.code === 400) {
+            message(response.message, { type: "error" });
           } else if (response.code === 401) {
-            message(response.data?.message || `登录过期`, { type: "error" });
-            return;
+            message(response.message || `登录过期`, { type: "error" });
           } else if (response.code === 403) {
             msg.error(`您的权限不足！`);
-            return;
           } else if (response.code === 406) {
-            msg.error(response.data?.message || ``);
-            return;
+            msg.error(response.message || ``);
           } else if (response.code === 409) {
             msg.warning(`您的账号已在其他地方登录！`);
-            return;
           } else if (response.code === 500) {
             msg.error(`Oop~ 服务器繁忙,请稍候再试`);
-            return;
           }
         }
         // 所有的响应异常 区分来源为取消请求/非取消请求

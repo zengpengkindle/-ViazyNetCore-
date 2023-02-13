@@ -29,7 +29,7 @@ namespace ViazyNetCore.Authrozation
             this._permissionService = permissionService;
         }
 
-        [HttpPost, Route("getUserMenus")]
+        [HttpPost, Route("findRoles")]
         public Task<PageData<RoleFindAllModel>> FindRoles(FindRolesParameters args)
         {
             return this._roleService.FindRoles(args);
