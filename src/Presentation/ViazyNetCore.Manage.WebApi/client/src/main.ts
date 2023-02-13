@@ -5,7 +5,7 @@ import ElementPlus from "element-plus";
 import { getServerConfig } from "./config";
 import { createApp, Directive } from "vue";
 import { MotionPlugin } from "@vueuse/motion";
-import createGlobal from '@/utils/globals';
+import createGlobal from "@/utils/globals";
 // import { useEcharts } from "@/plugins/echarts";
 import { injectResponsiveStorage } from "@/utils/responsive";
 
@@ -51,10 +51,9 @@ getServerConfig(app).then(async config => {
   injectResponsiveStorage(app, config);
   setupStore(app);
   app.use(MotionPlugin).use(ElementPlus);
-  app.use(createGlobal())
-  // .use(useEcharts)
-  .use(Table)
-  // .use(PureDescriptions)
-  ;
+  app
+    .use(createGlobal())
+    // .use(useEcharts)
+    .use(Table); // .use(PureDescriptions)
   app.mount("#app");
 });

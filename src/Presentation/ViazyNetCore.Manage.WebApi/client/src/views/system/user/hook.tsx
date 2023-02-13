@@ -1,24 +1,24 @@
 import dayjs from "dayjs";
 import { message } from "@/utils/message";
 import UserApi from "@/api/user";
-import {UserFindAllArgs,ComStatus,UserFindAllModel} from '@/api/model';
+import { UserFindAllArgs, ComStatus, UserFindAllModel } from "@/api/model";
 import { ElMessageBox } from "element-plus";
 import { type PaginationProps } from "@pureadmin/table";
-import { reactive, ref, computed, onMounted } from "vue";
+import { reactive, ref, computed, onMounted, type Ref } from "vue";
 import { nextTick } from "process";
 
 export function useUser() {
-  const form:UserFindAllArgs = reactive({
+  const form: UserFindAllArgs = reactive({
     usernameLike: "",
     mobile: "",
     status: ComStatus.Enabled,
-    roleId:"",
-    sort:0,
-    sortField:null,
-     page:1,
-     limit:10,
+    roleId: "",
+    sort: 0,
+    sortField: null,
+    page: 1,
+    limit: 10
   });
-  const dataList = ref([]);
+  const dataList: Ref<Array<UserFindAllModel>> = ref([]);
   const loading = ref(true);
   const switchLoadMap = ref({});
   const pagination = reactive<PaginationProps>({
@@ -186,7 +186,11 @@ export function useUser() {
 
   async function onSearch() {
     loading.value = true;
-    const data= await UserApi.apiUserFindAll( {...form,page:pagination.currentPage,limit:pagination.pageSize} );
+    const data = await UserApi.apiUserFindAll({
+      ...form,
+      page: pagination.currentPage,
+      limit: pagination.pageSize
+    });
     dataList.value = data.rows;
     pagination.total = data.total;
     nextTick(() => {

@@ -3,6 +3,7 @@ using NLog.Web;
 using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Caching.DependencyInjection;
+using ViazyNetCore.Manage.WebApi.Controllers;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +34,9 @@ builder.Services.AddJwtAuthentication(option => {
     option.Issuer= optionJson.Issuer;
     option.AppName= optionJson.AppName;
 });
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    //.AddApplicationPart(typeof(TestController).Assembly)
+    ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger("ViazyNetCore-Manage");
