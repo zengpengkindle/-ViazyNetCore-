@@ -44,9 +44,10 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost, Route("updatePermissionsInRole")]
-        public async Task UpdatePermissionsInRole(string roleId, string[] key)
+        public async Task<bool> UpdatePermissionsInRole(string roleId, string[] key)
         {
             await _permissionService.UpdatePermissionsInUserRole(key, roleId, OwnerType.Role);
+            return true;
         }
 
         /// <summary>
@@ -72,15 +73,16 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost, Route("updateMenusInPermission")]
-        public async Task UpdateMenusInPermission(string permissionKey, string[] menuIds)
+        public async Task<bool> UpdateMenusInPermission(string permissionKey, string[] menuIds)
         {
             await this._permissionService.UpdateMenusInPermission(permissionKey, menuIds);
+            return true;
         }
 
 
         #region 功能菜单管理
-        [HttpPost, Route("getMenus")]
-        public async Task<MenuTreeModel> GetMenus()
+        [HttpPost, Route("getMenusTree")]
+        public async Task<List<MenuTreeModel>> GetMenusTree()
         {
             var result = await this._permissionService.GetAllMenu();
             var trees = new List<MenuTreeModel>();
@@ -92,9 +94,15 @@ namespace ViazyNetCore.Authrozation
                 Type = MenuType.MidNode,
                 Icon = "el-icon-tickets"
             };
-            BindTree(tree, result);
+            this.BindTree(tree, result);
             trees.Add(tree);
-            return tree;
+            return tree.Children;
+        }
+
+        [HttpPost, Route("getMenus")]
+        public async Task<List<BmsMenus>> GetMenus()
+        {
+            return await this._permissionService.GetAllMenu();
         }
 
         [HttpPost, Route("getMenu")]
@@ -104,23 +112,23 @@ namespace ViazyNetCore.Authrozation
             return result;
         }
 
-        [HttpPost, Route("bindTree")]
         private void BindTree(MenuTreeModel treeModel, List<BmsMenus> source)
         {
             var menus = source.Where(p => p.ParentId == treeModel.Id).OrderBy(p => p.OrderId);
-            if(menus.Count() == 0)
+            if (!menus.Any())
                 return;
             treeModel.Children = new List<MenuTreeModel>();
-            foreach(var menu in menus)
+            foreach (var menu in menus)
             {
                 var tree = new MenuTreeModel
                 {
                     Id = menu.Id,
                     Label = menu.Name,
                     Type = menu.Type,
-                    Icon = menu.Icon
+                    Icon = menu.Icon,
+                    ParentId = treeModel.Id,
                 };
-                BindTree(tree, source);
+                this.BindTree(tree, source);
                 treeModel.Children.Add(tree);
             }
         }
@@ -132,8 +140,10 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost, Route("removeMenu")]
-        public Task RemoveMenu(string menuId) {
-            return this._permissionService.RemoveMenu(menuId);
+        public async Task<bool> RemoveMenu(string menuId)
+        {
+            await this._permissionService.RemoveMenu(menuId);
+            return true;
         }
 
         #endregion
@@ -147,9 +157,9 @@ namespace ViazyNetCore.Authrozation
             var auth = this.HttpContext.GetAuthUser();
             var privs = await this._permissionService.ResolveUserPermission(auth.UserKey);
             var privKeys = privs.Select(p => p.PermissionItemKey).Distinct().ToArray();
-            if(auth.UserName == "admin")
+            if (auth.UserName == "admin")
             {
-                if(!privKeys.Contains(PermissionIds.User))
+                if (!privKeys.Contains(PermissionIds.User))
                     privKeys = privKeys.Concat(new string[] { PermissionIds.User }).ToArray();
             }
             var menus = await this._permissionService.GetMenusInPermissionKeys(privKeys);
@@ -167,10 +177,10 @@ namespace ViazyNetCore.Authrozation
         private void BindPrivTree(PrivTreeModel treeModel, List<BmsMenus> source)
         {
             var menus = source.Where(p => p.ParentId == treeModel.Id).OrderBy(p => p.OrderId);
-            if(menus.Count() == 0)
+            if (menus.Count() == 0)
                 return;
             treeModel.Children = new List<PrivTreeModel>();
-            foreach(var menu in menus)
+            foreach (var menu in menus)
             {
                 var tree = new PrivTreeModel
                 {
@@ -197,6 +207,7 @@ namespace ViazyNetCore.Authrozation
         public string Icon { get; set; }
 
         public List<MenuTreeModel> Children { get; set; }
+        public string ParentId { get; set; }
     }
 
     public class PrivTreeModel

@@ -49,7 +49,7 @@ const systemRouter = {
       path: "/system/user/index",
       name: "User",
       meta: {
-        icon: useRenderIcon("flUser"),
+        icon: "flUser",
         title: "用户管理",
         roles: ["admin"]
       }
@@ -60,6 +60,15 @@ const systemRouter = {
       meta: {
         icon: "role",
         title: "角色管理",
+        roles: ["admin"]
+      }
+    },
+    {
+      path: "/system/menu/index",
+      name: "Menu",
+      meta: {
+        icon: "menu",
+        title: "菜单管理",
         roles: ["admin"]
       }
     },

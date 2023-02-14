@@ -42,7 +42,7 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost, Route("removeRole")]
-        public async Task RemoveRole(string id)
+        public async Task<bool> RemoveRole(string id)
         {
             if (id == RoleIds.Instance().SuperAdministrator())
             {
@@ -50,12 +50,13 @@ namespace ViazyNetCore.Authrozation
             }
             await this._roleService.DeleteRoleAsync(id);
             await _permissionService.UpdatePermissionsInUserRole(null, id, OwnerType.Role);
+            return true;
             //await context.Table<BmsPermission>().Where(w => w.OwnerId == id && w.OwnerType == OwnerType.Role).RemoveAsync();
 
         }
 
         [HttpPost, Route("updateRole")]
-        public async Task UpdateRole(UpdateBmsRoleArgs args)
+        public async Task<bool> UpdateRole(UpdateBmsRoleArgs args)
         {
             //var query = this._engine.Table<BmsRole>();
             //if (await query.AnyAsync(r => r.Name == item.Name && r.Id != item.Id)) throw new ApiException($"角色名称【{item.Name}】已存在！");
@@ -73,6 +74,7 @@ namespace ViazyNetCore.Authrozation
             var role = args.CopyTo<BmsRole>();
             await this._roleService.UpdateAsync(role);
             await _permissionService.UpdatePermissionsInUserRole(args.Keys, args.Id, OwnerType.Role);
+            return true;
         }
 
         [HttpPost, Route("findRole")]

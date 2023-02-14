@@ -39,6 +39,38 @@ export interface RoleFindAllModel {
     name: string
 }
 
+/**
+* BmsRole
+*/
+export interface BmsRole {
+
+    name: string
+
+    status: ComStatus
+
+    extraData: string
+
+    createTime: string
+
+    modifyTime: string
+
+    id: string
+}
+/**
+* UpdateBmsRoleArgs
+*/
+export interface UpdateBmsRoleArgs {
+
+    id: string | null
+
+    name: string | null
+
+    status: ComStatus | null
+
+    extraData: string | null
+
+    keys: Array<string> | null
+}
 
 export class RoleApi {
     /**
@@ -46,10 +78,28 @@ export class RoleApi {
      */
     public apiRoleFindRoles(param1?: FindRolesParameters): Promise<RoleFindAllModelPageData> {
         return http.request({
-          url: '/api/Role/findRoles',
-          method: 'post',
-          data: param1
+            url: '/api/Role/findRoles',
+            method: 'post',
+            data: param1
         })
-      }
+    }
+    /**
+    * 无
+    */
+    public apiRoleFindRole(id?: string): Promise<BmsRole> {
+        return http.request({
+            url: '/api/Role/findRole',
+            method: 'post',
+            params: { id }
+        })
+    }
+
+    public apiRoleUpdateRole(param1?: UpdateBmsRoleArgs): Promise<boolean> {
+        return http.request({
+            url: '/api/Role/updateRole',
+            method: 'post',
+            data: param1
+        })
+    }
 }
 export default new RoleApi()
