@@ -99,7 +99,7 @@ namespace ViazyNetCore.Authorization.Modules
         public async Task UpdateUser(IUser user, IUser historyData = null)
         {
             var history_user_object = historyData as BmsUser;
-            if (!(user is BmsUser user_object))
+            if (user is not BmsUser user_object)
                 return;
             await this._userRepository.UpdateDiy.SetDto(new { user.Id, user.Username, user.Nickname }).ExecuteAffrowsAsync();
         }
