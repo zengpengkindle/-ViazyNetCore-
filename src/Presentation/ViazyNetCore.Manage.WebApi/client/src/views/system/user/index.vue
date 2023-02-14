@@ -88,7 +88,6 @@ const {
         </template>
         <template v-slot="{ size, checkList }">
           <pure-table
-            border
             align-whole="center"
             table-layout="auto"
             :loading="loading"

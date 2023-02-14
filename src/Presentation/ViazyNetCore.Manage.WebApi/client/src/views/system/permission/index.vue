@@ -31,7 +31,7 @@ const {
                 </el-button>
             </template>
             <template v-slot="{ size, checkList }">
-                <pure-table ref="tableRef" border align-whole="center" row-key="id" showOverflowTooltip
+                <pure-table ref="tableRef" align-whole="center" row-key="id" showOverflowTooltip
                     table-layout="auto" :loading="loading" :size="size" :data="dataList"
                     :columns="columns" :checkList="checkList" :header-cell-style="{
                         background: 'var(--el-table-row-hover-bg-color)',

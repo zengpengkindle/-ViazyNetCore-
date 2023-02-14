@@ -38,17 +38,12 @@ export function useRole() {
     {
       label: "角色编号",
       prop: "id",
-      minWidth: 100
+      minWidth: 200
     },
     {
       label: "角色名称",
       prop: "name",
       minWidth: 120
-    },
-    {
-      label: "角色标识",
-      prop: "code",
-      minWidth: 150
     },
     {
       label: "角色类型",
@@ -74,8 +69,8 @@ export function useRole() {
           v-model={scope.row.status}
           active-value={1}
           inactive-value={0}
-          active-text="已开启"
-          inactive-text="已关闭"
+          active-text="开启"
+          inactive-text="关闭"
           inline-prompt
           onChange={() => onChange(scope as any)}
         />

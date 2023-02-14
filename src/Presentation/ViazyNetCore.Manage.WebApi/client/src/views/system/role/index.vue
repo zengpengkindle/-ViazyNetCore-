@@ -69,7 +69,7 @@ const {
         </el-button>
       </template>
       <template v-slot="{ size, checkList }">
-        <pure-table border align-whole="center" showOverflowTooltip table-layout="auto" :loading="loading" :size="size"
+        <pure-table  align-whole="center" showOverflowTooltip table-layout="auto" :loading="loading" :size="size"
           :data="dataList" :columns="columns" :checkList="checkList" :pagination="pagination"
           :paginationSmall="size === 'small' ? true : false" :header-cell-style="{
             background: 'var(--el-table-row-hover-bg-color)',

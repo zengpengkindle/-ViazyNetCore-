@@ -84,7 +84,6 @@ const {
       <template v-slot="{ size, checkList }">
         <pure-table
           ref="tableRef"
-          border
           align-whole="center"
           row-key="id"
           showOverflowTooltip
