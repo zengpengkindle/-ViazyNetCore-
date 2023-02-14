@@ -58,22 +58,9 @@ namespace ViazyNetCore.Authrozation
         [HttpPost, Route("updateRole")]
         public async Task<bool> UpdateRole(UpdateBmsRoleArgs args)
         {
-            //var query = this._engine.Table<BmsRole>();
-            //if (await query.AnyAsync(r => r.Name == item.Name && r.Id != item.Id)) throw new ApiException($"角色名称【{item.Name}】已存在！");
-
-            //if (item.Id.IsNull())
-            //{
-            //    item.Id = Snowflake.NextIdString();
-            //    item.Status = ComStatus.Enabled;
-            //    await query.AddAsync(item);
-            //}
-            //else
-            //{
-            //    await query.ModifyAsync(item);
-            //}
             var role = args.CopyTo<BmsRole>();
             await this._roleService.UpdateAsync(role);
-            await _permissionService.UpdatePermissionsInUserRole(args.Keys, args.Id, OwnerType.Role);
+            //await _permissionService.UpdatePermissionsInUserRole(args.Keys, args.Id, OwnerType.Role);
             return true;
         }
 
