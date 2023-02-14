@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { UserFindModel, ComStatus, UserModel } from '@/api/model';
-import UserApi from '@/api/user';
+import { ComStatus } from '@/api/model';
+import RoleApi, { BmsRole } from '@/api/role';
 import { message } from '@/utils/message';
 import { ElMessageBox, FormInstance } from 'element-plus';
 import { ref, watch, Ref, reactive } from 'vue';
@@ -30,21 +30,22 @@ const handleClose = (done: () => void) => {
   emit('update:modelValue', false);
   done()
 }
-const defaultUserInfo: UserFindModel = {
+const defaultRoleInfo: BmsRole = {
   id: null,
-  username: '',
-  nickname: '',
+  name: '',
   status: ComStatus.Disabled,
-  extraData: ''
+  extraData: '',
+  createTime:'',
+  modifyTime:''
 }
 
-const userInfo: Ref<UserFindModel> = ref(defaultUserInfo);
+const roleInfo: Ref<BmsRole> = ref(defaultRoleInfo);
 
 async function getUserInfo() {
   if (props.id) {
-    userInfo.value = await UserApi.apiUserFind(props.id)
+    roleInfo.value = await RoleApi.apiRoleFindRole(props.id)
   } else {
-    userInfo.value = {...defaultUserInfo};
+    roleInfo.value = {...defaultRoleInfo};
   }
 }
 const formRef = ref<FormInstance>();
@@ -56,9 +57,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
     if (valid) {
-      await UserApi.apiUserManage({
-        ...userInfo.value,
-        roleId: 0
+      await RoleApi.apiRoleUpdateRole({
+        ...roleInfo.value,keys:[]
       });
       message('修改成功', { type: 'success' });
       emit('refresh');
@@ -76,16 +76,16 @@ const closeForm = () => {
 </script>
 <template>
   <el-drawer v-model="visible" size="35%" :title="id ? '编辑用户' : '新增用户'" :before-close="handleClose">
-    <el-form ref="formRef" :model="userInfo" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="用户名">
-        <el-input v-model="userInfo.username" type="text" :disabled="id?true:false" />
-      </el-form-item>
-      <el-form-item label="昵称" prop="nickname">
-        <el-input v-model="userInfo.nickname" type="text" autocomplete="off" />
+    <el-form ref="formRef" :model="roleInfo" label-width="100px" class="demo-ruleForm">
+      <el-form-item label="角色名称">
+        <el-input v-model="roleInfo.name" type="text" :disabled="id?true:false" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-switch v-model="userInfo.status" :active-value="ComStatus.Enabled" active-text="启用" inactive-text="禁用"
+        <el-switch v-model="roleInfo.status" :active-value="ComStatus.Enabled" active-text="启用" inactive-text="禁用"
           :inactive-value="ComStatus.Disabled" />
+      </el-form-item>
+      <el-form-item label="扩展信息" prop="extraData">
+        <el-input aria-multiline="true" v-model="roleInfo.extraData" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(formRef)">提交</el-button>

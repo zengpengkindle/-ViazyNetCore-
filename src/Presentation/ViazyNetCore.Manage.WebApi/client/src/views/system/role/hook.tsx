@@ -151,9 +151,17 @@ export function useRole() {
         row.status === 0 ? (row.status = 1) : (row.status = 0);
       });
   }
-
+  interface EditDrawer {
+    show: boolean,
+    editId: string
+  }
+  const editDrawer = reactive<EditDrawer>({
+    show: false,
+    editId: ''
+  });
   function handleUpdate(row) {
-    console.log(row);
+    editDrawer.show=true,
+    editDrawer.editId=row?.id;
   }
 
   function handleDelete(row) {
@@ -199,6 +207,7 @@ export function useRole() {
     dataList,
     pagination,
     buttonClass,
+    editDrawer,
     onSearch,
     resetForm,
     handleUpdate,
