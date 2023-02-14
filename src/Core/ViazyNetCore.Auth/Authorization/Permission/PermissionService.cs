@@ -62,7 +62,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="ownerType">拥有者所属类别</param>
         public async Task UpdatePermissionsInUserRole(IEnumerable<string> permissionItemKeys, string ownerId, OwnerType ownerType)
         {
-            using (var context = _uowm.Orm.CreateUnitOfWork())
+            using (var context = _uowm.Begin())
             {
                 await this._freeSql.Select<BmsOwnerPermission>()
                     .Where(p => p.OwnerId == ownerId && p.OwnerType == ownerType && !p.IsLock).ToDelete().ExecuteAffrowsAsync();

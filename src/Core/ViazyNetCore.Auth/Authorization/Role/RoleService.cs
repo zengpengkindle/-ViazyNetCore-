@@ -109,7 +109,19 @@ namespace ViazyNetCore.Authorization.Modules
 
         public Task UpdateAsync(BmsRole item)
         {
-            return this._roleRepository.InsertOrUpdateAsync(item);
+            if (item.Id.IsNull())
+            {
+                item.Id = Snowflake.NextIdString();
+                item.CreateTime = DateTime.Now;
+            }
+            else
+            {
+                item.ModifyTime = DateTime.Now;
+            }
+            return this._roleRepository.Orm.InsertOrUpdate<BmsRole>()
+                .SetSource(item)
+                .UpdateColumns(p => new { p.Name, p.ModifyTime, p.Status, p.ExtraData })
+                .ExecuteAffrowsAsync();
         }
     }
 }

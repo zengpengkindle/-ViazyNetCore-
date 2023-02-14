@@ -20,9 +20,10 @@ namespace ViazyNetCore.Authorization.Models
         /// <summary>
         /// 设置或获取一个值，表示扩展数据。
         /// </summary>
-        public string Exdata { get; set; }
-        public string ExtraData { get; internal set; }
-        public DateTime CreateTime { get; internal set; }
-        public DateTime ModifyTime { get; internal set; }
+        public string ExtraData { get; set; }
+
+        public DateTime CreateTime { get; set; }
+
+        public DateTime ModifyTime { get; set; }
     }
 }

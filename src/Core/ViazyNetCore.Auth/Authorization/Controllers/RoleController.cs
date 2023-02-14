@@ -70,8 +70,9 @@ namespace ViazyNetCore.Authrozation
             //{
             //    await query.ModifyAsync(item);
             //}
-            await this._roleService.UpdateAsync(args.Item);
-            await _permissionService.UpdatePermissionsInUserRole(args.Keys, args.Item.Id, OwnerType.Role);
+            var role = args.CopyTo<BmsRole>();
+            await this._roleService.UpdateAsync(role);
+            await _permissionService.UpdatePermissionsInUserRole(args.Keys, args.Id, OwnerType.Role);
         }
 
         [HttpPost, Route("findRole")]
