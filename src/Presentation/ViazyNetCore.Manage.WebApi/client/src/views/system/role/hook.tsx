@@ -1,24 +1,19 @@
 import dayjs from "dayjs";
 import { message } from "@/utils/message";
-import UserApi from "@/api/user";
-import { UserFindAllArgs, ComStatus, UserFindAllModel } from "@/api/model";
+import RoleApi,{FindRolesParameters} from "@/api/role";
 import { ElMessageBox } from "element-plus";
 import { type PaginationProps } from "@pureadmin/table";
-import { reactive, ref, computed, onMounted, type Ref } from "vue";
-import { nextTick } from "process";
+import { reactive, ref, computed, onMounted } from "vue";
 
-export function useUser() {
-  const form: UserFindAllArgs = reactive({
-    usernameLike: "",
-    mobile: "",
-    status: ComStatus.Enabled,
-    roleId: "",
-    sort: 0,
-    sortField: null,
-    page: 1,
-    limit: 10
+export function useRole() {
+  const form :FindRolesParameters= reactive({
+    nameLike: "",
+    code: "",
+    status: "",
+    page:1,
+    limit:10
   });
-  const dataList: Ref<Array<UserFindAllModel>> = ref([]);
+  const dataList = ref([]);
   const loading = ref(true);
   const switchLoadMap = ref({});
   const pagination = reactive<PaginationProps>({
@@ -41,49 +36,42 @@ export function useUser() {
       hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
-      label: "用户编号",
+      label: "角色编号",
       prop: "id",
-      minWidth: 130
+      minWidth: 100
     },
     {
-      label: "用户名称",
-      prop: "username",
-      minWidth: 130
+      label: "角色名称",
+      prop: "name",
+      minWidth: 120
     },
     {
-      label: "用户昵称",
-      prop: "nickname",
-      minWidth: 130
+      label: "角色标识",
+      prop: "code",
+      minWidth: 150
     },
     {
-      label: "性别",
-      prop: "sex",
-      minWidth: 90,
+      label: "角色类型",
+      prop: "type",
+      minWidth: 150,
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.sex === 1 ? "danger" : ""}
+          type={row.type === 1 ? "danger" : ""}
           effect="plain"
         >
-          {row.sex === 1 ? "女" : "男"}
+          {row.type === 1 ? "内置" : "自定义"}
         </el-tag>
       )
     },
-    // {
-    //   label: "部门",
-    //   prop: "dept",
-    //   minWidth: 90,
-    //   formatter: ({ dept }) => dept?.name
-    // },
     {
-      label: "手机号码",
-      prop: "mobile",
-      minWidth: 90
+      label: "显示顺序",
+      prop: "sort",
+      minWidth: 100
     },
     {
       label: "状态",
-      prop: "status",
-      minWidth: 90,
+      minWidth: 130,
       cellRenderer: scope => (
         <el-switch
           size={scope.props.size === "small" ? "small" : "default"}
@@ -100,7 +88,7 @@ export function useUser() {
     },
     {
       label: "创建时间",
-      minWidth: 90,
+      minWidth: 180,
       prop: "createTime",
       formatter: ({ createTime }) =>
         dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
@@ -121,19 +109,14 @@ export function useUser() {
       "dark:hover:!text-primary"
     ];
   });
-  interface EditDrawer {
-    show: boolean,
-    editId: string
-  }
-  const editDrawer = reactive<EditDrawer>({
-    show: false,
-    editId: ''
-  });
+
   function onChange({ row, index }) {
     ElMessageBox.confirm(
-      `确认要<strong>${row.status === 0 ? "停用" : "启用"
-      }</strong><strong style='color:var(--el-color-primary)'>${row.username
-      }</strong>用户吗?`,
+      `确认要<strong>${
+        row.status === 0 ? "停用" : "启用"
+      }</strong><strong style='color:var(--el-color-primary)'>${
+        row.name
+      }</strong>角色吗?`,
       "系统提示",
       {
         confirmButtonText: "确定",
@@ -159,7 +142,7 @@ export function useUser() {
               loading: false
             }
           );
-          message("已成功修改用户状态", {
+          message("已成功修改角色状态", {
             type: "success"
           });
         }, 300);
@@ -169,9 +152,8 @@ export function useUser() {
       });
   }
 
-  function handleUpdate(row?:UserFindAllModel) {
-    editDrawer.show=true,
-    editDrawer.editId=row?.id;
+  function handleUpdate(row) {
+    console.log(row);
   }
 
   function handleDelete(row) {
@@ -192,16 +174,12 @@ export function useUser() {
 
   async function onSearch() {
     loading.value = true;
-    const data = await UserApi.apiUserFindAll({
-      ...form,
-      page: pagination.currentPage,
-      limit: pagination.pageSize
-    });
+    var data = await RoleApi.apiRoleFindRoles({...form,page:pagination.pageCount,limit:pagination.pageSize});
     dataList.value = data.rows;
     pagination.total = data.total;
-    nextTick(() => {
+    setTimeout(() => {
       loading.value = false;
-    });
+    }, 500);
   }
 
   const resetForm = formEl => {
@@ -221,7 +199,6 @@ export function useUser() {
     dataList,
     pagination,
     buttonClass,
-    editDrawer,
     onSearch,
     resetForm,
     handleUpdate,

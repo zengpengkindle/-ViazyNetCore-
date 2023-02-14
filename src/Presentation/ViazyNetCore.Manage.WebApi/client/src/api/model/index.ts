@@ -81,9 +81,9 @@ export enum ComStatus {
  * UserFindModel
  */
 export interface UserFindModel {
-  roleName: string;
+  roleName?: string;
 
-  googleKey: string;
+  googleKey?: string;
 
   extraData: string;
 
@@ -95,7 +95,7 @@ export interface UserFindModel {
 
   status: ComStatus;
 
-  roleId: number;
+  roleId?: number;
 }
 
 /**

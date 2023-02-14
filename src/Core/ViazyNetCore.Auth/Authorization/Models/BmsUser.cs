@@ -41,10 +41,5 @@ namespace ViazyNetCore.Authorization.Models
         /// </summary>
         public ComStatus Status { get; set; }
 
-        /// <summary>
-        /// 设置或获取一个值，表示扩展数据。
-        /// </summary>
-        public string Exdata { get; set; }
-
     }
 }

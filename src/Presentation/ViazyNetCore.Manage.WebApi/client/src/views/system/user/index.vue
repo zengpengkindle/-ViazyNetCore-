@@ -12,6 +12,7 @@ import EditPen from "@iconify-icons/ep/edit-pen";
 import Search from "@iconify-icons/ep/search";
 import Refresh from "@iconify-icons/ep/refresh";
 import AddFill from "@iconify-icons/ri/add-circle-line";
+import edit from "./edit.vue";
 
 defineOptions({
   name: "User"
@@ -25,6 +26,7 @@ const {
   dataList,
   pagination,
   buttonClass,
+  editDrawer,
   onSearch,
   resetForm,
   handleUpdate,
@@ -80,7 +82,7 @@ const {
 
       <PureTableBar title="用户管理" @refresh="onSearch">
         <template #buttons>
-          <el-button type="primary" :icon="useRenderIcon(AddFill)">
+          <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="handleUpdate(null)">
             新增用户
           </el-button>
         </template>
@@ -135,7 +137,6 @@ const {
                   link
                   type="primary"
                   :size="size"
-                  @click="handleUpdate(row)"
                   :icon="useRenderIcon(More)"
                 />
                 <template #dropdown>
@@ -170,6 +171,7 @@ const {
         </template>
       </PureTableBar>
     </div>
+    <edit v-model="editDrawer.show" :id="editDrawer.editId" @refresh="onSearch"/>
   </div>
 </template>
 

@@ -232,7 +232,14 @@ namespace ViazyNetCore.Modules
 
         public Task<UserFindModel> FindByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return this.Select.Where(p => p.Id == id).WithTempQuery(p => new UserFindModel
+            {
+                Id = p.Id,
+                ExtraData = p.ExtraData,
+                Nickname = p.Nickname,
+                Status = p.Status,
+                Username = p.Username
+            }).FirstAsync();
         }
 
         public Task<PageData<UserFindAllModel>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, Pagination args)
@@ -242,7 +249,7 @@ namespace ViazyNetCore.Modules
             if (status.HasValue) query = query.Where(u => u.Status == status.Value);
 
             var query2 = query.OrderByDescending(u => u.ModifyTime)
-                         .WithTempQuery(u=> new UserFindAllModel
+                         .WithTempQuery(u => new UserFindAllModel
                          {
                              Id = u.Id,
                              Username = u.Username,
@@ -262,7 +269,7 @@ namespace ViazyNetCore.Modules
 
         public Task ActivateUsers(IEnumerable<string> userIds, ComStatus status)
         {
-            throw new NotImplementedException();
+            return this.UpdateDiy.Set(p => p.Status == status).Where(p => userIds.Contains(p.Id)).ExecuteAffrowsAsync();
         }
 
         public Task<IUser> CreateUser(BmsUser user_object, bool ignoreDisallowedUsername)
@@ -270,9 +277,9 @@ namespace ViazyNetCore.Modules
             throw new NotImplementedException();
         }
 
-        public Task<string> GetUserIdByUserName(string takeOverUserName)
+        public Task<string> GetUserIdByUserName(string username)
         {
-            throw new NotImplementedException();
+            return this.Select.Where(p => p.Username == username).WithTempQuery(p => p.Id).FirstAsync();
         }
 
         public Task<bool> ResetPassword(BmsUser user, string storedPassword)

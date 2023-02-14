@@ -1,4 +1,5 @@
 // 模拟后端动态生成路由
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { MockMethod } from "vite-plugin-mock";
 import { ApiResponseMockDefault } from "./mockResBase";
 
@@ -39,7 +40,7 @@ const permissionRouter = {
 const systemRouter = {
   path: "/system",
   meta: {
-    icon: "lollipop",
+    icon: "setting",
     title: "系统管理",
     rank: 11
   },
@@ -48,20 +49,20 @@ const systemRouter = {
       path: "/system/user/index",
       name: "User",
       meta: {
-        icon: "flUser",
+        icon: useRenderIcon("flUser"),
         title: "用户管理",
         roles: ["admin"]
       }
     },
-    // {
-    //   path: "/system/role/index",
-    //   name: "Role",
-    //   meta: {
-    //     icon: "role",
-    //     title: "角色管理",
-    //     roles: ["admin"]
-    //   }
-    // },
+    {
+      path: "/system/role/index",
+      name: "Role",
+      meta: {
+        icon: "role",
+        title: "角色管理",
+        roles: ["admin"]
+      }
+    },
     // {
     //   path: "/system/dept/index",
     //   name: "Dept",
