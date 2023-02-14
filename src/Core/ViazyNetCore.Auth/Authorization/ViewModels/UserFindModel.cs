@@ -8,11 +8,6 @@ namespace ViazyNetCore.Dtos
     public class UserFindModel : UserModel
     {
         /// <summary>
-        /// 获取或设置一个值，表示角色名称。
-        /// </summary>
-        public string RoleName { get; set; }
-
-        /// <summary>
         /// 设置或获取一个值，表示谷歌验证器密钥。
         /// </summary>
         [JsonIgnore]

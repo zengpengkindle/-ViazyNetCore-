@@ -29,11 +29,5 @@ namespace ViazyNetCore.Dtos
         /// </summary>
         [Required]
         public ComStatus Status { get; set; }
-
-        /// <summary>
-        /// 设置或获取一个值，表示角色编号，为“ADMIN”表示超级管理员。
-        /// </summary>
-        [ Required]
-        public long RoleId { get; set; }
     }
 }

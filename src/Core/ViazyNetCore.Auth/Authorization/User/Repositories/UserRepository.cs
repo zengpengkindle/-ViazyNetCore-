@@ -44,7 +44,6 @@ namespace ViazyNetCore.Modules
                         model.Username,
                         model.Nickname,
                         model.Status,
-                        model.RoleId,
                         ModifyTime = DateTime.Now,
                         model.ExtraData,
                     }).ExecuteAffrowsAsync();
