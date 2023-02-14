@@ -85,7 +85,7 @@ const closeForm = () => {
           :inactive-value="ComStatus.Disabled" />
       </el-form-item>
       <el-form-item label="扩展信息" prop="extraData">
-        <el-input aria-multiline="true" v-model="roleInfo.extraData" type="text" autocomplete="off" />
+        <el-input :rows="5" v-model="roleInfo.extraData" type="textarea" autocomplete="off" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(formRef)">提交</el-button>

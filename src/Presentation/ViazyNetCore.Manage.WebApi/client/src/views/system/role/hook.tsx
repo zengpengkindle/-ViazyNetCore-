@@ -65,11 +65,6 @@ export function useRole() {
       )
     },
     {
-      label: "显示顺序",
-      prop: "sort",
-      minWidth: 100
-    },
-    {
       label: "状态",
       minWidth: 130,
       cellRenderer: scope => (

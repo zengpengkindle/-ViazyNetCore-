@@ -72,6 +72,15 @@ const systemRouter = {
         roles: ["admin"]
       }
     },
+    {
+      path: "/system/permission/index",
+      name: "Permission",
+      meta: {
+        icon: "lollipop",
+        title: "权限管理",
+        roles: ["admin"]
+      }
+    },
     // {
     //   path: "/system/dept/index",
     //   name: "Dept",
