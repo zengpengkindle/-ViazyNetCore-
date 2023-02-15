@@ -60,7 +60,7 @@ export function useDept() {
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.status === 1 ? "danger" : "success"}
+          type={row.status === 1 ? "success" : "danger"}
           effect="plain"
         >
           {row.status === 0 ? "关闭" : "开启"}

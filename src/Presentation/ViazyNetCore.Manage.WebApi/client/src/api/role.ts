@@ -1,105 +1,112 @@
-
-import { http } from '@/utils/http';
-import { ComStatus } from './model'
+import { http } from "@/utils/http";
+import { ComStatus } from "./model";
 /**
-* FindRolesParameters
-*/
+ * FindRolesParameters
+ */
 export interface FindRolesParameters {
+  nameLike: string | null;
 
-    nameLike: string | null
+  page: number | null;
 
-    page: number | null
-
-    limit: number | null
+  limit: number | null;
+  status: ComStatus | null;
 }
 
 /**
-* RoleFindAllModelPageData
-*/
+ * RoleFindAllModelPageData
+ */
 export interface RoleFindAllModelPageData {
+  rows: Array<RoleFindAllModel>;
 
-    rows: Array<RoleFindAllModel>
-
-    total: number
+  total: number;
 }
 
 /**
-* RoleFindAllModel
-*/
+ * RoleFindAllModel
+ */
 export interface RoleFindAllModel {
+  status: ComStatus;
 
-    status: ComStatus
+  createTime: string;
 
-    createTime: string
+  modifyTime: string;
 
-    modifyTime: string
+  id: string;
 
-    id: string
-
-    name: string
+  name: string;
 }
 
 /**
-* BmsRole
-*/
+ * BmsRole
+ */
 export interface BmsRole {
+  name: string;
 
-    name: string
+  status: ComStatus;
 
-    status: ComStatus
+  extraData: string;
 
-    extraData: string
+  createTime: string;
 
-    createTime: string
+  modifyTime: string;
 
-    modifyTime: string
-
-    id: string
+  id: string;
 }
 /**
-* UpdateBmsRoleArgs
-*/
+ * UpdateBmsRoleArgs
+ */
 export interface UpdateBmsRoleArgs {
+  id: string | null;
 
-    id: string | null
+  name: string | null;
 
-    name: string | null
+  status: ComStatus | null;
 
-    status: ComStatus | null
+  extraData: string | null;
 
-    extraData: string | null
-
-    keys: Array<string> | null
+  keys: Array<string> | null;
 }
 
 export class RoleApi {
-    /**
-     * 无
-     */
-    public apiRoleFindRoles(param1?: FindRolesParameters): Promise<RoleFindAllModelPageData> {
-        return http.request({
-            url: '/api/Role/findRoles',
-            method: 'post',
-            data: param1
-        })
-    }
-    /**
-    * 无
-    */
-    public apiRoleFindRole(id?: string): Promise<BmsRole> {
-        return http.request({
-            url: '/api/Role/findRole',
-            method: 'post',
-            params: { id }
-        })
-    }
+  /**
+   * 无
+   */
+  public apiRoleFindRoles(
+    param1?: FindRolesParameters
+  ): Promise<RoleFindAllModelPageData> {
+    return http.request({
+      url: "/api/Role/findRoles",
+      method: "post",
+      data: param1
+    });
+  }
+  /**
+   * 无
+   */
+  public apiRoleFindRole(id?: string): Promise<BmsRole> {
+    return http.request({
+      url: "/api/Role/findRole",
+      method: "post",
+      params: { id }
+    });
+  }
 
-    public apiRoleUpdateRole(param1?: UpdateBmsRoleArgs): Promise<boolean> {
-        return http.request({
-            url: '/api/Role/updateRole',
-            method: 'post',
-            data: param1
-        })
-    }
+  public apiRoleUpdateRole(param1?: UpdateBmsRoleArgs): Promise<boolean> {
+    return http.request({
+      url: "/api/Role/updateRole",
+      method: "post",
+      data: param1
+    });
+  }
+  /**
+   * 无
+   */
+  public apiRoleRemoveRole(id?: string): Promise<boolean> {
+    return http.request({
+      url: "/api/Role/removeRole",
+      method: "post",
+      params: { id }
+    });
+  }
 }
-export default new RoleApi()
+export default new RoleApi();

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { message } from "@/utils/message";
 import UserApi from "@/api/user";
-import { UserFindAllArgs, ComStatus, UserFindAllModel } from "@/api/model";
+import { UserFindAllArgs, UserFindAllModel } from "@/api/model";
 import { ElMessageBox } from "element-plus";
 import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted, type Ref } from "vue";
@@ -11,7 +11,7 @@ export function useUser() {
   const form: UserFindAllArgs = reactive({
     usernameLike: "",
     mobile: "",
-    status: ComStatus.Enabled,
+    status: null,
     roleId: "",
     sort: 0,
     sortField: null,
@@ -91,10 +91,11 @@ export function useUser() {
           v-model={scope.row.status}
           active-value={1}
           inactive-value={0}
-          active-text="已开启"
-          inactive-text="已关闭"
+          active-text="开启"
+          inactive-text="关闭"
           inline-prompt
-          onChange={() => onChange(scope as any)}
+          disabled
+          // onChange={() => onChange(scope as any)}
         />
       )
     },
@@ -175,8 +176,12 @@ export function useUser() {
     (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
 
-  function handleDelete(row) {
-    console.log(row);
+  async function handleDelete(row) {
+    if (row?.id) {
+      await UserApi.apiUserRemove(row.id);
+      message(`删除成功`, { type: "success" });
+      onSearch();
+    }
   }
 
   function handleSizeChange(val: number) {
@@ -211,6 +216,17 @@ export function useUser() {
     onSearch();
   };
 
+  async function handleResetPassword(row: any) {
+    if (row?.id) {
+      const data = await UserApi.apiUserRestPassword(row.id);
+      ElMessageBox.alert(`重置后密码为<strong> ${data} </strong>`, "提示", {
+        confirmButtonText: "确定",
+        type: "success",
+        dangerouslyUseHTMLString: true
+      });
+    }
+  }
+
   onMounted(() => {
     onSearch();
   });
@@ -229,6 +245,7 @@ export function useUser() {
     handleDelete,
     handleSizeChange,
     handleCurrentChange,
-    handleSelectionChange
+    handleSelectionChange,
+    handleResetPassword
   };
 }

@@ -9,7 +9,7 @@ export function useRole() {
   const form: FindRolesParameters = reactive({
     nameLike: "",
     code: "",
-    status: "",
+    status: null,
     page: 1,
     limit: 10
   });
@@ -52,7 +52,7 @@ export function useRole() {
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.type === 1 ? "danger" : ""}
+          type={row.type === 1 ? "danger" : "warning"}
           effect="plain"
         >
           {row.type === 1 ? "内置" : "自定义"}
@@ -62,18 +62,20 @@ export function useRole() {
     {
       label: "状态",
       minWidth: 130,
-      cellRenderer: scope => (
-        <el-switch
-          size={scope.props.size === "small" ? "small" : "default"}
-          loading={switchLoadMap.value[scope.index]?.loading}
-          v-model={scope.row.status}
-          active-value={1}
-          inactive-value={0}
-          active-text="开启"
-          inactive-text="关闭"
-          inline-prompt
-          onChange={() => onChange(scope as any)}
-        />
+      cellRenderer: ({ row, props }) => (
+        <el-tag
+          size={props.size}
+          type={
+            row.status === 1
+              ? "primary"
+              : row.status === 0
+              ? "warning"
+              : "danger"
+          }
+          effect="plain"
+        >
+          {row.status === 1 ? "开启" : row.status === 0 ? "禁用" : "删除"}
+        </el-tag>
       )
     },
     {
@@ -153,8 +155,12 @@ export function useRole() {
     (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
 
-  function handleDelete(row) {
-    console.log(row);
+  async function handleDelete(row) {
+    if (row?.id) {
+      await RoleApi.apiRoleRemoveRole(row.id);
+      message("删除成功！", { type: "success" });
+      onSearch();
+    }
   }
 
   function handleSizeChange(val: number) {

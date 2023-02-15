@@ -1,24 +1,24 @@
 <script lang="ts" setup>
-import { UserFindModel, ComStatus, UserModel } from '@/api/model';
-import UserApi from '@/api/user';
-import { message } from '@/utils/message';
-import { ElMessageBox, FormInstance } from 'element-plus';
-import { ref, watch, Ref, reactive } from 'vue';
+import { UserFindModel, ComStatus } from "@/api/model";
+import UserApi from "@/api/user";
+import { message } from "@/utils/message";
+import { FormInstance, FormRules } from "element-plus";
+import { ref, watch, Ref, reactive } from "vue";
 
 export interface Props {
-  modelValue: boolean,
-  readonly id: string | null
+  modelValue: boolean;
+  readonly id: string | null;
 }
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 const visible = ref(false);
 const isEdit = ref(false);
-const emit = defineEmits(['update:modelValue', 'refresh']);
+const emit = defineEmits(["update:modelValue", "refresh"]);
 function init() {
   getUserInfo();
 }
 watch(
   () => props.modelValue,
-  (value) => {
+  value => {
     visible.value = value;
     if (value) {
       isEdit.value = false;
@@ -27,65 +27,84 @@ watch(
   }
 );
 const handleClose = (done: () => void) => {
-  emit('update:modelValue', false);
-  done()
-}
+  emit("update:modelValue", false);
+  done();
+};
 const defaultUserInfo: UserFindModel = {
   id: null,
-  username: '',
-  nickname: '',
+  username: "",
+  nickname: "",
   status: ComStatus.Disabled,
-  extraData: ''
-}
+  extraData: ""
+};
 
 const userInfo: Ref<UserFindModel> = ref(defaultUserInfo);
 
 async function getUserInfo() {
   if (props.id) {
-    userInfo.value = await UserApi.apiUserFind(props.id)
+    userInfo.value = await UserApi.apiUserFind(props.id);
   } else {
-    userInfo.value = {...defaultUserInfo};
+    userInfo.value = { ...defaultUserInfo };
   }
 }
 const formRef = ref<FormInstance>();
-const rules = reactive([
-  { required: true, message: 'age is required' },
-  { type: 'number', message: 'age must be a number' },
-])
+const rules = reactive<FormRules>({
+  username: [{ required: true, message: "用户名不能为空" }]
+});
 const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.validate(async (valid) => {
+  if (!formEl) return;
+  formEl.validate(async valid => {
     if (valid) {
       await UserApi.apiUserManage({
         ...userInfo.value,
         roleId: 0
       });
-      message('修改成功', { type: 'success' });
-      emit('refresh');
-      handleClose(() => { });
+      message("修改成功", { type: "success" });
+      emit("refresh");
+      handleClose(() => {});
     } else {
-      console.log('error submit!')
-      return false
+      console.log("error submit!");
+      return false;
     }
-  })
-}
+  });
+};
 
 const closeForm = () => {
-  handleClose(() => { });
-}
+  handleClose(() => {});
+};
 </script>
 <template>
-  <el-drawer v-model="visible" size="35%" :title="id ? '编辑用户' : '新增用户'" :before-close="handleClose">
-    <el-form ref="formRef" :model="userInfo" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="用户名">
-        <el-input v-model="userInfo.username" type="text" :disabled="id?true:false" />
+  <el-drawer
+    v-model="visible"
+    size="35%"
+    :title="id ? '编辑用户' : '新增用户'"
+    :before-close="handleClose"
+  >
+    <el-form
+      ref="formRef"
+      :model="userInfo"
+      :rules="rules"
+      label-width="100px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="用户名" prop="username">
+        <el-input
+          v-model="userInfo.username"
+          type="text"
+          :disabled="id ? true : false"
+        />
       </el-form-item>
       <el-form-item label="昵称" prop="nickname">
         <el-input v-model="userInfo.nickname" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-switch v-model="userInfo.status" :active-value="ComStatus.Enabled" active-text="启用" inactive-text="禁用"
-          :inactive-value="ComStatus.Disabled" />
+        <el-switch
+          v-model="userInfo.status"
+          :active-value="ComStatus.Enabled"
+          active-text="启用"
+          inactive-text="禁用"
+          :inactive-value="ComStatus.Disabled"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(formRef)">提交</el-button>

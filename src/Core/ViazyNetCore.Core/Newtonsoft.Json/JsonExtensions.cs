@@ -27,7 +27,7 @@ namespace Newtonsoft.Json
             //蛇形：，new Serialization.SnakeCaseNamingStrategy
             serializerSettings.ContractResolver = new DefaultContractResolver
             {
-                NamingStrategy = new SnakeCaseNamingStrategy(),
+                NamingStrategy = new CamelCaseNamingStrategy(),
             }; ;
             serializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
             //serializerSettings.NullValueHandling = NullValueHandling.Ignore;

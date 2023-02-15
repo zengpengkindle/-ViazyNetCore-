@@ -44,5 +44,15 @@ export class UserApi {
       params: { id }
     });
   }
+  /**
+   * 无
+   */
+  public apiUserRemove(id: string): Promise<boolean> {
+    return http.request({
+      url: "/api/User/remove",
+      method: "post",
+      params: { id }
+    });
+  }
 }
 export default new UserApi();

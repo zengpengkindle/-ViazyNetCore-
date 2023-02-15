@@ -75,6 +75,6 @@ namespace ViazyNetCore.Authrozation
 
     public class FindRolesParameters : Pagination
     {
-        public string NameLike { get; set; }
+        public string? NameLike { get; set; }
     }
 }

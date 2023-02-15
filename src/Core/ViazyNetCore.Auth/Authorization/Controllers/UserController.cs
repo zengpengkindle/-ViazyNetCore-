@@ -72,7 +72,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("删除")]
         [Route("remove"), HttpPost]
-        public async Task RemoveAsync([Required] string id)
+        public async Task<bool> RemoveAsync([Required] string id)
         {
             await this._userService.RemoveAsync(id);
 
@@ -90,6 +90,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             //    Data = operationLog,
             //    EventTime = DateTime.Now
             //});
+            return true;
         }
 
         /// <summary>
@@ -122,9 +123,10 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("重置登录限制")]
         [Route("resetTime"), HttpPost]
-        public void ResetTime(string username)
+        public bool ResetTime(string username)
         {
             this._userService.ClearCache(username);
+            return true;
         }
 
     }

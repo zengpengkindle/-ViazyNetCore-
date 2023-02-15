@@ -33,7 +33,8 @@ const {
   handleDelete,
   handleSizeChange,
   handleCurrentChange,
-  handleSelectionChange
+  handleSelectionChange,
+  handleResetPassword
 } = useUser();
 </script>
 
@@ -120,7 +121,7 @@ const {
               >
                 修改
               </el-button>
-              <el-popconfirm title="是否确认删除?">
+              <el-popconfirm title="是否确认删除?" @confirm="handleDelete(row)">
                 <template #reference>
                   <el-button
                     class="reset-margin"
@@ -128,7 +129,6 @@ const {
                     type="primary"
                     :size="size"
                     :icon="useRenderIcon(Delete)"
-                    @click="handleDelete(row)"
                   >
                     删除
                   </el-button>
@@ -146,11 +146,12 @@ const {
                   <el-dropdown-menu>
                     <el-dropdown-item>
                       <el-button
-                        :class="buttonClass"
+                        class="buttonClass"
                         link
-                        type="primary"
+                        type="info"
                         :size="size"
                         :icon="useRenderIcon(Password)"
+                        @click="handleResetPassword(row)"
                       >
                         重置密码
                       </el-button>

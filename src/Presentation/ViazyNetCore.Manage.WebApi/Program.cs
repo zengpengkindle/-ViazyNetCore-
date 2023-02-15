@@ -1,4 +1,5 @@
 using System.Reflection;
+using Newtonsoft.Json;
 using NLog.Web;
 using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
@@ -27,16 +28,20 @@ var ServiceAssemblies = new Assembly?[]
 };
 
 builder.Services.AddCustomApiVersioning();
-builder.Services.AddJwtAuthentication(option => {
+builder.Services.AddJwtAuthentication(option =>
+{
     var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
-    option.Secret= optionJson.Secret;
-    option.ExpiresIn= optionJson.ExpiresIn;
-    option.Issuer= optionJson.Issuer;
-    option.AppName= optionJson.AppName;
+    option.Secret = optionJson.Secret;
+    option.ExpiresIn = optionJson.ExpiresIn;
+    option.Issuer = optionJson.Issuer;
+    option.AppName = optionJson.AppName;
 });
-builder.Services.AddControllers()
-    //.AddApplicationPart(typeof(TestController).Assembly)
-    ;
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.InitializeDefault();
+});
+//.AddApplicationPart(typeof(TestController).Assembly)
+;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger("ViazyNetCore-Manage");
