@@ -1,5 +1,6 @@
 ﻿namespace ViazyNetCore.Authorization.Modules
 {
+    [Injection]
     public interface IPermissionService
     {
         /// <summary>
@@ -73,7 +74,7 @@
         /// <param name="currentUser">当前用户</param>
         /// <param name="permissionItemKey">权限项目标识</param>
         /// <returns>有权限操作返回true，否则返回false</returns>
-        Task<bool> Check(IUser currentUser, string[] permissionItemKeys);
+        Task<bool> Check(IUser<string> currentUser, string[] permissionItemKeys);
 
     }
 }

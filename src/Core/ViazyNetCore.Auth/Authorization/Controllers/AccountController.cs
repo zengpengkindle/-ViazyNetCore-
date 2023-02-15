@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Auth;
+using ViazyNetCore.Auth.Authorization.ViewModels;
 using ViazyNetCore.Auth.Jwt;
+using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Dtos;
 using ViazyNetCore.Modules;
 
@@ -38,7 +40,7 @@ namespace ViazyNetCore.Controllers.Authorization
 
         [AllowAnonymous]
         [Route("login"), HttpPost]
-        public async Task<JwtTokenResult?> LoginAsync([Required] UserLoginArgs args)
+        public async Task<UserTokenModel> LoginAsync([Required] UserLoginArgs args, [FromServices] IPermissionService permissionService)
         {
             var ip = this._httpContextAccessor.HttpContext!?.GetRequestIP();
             //OperationLog operationLog = new OperationLog
@@ -58,7 +60,8 @@ namespace ViazyNetCore.Controllers.Authorization
                 //using (_lockProvider.Lock<UserLoginArgs>(args.Username))
                 {
                     var identity = await this._userService.GetUserLoginIdentityAsync(args, ip, false);
-                    var token = await this._tokenProvider.IssueToken(identity.Id, identity.Permissions.ToArray());
+                    var permissions = await permissionService.ResolveUserPermission(identity.Id);
+                    var token = await this._tokenProvider.IssueToken(identity.Id, identity.Username, permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
                     //登陆成功，清空缓存
                     _userService.ClearCache(args.Username);
 
@@ -67,7 +70,12 @@ namespace ViazyNetCore.Controllers.Authorization
                     //operationLog.ObjectId = identity.Id;
                     //operationLog.Description = $"登录用户：{args.Username},登陆成功";
 
-                    return token;
+                    return new UserTokenModel
+                    {
+                        AccessToken = token.AccessToken,
+                        ExpiresIn = token.ExpiresIn,
+                        Nickname = identity.Nickname
+                    };
                 }
             }
             catch (ApiException ex)

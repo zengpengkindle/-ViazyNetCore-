@@ -1,7 +1,7 @@
 ﻿namespace ViazyNetCore.Authorization.Modules.Repositories
 {
     [Injection]
-    public class UserRoleRepository :DefaultRepository<BmsUserRole, string>,  IUserRoleRepository
+    public class UserRoleRepository : DefaultRepository<BmsUserRole, string>, IUserRoleRepository
     {
         public UserRoleRepository(IFreeSql fsql) : base(fsql)
         {
@@ -23,10 +23,10 @@
             }
         }
 
-        public Task<List<string>?> GetRoleIdsOfUser(string userId)
+        public async Task<List<string>?> GetRoleIdsOfUser(string userId)
         {
-            return this.Select.From<BmsRole>().InnerJoin((ur, r) => ur.RoleId == r.Id)
-                .Where((ur, r) => ur.UserId == userId).ToListAsync(p => p.t2.Name);
+            return await this.Select.From<BmsRole>().InnerJoin((ur, r) => ur.RoleId == r.Id)
+                .Where((ur, r) => ur.UserId == userId).WithTempQuery(p => p.t2.Id).ToListAsync();
         }
     }
 }

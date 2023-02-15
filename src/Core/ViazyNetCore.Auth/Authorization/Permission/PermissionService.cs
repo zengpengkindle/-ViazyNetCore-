@@ -288,7 +288,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="currentUser">当前用户</param>
         /// <param name="permissionItemKey">权限项目标识</param>
         /// <returns>有权限操作返回true，否则返回false</returns>
-        public async Task<bool> Check(IUser currentUser, string[] permissionItemKeys)
+        public async Task<bool> Check(IUser<string> currentUser, string[] permissionItemKeys)
         {
             if (currentUser == null)
                 return false;

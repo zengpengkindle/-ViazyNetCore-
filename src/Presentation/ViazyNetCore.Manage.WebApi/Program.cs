@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using NLog.Web;
 using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
+using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Manage.WebApi.Controllers;
 
@@ -36,7 +37,10 @@ builder.Services.AddJwtAuthentication(option =>
     option.Issuer = optionJson.Issuer;
     option.AppName = optionJson.AppName;
 });
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<PermissionFilter>();
+}).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.InitializeDefault();
 });
