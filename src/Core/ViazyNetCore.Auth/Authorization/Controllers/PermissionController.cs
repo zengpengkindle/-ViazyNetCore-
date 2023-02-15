@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.Auth.Authorization.ViewModels;
 
 namespace ViazyNetCore.Authrozation
 {
@@ -134,9 +135,11 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost, Route("updateMenu")]
-        public Task UpdateMenu(BmsMenus item)
+        public async Task<bool> UpdateMenu(MenusUpdateModel model)
         {
-            return this._permissionService.UpdateMenus(item);
+            var item = model.CopyTo<BmsMenus>();
+            await this._permissionService.UpdateMenus(item);
+            return true;
         }
 
         [HttpPost, Route("removeMenu")]

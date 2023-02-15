@@ -122,17 +122,19 @@ export function useUser() {
     ];
   });
   interface EditDrawer {
-    show: boolean,
-    editId: string
+    show: boolean;
+    editId: string;
   }
   const editDrawer = reactive<EditDrawer>({
     show: false,
-    editId: ''
+    editId: ""
   });
   function onChange({ row, index }) {
     ElMessageBox.confirm(
-      `确认要<strong>${row.status === 0 ? "停用" : "启用"
-      }</strong><strong style='color:var(--el-color-primary)'>${row.username
+      `确认要<strong>${
+        row.status === 0 ? "停用" : "启用"
+      }</strong><strong style='color:var(--el-color-primary)'>${
+        row.username
       }</strong>用户吗?`,
       "系统提示",
       {
@@ -169,9 +171,8 @@ export function useUser() {
       });
   }
 
-  function handleUpdate(row?:UserFindAllModel) {
-    editDrawer.show=true,
-    editDrawer.editId=row?.id;
+  function handleUpdate(row?: UserFindAllModel) {
+    (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
 
   function handleDelete(row) {

@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace ViazyNetCore.Authorization.Modules
 {
     [Injection]
-    public class PermissionService: IPermissionService
+    public class PermissionService : IPermissionService
     {
         private readonly IFreeSql _freeSql;
         private readonly IUserService _userService;
@@ -122,27 +122,24 @@ namespace ViazyNetCore.Authorization.Modules
             if (menu.Id.IsNull())
             {
                 menu.Id = Snowflake.NextIdString();
-                menu.Status = ComStatus.Enabled;
                 menu.CreateTime = DateTime.Now;
                 await this._freeSql.Insert(menu).ExecuteAffrowsAsync();
                 return menu.Id;
             }
             else
             {
-                menu.Status = ComStatus.Enabled;
-                await this._freeSql.Update<BmsMenus>(new
+                await this._freeSql.Update<BmsMenus>().SetDto(new
                 {
-                    menu.Id,
+                    menu.ParentId,
                     menu.Name,
                     menu.Type,
                     menu.Icon,
                     menu.Description,
                     OpenType = 0,
                     menu.IsHomeShow,
-                    Url = menu.Type == MenuType.Node ? menu.Url : null,
-                    menu.OrderId,
-                    Status = ComStatus.Enabled
-                }).ExecuteAffrowsAsync();
+                    menu.Url,
+                    menu.OrderId
+                }).Where(p => p.Id == menu.Id).ExecuteAffrowsAsync();
                 return menu.Id;
             }
         }
@@ -207,7 +204,7 @@ namespace ViazyNetCore.Authorization.Modules
 
             if (bmsMenus == null)
             {
-                bmsMenus =await this._freeSql.Select<BmsMenus>().From<BmsPermissionMenu>().InnerJoin((menu, p) => p.MenuId == menu.Id)
+                bmsMenus = await this._freeSql.Select<BmsMenus>().From<BmsPermissionMenu>().InnerJoin((menu, p) => p.MenuId == menu.Id)
                    .Where((menu, pm) => pm.PermissionItemKey == permissionItemKey)
                    .WithTempQuery((menu, pm) => menu)
                    .ToListAsync();
@@ -244,7 +241,7 @@ namespace ViazyNetCore.Authorization.Modules
         public async Task<IEnumerable<BmsOwnerPermission>> ResolveUserPermission(string userId)
         {
             IEnumerable<BmsOwnerPermission> permissions = new List<BmsOwnerPermission>();
-            var user =await _userService.GetUser(userId);
+            var user = await _userService.GetUser(userId);
             //匿名用户
             if (user == null)
                 return permissions;

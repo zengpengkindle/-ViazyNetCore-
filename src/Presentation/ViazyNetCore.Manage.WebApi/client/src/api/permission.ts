@@ -1,110 +1,137 @@
-
-import { http } from '@/utils/http';
-import { ComStatus } from './model'
+import { http } from "@/utils/http";
+import { ComStatus } from "./model";
 /**
-* PermissionKey
-*/
+ * PermissionKey
+ */
 export interface PermissionKey {
+  key: string;
 
-    key: string
+  id: number;
 
-    id: number
-
-    name: string
+  name: string;
 }
 
 /**
-* MenuTreeModel
-*/
+ * MenuTreeModel
+ */
 export interface MenuTreeModel {
+  id: string;
 
-    id: string
+  label: string;
 
-    label: string
+  type: MenuType;
 
-    type: MenuType
+  icon: string;
 
-    icon: string
-
-    children: Array<MenuTreeModel>
+  children: Array<MenuTreeModel>;
 }
 export enum MenuType {
-    Node = 0,
-    MidNode = 1,
-    Button = 2,
+  Node = 0,
+  MidNode = 1,
+  Button = 2
 }
 
 /**
-* BmsMenus
-*/
+ * BmsMenus
+ */
 export interface BmsMenus {
+  parentId: string;
 
-    parentId: string
+  name: string;
 
-    name: string
+  type: MenuType;
 
-    type: MenuType
+  url: string;
 
-    url: string
+  sysId: string;
 
-    sysId: string
+  orderId: number;
 
-    orderId: number
+  status: ComStatus;
 
-    status: ComStatus
+  description: string;
 
-    description: string
+  createTime: string;
 
-    createTime: string
+  projectId: string;
 
-    projectId: string
+  openType: number;
 
-    openType: number
+  isHomeShow: boolean;
 
-    isHomeShow: boolean
+  icon: string;
 
-    icon: string
+  exdata: string;
 
-    exdata: string
-
-    id: string
+  id: string;
 }
 
 export class PermissionApi {
-    /**
-     * 无
-     */
-    public apiPermissionGetAll(): Promise<Array<PermissionKey>> {
-        return http.request({
-            url: '/api/Permission/getAll',
-            method: 'get'
-        })
-    }
-    /**
+  /**
    * 无
    */
-    public apiPermissionGetRolePermission(roleId?: string): Promise<Array<string>> {
-        return http.request({
-            url: '/api/Permission/getRolePermission',
-            method: 'get',
-            params: { roleId }
-        })
-    }
-    public apiPermissionGetMenusTree(): Promise<Array<MenuTreeModel>> {
-        return http.request({
-            url: '/api/Permission/getMenusTree',
-            method: 'post'
-        })
-    }
-    /**
-       * 无
-       */
-    public apiPermissionGetMenus(): Promise<Array<BmsMenus>> {
-        return http.request({
-            url: '/api/Permission/getMenus',
-            method: 'post'
-        })
-    }
-
+  public apiPermissionGetAll(): Promise<Array<PermissionKey>> {
+    return http.request({
+      url: "/api/Permission/getAll",
+      method: "get"
+    });
+  }
+  /**
+   * 无
+   */
+  public apiPermissionGetRolePermission(
+    roleId?: string
+  ): Promise<Array<string>> {
+    return http.request({
+      url: "/api/Permission/getRolePermission",
+      method: "get",
+      params: { roleId }
+    });
+  }
+  public apiPermissionGetMenusTree(): Promise<Array<MenuTreeModel>> {
+    return http.request({
+      url: "/api/Permission/getMenusTree",
+      method: "post"
+    });
+  }
+  /**
+   * 无
+   */
+  public apiPermissionGetMenus(): Promise<Array<BmsMenus>> {
+    return http.request({
+      url: "/api/Permission/getMenus",
+      method: "post"
+    });
+  }
+  /**
+   * 无
+   */
+  public apiPermissionGetMenu(id?: string): Promise<BmsMenus> {
+    return http.request({
+      url: "/api/Permission/getMenu",
+      method: "post",
+      params: { id }
+    });
+  }
+  /**
+   * 无
+   */
+  public apiPermissionUpdateMenu(param1?: BmsMenus): Promise<boolean> {
+    return http.request({
+      url: "/api/Permission/updateMenu",
+      method: "post",
+      data: param1
+    });
+  }
+  /**
+   * 无
+   */
+  public apiPermissionRemoveMenu(menuId?: string): Promise<boolean> {
+    return http.request({
+      url: "/api/Permission/removeMenu",
+      method: "post",
+      params: { menuId }
+    });
+  }
 }
-export default new PermissionApi()
+export default new PermissionApi();

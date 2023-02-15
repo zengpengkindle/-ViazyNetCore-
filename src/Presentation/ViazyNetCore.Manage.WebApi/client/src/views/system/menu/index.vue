@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useDept } from "./hook";
+import edit from "./edit.vue";
 import { PureTableBar } from "@/components/RePureTableBar";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 
@@ -21,6 +22,7 @@ const {
   loading,
   columns,
   dataList,
+  editDrawer,
   onSearch,
   resetForm,
   handleUpdate,
@@ -77,7 +79,11 @@ const {
       @refresh="onSearch"
     >
       <template #buttons>
-        <el-button type="primary" :icon="useRenderIcon(AddFill)">
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
+          @click="handleUpdate(null)"
+        >
           新增菜单
         </el-button>
       </template>
@@ -111,7 +117,7 @@ const {
             >
               修改
             </el-button>
-            <el-popconfirm title="是否确认删除?">
+            <el-popconfirm title="是否确认删除?" @confirm="handleDelete(row)">
               <template #reference>
                 <el-button
                   class="reset-margin"
@@ -119,7 +125,6 @@ const {
                   type="primary"
                   :size="size"
                   :icon="useRenderIcon(Delete)"
-                  @click="handleDelete(row)"
                 >
                   删除
                 </el-button>
@@ -129,5 +134,10 @@ const {
         </pure-table>
       </template>
     </PureTableBar>
+    <edit
+      v-model="editDrawer.show"
+      :id="editDrawer.editId"
+      @refresh="onSearch"
+    />
   </div>
 </template>

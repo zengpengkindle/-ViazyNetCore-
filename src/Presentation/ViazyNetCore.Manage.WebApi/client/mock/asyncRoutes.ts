@@ -80,7 +80,7 @@ const systemRouter = {
         title: "权限管理",
         roles: ["admin"]
       }
-    },
+    }
     // {
     //   path: "/system/dept/index",
     //   name: "Dept",

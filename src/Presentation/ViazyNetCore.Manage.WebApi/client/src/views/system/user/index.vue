@@ -82,7 +82,11 @@ const {
 
       <PureTableBar title="用户管理" @refresh="onSearch">
         <template #buttons>
-          <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="handleUpdate(null)">
+          <el-button
+            type="primary"
+            :icon="useRenderIcon(AddFill)"
+            @click="handleUpdate(null)"
+          >
             新增用户
           </el-button>
         </template>
@@ -170,7 +174,11 @@ const {
         </template>
       </PureTableBar>
     </div>
-    <edit v-model="editDrawer.show" :id="editDrawer.editId" @refresh="onSearch"/>
+    <edit
+      v-model="editDrawer.show"
+      :id="editDrawer.editId"
+      @refresh="onSearch"
+    />
   </div>
 </template>
 

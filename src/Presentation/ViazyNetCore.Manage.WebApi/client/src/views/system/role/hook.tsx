@@ -1,17 +1,17 @@
 import dayjs from "dayjs";
 import { message } from "@/utils/message";
-import RoleApi,{FindRolesParameters} from "@/api/role";
+import RoleApi, { FindRolesParameters } from "@/api/role";
 import { ElMessageBox } from "element-plus";
 import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted } from "vue";
 
 export function useRole() {
-  const form :FindRolesParameters= reactive({
+  const form: FindRolesParameters = reactive({
     nameLike: "",
     code: "",
     status: "",
-    page:1,
-    limit:10
+    page: 1,
+    limit: 10
   });
   const dataList = ref([]);
   const loading = ref(true);
@@ -142,16 +142,15 @@ export function useRole() {
       });
   }
   interface EditDrawer {
-    show: boolean,
-    editId: string
+    show: boolean;
+    editId: string;
   }
   const editDrawer = reactive<EditDrawer>({
     show: false,
-    editId: ''
+    editId: ""
   });
   function handleUpdate(row) {
-    editDrawer.show=true,
-    editDrawer.editId=row?.id;
+    (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
 
   function handleDelete(row) {
@@ -172,7 +171,11 @@ export function useRole() {
 
   async function onSearch() {
     loading.value = true;
-    var data = await RoleApi.apiRoleFindRoles({...form,page:pagination.pageCount,limit:pagination.pageSize});
+    const data = await RoleApi.apiRoleFindRoles({
+      ...form,
+      page: pagination.pageCount,
+      limit: pagination.pageSize
+    });
     dataList.value = data.rows;
     pagination.total = data.total;
     setTimeout(() => {

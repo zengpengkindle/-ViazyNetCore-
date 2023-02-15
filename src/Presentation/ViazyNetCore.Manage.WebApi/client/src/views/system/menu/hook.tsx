@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 import { handleTree } from "@/utils/tree";
 import PermissionApi from "@/api/permission";
+import { message } from "@/utils/message";
 import { reactive, ref, onMounted } from "vue";
-import { IconifyIconOffline } from "@/components/ReIcon";
+import { IconifyIconOffline, IconifyIconOnline } from "@/components/ReIcon";
 
 export function useDept() {
   const form = reactive({
@@ -31,7 +32,20 @@ export function useDept() {
       minWidth: 260,
       align: "left",
       cellRenderer: ({ row, props }) => (
-        <span><el-icon size={props.size}> <IconifyIconOffline icon={row.icon} /></el-icon> {row.name}</span>
+        <span>
+          <span v-show={row.icon?.includes(":") === false}>
+            <el-icon size={props.size}>
+              <IconifyIconOffline icon={row.icon} />
+            </el-icon>
+            {row.icon?.includes(":")}
+          </span>
+          <span v-show={row.icon?.includes(":")}>
+            <el-icon size={props.size}>
+              <IconifyIconOnline icon={row.icon}></IconifyIconOnline>
+            </el-icon>
+          </span>
+          {row.name}
+        </span>
       )
     },
     {
@@ -72,13 +86,22 @@ export function useDept() {
       slot: "operation"
     }
   ];
-
+  interface EditDrawer {
+    show: boolean;
+    editId: string;
+  }
+  const editDrawer = reactive<EditDrawer>({
+    show: false,
+    editId: ""
+  });
   function handleUpdate(row) {
-    console.log(row);
+    (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
 
-  function handleDelete(row) {
-    console.log(row);
+  async function handleDelete(row) {
+    await PermissionApi.apiPermissionRemoveMenu(row.id);
+    message("删除成功", { type: "success" });
+    await onSearch();
   }
 
   function handleSelectionChange(val) {
@@ -109,6 +132,7 @@ export function useDept() {
     loading,
     columns,
     dataList,
+    editDrawer,
     onSearch,
     resetForm,
     handleUpdate,
