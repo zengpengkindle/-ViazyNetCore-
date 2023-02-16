@@ -1,4 +1,4 @@
-﻿namespace ViazyNetCore.Authorization.Modules
+﻿namespace ViazyNetCore.Authorization
 {
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]

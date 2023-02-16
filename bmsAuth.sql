@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 15/02/2023 13:11:35
+ Date: 16/02/2023 23:08:47
 */
 
 SET NAMES utf8mb4;
@@ -67,21 +67,21 @@ CREATE TABLE `BmsMenus`  (
 -- ----------------------------
 -- Records of BmsMenus
 -- ----------------------------
-INSERT INTO `BmsMenus` VALUES ('BROB0AXXBNCW6012', '10000', '我的工作台', 1, NULL, NULL, 99, 1, '2022-07-18 21:29:20', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BROB0B0P7L6O6013', 'BROB0AXXBNCW6012', '用户管理', 0, '/system/user/index', NULL, 0, 1, '2022-07-18 21:29:20', NULL, NULL, 0, b'1', NULL, 'el-icon-share');
-INSERT INTO `BmsMenus` VALUES ('BROB0B2D55HC6014', 'BROB0AXXBNCW6012', '角色管理', 0, '/system/role/index', NULL, 1, 1, '2022-07-18 21:29:20', NULL, NULL, 0, b'1', NULL, 'el-icon-location');
-INSERT INTO `BmsMenus` VALUES ('BROB0B5U02RK6015', 'BROB0AXXBNCW6012', '菜单管理', 0, '/system/menu/index', NULL, 2, 1, '2022-07-18 21:29:20', NULL, NULL, 0, b'1', NULL, 'el-icon-menu');
-INSERT INTO `BmsMenus` VALUES ('BROB0B9AV01S6016', 'BROB0AXXBNCW6012', '权限管理', 0, '/system/permission/index', NULL, 3, 1, '2022-07-18 21:29:20', NULL, NULL, 0, b'1', NULL, 'el-icon-view');
-INSERT INTO `BmsMenus` VALUES ('BROC2QSJ85C04459', '10000', '商品管理', 1, NULL, NULL, 0, 1, '2022-07-18 21:41:18', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BROC6JJ64GSG4460', 'BROC2QSJ85C04459', '商品管理', 0, '/Product/Index', NULL, 0, 1, '2022-07-18 21:42:29', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BROC98R8UJ284462', 'BROC2QSJ85C04459', '商品类别管理', 0, '/ProductOuter/Index', NULL, 0, 1, '2022-07-18 21:43:20', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BROCANIWJZ0G4463', 'BROC2QSJ85C04459', '商品类别定价管理', 0, '/ProductOuterSpecialCredit/Index', NULL, 0, 1, '2022-07-18 21:43:46', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BROCCJIF2BY84464', '10000', '订单管理', 1, NULL, NULL, 0, 1, '2022-07-18 21:44:21', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BROCDVRHGCG04465', 'BROCCJIF2BY84464', '订单管理', 0, '/Trade/Index', NULL, 0, 1, '2022-07-18 21:44:46', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BROCH9FGWRNK4466', '10000', '系统管理', 1, NULL, NULL, 6, 1, '2022-07-18 21:45:50', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BROCI4Z28YRK4467', 'BROCH9FGWRNK4466', '交易货币管理', 0, '/CreditType/Index', NULL, 0, 1, '2022-07-18 21:46:06', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BRPZ9FB3GF7K6895', '10000', '商品库存管理', 1, NULL, NULL, 0, 1, '2022-07-19 08:44:47', NULL, NULL, 0, b'1', NULL, NULL);
-INSERT INTO `BmsMenus` VALUES ('BRPZCO9OSQ9S6896', 'BRPZ9FB3GF7K6895', '商品库存列表', 0, '/stock/index', NULL, 0, 1, '2022-07-19 08:45:48', NULL, NULL, 0, b'1', NULL, NULL);
+INSERT INTO `BmsMenus` VALUES ('1E4932ML0749390', '', '新增', 1, '/test', '', 0, 0, '', '2023-02-16 22:12:28', '', 0, b'1', 'ep:price-tag', '');
+INSERT INTO `BmsMenus` VALUES ('BROB0AXXBNCW6012', '10000', '系统管理', 1, '/system', NULL, 99, 1, '', '2022-07-18 21:29:20', NULL, 0, b'1', 'setting', '');
+INSERT INTO `BmsMenus` VALUES ('BROB0B0P7L6O6013', 'BROB0AXXBNCW6012', '用户管理', 0, '/system/user/index', NULL, 0, 1, '', '2022-07-18 21:29:20', NULL, 0, b'1', 'flUser', '');
+INSERT INTO `BmsMenus` VALUES ('BROB0B2D55HC6014', 'BROB0AXXBNCW6012', '角色管理', 0, '/system/role/index', NULL, 1, 1, '', '2022-07-18 21:29:20', NULL, 0, b'1', 'role', '');
+INSERT INTO `BmsMenus` VALUES ('BROB0B5U02RK6015', 'BROB0AXXBNCW6012', '菜单管理', 0, '/system/menu/index', NULL, 2, 1, '', '2022-07-18 21:29:20', NULL, 0, b'1', 'menu', '');
+INSERT INTO `BmsMenus` VALUES ('BROB0B9AV01S6016', 'BROB0AXXBNCW6012', '权限管理', 0, '/system/permission/index', NULL, 3, 1, '', '2022-07-18 21:29:20', NULL, 0, b'1', 'lollipop', '');
+INSERT INTO `BmsMenus` VALUES ('BROC2QSJ85C04459', '10000', '商品管理', 1, '/product', NULL, 0, 1, '', '2022-07-18 21:41:18', NULL, 0, b'1', 'ep:goods', NULL);
+INSERT INTO `BmsMenus` VALUES ('BROC6JJ64GSG4460', 'BROC2QSJ85C04459', '商品管理', 0, '/Product/Index', NULL, 0, 1, '', '2022-07-18 21:42:29', NULL, 0, b'1', 'ep:goods-filled', NULL);
+INSERT INTO `BmsMenus` VALUES ('BROC98R8UJ284462', 'BROC2QSJ85C04459', '商品类别管理', 0, '/ProductOuter/Index', NULL, 0, 1, '', '2022-07-18 21:43:20', NULL, 0, b'1', 'ep:briefcase', NULL);
+INSERT INTO `BmsMenus` VALUES ('BROCANIWJZ0G4463', 'BROC2QSJ85C04459', '商品类别定价管理', 0, '/ProductOuterSpecialCredit/Index', NULL, 0, 1, '', '2022-07-18 21:43:46', NULL, 0, b'1', 'ep:price-tag', NULL);
+INSERT INTO `BmsMenus` VALUES ('BROCCJIF2BY84464', '10000', '订单管理', 1, '/trade', NULL, 0, 1, '', '2022-07-18 21:44:21', NULL, 0, b'1', 'ep:document', NULL);
+INSERT INTO `BmsMenus` VALUES ('BROCDVRHGCG04465', 'BROCCJIF2BY84464', '订单管理', 0, '/Trade/Index', NULL, 0, 1, '', '2022-07-18 21:44:46', NULL, 0, b'1', 'ep:document', NULL);
+INSERT INTO `BmsMenus` VALUES ('BROCH9FGWRNK4466', '10000', '系统管理', 1, NULL, NULL, 6, 1, '', '2022-07-18 21:45:50', NULL, 0, b'1', NULL, NULL);
+INSERT INTO `BmsMenus` VALUES ('BROCI4Z28YRK4467', 'BROCH9FGWRNK4466', '交易货币管理', 0, '/CreditType/Index', NULL, 0, 1, '', '2022-07-18 21:46:06', NULL, 0, b'1', NULL, NULL);
+INSERT INTO `BmsMenus` VALUES ('BRPZ9FB3GF7K6895', '10000', '商品库存管理', 1, '/stock', NULL, 0, 1, '', '2022-07-19 08:44:47', NULL, 0, b'1', 'ep:present', NULL);
 
 -- ----------------------------
 -- Table structure for BmsOwnerPermission
@@ -95,12 +95,22 @@ CREATE TABLE `BmsOwnerPermission`  (
   `OwnerId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `OwnerType` int(11) NOT NULL,
   `IsLock` bit(1) NOT NULL,
-  PRIMARY KEY (`Id`) USING BTREE
+  PRIMARY KEY (`Id`) USING BTREE,
+  UNIQUE INDEX `uk_ownId_perkey_type`(`PermissionItemKey`, `OwnerId`, `OwnerType`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of BmsOwnerPermission
 -- ----------------------------
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4B9SWBFB49945', '3', 1, NULL, '1', 11, b'0');
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4B9SYTBNK9946', '4', 1, NULL, '1', 11, b'0');
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4B9T15LQ89947', '2', 1, NULL, '1', 11, b'0');
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4B9T39GE89948', '1', 1, NULL, '1', 11, b'0');
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4B9T5DB289949', 'User', 1, NULL, '1', 11, b'0');
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4B9T7ECLC9950', 'Product', 1, NULL, '1', 11, b'0');
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4B9T9L0E89951', 'Trade', 1, NULL, '1', 11, b'0');
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4B9TBRO749952', 'Stock', 1, NULL, '1', 11, b'0');
+INSERT INTO `BmsOwnerPermission` VALUES ('1E4BAVBBQKG9953', 'User', 1, NULL, '1E1SQFF5MYO1802', 11, b'0');
 INSERT INTO `BmsOwnerPermission` VALUES ('BRPZXULF85C06910', 'User', 1, NULL, 'BRPX86X6HLA86895', 11, b'0');
 INSERT INTO `BmsOwnerPermission` VALUES ('BRPZXULF85C16911', 'Product', 1, NULL, 'BRPX86X6HLA86895', 11, b'0');
 INSERT INTO `BmsOwnerPermission` VALUES ('BRPZXULF85C26912', 'Trade', 1, NULL, 'BRPX86X6HLA86895', 11, b'0');
@@ -164,16 +174,17 @@ CREATE TABLE `BmsPermission`  (
   `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Handler` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Exdata` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`Id`) USING BTREE
+  PRIMARY KEY (`Id`) USING BTREE,
+  UNIQUE INDEX `uk_premissionkey`(`PermissionId`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of BmsPermission
 -- ----------------------------
-INSERT INTO `BmsPermission` VALUES (1, '用户管理', 'User', NULL, NULL);
-INSERT INTO `BmsPermission` VALUES (2, '商品管理', 'Product', NULL, NULL);
-INSERT INTO `BmsPermission` VALUES (3, '订单管理', 'Trade', NULL, NULL);
-INSERT INTO `BmsPermission` VALUES (4, '库存管理', 'Stock', NULL, NULL);
+INSERT INTO `BmsPermission` VALUES (1, 'User', '用户管理', NULL, NULL);
+INSERT INTO `BmsPermission` VALUES (2, 'Product', '商品管理', NULL, NULL);
+INSERT INTO `BmsPermission` VALUES (3, 'Trade', '订单管理', NULL, NULL);
+INSERT INTO `BmsPermission` VALUES (4, 'Stock', '库存管理', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for BmsPermissionMenu
@@ -189,11 +200,13 @@ CREATE TABLE `BmsPermissionMenu`  (
 -- ----------------------------
 -- Records of BmsPermissionMenu
 -- ----------------------------
-INSERT INTO `BmsPermissionMenu` VALUES ('BROB0BE85SLC6012', 'User', 'BROB0AXXBNCW6012');
-INSERT INTO `BmsPermissionMenu` VALUES ('BROB0BEANOXS6013', 'User', 'BROB0B0P7L6O6013');
-INSERT INTO `BmsPermissionMenu` VALUES ('BROB0BEANOXT6014', 'User', 'BROB0B2D55HC6014');
-INSERT INTO `BmsPermissionMenu` VALUES ('BROB0BEANOXU6015', 'User', 'BROB0B5U02RK6015');
-INSERT INTO `BmsPermissionMenu` VALUES ('BROB0BEANOXV6016', 'User', 'BROB0B9AV01S6016');
+INSERT INTO `BmsPermissionMenu` VALUES ('1E4427OUVEO1878', 'User', 'BROB0AXXBNCW6012');
+INSERT INTO `BmsPermissionMenu` VALUES ('1E4427S21Z41879', 'User', 'BROB0B0P7L6O6013');
+INSERT INTO `BmsPermissionMenu` VALUES ('1E4427T6SG01880', 'User', 'BROB0B2D55HC6014');
+INSERT INTO `BmsPermissionMenu` VALUES ('1E4427UA4CG1881', 'User', 'BROB0B5U02RK6015');
+INSERT INTO `BmsPermissionMenu` VALUES ('1E4427VDG8W1882', 'User', 'BROB0B9AV01S6016');
+INSERT INTO `BmsPermissionMenu` VALUES ('1E4427WGS5C1883', 'User', 'BROCH9FGWRNK4466');
+INSERT INTO `BmsPermissionMenu` VALUES ('1E4427XK41S1884', 'User', 'BROCI4Z28YRK4467');
 INSERT INTO `BmsPermissionMenu` VALUES ('BRPX57MXZI806895', 'Product', 'BROC2QSJ85C04459');
 INSERT INTO `BmsPermissionMenu` VALUES ('BRPX57N0HEKG6896', 'Product', 'BROC6JJ64GSG4460');
 INSERT INTO `BmsPermissionMenu` VALUES ('BRPX57N0HEKH6897', 'Product', 'BROC98R8UJ284462');
@@ -210,19 +223,21 @@ INSERT INTO `BmsPermissionMenu` VALUES ('BRPZFGL3HVCX6904', 'Stock', 'BRPZCO9OSQ
 -- ----------------------------
 DROP TABLE IF EXISTS `BmsRole`;
 CREATE TABLE `BmsRole`  (
-  `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Status` int(11) NULL DEFAULT NULL,
   `CreateTime` timestamp NULL DEFAULT NULL,
   `ModifyTime` timestamp NULL DEFAULT NULL,
   `ExtraData` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of BmsRole
 -- ----------------------------
-INSERT INTO `BmsRole` VALUES (1, '超级管理员', 1, '2022-10-12 15:29:38', '2022-10-12 15:42:31', NULL);
+INSERT INTO `BmsRole` VALUES ('1', '超级管理员', 1, '2022-10-12 15:29:38', '2022-10-12 15:42:31', NULL);
+INSERT INTO `BmsRole` VALUES ('1E1SQFF5MYO1802', '用户角色', 1, '2023-02-15 16:51:43', '2023-02-15 16:51:43', '');
+INSERT INTO `BmsRole` VALUES ('1E252CAFWXS1471', '测试角色', -1, '2023-02-15 20:57:28', '2023-02-15 20:57:28', '测试');
 
 -- ----------------------------
 -- Table structure for BmsRolePage
@@ -280,14 +295,33 @@ CREATE TABLE `BmsUser`  (
   `ModifyTime` timestamp NULL DEFAULT NULL,
   `ExtraData` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
   `GoogleKey` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`Id`) USING BTREE
+  PRIMARY KEY (`Id`) USING BTREE,
+  UNIQUE INDEX `uk_username`(`Username`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of BmsUser
 -- ----------------------------
-INSERT INTO `BmsUser` VALUES ('1', 'admin', 'N8DP41WT+VRlD4bkpr6Jj/VRrEMOmlrxu2SYeU0U5VE=', 'a42bbec9-99ef-49e0-805f-35841b3b4d24', 'Administrator', 1, '2022-10-12 10:20:26', '2022-10-12 10:20:26', 'init', NULL);
-INSERT INTO `BmsUser` VALUES ('1DZ8DXUCG3K3089', 'User01', 'Da8/PKJG578Ao2ksPmJ5INtmt8lAJrYyMoqaE2MGlOo=', 'c4facc1b-2abe-4f37-aa6a-19cd0af35163', '用户01', 1, '2023-02-14 10:11:20', '2023-02-14 10:11:20', '', NULL);
+INSERT INTO `BmsUser` VALUES ('1', 'admin', 'N8DP41WT+VRlD4bkpr6Jj/VRrEMOmlrxu2SYeU0U5VE=', 'a42bbec9-99ef-49e0-805f-35841b3b4d24', 'Administrator', 1, '2022-10-12 10:20:26', '2023-02-15 20:00:13', 'init', NULL);
+INSERT INTO `BmsUser` VALUES ('1E22D8OQWE82829', 'User01', 'TzlUCjYFlw+64S4cwTXr9mLlHC6KleaZgmdXK8XQfSA=', 'f715755a-28b9-40a1-9542-554aeafbc286', '用户01', 1, '2023-02-15 20:03:43', '2023-02-16 21:40:24', '', NULL);
+
+-- ----------------------------
+-- Table structure for BmsUserRole
+-- ----------------------------
+DROP TABLE IF EXISTS `BmsUserRole`;
+CREATE TABLE `BmsUserRole`  (
+  `Id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `RoleId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `UserId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`Id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of BmsUserRole
+-- ----------------------------
+INSERT INTO `BmsUserRole` VALUES ('1E48UWKZWAO9387', '1', '1E22D8OQWE82829');
+INSERT INTO `BmsUserRole` VALUES ('1E48Y7O2JB49388', '1', '1');
+INSERT INTO `BmsUserRole` VALUES ('1E48Y7PIIBK9389', '1E1SQFF5MYO1802', '1');
 
 -- ----------------------------
 -- Table structure for OperationLog

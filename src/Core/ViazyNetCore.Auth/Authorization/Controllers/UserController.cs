@@ -32,6 +32,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("所有查询")]
         [Route("findAll"), HttpPost]
+        [Permission(PermissionIds.User)]
         public Task<PageData<UserFindAllModel>> FindAllAsync([Required] UserFindAllArgs args)
         {
             return this._userService.FindAllAsync(args);
@@ -39,6 +40,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("单个查询")]
         [Route("find"), HttpPost]
+        [Permission(PermissionIds.User)]
         public Task<UserFindModel> FindAsync([Required] string id)
         {
             return this._userService.FindAsync(id);
@@ -46,6 +48,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("管理")]
         [Route("manage"), HttpPost]
+        [Permission(PermissionIds.User)]
         public async Task<UserManageDto> ManageAsync([Required] UserModel model)
         {
             //if (!await this._roleService.ExistsAsync(model.RoleId)) throw new ApiException("角色不存在。");
@@ -74,6 +77,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("删除")]
         [Route("remove"), HttpPost]
+        [Permission(PermissionIds.User)]
         public async Task<bool> RemoveAsync([Required] string id)
         {
             await this._userService.RemoveAsync(id);
@@ -102,6 +106,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         /// <returns></returns>
         [ApiTitle("重置密码")]
         [Route("restPassword"), HttpPost]
+        [Permission(PermissionIds.User)]
         public async Task<string> ResetPasswordAsync(string id)
         {
             //var authUser = this.HttpContext.GetAuthUser();
@@ -125,6 +130,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
 
         [ApiTitle("重置登录限制")]
         [Route("resetTime"), HttpPost]
+        [Permission(PermissionIds.User)]
         public bool ResetTime(string username)
         {
             this._userService.ClearCache(username);
