@@ -182,13 +182,25 @@ class PureHttp {
           } else if (response.code === 401) {
             message(response.message || `登录过期`, { type: "error" });
           } else if (response.code === 403) {
-            msg.error(`您的权限不足！`);
+            message('您的权限不足！', {
+              type: "error",
+              customClass: "antd"
+            });
           } else if (response.code === 406) {
-            msg.error(response.message || ``);
+            message(response.message, {
+              type: "error",
+              customClass: "antd"
+            });
           } else if (response.code === 409) {
-            msg.warning(`您的账号已在其他地方登录！`);
+            message(`您的账户已在其他设备登录！`, {
+              type: "warning",
+              customClass: "antd"
+            });
           } else if (response.code === 500) {
-            msg.error(`Oop~ 服务器繁忙,请稍候再试`);
+            message(`Oop~ 服务器繁忙,请稍候再试！`, {
+              type: "error",
+              customClass: "el"
+            });
           }
         }
         // 所有的响应异常 区分来源为取消请求/非取消请求

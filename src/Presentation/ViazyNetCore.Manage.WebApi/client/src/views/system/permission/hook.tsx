@@ -1,5 +1,5 @@
 import PermissionApi from "@/api/permission";
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, Ref } from "vue";
 
 export function usePermission() {
   const form = reactive({
@@ -25,25 +25,29 @@ export function usePermission() {
     {
       label: "权限名称",
       prop: "name",
-      minWidth: 260,
+      minWidth: 180,
       align: "left"
     },
     {
       label: "Key",
       prop: "key",
-      minWidth: 260,
+      minWidth: 120,
       align: "left"
     },
     {
       label: "操作",
+      width: 100,
       fixed: "right",
-      width: 160,
       slot: "operation"
     }
   ];
-
-  function handleUpdate(row) {
-    console.log(row);
+  const selectRow: Ref<{ pid?: number; name?: string }> = ref({
+    pid: null,
+    name: null
+  });
+  function handleUpdate(row: any) {
+    selectRow.value.pid = row?.key;
+    selectRow.value.name = row?.name;
   }
 
   function handleDelete(row) {
@@ -78,6 +82,7 @@ export function usePermission() {
     loading,
     columns,
     dataList,
+    selectRow,
     onSearch,
     resetForm,
     handleUpdate,

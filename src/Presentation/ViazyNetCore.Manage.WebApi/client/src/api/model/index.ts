@@ -15,6 +15,7 @@ export interface UserLoginArgs {
 export interface JwtTokenResult {
   accessToken: string;
   expiresIn: number;
+  nickname: string;
 }
 
 /**

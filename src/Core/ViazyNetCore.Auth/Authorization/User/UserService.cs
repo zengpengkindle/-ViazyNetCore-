@@ -126,8 +126,8 @@ namespace ViazyNetCore.Modules
                 }
 
                 //var userpermissions = (user.ExtendData?.Split(",")) ?? Array.Empty<string>();
-                var rolepermissions = (user.RoleExtendData?.Split(",")) ?? Array.Empty<string>();
-                var permissions = rolepermissions.Distinct().ToList();
+                //var rolepermissions = (user.RoleExtendData?.Split(",")) ?? Array.Empty<string>();
+                //var permissions = rolepermissions.Distinct().ToList();
 
                 //管理员 授权所有按钮权限
                 //if (user.RoleId == Globals.ADMIN_ROLE_ID) permissions = new List<string>() { ((int)BMSPermissionCode.All).ToString() };
@@ -143,7 +143,7 @@ namespace ViazyNetCore.Modules
                         //RoleId = user.RoleId,
                         //RoleName = user.RoleName ?? "超级管理员",
                         BindGoogleAuth = !enableGoogleToken || user.GoogleKey.IsNotNull(),
-                        Permissions = permissions
+                        //Permissions = permissions
                     };
                 }
             }
@@ -351,9 +351,9 @@ namespace ViazyNetCore.Modules
             return this._userRepository.Select.AnyAsync();
         }
 
-        public Task<IUser<string>> GetUser(string userId)
+        public async Task<IUser<string>> GetUser(string userId)
         {
-            throw new NotImplementedException();
+            return await this._userRepository.GetAsync(userId);
         }
 
 
