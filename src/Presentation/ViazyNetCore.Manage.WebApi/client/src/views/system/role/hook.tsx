@@ -65,13 +65,7 @@ export function useRole() {
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={
-            row.status === 1
-              ? "primary"
-              : row.status === 0
-              ? "warning"
-              : "danger"
-          }
+          type={row.status === 1 ? "" : row.status === 0 ? "warning" : "danger"}
           effect="plain"
         >
           {row.status === 1 ? "开启" : row.status === 0 ? "禁用" : "删除"}

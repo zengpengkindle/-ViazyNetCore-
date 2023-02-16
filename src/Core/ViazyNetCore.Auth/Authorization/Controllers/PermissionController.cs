@@ -155,7 +155,25 @@ namespace ViazyNetCore.Authrozation
 
         [Permission(PermissionIds.Anonymity)]
         [HttpPost, Route("getUserMenus")]
-        public async Task<List<PrivTreeModel>> GetUserMenus()
+        public async Task<List<string>> GetUserMenus()
+        {
+            var auth = this.HttpContext.GetAuthUser();
+            var privs = await this._permissionService.ResolveUserPermission(auth.UserKey);
+            var privKeys = privs.Select(p => p.PermissionItemKey).Distinct().ToArray();
+            if (auth.UserName == "admin")
+            {
+                if (!privKeys.Contains(PermissionIds.User))
+                    privKeys = privKeys.Concat(new string[] { PermissionIds.User }).ToArray();
+            }
+            var menus = await this._permissionService.GetMenusInPermissionKeys(privKeys);
+
+            return menus.Select(p => p.Id).ToList();
+        }
+
+
+        [Permission(PermissionIds.Anonymity)]
+        [HttpPost, Route("getUserMenusTree")]
+        public async Task<List<PrivTreeModel>> GetUserMenusTree()
         {
             var auth = this.HttpContext.GetAuthUser();
             var privs = await this._permissionService.ResolveUserPermission(auth.UserKey);

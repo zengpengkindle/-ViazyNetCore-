@@ -41,7 +41,7 @@ export function usePermission() {
       slot: "operation"
     }
   ];
-  const selectRow: Ref<{ pid?: number; name?: string }> = ref({
+  const selectRow: Ref<{ pid?: string; name?: string }> = ref({
     pid: null,
     name: null
   });

@@ -133,5 +133,29 @@ export class PermissionApi {
       params: { menuId }
     });
   }
+
+  public apiPermissionGetMenuKeysInPermissionKey(
+    permissionKey: string
+  ): Promise<Array<string>> {
+    return http.request({
+      url: "/api/Permission/getMenuKeysInPermissionKey",
+      method: "post",
+      params: { permissionKey }
+    });
+  }
+  /**
+   * 无
+   */
+  public apiPermissionUpdateMenusInPermission(
+    permissionKey?: string,
+    param1?: Array<string>
+  ): Promise<boolean> {
+    return http.request({
+      url: "/api/Permission/updateMenusInPermission",
+      method: "post",
+      data: param1,
+      params: { permissionKey }
+    });
+  }
 }
 export default new PermissionApi();

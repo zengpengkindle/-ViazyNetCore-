@@ -204,7 +204,8 @@ namespace ViazyNetCore.Authorization.Modules
 
             if (bmsMenus == null)
             {
-                bmsMenus = await this._freeSql.Select<BmsMenus>().From<BmsPermissionMenu>().InnerJoin((menu, p) => p.MenuId == menu.Id)
+                bmsMenus = await this._freeSql.Select<BmsMenus>()
+                    .From<BmsPermissionMenu>((menu,pm)=>menu.InnerJoin(p=>p.Id==pm.MenuId))
                    .Where((menu, pm) => pm.PermissionItemKey == permissionItemKey)
                    .WithTempQuery((menu, pm) => menu)
                    .ToListAsync();

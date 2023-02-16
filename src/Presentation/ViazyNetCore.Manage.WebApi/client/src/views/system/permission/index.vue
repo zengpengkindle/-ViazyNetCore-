@@ -26,11 +26,7 @@ const {
 <template>
   <div class="main">
     <div class="w-[32%] float-left">
-      <PureTableBar
-        title="权限列表"
-        :tableRef="tableRef?.getTableRef()"
-        @refresh="onSearch"
-      >
+      <PureTableBar title="权限列表" @refresh="onSearch">
         <template #buttons>
           <el-button type="primary" :icon="useRenderIcon(AddFill)">
             新增权限
@@ -41,7 +37,6 @@ const {
             ref="tableRef"
             align-whole="center"
             row-key="id"
-            showOverflowTooltip
             table-layout="auto"
             :loading="loading"
             :size="size"

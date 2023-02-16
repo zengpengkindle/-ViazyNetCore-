@@ -2,20 +2,18 @@
 import { handleTree } from "@/utils/tree";
 import PermissionApi from "@/api/permission";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { ref, computed, watch, onMounted, getCurrentInstance } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 
 import Reset from "@iconify-icons/ri/restart-line";
 import Search from "@iconify-icons/ep/search";
-import More2Fill from "@iconify-icons/ri/more-2-fill";
+import { message } from "@/utils/message";
+import { ElMessageBox } from "element-plus";
 
 export interface TreeProps {
   pid?: string;
   pname?: string;
 }
 const props = defineProps<TreeProps>();
-const editname = computed(() => {
-  return props.pname ?? "";
-});
 
 interface Tree {
   id: number;
@@ -26,23 +24,25 @@ interface Tree {
 
 const treeRef = ref();
 const treeData = ref([]);
-const isExpand = ref(true);
 const searchValue = ref("");
 const highlightMap = ref({});
-const { proxy } = getCurrentInstance();
 const defaultProps = {
   children: "children",
   label: "name"
 };
-const buttonClass = computed(() => {
-  return [
-    "!h-[20px]",
-    "reset-margin",
-    "!text-gray-500",
-    "dark:!text-white",
-    "dark:hover:!text-primary"
-  ];
-});
+const keyMenus = ref([]);
+watch(
+  () => {
+    return props.pid;
+  },
+  async () => {
+    if (props.pid) {
+      keyMenus.value =
+        await PermissionApi.apiPermissionGetMenuKeysInPermissionKey(props.pid);
+      resetSelect();
+    }
+  }
+);
 
 const filterNode = (value: string, data: Tree) => {
   if (!value) return true;
@@ -65,21 +65,6 @@ function nodeClick(value) {
   });
 }
 
-function toggleRowExpansionAll(status) {
-  isExpand.value = status;
-  const nodes = (proxy.$refs["treeRef"] as any).store._getAllNodes();
-  for (let i = 0; i < nodes.length; i++) {
-    nodes[i].expanded = status;
-  }
-}
-
-/** 重置状态（选中状态、搜索框值、树初始化） */
-function onReset() {
-  highlightMap.value = {};
-  searchValue.value = "";
-  toggleRowExpansionAll(true);
-}
-
 watch(searchValue, val => {
   treeRef.value!.filter(val);
 });
@@ -88,6 +73,28 @@ onMounted(async () => {
   const data = await PermissionApi.apiPermissionGetMenus();
   treeData.value = handleTree(data);
 });
+const showCheckBox = computed(() => {
+  return props.pid !== null && props.pid !== "";
+});
+
+function resetSelect() {
+  treeRef.value!.setCheckedKeys(keyMenus.value, false);
+}
+function submitTreeNode() {
+  ElMessageBox.confirm("确认修改权限菜单?", {
+    confirmButtonText: "确认",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(async () => {
+    const menuIds = treeRef.value!.getCheckedKeys(false);
+    await PermissionApi.apiPermissionUpdateMenusInPermission(
+      props.pid,
+      menuIds
+    );
+    keyMenus.value = menuIds;
+    message("提交成功！", { type: "success" });
+  });
+}
 </script>
 
 <template>
@@ -96,7 +103,7 @@ onMounted(async () => {
       <template #header>
         <div class="flex items-center h-[34px]">
           <div class="flex-1 font-bold text-base truncate" title="菜单列表">
-            [{{ props.pname }}]权限
+            {{ props?.pid ? "[" + props.pname + "] 权限" : "菜单权限" }}
           </div>
           <el-input
             style="flex: 2"
@@ -114,38 +121,6 @@ onMounted(async () => {
               </el-icon>
             </template>
           </el-input>
-          <el-dropdown :hide-on-click="false">
-            <IconifyIconOffline
-              class="w-[28px] cursor-pointer"
-              width="18px"
-              :icon="More2Fill"
-            />
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>
-                  <el-button
-                    :class="buttonClass"
-                    link
-                    type="primary"
-                    @click="toggleRowExpansionAll(isExpand ? false : true)"
-                  >
-                    {{ isExpand ? "折叠全部" : "展开全部" }}
-                  </el-button>
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <el-button
-                    :class="buttonClass"
-                    link
-                    type="primary"
-                    :icon="useRenderIcon(Reset)"
-                    @click="onReset"
-                  >
-                    重置状态
-                  </el-button>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
         </div>
       </template>
       <el-tree
@@ -155,6 +130,8 @@ onMounted(async () => {
         size="small"
         :props="defaultProps"
         default-expand-all
+        :default-checked-keys="keyMenus"
+        :show-checkbox="showCheckBox"
         :expand-on-click-node="false"
         :filter-node-method="filterNode"
         @node-click="nodeClick"
@@ -183,6 +160,12 @@ onMounted(async () => {
           </span>
         </template>
       </el-tree>
+      <div class="p-4">
+        <el-button type="primary" @click="submitTreeNode()">提交</el-button>
+        <el-button :icon="useRenderIcon(Reset)" @click="resetSelect()">
+          重置
+        </el-button>
+      </div>
     </el-card>
   </div>
 </template>
