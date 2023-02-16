@@ -7,7 +7,7 @@
         {
         }
 
-        public async Task AddUserToRoles(string userId, List<string> roleIds)
+        public async Task UpdateUserToRoles(string userId, List<string> roleIds)
         {
             var userRole = this.Select;
             await userRole.Where(p => p.UserId == userId).ToDelete().ExecuteAffrowsAsync();

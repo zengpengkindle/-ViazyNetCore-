@@ -145,10 +145,16 @@ export function useRole() {
     show: false,
     editId: ""
   });
+  const editPermissionDrawer = reactive<EditDrawer>({
+    show: false,
+    editId: ""
+  });
   function handleUpdate(row) {
     (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
-
+  function handlePermissionUpdate(row) {
+    (editPermissionDrawer.show = true), (editPermissionDrawer.editId = row?.id);
+  }
   async function handleDelete(row) {
     if (row?.id) {
       await RoleApi.apiRoleRemoveRole(row.id);
@@ -201,9 +207,11 @@ export function useRole() {
     pagination,
     buttonClass,
     editDrawer,
+    editPermissionDrawer,
     onSearch,
     resetForm,
     handleUpdate,
+    handlePermissionUpdate,
     handleDelete,
     handleSizeChange,
     handleCurrentChange,

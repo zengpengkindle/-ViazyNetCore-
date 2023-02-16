@@ -157,5 +157,16 @@ export class PermissionApi {
       params: { permissionKey }
     });
   }
+  public apiPermissionUpdatePermissionsInRole(
+    roleId?: string,
+    param1?: Array<string>
+  ): Promise<boolean> {
+    return http.request({
+      url: "/api/Permission/updatePermissionsInRole",
+      method: "post",
+      data: param1,
+      params: { roleId }
+    });
+  }
 }
 export default new PermissionApi();

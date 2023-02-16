@@ -130,6 +130,10 @@ export function useUser() {
     show: false,
     editId: ""
   });
+  const editRoleDrawer = reactive<EditDrawer>({
+    show: false,
+    editId: ""
+  });
   function onChange({ row, index }) {
     ElMessageBox.confirm(
       `确认要<strong>${
@@ -175,7 +179,9 @@ export function useUser() {
   function handleUpdate(row?: UserFindAllModel) {
     (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
-
+  function handleRoleUpdate(row?: UserFindAllModel) {
+    (editRoleDrawer.show = true), (editRoleDrawer.editId = row?.id);
+  }
   async function handleDelete(row) {
     if (row?.id) {
       await UserApi.apiUserRemove(row.id);
@@ -239,6 +245,7 @@ export function useUser() {
     pagination,
     buttonClass,
     editDrawer,
+    editRoleDrawer,
     onSearch,
     resetForm,
     handleUpdate,
@@ -246,6 +253,7 @@ export function useUser() {
     handleSizeChange,
     handleCurrentChange,
     handleSelectionChange,
-    handleResetPassword
+    handleResetPassword,
+    handleRoleUpdate
   };
 }

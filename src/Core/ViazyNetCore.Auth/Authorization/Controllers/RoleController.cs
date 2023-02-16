@@ -71,6 +71,18 @@ namespace ViazyNetCore.Authrozation
             return role;
         }
 
+        [Route("getUserRoleIds"), HttpPost]
+        public Task<List<string>> GetUserRole(string userId)
+        {
+            return this._roleService.GetRoleIdsOfUser(userId);
+        }
+
+        [Route("updateUserRoles"), HttpPost]
+        public async Task<bool> UpdateUserRoles(string userId, List<string> roleIds)
+        {
+            await this._roleService.UpdateUserToRoles(userId, roleIds);
+            return true;
+        }
     }
 
     public class FindRolesParameters : Pagination

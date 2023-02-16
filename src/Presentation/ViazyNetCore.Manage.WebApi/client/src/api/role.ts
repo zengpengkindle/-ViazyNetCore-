@@ -66,7 +66,10 @@ export interface UpdateBmsRoleArgs {
 
   keys: Array<string> | null;
 }
-
+export interface RoleSimpleModel {
+  id: string;
+  name: string;
+}
 export class RoleApi {
   /**
    * 无
@@ -106,6 +109,33 @@ export class RoleApi {
       url: "/api/Role/removeRole",
       method: "post",
       params: { id }
+    });
+  }
+  public apiRoleGetAll(): Promise<Array<RoleSimpleModel>> {
+    return http.request({
+      url: "/api/Role/getAll",
+      method: "post"
+    });
+  }
+  /**
+   * 无
+   */
+  public apiRoleGetUserRoleIds(userId?: string): Promise<Array<string>> {
+    return http.request({
+      url: "/api/Role/getUserRoleIds",
+      method: "post",
+      params: { userId }
+    });
+  }
+  public apiRoleUpdateUserRoles(
+    userId?: string,
+    param1?: Array<string>
+  ): Promise<boolean> {
+    return http.request({
+      url: "/api/Role/updateUserRoles",
+      method: "post",
+      data: param1,
+      params: { userId }
     });
   }
 }

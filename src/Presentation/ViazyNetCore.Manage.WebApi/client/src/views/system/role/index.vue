@@ -13,6 +13,7 @@ import Refresh from "@iconify-icons/ep/refresh";
 import Menu from "@iconify-icons/ep/menu";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 import edit from "./edit.vue";
+import permission from "./permission.vue";
 
 defineOptions({
   name: "Role"
@@ -27,9 +28,11 @@ const {
   pagination,
   buttonClass,
   editDrawer,
+  editPermissionDrawer,
   onSearch,
   resetForm,
   handleUpdate,
+  handlePermissionUpdate,
   handleDelete,
   handleSizeChange,
   handleCurrentChange,
@@ -161,6 +164,7 @@ const {
                       type="primary"
                       :size="size"
                       :icon="useRenderIcon(Database)"
+                      @click="handlePermissionUpdate(row)"
                     >
                       数据权限
                     </el-button>
@@ -176,6 +180,10 @@ const {
       v-model="editDrawer.show"
       :id="editDrawer.editId"
       @refresh="onSearch"
+    />
+    <permission
+      v-model="editPermissionDrawer.show"
+      :id="editPermissionDrawer.editId"
     />
   </div>
 </template>

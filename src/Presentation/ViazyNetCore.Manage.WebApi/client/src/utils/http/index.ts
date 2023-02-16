@@ -1,7 +1,7 @@
 import Axios, {
   AxiosInstance,
   AxiosRequestConfig,
-  CustomParamsSerializer,
+  CustomParamsSerializer
 } from "axios";
 import {
   PureHttpError,
@@ -182,7 +182,7 @@ class PureHttp {
           } else if (response.code === 401) {
             message(response.message || `登录过期`, { type: "error" });
           } else if (response.code === 403) {
-            message('您的权限不足！', {
+            message("您的权限不足！", {
               type: "error",
               customClass: "antd"
             });

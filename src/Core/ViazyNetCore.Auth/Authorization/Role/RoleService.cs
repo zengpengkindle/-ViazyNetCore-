@@ -26,10 +26,10 @@ namespace ViazyNetCore.Authorization.Modules
             this._userRoleRepository = userRoleRepository;
         }
 
-        public async Task<IList<string>> GetRoleIdsOfUser(string userId)
+        public async Task<List<string>> GetRoleIdsOfUser(string userId)
         {
             var cacheKeyUserInRole = GetCacheKey_GetRoleIdsOfUser(userId);
-            var roleIds = this._cacheService.Get<IList<string>>(cacheKeyUserInRole);
+            var roleIds = this._cacheService.Get<List<string>>(cacheKeyUserInRole);
             if (roleIds == null)
             {
                 roleIds = await this._userRoleRepository.GetRoleIdsOfUser(userId);
@@ -62,7 +62,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// </summary>
         /// <param name="userId">用户ID</param>
         /// <param name="roleIds">角色id集合</param>
-        public async Task AddUserToRoles(string userId, List<string> roleIds)
+        public async Task UpdateUserToRoles(string userId, List<string> roleIds)
         {
             if (roleIds == null)
                 return;
@@ -71,7 +71,7 @@ namespace ViazyNetCore.Authorization.Modules
             var nameIsChange = roleIds.Except(oldRoleNames).Count() > 0;
             if (nameIsChange)
             {
-                await this._userRoleRepository.AddUserToRoles(userId, roleIds);
+                await this._userRoleRepository.UpdateUserToRoles(userId, roleIds);
             }
 
             var cacheKeyUserInRole = GetCacheKey_GetRoleIdsOfUser(userId);
