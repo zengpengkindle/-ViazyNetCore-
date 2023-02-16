@@ -177,9 +177,8 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">用户编号。</param>
         /// <returns>重置成功返回 随机密码,否则抛出异常</returns>
-        public async Task<string> ResetPasswordAsync(string id)
+        public async Task<string> ResetPasswordAsync(string id,string randPwd)
         {
-            string randPwd = "12345";// Globals.GetRandomPassword();
             var password = DataSecurity.GenerateSaltedHash(randPwd, out var salt);
             await _userRepository.ModifyPasswordAsync(password, salt, id);
             return randPwd;

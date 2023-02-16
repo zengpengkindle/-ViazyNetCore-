@@ -65,7 +65,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">用户编号。</param>
         /// <returns>重置成功返回 true 值，否则返回 false 值。</returns>
-        Task<string> ResetPasswordAsync(string id);
+        Task<string> ResetPasswordAsync(string id,string password);
 
         /// <summary>
         /// 修改指定用户的密码。

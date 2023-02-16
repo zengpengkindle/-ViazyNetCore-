@@ -20,12 +20,14 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         private readonly IUserService _userService;
         private readonly IEventBus _eventBus;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IOptions<UserOption> _options;
 
-        public UserController(IUserService userService, IEventBus eventBus, IHttpContextAccessor httpContextAccessor)
+        public UserController(IUserService userService, IEventBus eventBus, IHttpContextAccessor httpContextAccessor,IOptions<UserOption> options)
         {
             this._userService = userService;
             this._eventBus = eventBus;
             this._httpContextAccessor = httpContextAccessor;
+            this._options = options;
         }
 
         [ApiTitle("所有查询")]
@@ -103,7 +105,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         public async Task<string> ResetPasswordAsync(string id)
         {
             //var authUser = this.HttpContext.GetAuthUser();
-            var res = await this._userService.ResetPasswordAsync(id);
+            var res = await this._userService.ResetPasswordAsync(id, _options.Value.GetRandomPassword);
             //OperationLog operationLog = new OperationLog(this.HttpContext.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
             //{
             //    ObjectName = "重置密码",

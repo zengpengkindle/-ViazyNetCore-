@@ -124,6 +124,8 @@ namespace ViazyNetCore.Auth
         /// 最小不需要审核的用户等级
         /// </summary>
         public int MinNoAuditedUserRank { get; set; } = 18;
+
+        public string GetRandomPassword => FastRandom.Instance.NextString(8);
     }
 
     public enum RegisterType
