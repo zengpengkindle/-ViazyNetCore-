@@ -48,15 +48,7 @@ const {
         />
       </el-form-item>
       <el-form-item label="状态：" prop="status">
-        <el-select
-          v-model="form.status"
-          placeholder="请选择状态"
-          clearable
-          class="!w-[180px]"
-        >
-          <el-option label="开启" value="1" />
-          <el-option label="关闭" value="0" />
-        </el-select>
+        <x-status v-model="form.status" type="select" class="!w-[200px]" />
       </el-form-item>
       <el-form-item>
         <el-button

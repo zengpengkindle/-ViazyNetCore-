@@ -10,6 +10,7 @@ import createGlobal from "@/utils/globals";
 import { injectResponsiveStorage } from "@/utils/responsive";
 
 import Table from "@pureadmin/table";
+import Status from "@/components/ui/status.vue";
 // import PureDescriptions from "@pureadmin/descriptions";
 
 // 引入重置样式
@@ -44,6 +45,7 @@ app.component("FontIcon", FontIcon);
 // 全局注册按钮级别权限组件
 import { Auth } from "@/components/ReAuth";
 app.component("Auth", Auth);
+app.component("x-status", Status);
 
 getServerConfig(app).then(async config => {
   app.use(router);

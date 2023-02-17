@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Auth.Authorization.ViewModels;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ViazyNetCore.Authrozation
 {
@@ -170,6 +171,44 @@ namespace ViazyNetCore.Authrozation
             return menus.Select(p => p.Id).ToList();
         }
 
+        [Permission(PermissionIds.Anonymity)]
+        [HttpPost, Route("getUserRouters")]
+        public async Task<List<PermissionRouterModel>> GetUserRouters()
+        {
+            var result = await this._permissionService.GetAllMenu();
+            var tree = new PermissionRouterModel
+            {
+                Id = null
+            };
+            BindPrivTree(tree, result);
+            return tree.Children;
+        }
+
+        private void BindPrivTree(PermissionRouterModel treeModel, List<BmsMenus> source)
+        {
+            var menus = source.Where(p => treeModel.Id.IsNullOrEmpty() ? p.ParentId.IsNull() : p.ParentId == treeModel.Id).OrderBy(p => p.OrderId);
+            if (menus.Count() == 0)
+                return;
+            treeModel.Children = new List<PermissionRouterModel>();
+            foreach (var menu in menus)
+            {
+                var tree = new PermissionRouterModel
+                {
+                    Id = menu.Id,
+                    Meta = new PermissionRouteMeta
+                    {
+                        Icon = menu.Icon,
+                        Rank = menu.OrderId,
+                        Title = menu.Name,
+                        Roles = menu.Type == MenuType.Node ? new List<string> { "admin" } : null,
+                    },
+                    Name = menu.Type == MenuType.Node ? menu.Description : null,
+                    Path = menu.Url,
+                };
+                BindPrivTree(tree, source);
+                treeModel.Children.Add(tree);
+            }
+        }
 
         [Permission(PermissionIds.Anonymity)]
         [HttpPost, Route("getUserMenusTree")]

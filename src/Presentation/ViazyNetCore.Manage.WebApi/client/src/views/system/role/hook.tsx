@@ -62,15 +62,7 @@ export function useRole() {
     {
       label: "状态",
       minWidth: 130,
-      cellRenderer: ({ row, props }) => (
-        <el-tag
-          size={props.size}
-          type={row.status === 1 ? "" : row.status === 0 ? "warning" : "danger"}
-          effect="plain"
-        >
-          {row.status === 1 ? "开启" : row.status === 0 ? "禁用" : "删除"}
-        </el-tag>
-      )
+      cellRenderer: ({ row }) => <x-status v-model={row.status} type="cell" />
     },
     {
       label: "创建时间",

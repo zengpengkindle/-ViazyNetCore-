@@ -105,13 +105,7 @@ const closeForm = () => {
         />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-switch
-          v-model="roleInfo.status"
-          :active-value="ComStatus.Enabled"
-          active-text="启用"
-          inactive-text="禁用"
-          :inactive-value="ComStatus.Disabled"
-        />
+        <x-status v-model="roleInfo.status" type="" />
       </el-form-item>
       <el-form-item label="扩展信息" prop="extraData">
         <el-input

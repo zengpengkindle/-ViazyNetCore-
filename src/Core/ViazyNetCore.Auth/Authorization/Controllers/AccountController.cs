@@ -74,7 +74,8 @@ namespace ViazyNetCore.Controllers.Authorization
                     {
                         AccessToken = token.AccessToken,
                         ExpiresIn = token.ExpiresIn,
-                        Nickname = identity.Nickname
+                        Nickname = identity.Nickname,
+                        Permissions= permissions.Select(p => p.PermissionItemKey).Distinct().ToArray()
                     };
                 }
             }

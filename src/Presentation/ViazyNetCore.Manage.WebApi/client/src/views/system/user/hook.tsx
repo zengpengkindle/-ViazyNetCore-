@@ -85,18 +85,7 @@ export function useUser() {
       prop: "status",
       minWidth: 90,
       cellRenderer: scope => (
-        <el-switch
-          size={scope.props.size === "small" ? "small" : "default"}
-          loading={switchLoadMap.value[scope.index]?.loading}
-          v-model={scope.row.status}
-          active-value={1}
-          inactive-value={0}
-          active-text="开启"
-          inactive-text="关闭"
-          inline-prompt
-          disabled
-          // onChange={() => onChange(scope as any)}
-        />
+        <x-status v-model={scope.row.status} type="cell" class="!w-[200px]" />
       )
     },
     {

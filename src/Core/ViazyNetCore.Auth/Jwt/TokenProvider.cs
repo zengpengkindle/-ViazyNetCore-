@@ -46,7 +46,7 @@ namespace ViazyNetCore.Auth.Jwt
                      new Claim(JwtRegisteredClaimNames.Iss, this._option.Issuer),
                      new Claim(JwtRegisteredClaimNames.Exp, expires.ConvertToJsTime().ToString()),
                      new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ConvertToJsTime().ToString()),
-                     new Claim(ClaimTypes.Role, string.Join(",", roleIds.Select(t => t?.CastTo<int>())))
+                     new Claim(ClaimTypes.Role, string.Join(",", roleIds.Select(t => t?.ToString())))
                      //new Claim(JwtRegisteredClaimNames.Typ, )
                 })
             };

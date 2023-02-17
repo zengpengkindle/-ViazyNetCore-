@@ -98,13 +98,7 @@ const closeForm = () => {
         <el-input v-model="userInfo.nickname" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-switch
-          v-model="userInfo.status"
-          :active-value="ComStatus.Enabled"
-          active-text="启用"
-          inactive-text="禁用"
-          :inactive-value="ComStatus.Disabled"
-        />
+        <x-status v-model="userInfo.status" class="!w-[200px]" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(formRef)">提交</el-button>
