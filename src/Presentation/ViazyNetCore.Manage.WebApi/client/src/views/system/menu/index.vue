@@ -130,6 +130,7 @@ const {
       v-model="editDrawer.show"
       :id="editDrawer.editId"
       @refresh="onSearch"
+      :tree-data="dataList"
     />
   </div>
 </template>

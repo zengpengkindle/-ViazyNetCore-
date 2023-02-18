@@ -76,6 +76,8 @@ app.UseApiResponseWrapper(option =>
     option.IsApiOnly = false;
     option.EnableResponseLogging = true;
     option.EnableExceptionLogging = true;
+
+    option.IsDebug = app.Environment.IsDevelopment();
 });
 
 app.UseAuthentication();

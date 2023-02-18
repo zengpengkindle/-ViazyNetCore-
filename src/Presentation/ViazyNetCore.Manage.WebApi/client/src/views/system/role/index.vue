@@ -145,8 +145,9 @@ const {
                       type="primary"
                       :size="size"
                       :icon="useRenderIcon(Menu)"
+                      @click="handlePermissionUpdate(row)"
                     >
-                      菜单权限
+                      功能权限
                     </el-button>
                   </el-dropdown-item>
                   <el-dropdown-item>
@@ -156,7 +157,6 @@ const {
                       type="primary"
                       :size="size"
                       :icon="useRenderIcon(Database)"
-                      @click="handlePermissionUpdate(row)"
                     >
                       数据权限
                     </el-button>

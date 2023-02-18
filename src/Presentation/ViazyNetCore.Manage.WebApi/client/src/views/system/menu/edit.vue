@@ -9,6 +9,7 @@ import IconSelect from "@/components/ReIcon/src/Select.vue";
 export interface Props {
   modelValue: boolean;
   readonly id: string | null;
+  readonly treeData?: any[]
 }
 const props = defineProps<Props>();
 const visible = ref(false);
@@ -53,7 +54,9 @@ const menuInfo: Ref<BmsMenus> = ref(defaultMenuInfo);
 
 async function getUserInfo() {
   if (props.id) {
-    menuInfo.value = await PermissionApi.apiPermissionGetMenu(props.id);
+    var result= await PermissionApi.apiPermissionGetMenu(props.id);
+    if(result.parentId ==='') result.parentId = null;
+    menuInfo.value = result;
     if (!menuInfo.value.icon) menuInfo.value.icon = "ep:";
   } else {
     menuInfo.value = { ...defaultMenuInfo };
@@ -104,6 +107,12 @@ const rules = reactive<FormRules>({
       </el-form-item>
       <el-form-item label="路径" prop="url">
         <el-input v-model="menuInfo.url" type="text" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="描述" prop="url">
+        <el-input v-model="menuInfo.description" type="text" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="父节点">
+        <el-cascader :options="treeData" v-model="menuInfo.parentId" :props="{value:'id', label: 'name' ,emitPath:false,checkStrictly: true }" clearable></el-cascader>
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-switch

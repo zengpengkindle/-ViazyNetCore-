@@ -2,7 +2,7 @@
 
 > 这目前只是一个简单的 .Net6 后台管理项目。
 
-### 
+## 🚩 组件介绍 
 - ViazyNetCore.Data.FreeSql 引入 FreeSql 作为数据ORM框架
 - ViazyNetCore.Auth 权限管理模块
 - ViazyNetCore.Caching 缓存模块
@@ -22,8 +22,8 @@
 > 示范
 
 ``` csharp
-builder.Services.AddCustomApiVersioning(); //启用Api版本管理
-builder.Services.AddJwtAuthentication() 启用Jwt授权
+builder.Services.AddCustomApiVersioning(); // 启用Api版本管理
+builder.Services.AddJwtAuthentication() // 启用Jwt授权
 
 builder.Services.AddSwagger("ViazyNetCore-Manage");//注入Swagger文档
 builder.Services.AddEventBus();// 注入EventBus 事件推送器
@@ -47,7 +47,7 @@ app.UseApiResponseWrapper(option =>
  app.UseSpa(spa =>
     {
         spa.Options.SourcePath = "client"; //启用的前端项目的路径 相对于当前项目路径
-        //spa.Options.PackageManagerCommand = "pnpm"; // 执行的 command命令
+        //spa.Options.PackageManagerCommand = "npm"; // 执行的 command命令
         // 开发阶段, 启用 ViteNode 监听端口，前后端可单端口运行，F5 一键启动调试。
         spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions() 
         {

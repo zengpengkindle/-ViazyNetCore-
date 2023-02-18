@@ -8,6 +8,7 @@ import Reset from "@iconify-icons/ri/restart-line";
 import Search from "@iconify-icons/ep/search";
 import { message } from "@/utils/message";
 import { ElMessageBox } from "element-plus";
+import { fa } from "element-plus/es/locale";
 
 export interface TreeProps {
   pid?: string;
@@ -31,15 +32,18 @@ const defaultProps = {
   label: "name"
 };
 const keyMenus = ref([]);
+const loading = ref(false);
 watch(
   () => {
     return props.pid;
   },
   async () => {
     if (props.pid) {
+      loading.value = true;
       keyMenus.value =
         await PermissionApi.apiPermissionGetMenuKeysInPermissionKey(props.pid);
       resetSelect();
+      loading.value = false;
     }
   }
 );
@@ -53,11 +57,11 @@ function nodeClick(value) {
   const nodeId = value.$treeNodeId;
   highlightMap.value[nodeId] = highlightMap.value[nodeId]?.highlight
     ? Object.assign({ id: nodeId }, highlightMap.value[nodeId], {
-        highlight: false
-      })
+      highlight: false
+    })
     : Object.assign({ id: nodeId }, highlightMap.value[nodeId], {
-        highlight: true
-      });
+      highlight: true
+    });
   Object.values(highlightMap.value).forEach((v: Tree) => {
     if (v.id !== nodeId) {
       v.highlight = false;
@@ -99,63 +103,41 @@ function submitTreeNode() {
 
 <template>
   <div class="overflow-auto">
-    <el-card class="h-full mt-4 min-h-[780px]">
+    <el-card class="h-full mt-4 min-h-[780px]" v-loading="loading">
       <template #header>
         <div class="flex items-center h-[34px]">
           <div class="flex-1 font-bold text-base truncate" title="菜单列表">
-            {{ props?.pid ? "[" + props.pname + "] 权限" : "菜单权限" }}
+            {{ props?.pid? "[" + props.pname + "] 权限" : "菜单权限" }}
           </div>
-          <el-input
-            style="flex: 2"
-            size="small"
-            v-model="searchValue"
-            placeholder="请输入菜单名称"
-            clearable
-          >
+          <el-input style="flex: 2" size="small" v-model="searchValue" placeholder="请输入菜单名称" clearable>
             <template #suffix>
               <el-icon class="el-input__icon">
-                <IconifyIconOffline
-                  v-show="searchValue.length === 0"
-                  :icon="Search"
-                />
+                <IconifyIconOffline v-show="searchValue.length === 0" :icon="Search" />
               </el-icon>
             </template>
           </el-input>
         </div>
       </template>
-      <el-tree
-        ref="treeRef"
-        :data="treeData"
-        node-key="id"
-        size="small"
-        :props="defaultProps"
-        default-expand-all
-        :default-checked-keys="keyMenus"
-        :show-checkbox="showCheckBox"
-        :expand-on-click-node="false"
-        :filter-node-method="filterNode"
-        @node-click="nodeClick"
-      >
+      <el-tree ref="treeRef" :data="treeData" node-key="id" size="small" :props="defaultProps" default-expand-all
+        :default-checked-keys="keyMenus" :show-checkbox="showCheckBox" :expand-on-click-node="false"
+        :filter-node-method="filterNode" @node-click="nodeClick">
         <template #default="{ node }">
-          <span
-            :class="[
-              'pl-1',
-              'pr-1',
-              'rounded',
-              'flex',
-              'items-center',
-              'select-none',
-              searchValue.trim().length > 0 &&
-                node.label.includes(searchValue) &&
-                'text-red-500',
-              highlightMap[node.id]?.highlight ? 'dark:text-primary' : ''
-            ]"
-            :style="{
-              background: highlightMap[node.id]?.highlight
-                ? 'var(--el-color-primary-light-7)'
-                : 'transparent'
-            }"
-          >
+          <span :class="[
+            'pl-1',
+            'pr-1',
+            'rounded',
+            'flex',
+            'items-center',
+            'select-none',
+            searchValue.trim().length > 0 &&
+            node.label.includes(searchValue) &&
+            'text-red-500',
+            highlightMap[node.id]?.highlight ? 'dark:text-primary' : ''
+          ]" :style="{
+  background: highlightMap[node.id]?.highlight
+    ? 'var(--el-color-primary-light-7)'
+    : 'transparent'
+}">
             {{ node.label }}
           </span>
         </template>
@@ -174,6 +156,7 @@ function submitTreeNode() {
 :deep(.el-divider) {
   margin: 0;
 }
+
 .menu-list {
   border-radius: 4px;
 }

@@ -116,9 +116,9 @@ namespace ViazyNetCore.Formatter.Response
                     exceptionMessage = ResponseMessage.Unhandled;
                 }
 
-                this._logger.LogError(exception, "未知异常");
-
                 jsonString = ConvertToExceptionJSONString(exceptionMessage, stackTrace);
+
+                this._logger.LogError(exception, "未知异常");
             }
 
             await WriteFormattedResponseToHttpContextAsync(context, httpStatusCode, jsonString);

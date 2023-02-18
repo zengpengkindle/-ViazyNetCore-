@@ -39,7 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 fsql.Aop.CurdAfter += (s, e) =>
                 {
 #if DEBUG
-                    Debug.WriteLine($"ManagedThreadId:{Thread.CurrentThread.ManagedThreadId}; ElapsedMilliseconds:{e.ElapsedMilliseconds}ms,\r\n [SQL:] {e.Sql}");
+                    Debug.WriteLine($"ManagedThreadId:{Environment.CurrentManagedThreadId}; ElapsedMilliseconds:{e.ElapsedMilliseconds}ms,\r\n [SQL:] {e.Sql}");
 #endif
                     if (e.ElapsedMilliseconds > 500)
                     {

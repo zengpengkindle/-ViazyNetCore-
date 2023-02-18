@@ -55,6 +55,7 @@ namespace ViazyNetCore
         public void RemoveRegister<T, TH>() where T : IEventData where TH : IEventHandler
         {
             var handlerToRemove = FindRegisterToRemove(typeof(T), typeof(TH));
+            if (handlerToRemove == null) return;
             this.RemoveRegister(typeof(T), handlerToRemove);
         }
 
@@ -62,6 +63,7 @@ namespace ViazyNetCore
         {
             var actionHandler = new ActionEventHandler<T>(action);
             var handlerToRemove = FindRegisterToRemove(typeof(T), actionHandler.GetType());
+            if (handlerToRemove == null) return;
             this.RemoveRegister(typeof(T), handlerToRemove);
         }
 
@@ -80,7 +82,7 @@ namespace ViazyNetCore
             }
         }
 
-        private Type FindRegisterToRemove(Type eventData, Type eventHandler)
+        private Type? FindRegisterToRemove(Type eventData, Type eventHandler)
         {
             if (!HasRegisterForEvent(eventData))
             {
@@ -115,7 +117,7 @@ namespace ViazyNetCore
             return new List<Type>();
         }
 
-        public Type GetEventTypeByName(string eventName)
+        public Type? GetEventTypeByName(string eventName)
         {
             return this._eventAndHandlerMapping.Keys.FirstOrDefault(eh => eh.Name == eventName);
         }
@@ -168,18 +170,18 @@ namespace ViazyNetCore
             {
                 if (typeof(IEventHandler).IsAssignableFrom(type))//判断当前类型是否实现了IEventHandler接口
                 {
-                    Type handlerInterface = type.GetInterface("IEventHandler`1");//获取该类实现的泛型接口
+                    var handlerInterface = type.GetInterface("IEventHandler`1");//获取该类实现的泛型接口
                     if (handlerInterface != null)
                     {
-                        Type eventDataType = handlerInterface.GetGenericArguments()[0]; // 获取泛型接口指定的参数类型
+                        var eventDataType = handlerInterface.GetGenericArguments()[0]; // 获取泛型接口指定的参数类型
 
                         this.AddRegister(eventDataType, type);
                     }
 
-                    Type handlerAsyncInterface = type.GetInterface("IEventHandlerAsync`1");//获取该类实现的泛型接口
+                    var handlerAsyncInterface = type.GetInterface("IEventHandlerAsync`1");//获取该类实现的泛型接口
                     if (handlerAsyncInterface != null)
                     {
-                        Type eventAsycnDataType = handlerAsyncInterface.GetGenericArguments()[0]; // 获取泛型接口指定的参数类型
+                        var eventAsycnDataType = handlerAsyncInterface.GetGenericArguments()[0]; // 获取泛型接口指定的参数类型
 
                         this.AddRegister(eventAsycnDataType, type);
                     }

@@ -6,9 +6,7 @@ import { reactive, ref, onMounted } from "vue";
 import { IconifyIconOffline, IconifyIconOnline } from "@/components/ReIcon";
 
 export function useDept() {
-  const form = reactive({
-    user: "",
-    status: ""
+  const form: { user?: string, status?: number } = reactive({
   });
   const dataList = ref([]);
   const loading = ref(true);
@@ -21,8 +19,8 @@ export function useDept() {
       hide: ({ checkList }) => !checkList.includes("勾选列")
     },
     {
-      label: "序号",
-      type: "index",
+      label: "主键",
+      prop: "id",
       minWidth: 70,
       hide: ({ checkList }) => !checkList.includes("序号列")
     },
@@ -51,7 +49,21 @@ export function useDept() {
     {
       label: "排序",
       prop: "orderId",
-      minWidth: 70
+      minWidth: 70,
+      sortable: true,
+      sortBy: "orderId"
+    },
+    {
+      label: "节点",
+      minWidth: 100,
+      cellRenderer: ({ row, props }) => (
+        <el-tag
+          size={props.size}
+          type={row.type === 1 ? "info" :row.type === 2? "danger":""}
+        >
+          {row.type === 0 ? "子节点" :row.type === 1? "中间节点":"按钮"}
+        </el-tag>
+      )
     },
     {
       label: "状态",
