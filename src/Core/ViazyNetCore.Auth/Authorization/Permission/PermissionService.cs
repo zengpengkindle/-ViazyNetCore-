@@ -112,6 +112,11 @@ namespace ViazyNetCore.Authorization.Modules
             return this._freeSql.Select<BmsMenus>().ToListAsync();
         }
 
+        public Task<List<BmsMenus>> GetAllEnableMenu()
+        {
+            return this._freeSql.Select<BmsMenus>().Where(p => p.Status == ComStatus.Enabled).ToListAsync();
+        }
+
         public Task<BmsMenus> GetMenu(string id)
         {
             return this._freeSql.Select<BmsMenus>().Where(p => p.Id == id).FirstAsync();
@@ -137,6 +142,8 @@ namespace ViazyNetCore.Authorization.Modules
                     menu.Description,
                     OpenType = 0,
                     menu.IsHomeShow,
+                    menu.Status,
+                    menu.SysId,
                     menu.Url,
                     menu.OrderId
                 }).Where(p => p.Id == menu.Id).ExecuteAffrowsAsync();
@@ -205,7 +212,7 @@ namespace ViazyNetCore.Authorization.Modules
             if (bmsMenus == null)
             {
                 bmsMenus = await this._freeSql.Select<BmsMenus>()
-                    .From<BmsPermissionMenu>((menu,pm)=>menu.InnerJoin(p=>p.Id==pm.MenuId))
+                    .From<BmsPermissionMenu>((menu, pm) => menu.InnerJoin(p => p.Id == pm.MenuId))
                    .Where((menu, pm) => pm.PermissionItemKey == permissionItemKey)
                    .WithTempQuery((menu, pm) => menu)
                    .ToListAsync();

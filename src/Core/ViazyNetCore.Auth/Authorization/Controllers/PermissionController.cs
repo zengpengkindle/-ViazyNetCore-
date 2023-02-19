@@ -11,22 +11,24 @@ using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Auth.Authorization.ViewModels;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.DependencyInjection;
+using ViazyNetCore.Auth.Authorization.Controllers;
 
 namespace ViazyNetCore.Authrozation
 {
-    [Authorize]
     [Permission(PermissionIds.User)]
-    [ApiController]
     [Route("api/[controller]")]
-    public class PermissionController : ControllerBase
+    public class PermissionController : DynamicControllerBase
     {
         private readonly RoleService _roleService;
         private readonly IPermissionService _permissionService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PermissionController(RoleService roleService, IPermissionService permissionService)
+        public PermissionController(RoleService roleService, IPermissionService permissionService, IHttpContextAccessor httpContextAccessor)
         {
             this._roleService = roleService;
             this._permissionService = permissionService;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet, Route("getAll")]
@@ -107,6 +109,11 @@ namespace ViazyNetCore.Authrozation
             return await this._permissionService.GetAllMenu();
         }
 
+        /// <summary>
+        /// 获取菜单明细
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, Route("getMenu")]
         public async Task<BmsMenus> GetMenu(string id)
         {
@@ -135,6 +142,11 @@ namespace ViazyNetCore.Authrozation
             }
         }
 
+        /// <summary>
+        /// 更新菜单
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost, Route("updateMenu")]
         public async Task<bool> UpdateMenu(MenusUpdateModel model)
         {
@@ -143,6 +155,11 @@ namespace ViazyNetCore.Authrozation
             return true;
         }
 
+        /// <summary>
+        /// 移除菜单
+        /// </summary>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
         [HttpPost, Route("removeMenu")]
         public async Task<bool> RemoveMenu(string menuId)
         {
@@ -158,7 +175,7 @@ namespace ViazyNetCore.Authrozation
         [HttpPost, Route("getUserMenus")]
         public async Task<List<string>> GetUserMenus()
         {
-            var auth = this.HttpContext.GetAuthUser();
+            var auth = this._httpContextAccessor.HttpContext!.GetAuthUser();
             var privs = await this._permissionService.ResolveUserPermission(auth.UserKey);
             var privKeys = privs.Select(p => p.PermissionItemKey).Distinct().ToArray();
             if (auth.UserName == "admin")
@@ -171,15 +188,17 @@ namespace ViazyNetCore.Authrozation
             return menus.Select(p => p.Id).ToList();
         }
 
+
+        /// <summary>
+        /// 获取当前用户菜单数组
+        /// </summary>
+        /// <returns></returns>
         [Permission(PermissionIds.Anonymity)]
         [HttpPost, Route("getUserRouters")]
-        public async Task<List<PermissionRouterModel>> GetUserRouters()
+        public async Task<List<PermissionRouterModel>?> GetUserRouters()
         {
-            var result = await this._permissionService.GetAllMenu();
-            var tree = new PermissionRouterModel
-            {
-                Id = null
-            };
+            var result = await this._permissionService.GetAllEnableMenu();
+            var tree = new PermissionRouterModel();
             BindPrivTree(tree, result);
             return tree.Children;
         }
@@ -189,8 +208,15 @@ namespace ViazyNetCore.Authrozation
             var menus = source.Where(p => treeModel.Id.IsNullOrEmpty() ? p.ParentId.IsNull() : p.ParentId == treeModel.Id).OrderBy(p => p.OrderId);
             if (menus.Count() == 0)
                 return;
+            if (menus.Any(P => P.Type == MenuType.Button))
+            {
+                treeModel.Meta.Auths = menus.Where(p => p.Type == MenuType.Button).Select(p => p.Description).ToList();
+            }
+
+            if (!menus.Where(P => P.Type != MenuType.Button).Any())
+                return;
             treeModel.Children = new List<PermissionRouterModel>();
-            foreach (var menu in menus)
+            foreach (var menu in menus.Where(P => P.Type != MenuType.Button))
             {
                 var tree = new PermissionRouterModel
                 {
@@ -200,7 +226,7 @@ namespace ViazyNetCore.Authrozation
                         Icon = menu.Icon,
                         Rank = menu.OrderId,
                         Title = menu.Name,
-                        Roles = menu.Type == MenuType.Node ? new List<string> { "admin" } : null,
+                        //Roles = menu.Type == MenuType.Node ? new List<string> { "admin" } : null,
                     },
                     Name = menu.Type == MenuType.Node ? menu.Description : null,
                     Path = menu.Url,
@@ -210,11 +236,15 @@ namespace ViazyNetCore.Authrozation
             }
         }
 
+        /// <summary>
+        /// 获取当前用户菜单树
+        /// </summary>
+        /// <returns></returns>
         [Permission(PermissionIds.Anonymity)]
         [HttpPost, Route("getUserMenusTree")]
         public async Task<List<PrivTreeModel>> GetUserMenusTree()
         {
-            var auth = this.HttpContext.GetAuthUser();
+            var auth = this._httpContextAccessor.HttpContext!.GetAuthUser();
             var privs = await this._permissionService.ResolveUserPermission(auth.UserKey);
             var privKeys = privs.Select(p => p.PermissionItemKey).Distinct().ToArray();
             if (auth.UserName == "admin")
@@ -256,34 +286,4 @@ namespace ViazyNetCore.Authrozation
         }
         #endregion
     }
-
-    public class MenuTreeModel
-    {
-        public string Id { get; set; }
-
-        public string Label { get; set; }
-
-        public MenuType Type { get; set; }
-        public string Icon { get; set; }
-
-        public List<MenuTreeModel> Children { get; set; }
-        public string ParentId { get; set; }
-    }
-
-    public class PrivTreeModel
-    {
-        public string Id { get; set; }
-
-        public string Title { get; set; }
-
-        public string? Path { get; set; }
-
-        public MenuType Type { get; set; }
-        public string Icon { get; set; }
-
-        public List<string> Privs { get; set; }
-
-        public List<PrivTreeModel> Children { get; set; }
-    }
-
 }

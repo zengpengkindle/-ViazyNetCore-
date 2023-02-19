@@ -40,14 +40,14 @@ namespace System
         /// <returns>新的字符串。</returns>
         public static string ToCamelCase(this string s)
         {
-            if(string.IsNullOrWhiteSpace(s) || !char.IsUpper(s[0])) return s;
+            if (string.IsNullOrWhiteSpace(s) || !char.IsUpper(s[0])) return s;
 
             var chars = s.ToCharArray();
 
-            for(int i = 0; i < chars.Length; i++)
+            for (int i = 0; i < chars.Length; i++)
             {
                 var hasNext = i + 1 < chars.Length;
-                if(i > 0 && hasNext && !char.IsUpper(chars[i + 1]))
+                if (i > 0 && hasNext && !char.IsUpper(chars[i + 1]))
                     break;
                 chars[i] = char.ToLower(chars[i]);
             }
@@ -61,7 +61,7 @@ namespace System
         /// <returns>新的字符串。</returns>
         public static string ToCamelCaseUpper(this string s)
         {
-            if(string.IsNullOrWhiteSpace(s)) return s;
+            if (string.IsNullOrWhiteSpace(s)) return s;
             Globalization.TextInfo info = Globalization.CultureInfo.CurrentCulture.TextInfo;
             s = info.ToTitleCase(s.ToLower()).Replace("_", string.Empty);
             return s;
@@ -87,8 +87,8 @@ namespace System
         public static bool iStartsWith(this string a, string b)
 #pragma warning restore IDE1006 // 命名样式
         {
-            if(a is null && b is null) return true;
-            if(a is null || b is null) return false;
+            if (a is null && b is null) return true;
+            if (a is null || b is null) return false;
             return a.StartsWith(b, StringComparison.CurrentCultureIgnoreCase);
         }
 
@@ -102,8 +102,8 @@ namespace System
         public static bool iEndsWith(this string a, string b)
 #pragma warning restore IDE1006 // 命名样式
         {
-            if(a is null && b is null) return true;
-            if(a is null || b is null) return false;
+            if (a is null && b is null) return true;
+            if (a is null || b is null) return false;
             return a.EndsWith(b, StringComparison.CurrentCultureIgnoreCase);
         }
 
@@ -117,8 +117,8 @@ namespace System
         public static bool iContains(this string a, string b)
 #pragma warning restore IDE1006 // 命名样式
         {
-            if(a is null && b is null) return true;
-            if(a is null || b is null) return false;
+            if (a is null && b is null) return true;
+            if (a is null || b is null) return false;
             return a.IndexOf(b, StringComparison.CurrentCultureIgnoreCase) > -1;
         }
 
@@ -163,9 +163,9 @@ namespace System
         /// <returns>新的字符串 -或- 原字符串，该字符串的最大长度不超过 <paramref name="maxLength"/>。</returns>
         public static string? CutString(this string? input, int maxLength, string ellipsis = "...")
         {
-            if(maxLength <= 0) throw new ArgumentOutOfRangeException(nameof(maxLength));
-            if(string.IsNullOrWhiteSpace(ellipsis)) throw new ArgumentNullException(nameof(ellipsis));
-            if(input is null || input.Length <= maxLength) return input;
+            if (maxLength <= 0) throw new ArgumentOutOfRangeException(nameof(maxLength));
+            if (string.IsNullOrWhiteSpace(ellipsis)) throw new ArgumentNullException(nameof(ellipsis));
+            if (input is null || input.Length <= maxLength) return input;
             return input.Substring(0, maxLength) + ellipsis;
         }
 
@@ -177,7 +177,7 @@ namespace System
         /// <returns>新的字符串。</returns>
         public static string Starts(this string input, int length)
         {
-            if(string.IsNullOrEmpty(input)) return input;
+            if (string.IsNullOrEmpty(input)) return input;
             return length >= input.Length ? input : input.Substring(0, length);
         }
 
@@ -189,7 +189,7 @@ namespace System
         /// <returns>新的字符串。</returns>
         public static string Ends(this string input, int length)
         {
-            if(string.IsNullOrEmpty(input)) return input;
+            if (string.IsNullOrEmpty(input)) return input;
             return length >= input.Length ? input : input.Substring(input.Length - length);
         }
 
@@ -201,7 +201,7 @@ namespace System
         /// <returns>删除后的字符串。</returns>
         public static string RemoveStarts(this string val, int count = 1)
         {
-            if(string.IsNullOrEmpty(val) || val.Length <= count) return val;
+            if (string.IsNullOrEmpty(val) || val.Length <= count) return val;
             return val.Remove(0, count);
         }
 
@@ -213,7 +213,7 @@ namespace System
         /// <returns>删除后的字符串。</returns>
         public static string RemoveEnds(this string val, int count = 1)
         {
-            if(string.IsNullOrEmpty(val) || val.Length <= count) return val;
+            if (string.IsNullOrEmpty(val) || val.Length <= count) return val;
             return val.Remove(val.Length - count);
         }
 
@@ -224,10 +224,10 @@ namespace System
         /// <returns>字符串的字节数。</returns>
         public static int GetDataLength(this string val)
         {
-            if(string.IsNullOrEmpty(val)) return 0;
+            if (string.IsNullOrEmpty(val)) return 0;
 
             int length = 0;
-            foreach(var c in val)
+            foreach (var c in val)
             {
                 length += (c >= 0 && c <= 128) ? 1 : 2;
             }
@@ -273,24 +273,24 @@ namespace System
         {
             queryString = queryString.Replace("?", "");
             NameValueCollection result = new NameValueCollection(StringComparer.OrdinalIgnoreCase);
-            if(!string.IsNullOrEmpty(queryString))
+            if (!string.IsNullOrEmpty(queryString))
             {
                 int count = queryString.Length;
-                for(int i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     int startIndex = i;
                     int index = -1;
-                    while(i < count)
+                    while (i < count)
                     {
                         char item = queryString[i];
-                        if(item == '=')
+                        if (item == '=')
                         {
-                            if(index < 0)
+                            if (index < 0)
                             {
                                 index = i;
                             }
                         }
-                        else if(item == '&')
+                        else if (item == '&')
                         {
                             break;
                         }
@@ -316,7 +316,7 @@ namespace System
                     {
                         result[key] = value;
                     }
-                    if((i == (count - 1)) && (queryString[i] == '&'))
+                    if ((i == (count - 1)) && (queryString[i] == '&'))
                     {
                         result[key] = string.Empty;
                     }
@@ -332,14 +332,14 @@ namespace System
         ///   <returns></returns> 
         public static string? MyUrlDeCode(string? str, Encoding? encoding)
         {
-            if(encoding == null)
+            if (encoding == null)
             {
                 Encoding utf8 = Encoding.UTF8;
                 // 首先用utf-8进行解码                      
                 string? code = HttpUtility.UrlDecode(str?.ToUpper(), utf8);
                 // 将已经解码的字符再次进行编码. 
                 string? encode = HttpUtility.UrlEncode(code, utf8)?.ToUpper();
-                if(str == encode)
+                if (str == encode)
                     encoding = Encoding.UTF8;
                 else
                     encoding = Encoding.GetEncoding("gb2312");
@@ -385,5 +385,194 @@ namespace System
             return result.ToString();
         }
         #endregion
+
+
+        public static bool IsIn(this string str, params string[] data)
+        {
+            foreach (var item in data)
+            {
+                if (str == item)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static string RemovePostFix(this string str, params string[] postFixes)
+        {
+            if (str == null)
+            {
+                return null;
+            }
+
+            if (str == string.Empty)
+            {
+                return string.Empty;
+            }
+
+            if (postFixes.IsNullOrEmpty())
+            {
+                return str;
+            }
+
+            foreach (var postFix in postFixes)
+            {
+                if (str.EndsWith(postFix))
+                {
+                    return str.Left(str.Length - postFix.Length);
+                }
+            }
+
+            return str;
+        }
+
+        public static string RemovePreFix(this string str, params string[] preFixes)
+        {
+            if (str == null)
+            {
+                return null;
+            }
+
+            if (str == string.Empty)
+            {
+                return string.Empty;
+            }
+
+            if (preFixes.IsNullOrEmpty())
+            {
+                return str;
+            }
+
+            foreach (var preFix in preFixes)
+            {
+                if (str.StartsWith(preFix))
+                {
+                    return str.Right(str.Length - preFix.Length);
+                }
+            }
+
+            return str;
+        }
+
+
+        public static string Left(this string str, int len)
+        {
+            if (str == null)
+            {
+                throw new ArgumentNullException("str");
+            }
+
+            if (str.Length < len)
+            {
+                throw new ArgumentException("len argument can not be bigger than given string's length!");
+            }
+
+            return str.Substring(0, len);
+        }
+
+
+        public static string Right(this string str, int len)
+        {
+            if (str == null)
+            {
+                throw new ArgumentNullException("str");
+            }
+
+            if (str.Length < len)
+            {
+                throw new ArgumentException("len argument can not be bigger than given string's length!");
+            }
+
+            return str.Substring(str.Length - len, len);
+        }
+
+        public static string GetCamelCaseFirstWord(this string str)
+        {
+            if (str == null)
+            {
+                throw new ArgumentNullException(nameof(str));
+            }
+
+            if (str.Length == 1)
+            {
+                return str;
+            }
+
+            var res = Regex.Split(str, @"(?=\p{Lu}\p{Ll})|(?<=\p{Ll})(?=\p{Lu})");
+
+            if (res.Length < 1)
+            {
+                return str;
+            }
+            else
+            {
+                return res[0];
+            }
+        }
+
+        public static string GetPascalCaseFirstWord(this string str)
+        {
+            if (str == null)
+            {
+                throw new ArgumentNullException(nameof(str));
+            }
+
+            if (str.Length == 1)
+            {
+                return str;
+            }
+
+            var res = Regex.Split(str, @"(?=\p{Lu}\p{Ll})|(?<=\p{Ll})(?=\p{Lu})");
+
+            if (res.Length < 2)
+            {
+                return str;
+            }
+            else
+            {
+                return res[1];
+            }
+        }
+
+        public static string GetPascalOrCamelCaseFirstWord(this string str)
+        {
+            if (str == null)
+            {
+                throw new ArgumentNullException(nameof(str));
+            }
+
+            if (str.Length <= 1)
+            {
+                return str;
+            }
+
+            if (str[0] >= 65 && str[0] <= 90)
+            {
+                return GetPascalCaseFirstWord(str);
+            }
+            else
+            {
+                return GetCamelCaseFirstWord(str);
+            }
+        }
+
+        public static string FirstCharToLower(this string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return s;
+
+            string str = s.First().ToString().ToLower() + s.Substring(1);
+            return str;
+        }
+
+        public static string FirstCharToUpper(this string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return s;
+
+            string str = s.First().ToString().ToUpper() + s.Substring(1);
+            return str;
+        }
     }
 }

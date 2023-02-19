@@ -16,13 +16,13 @@ namespace System
         /// <returns>类型的默认值。</returns>
         public static object? GetDefaultValue(this Type type)
         {
-            if(type is null) throw new ArgumentNullException(nameof(type));
+            if (type is null) throw new ArgumentNullException(nameof(type));
 
             var typeInfo = type.GetTypeInfo();
             var dva = typeInfo.GetAttribute<ComponentModel.DefaultValueAttribute>();
-            if(dva != null)
+            if (dva != null)
             {
-                if(dva.Value != null) return type.Parse(dva.Value);
+                if (dva.Value != null) return type.Parse(dva.Value);
                 return dva.Value;
             }
 
@@ -38,7 +38,7 @@ namespace System
         /// <returns>如果为匿名类型返回 true，否则返回 false。</returns>
         public static bool IsAnonymous(this Type type)
         {
-            if(type is null) throw new ArgumentNullException(nameof(type));
+            if (type is null) throw new ArgumentNullException(nameof(type));
 
             var typeInfo = type.GetTypeInfo();
             return !typeInfo.IsPublic
@@ -54,7 +54,7 @@ namespace System
         /// <returns>如果为 true 则是一个可空类型，否则为 false。</returns>
         public static bool IsNullable(this Type type)
         {
-            if(type is null) throw new ArgumentNullException(nameof(type));
+            if (type is null) throw new ArgumentNullException(nameof(type));
 
             return Nullable.GetUnderlyingType(type) != null;
         }
@@ -66,7 +66,7 @@ namespace System
         /// <returns>如果 <paramref name="type"/> 参数为关闭的泛型可以为 null 的类型，则为 <paramref name="type"/> 参数的类型变量，否则直接返回 <paramref name="type"/>。</returns>
         public static Type GetUnderlyingType(this Type type)
         {
-            if(type is null) throw new ArgumentNullException(nameof(type));
+            if (type is null) throw new ArgumentNullException(nameof(type));
 
             return Nullable.GetUnderlyingType(type) ?? type;
         }
@@ -80,11 +80,11 @@ namespace System
         /// <returns>如果为简单类型返回 true，否则返回 false。</returns>
         public static bool IsSimpleType(this Type type)
         {
-            if(type is null)
+            if (type is null)
                 throw new ArgumentNullException(nameof(type));
 
-            if(type == typeof(string)) return true;
-            if(type.IsClass) return false;
+            if (type == typeof(string)) return true;
+            if (type.IsClass) return false;
             type = type.GetUnderlyingType();
 
             return type.IsEnum
@@ -117,7 +117,7 @@ namespace System
         /// <returns>如果为数据库类型返回 true，否则返回 false。</returns>
         public static bool IsDbType(this Type type)
         {
-            if(type is null) throw new ArgumentNullException(nameof(type));
+            if (type is null) throw new ArgumentNullException(nameof(type));
 
             return type.IsSimpleType() || type == typeof(byte[]);
         }
@@ -137,44 +137,44 @@ namespace System
         /// <returns>类型转换的实例。</returns>
         public static object? Parse(this Type type, object value)
         {
-            if(type is null) throw new ArgumentNullException(nameof(type));
+            if (type is null) throw new ArgumentNullException(nameof(type));
 
-            if(value is null || Equals(value, DBNull.Value)) return type.GetDefaultValue();
+            if (value is null || Equals(value, DBNull.Value)) return type.GetDefaultValue();
 
             var realType = type.GetUnderlyingType();
             var typeInfo = realType.GetTypeInfo();
 
-            if(typeInfo.IsInstanceOfType(value)) return value;
+            if (typeInfo.IsInstanceOfType(value)) return value;
 
-            if(realType == typeof(bool)) return (new[] { "true", "1", "checked", "yes", "selected", "ok", "是", "校验" }).Contains(value.ToString(), StringComparer.OrdinalIgnoreCase);
+            if (realType == typeof(bool)) return (new[] { "true", "1", "checked", "yes", "selected", "ok", "是", "校验" }).Contains(value.ToString(), StringComparer.OrdinalIgnoreCase);
 
-            if(realType == typeof(Guid))
+            if (realType == typeof(Guid))
             {
-                if(value is byte[] v) return new Guid(v);
+                if (value is byte[] v) return new Guid(v);
                 return new Guid(value.ToString());
             }
-            if(realType == typeof(TimeSpan))
+            if (realType == typeof(TimeSpan))
             {
-                if(value is long @int) return new TimeSpan(@int);
+                if (value is long @int) return new TimeSpan(@int);
                 return TimeSpan.Parse(value.ToString());
             }
-            if(realType == typeof(DateTimeOffset))
+            if (realType == typeof(DateTimeOffset))
             {
-                if(value is DateTime dt) return new DateTimeOffset(dt);
-                if(value is long dv) return new DateTimeOffset(new DateTime(dv));
+                if (value is DateTime dt) return new DateTimeOffset(dt);
+                if (value is long dv) return new DateTimeOffset(new DateTime(dv));
                 return DateTimeOffset.Parse(value.ToString()!);
             }
-            if(typeInfo.IsEnum)
+            if (typeInfo.IsEnum)
             {
-                if(value is string) return Enum.Parse(realType, Convert.ToString(value), true);
+                if (value is string) return Enum.Parse(realType, Convert.ToString(value), true);
                 return Enum.ToObject(realType, value);
             }
 
-            if(realType == typeof(Uri)) return new Uri(value.ToString());
+            if (realType == typeof(Uri)) return new Uri(value.ToString());
 
-            if(typeof(Collections.IList).IsAssignableFrom(type) && value is Collections.IList source)
+            if (typeof(Collections.IList).IsAssignableFrom(type) && value is Collections.IList source)
             {
-                if(type.IsArray)
+                if (type.IsArray)
                 {
                     var array = Array.CreateInstance(type.GetElementType(), source.Count);
                     source.CopyTo(array, 0);
@@ -183,7 +183,7 @@ namespace System
                 else
                 {
                     var target = (Collections.IList)Activator.CreateInstance(type);
-                    foreach(var item in source)
+                    foreach (var item in source)
                     {
                         target.Add(item);
                     }
@@ -192,7 +192,7 @@ namespace System
                 }
             }
 
-            if(value is string sv)
+            if (value is string sv)
             {
                 return (Type.GetTypeCode(realType)) switch
                 {
@@ -256,12 +256,12 @@ namespace System
         /// <returns>一个 <typeparamref name="T"/> 数组，包含应用于 <paramref name="member"/> 的 <typeparamref name="T"/> 类型的自定义属性；如果不存在此类自定义属性，则为空数组。</returns>
         public static IEnumerable<T> GetAttributes<T>(this ICustomAttributeProvider member, bool inherit = true)
         {
-            if(member is null) throw new ArgumentNullException(nameof(member));
+            if (member is null) throw new ArgumentNullException(nameof(member));
 
             var type = typeof(T);
-            if(typeof(Attribute).IsAssignableFrom(type))
+            if (typeof(Attribute).IsAssignableFrom(type))
             {
-                foreach(var item in member.GetCustomAttributes(type, inherit))
+                foreach (var item in member.GetCustomAttributes(type, inherit))
                 {
                     yield return (T)item;
                 }
@@ -269,9 +269,9 @@ namespace System
             else
             {
                 var typeInfo = type.GetTypeInfo();
-                foreach(var item in member.GetCustomAttributes(inherit))
+                foreach (var item in member.GetCustomAttributes(inherit))
                 {
-                    if(typeInfo.IsInstanceOfType(item))
+                    if (typeInfo.IsInstanceOfType(item))
                     {
                         yield return (T)item;
                     }
@@ -288,22 +288,29 @@ namespace System
         /// <returns>如果类型 <typeparamref name="T"/> 的某个自定义属性应用于 <paramref name="member"/>，则为 true；否则为 false。</returns>
         public static bool IsDefined<T>(this ICustomAttributeProvider member, bool inherit = true)
         {
-            if(member is null) throw new ArgumentNullException(nameof(member));
+            if (member is null) throw new ArgumentNullException(nameof(member));
 
             var type = typeof(T);
 
-            if(typeof(Attribute).IsAssignableFrom(type))
+            if (typeof(Attribute).IsAssignableFrom(type))
             {
                 return member.IsDefined(type, inherit);
             }
 
             var typeInfo = type.GetTypeInfo();
-            foreach(var item in member.GetCustomAttributes(inherit))
+            foreach (var item in member.GetCustomAttributes(inherit))
             {
-                if(typeInfo.IsInstanceOfType(item)) return true;
+                if (typeInfo.IsInstanceOfType(item)) return true;
             }
 
             return false;
+        }
+
+        public static Type GetControllerReturnType(this MethodInfo method)
+        {
+            var isAsync = method.IsAsync();
+            var returnType = method.ReturnType;
+            return isAsync ? (returnType.GenericTypeArguments.FirstOrDefault() ?? typeof(void)) : returnType;
         }
     }
 }

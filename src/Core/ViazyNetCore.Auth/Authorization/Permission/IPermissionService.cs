@@ -38,6 +38,12 @@
         /// <returns></returns>
         Task<List<BmsMenus>> GetAllMenu();
 
+        /// <summary>
+        /// 获取所有有效菜单
+        /// </summary>
+        /// <returns></returns>
+        Task<List<BmsMenus>> GetAllEnableMenu();
+
         Task<BmsMenus> GetMenu(string id);
 
         Task<string> UpdateMenus(BmsMenus menu);

@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using ViazyNetCore.Auth.Jwt;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class AuthConfiguraionSteup
     {
-        public static void AddJwtAuthentication(this IServiceCollection services,Action<JwtOption> jwtOptions)
+        public static void AddJwtAuthentication(this IServiceCollection services, Action<JwtOption> jwtOptions)
         {
             if (services == null)
             {
@@ -62,6 +55,14 @@ namespace Microsoft.Extensions.DependencyInjection
                     }
 
                 };
+            });
+        }
+
+        public static void AddAuthenticationController(this IServiceCollection services)
+        {
+            services.AddDynamicController(options =>
+            {
+                options.AddAssemblyOptions(typeof(AuthConfiguraionSteup).Assembly);
             });
         }
     }

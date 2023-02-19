@@ -11,14 +11,13 @@ using System.Threading.Tasks;
 using ViazyNetCore.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using ViazyNetCore.Auth.Authorization.ViewModels;
+using ViazyNetCore.Auth.Authorization.Controllers;
 
 namespace ViazyNetCore.Authrozation
 {
-    [Authorize]
-    [ApiController]
     [Permission(PermissionIds.User)]
     [Route("api/[controller]")]
-    public class RoleController : ControllerBase
+    public class RoleController : DynamicControllerBase
     {
         private readonly RoleService _roleService;
         private readonly PermissionService _permissionService;

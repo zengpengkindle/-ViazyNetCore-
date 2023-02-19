@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Auth;
+using ViazyNetCore.Auth.Authorization.Controllers;
 using ViazyNetCore.Authorization.Dtos;
 using ViazyNetCore.Modules;
 
@@ -12,10 +13,8 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
     /// <summary>
     /// 用户管理
     /// </summary>
-    [Authorize]
-    [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : DynamicControllerBase
     {
         private readonly IUserService _userService;
         private readonly IEventBus _eventBus;
@@ -57,7 +56,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             string randPwd = model.Id.IsNotNull() ? null : "1231123";// Globals.GetRandomPassword();
             var userId = await this._userService.ManageAsync(model, randPwd);
 
-            var authUser = this.HttpContext.GetAuthUser();
+            var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
             //OperationLog operationLog = new OperationLog(this.HttpContext.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
             //{
             //    ObjectName = $"用户{describe}",

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Auth;
+using ViazyNetCore.Auth.Authorization.Controllers;
 using ViazyNetCore.Auth.Authorization.ViewModels;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
@@ -20,14 +21,13 @@ namespace ViazyNetCore.Controllers.Authorization
     /// <summary>
     /// 账号管理
     /// </summary>
-    [Authorize]
-    [ApiController]
     [Route("api/account")]
     public class AccountController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IEventBus _eventBus;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         private readonly TokenProvider _tokenProvider;
 
         public AccountController(IUserService userService, IEventBus eventBus, IHttpContextAccessor httpContextAccessor, TokenProvider tokenProvider)
@@ -40,7 +40,7 @@ namespace ViazyNetCore.Controllers.Authorization
 
         [AllowAnonymous]
         [Route("login"), HttpPost]
-        public async Task<UserTokenModel> LoginAsync([Required] UserLoginArgs args, [FromServices] IPermissionService permissionService)
+        public async Task<UserTokenModel> LoginAsync([Required][FromBody] UserLoginArgs args, [FromServices] IPermissionService permissionService)
         {
             var ip = this._httpContextAccessor.HttpContext!?.GetRequestIP();
             //OperationLog operationLog = new OperationLog
@@ -75,7 +75,7 @@ namespace ViazyNetCore.Controllers.Authorization
                         AccessToken = token.AccessToken,
                         ExpiresIn = token.ExpiresIn,
                         Nickname = identity.Nickname,
-                        Permissions= permissions.Select(p => p.PermissionItemKey).Distinct().ToArray()
+                        Permissions = permissions.Select(p => p.PermissionItemKey).Distinct().ToArray()
                     };
                 }
             }
@@ -99,14 +99,14 @@ namespace ViazyNetCore.Controllers.Authorization
         [Route("getuserinfo"), HttpPost]
         public Task<AuthUser> GetIdentityAsync()
         {
-            return Task.FromResult(this.HttpContext.GetAuthUser());
+            return Task.FromResult(this._httpContextAccessor.HttpContext!.GetAuthUser());
         }
 
         [AllowAnonymous]
         [Route("logout"), HttpPost]
         public Task LogoutAsync()
         {
-            this._tokenProvider.RemoveToken(this.HttpContext.User.GetUserId());
+            this._tokenProvider.RemoveToken(this._httpContextAccessor.HttpContext!.User.GetUserId());
             return Task.CompletedTask;
         }
 
@@ -114,7 +114,7 @@ namespace ViazyNetCore.Controllers.Authorization
         [Route("modifyPassword"), HttpPost]
         public async Task<bool> ModifyPasswordAsync([Required] UserModifyPasswordArgs args)
         {
-            var authUser = this.HttpContext.GetAuthUser();
+            var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
             //OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
             //{
             //    ObjectName = $"{authUser.UserName}",
@@ -139,7 +139,7 @@ namespace ViazyNetCore.Controllers.Authorization
             }
             finally
             {
-                this._tokenProvider.RemoveToken(this.HttpContext.User.GetUserId());
+                this._tokenProvider.RemoveToken(this._httpContextAccessor.HttpContext!.User.GetUserId());
             }
         }
     }

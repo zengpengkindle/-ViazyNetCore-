@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using ViazyNetCore;
 using ViazyNetCore.Swagger;
 using ViazyNetCore.Swagger.Filters;
 using ViazyNetCore.Swagger.Knife4jUI;
@@ -26,6 +27,25 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddSwaggerGen(options =>
             {
+
+                //支持多分组
+                options.DocInclusionPredicate((docName, apiDescription) =>
+                {
+                    var nonGroup = false;
+                    var groupNames = new List<string>();
+                    var dynamicApiAttribute = apiDescription.ActionDescriptor.EndpointMetadata.FirstOrDefault(x => x is DynamicApiAttribute);
+                    if (dynamicApiAttribute != null)
+                    {
+                        var dynamicApi = dynamicApiAttribute as DynamicApiAttribute;
+                        if (dynamicApi?.GroupNames?.Length > 0)
+                        {
+                            groupNames.AddRange(dynamicApi.GroupNames);
+                        }
+                    }
+
+                    return docName == apiDescription.GroupName || groupNames.Any(a => a == docName) || nonGroup;
+                });
+
                 var versionProvider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
                 foreach (var description in versionProvider.ApiVersionDescriptions)
                 {
@@ -36,6 +56,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         Version = $"{description.GroupName}",
                     });
                 }
+
                 options.SchemaFilter<AutoRestSchemaFilter>();
                 var dir = new DirectoryInfo(AppContext.BaseDirectory);
                 var files = dir.GetFiles("*.xml", SearchOption.TopDirectoryOnly);

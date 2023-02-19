@@ -10,6 +10,11 @@ namespace System
     /// </summary>
     public static class XCollectionsExtensions
     {
+        public static bool IsNullOrEmpty<TSource>(this ICollection<TSource> source)
+        {
+            return source == null || source.Count <= 0;
+        }
+
         /// <summary>
         /// 获取与指定的键相关联的值。
         /// </summary>

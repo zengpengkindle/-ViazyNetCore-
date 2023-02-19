@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ViazyNetCore.Model\ViazyNetCore.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="User\" />
+  </ItemGroup>
+
 </Project>

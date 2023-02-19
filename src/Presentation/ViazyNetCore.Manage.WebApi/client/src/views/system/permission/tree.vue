@@ -119,7 +119,7 @@ function submitTreeNode() {
         </div>
       </template>
       <el-tree ref="treeRef" :data="treeData" node-key="id" size="small" :props="defaultProps" default-expand-all
-        :default-checked-keys="keyMenus" :show-checkbox="showCheckBox" :expand-on-click-node="false"
+        :default-checked-keys="keyMenus" :show-checkbox="showCheckBox" :expand-on-click-node="false" :check-strictly="true"
         :filter-node-method="filterNode" @node-click="nodeClick">
         <template #default="{ node }">
           <span :class="[

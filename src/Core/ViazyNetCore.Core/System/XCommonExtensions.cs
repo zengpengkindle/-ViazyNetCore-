@@ -130,7 +130,7 @@ namespace System
         ///// <param name="key">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{String}"/> 匹配种子。</param>
         ///// <param name="execute">执行委托。</param>
         ///// <returns>异步任务。</returns>
-        //public static async Task LockAsync(this Aoite.ILockProvider lockProvider, string key, Func<Task> execute)
+        //public static async Task LockAsync(this ILockProvider lockProvider, string key, Func<Task> execute)
         //{
         //    Exception exception = null;
         //    using(lockProvider.Lock(key))
@@ -155,7 +155,7 @@ namespace System
         ///// <param name="key">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{String}"/> 匹配种子。</param>
         ///// <param name="execute">执行委托。</param>
         ///// <returns>异步任务。</returns>
-        //public static async Task<TResult> LockAsync<TResult>(this Aoite.ILockProvider lockProvider, string key, Func<Task<TResult>> execute)
+        //public static async Task<TResult> LockAsync<TResult>(this ILockProvider lockProvider, string key, Func<Task<TResult>> execute)
         //{
         //    Exception exception = null;
         //    using(lockProvider.Lock(key))
@@ -178,7 +178,7 @@ namespace System
         ///// <param name="lockProvider">锁提供程序。</param>
         ///// <param name="key">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{String}"/> 匹配种子。</param>
         ///// <param name="execute">执行委托。</param>
-        //public static void Lock(this Aoite.ILockProvider lockProvider, string key, Action execute)
+        //public static void Lock(this ILockProvider lockProvider, string key, Action execute)
         //{
         //    Exception exception = null;
         //    using(lockProvider.Lock(key))
@@ -203,7 +203,7 @@ namespace System
         ///// <param name="key">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{String}"/> 匹配种子。</param>
         ///// <param name="execute">执行委托。</param>
         ///// <returns>执行结果。</returns>
-        //public static TResult Lock<TResult>(this Aoite.ILockProvider lockProvider, string key, Func<TResult> execute)
+        //public static TResult Lock<TResult>(this ILockProvider lockProvider, string key, Func<TResult> execute)
         //{
         //    Exception exception = null;
         //    using(lockProvider.Lock(key))
@@ -226,9 +226,9 @@ namespace System
         ///// <typeparam name="TModel">实体的数据类型。</typeparam>
         ///// <param name="lockProvider">锁提供程序。</param>
         ///// <returns>一个基于类型的锁。</returns>
-        //public static Aoite.ILockProvider TypeOf<TModel>(this Aoite.ILockProvider lockProvider)
+        //public static ILockProvider TypeOf<TModel>(this ILockProvider lockProvider)
         //{
-        //    return new Aoite.TypeLockProvider(typeof(TModel), lockProvider);
+        //    return new TypeLockProvider(typeof(TModel), lockProvider);
         //}
 
         ///// <summary>

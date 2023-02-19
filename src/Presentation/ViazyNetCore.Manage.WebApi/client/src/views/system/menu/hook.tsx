@@ -59,7 +59,7 @@ export function useDept() {
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.type === 1 ? "info" :row.type === 2? "danger":""}
+          type={row.type === 0 ? "warning" :row.type === 1? "":"info"}
         >
           {row.type === 0 ? "子节点" :row.type === 1? "中间节点":"按钮"}
         </el-tag>

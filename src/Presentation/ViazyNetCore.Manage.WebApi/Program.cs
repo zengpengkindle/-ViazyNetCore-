@@ -1,11 +1,11 @@
 using System.Reflection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NLog.Web;
 using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
-using ViazyNetCore.Manage.WebApi.Controllers;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
@@ -54,7 +54,6 @@ builder.Services.AddFreeMySqlDb(builder.Configuration);
 builder.Services.AddEventBus();
 builder.Services.AddRumtimeCacheService();
 
-
 builder.Services.AddApiDescriptor(option =>
 {
     option.CachePrefix = "Viazy";
@@ -64,6 +63,7 @@ builder.Services.AddApiDescriptor(option =>
 //- 添加自动依赖注入
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
+builder.Services.AddAuthenticationController();
 
 var app = builder.Build();
 app.UseFreeSql();

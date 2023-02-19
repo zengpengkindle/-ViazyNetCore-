@@ -34,5 +34,8 @@ namespace ViazyNetCore.Auth.Authorization.ViewModels
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<string>? Roles { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public List<string> Auths { get; set; }
     }
 }
