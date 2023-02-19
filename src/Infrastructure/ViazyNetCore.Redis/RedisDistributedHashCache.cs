@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Options;
@@ -240,12 +241,24 @@ namespace ViazyNetCore.Redis
 
         public T? HashGetAll<T>(string redisKey)
         {
-            throw new NotImplementedException();
+            Connect();
+            var value = this._cache.StringGet(redisKey);
+            if (value == RedisValue.Null)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<T>(value!);
         }
 
-        public Task<T?> HashGetAllAsync<T>(string key)
+        public async Task<T?> HashGetAllAsync<T>(string redisKey)
         {
-            throw new NotImplementedException();
+            await ConnectAsync().ConfigureAwait(false);
+            var value = await this._cache.StringGetAsync(redisKey);
+            if (value == RedisValue.Null)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<T>(value!);
         }
 
         public Task<T?> HashGetAsync<T>(string redisKey, string key)
@@ -272,7 +285,7 @@ namespace ViazyNetCore.Redis
 
         public void HashRemove(string redisKey, string field)
         {
-            Connect();
+            this.Connect();
             this._cache.HashDelete(redisKey, field);
         }
 
@@ -288,14 +301,72 @@ namespace ViazyNetCore.Redis
             this._cache.HashSet(redisKey, field, value);
         }
 
-        public void HashSetAll(string redisKey, object? value, DistributedCacheEntryOptions options)
+        public void HashSetAll(string key, object? value, DistributedCacheEntryOptions options)
         {
-            throw new NotImplementedException();
+            if (key is null)
+                throw new ArgumentNullException(nameof(key));
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
+            if (options is null)
+                throw new ArgumentNullException(nameof(options));
+
+            Dictionary<string, byte[]> dict;
+            if (value is System.Collections.IDictionary d)
+            {
+                dict = new Dictionary<string, byte[]>(d.Count);
+                foreach (System.Collections.DictionaryEntry item in d)
+                {
+                    dict.Add(Convert.ToString(item.Key).MustBe(), item.Value?.Object2Bytes() ?? Array.Empty<byte>());
+                }
+            }
+            else
+            {
+                var typeMapper = TypeMapper.Create(value.GetType());
+                dict = new Dictionary<string, byte[]>(typeMapper.Count);
+                foreach (var propertyMapper in typeMapper.Properties)
+                {
+                    dict.Add(propertyMapper.Name, propertyMapper.GetValue(value).Object2Bytes());
+                }
+            }
+
+            foreach (var item in dict)
+            {
+                this.HashSet(key, item.Key, item.Value, options);
+            }
         }
 
-        public Task HashSetAllAsync(string key, object? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        public async Task HashSetAllAsync(string key, object? value, DistributedCacheEntryOptions options, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            if (key is null)
+                throw new ArgumentNullException(nameof(key));
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
+            if (options is null)
+                throw new ArgumentNullException(nameof(options));
+
+            Dictionary<string, byte[]> dict;
+            if (value is System.Collections.IDictionary d)
+            {
+                dict = new Dictionary<string, byte[]>(d.Count);
+                foreach (System.Collections.DictionaryEntry item in d)
+                {
+                    dict.Add(Convert.ToString(item.Key).MustBe(), item.Value?.Object2Bytes() ?? Array.Empty<byte>());
+                }
+            }
+            else
+            {
+                var typeMapper = TypeMapper.Create(value.GetType());
+                dict = new Dictionary<string, byte[]>(typeMapper.Count);
+                foreach (var propertyMapper in typeMapper.Properties)
+                {
+                    dict.Add(propertyMapper.Name, propertyMapper.GetValue(value).Object2Bytes());
+                }
+            }
+
+            foreach (var item in dict)
+            {
+                await this.HashSetAsync(key, item.Key, item.Value, options);
+            }
         }
 
         public Task<bool> HashSetAsync(string redisKey, string key, string value)
@@ -308,9 +379,10 @@ namespace ViazyNetCore.Redis
             return this._redisCache.HashSetAsync<T>(redisKey, key, value);
         }
 
-        public Task HashSetAsync(string key, string field, byte[]? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        public async Task HashSetAsync(string key, string field, byte[]? value, DistributedCacheEntryOptions options, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            await ConnectAsync().ConfigureAwait(false);
+            await this._cache.HashSetAsync(key, field, value);
         }
 
         public Task ListClearAsync(string redisKey)

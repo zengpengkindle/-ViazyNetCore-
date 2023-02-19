@@ -125,10 +125,6 @@ namespace ViazyNetCore.Modules
                     throw new ApiException("The verification code is wrong or expired.");
                 }
 
-                //var userpermissions = (user.ExtendData?.Split(",")) ?? Array.Empty<string>();
-                //var rolepermissions = (user.RoleExtendData?.Split(",")) ?? Array.Empty<string>();
-                //var permissions = rolepermissions.Distinct().ToList();
-
                 //管理员 授权所有按钮权限
                 //if (user.RoleId == Globals.ADMIN_ROLE_ID) permissions = new List<string>() { ((int)BMSPermissionCode.All).ToString() };
 
