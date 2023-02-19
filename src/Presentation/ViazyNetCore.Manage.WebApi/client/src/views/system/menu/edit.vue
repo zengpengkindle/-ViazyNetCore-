@@ -104,6 +104,11 @@ const rules = reactive<FormRules>({
     }
   }]
 });
+
+const DisabledTreeSelect = function (data, node) {
+  return data.type == MenuType.Button;
+}
+
 </script>
 <template>
   <el-drawer v-model="visible" size="35%" :title="id ? '编辑菜单' : '新增菜单'" :before-close="handleClose">
@@ -125,8 +130,8 @@ const rules = reactive<FormRules>({
         <el-input v-model="menuInfo.url" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item label="父节点">
-        <el-tree-select :data="treeData" v-model="menuInfo.parentId" default-expand-all
-          :props="{ value: 'id', label: 'name', emitPath: false, checkStrictly: true }" clearable></el-tree-select>
+        <el-tree-select :data="treeData" v-model="menuInfo.parentId" default-expand-all check-strictly
+          :props="{ value: 'id', label: 'name', emitPath: false, disabled: DisabledTreeSelect }" clearable></el-tree-select>
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-switch v-model="menuInfo.status" :active-value="ComStatus.Enabled" active-text="启用" inactive-text="禁用"
