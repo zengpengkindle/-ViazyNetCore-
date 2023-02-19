@@ -108,6 +108,7 @@ declare module "vue" {
     ElDescriptionsItem: typeof import("element-plus")["ElDescriptionsItem"];
     ElResult: typeof import("element-plus")["ElResult"];
     ElSelectV2: typeof import("element-plus")["ElSelectV2"];
+    ElTreeSelect: typeof import("element-plus")["ElTreeSelect"];
   }
 
   interface ComponentCustomProperties {
