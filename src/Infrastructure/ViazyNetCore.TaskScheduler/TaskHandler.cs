@@ -1,4 +1,5 @@
 ﻿using FreeScheduler;
+using TaskStatus = FreeScheduler.TaskStatus;
 
 namespace ViazyNetCore.TaskScheduler
 {

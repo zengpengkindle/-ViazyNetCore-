@@ -10,7 +10,7 @@ namespace ViazyNetCore.TaskScheduler
         /// <summary>
         /// 数据库键
         /// </summary>
-        public string DbKey { get; set; };
+        public string DbKey { get; set; }
 
         /// <summary>
         /// 数据库实例
