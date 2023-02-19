@@ -207,6 +207,44 @@ namespace ViazyNetCore.Redis
             }
         }
 
+
+        private static double? GetExpirationInSeconds(DateTimeOffset creationTime, DateTimeOffset? absoluteExpiration, DistributedCacheEntryOptions options)
+        {
+            if (absoluteExpiration.HasValue && options.SlidingExpiration.HasValue)
+            {
+                return (double)Math.Min((absoluteExpiration.Value - creationTime).TotalSeconds, options.SlidingExpiration.Value.TotalSeconds);
+            }
+
+            if (absoluteExpiration.HasValue)
+            {
+                return (double)(absoluteExpiration.Value - creationTime).TotalSeconds;
+            }
+
+            if (options.SlidingExpiration.HasValue)
+            {
+                return (double)options.SlidingExpiration.Value.TotalSeconds;
+            }
+
+            return null;
+        }
+
+        private static DateTimeOffset? GetAbsoluteExpiration(DateTimeOffset creationTime, DistributedCacheEntryOptions options)
+        {
+            if (options.AbsoluteExpiration.HasValue && options.AbsoluteExpiration <= creationTime)
+            {
+                throw new ArgumentOutOfRangeException("AbsoluteExpiration", options.AbsoluteExpiration.Value, "The absolute expiration value must be in the future.");
+            }
+
+            if (options.AbsoluteExpirationRelativeToNow.HasValue)
+            {
+                DateTimeOffset value = creationTime;
+                TimeSpan? absoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow;
+                return value + absoluteExpirationRelativeToNow;
+            }
+
+            return options.AbsoluteExpiration;
+        }
+
         public Task Clear()
         {
             return this._redisCache.Clear();
@@ -299,12 +337,16 @@ namespace ViazyNetCore.Redis
         {
             this.Connect();
             this._cache.HashSet(redisKey, field, value);
+            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+            DateTimeOffset? absoluteExpiration = GetAbsoluteExpiration(utcNow, options);
+            var expirationSeconds = GetExpirationInSeconds(utcNow, absoluteExpiration, options);
+            this._cache.KeyExpire(redisKey, expirationSeconds == null ? null : TimeSpan.FromSeconds(expirationSeconds.Value));
         }
 
-        public void HashSetAll(string key, object? value, DistributedCacheEntryOptions options)
+        public void HashSetAll(string redisKey, object? value, DistributedCacheEntryOptions options)
         {
-            if (key is null)
-                throw new ArgumentNullException(nameof(key));
+            if (redisKey is null)
+                throw new ArgumentNullException(nameof(redisKey));
             if (value is null)
                 throw new ArgumentNullException(nameof(value));
             if (options is null)
@@ -331,14 +373,18 @@ namespace ViazyNetCore.Redis
 
             foreach (var item in dict)
             {
-                this.HashSet(key, item.Key, item.Value, options);
+                this.HashSet(redisKey, item.Key, item.Value, options);
             }
+            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+            DateTimeOffset? absoluteExpiration = GetAbsoluteExpiration(utcNow, options);
+            var expirationSeconds = GetExpirationInSeconds(utcNow, absoluteExpiration, options);
+            this._cache.KeyExpire(redisKey, expirationSeconds == null ? null : TimeSpan.FromSeconds(expirationSeconds.Value));
         }
 
-        public async Task HashSetAllAsync(string key, object? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        public async Task HashSetAllAsync(string redisKey, object? value, DistributedCacheEntryOptions options, CancellationToken token = default)
         {
-            if (key is null)
-                throw new ArgumentNullException(nameof(key));
+            if (redisKey is null)
+                throw new ArgumentNullException(nameof(redisKey));
             if (value is null)
                 throw new ArgumentNullException(nameof(value));
             if (options is null)
@@ -365,8 +411,12 @@ namespace ViazyNetCore.Redis
 
             foreach (var item in dict)
             {
-                await this.HashSetAsync(key, item.Key, item.Value, options);
+                await this.HashSetAsync(redisKey, item.Key, item.Value, options);
             }
+            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+            DateTimeOffset? absoluteExpiration = GetAbsoluteExpiration(utcNow, options);
+            var expirationSeconds = GetExpirationInSeconds(utcNow, absoluteExpiration, options);
+            await this._cache.KeyExpireAsync(redisKey, expirationSeconds == null ? null : TimeSpan.FromSeconds(expirationSeconds.Value));
         }
 
         public Task<bool> HashSetAsync(string redisKey, string key, string value)
@@ -383,6 +433,10 @@ namespace ViazyNetCore.Redis
         {
             await ConnectAsync().ConfigureAwait(false);
             await this._cache.HashSetAsync(key, field, value);
+            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+            DateTimeOffset? absoluteExpiration = GetAbsoluteExpiration(utcNow, options);
+            var expirationSeconds = GetExpirationInSeconds(utcNow, absoluteExpiration, options);
+            await this._cache.KeyExpireAsync(key, expirationSeconds == null ? null : TimeSpan.FromSeconds(expirationSeconds.Value));
         }
 
         public Task ListClearAsync(string redisKey)
