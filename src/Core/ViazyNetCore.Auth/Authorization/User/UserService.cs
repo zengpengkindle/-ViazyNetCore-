@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using ViazyNetCore.Caching;
 using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.Auth;
+using Microsoft.Extensions.Options;
 
 namespace ViazyNetCore.Modules
 {
@@ -16,13 +18,15 @@ namespace ViazyNetCore.Modules
         private readonly IUserRepository _userRepository;
         private readonly IEventBus _eventBus;
         private readonly ICacheService _cacheService;
+        private readonly UserOption _userOption;
 
         public UserService(IUserRepository userRepository
-            , IEventBus eventBus, ICacheService cacheService)
+            , IEventBus eventBus, ICacheService cacheService, IOptions<UserOption> options)
         {
             this._cacheService = cacheService;
             this._eventBus = eventBus;
             this._userRepository = userRepository;
+            this._userOption = options.Value;
 
         }
         /// <summary>
@@ -118,7 +122,7 @@ namespace ViazyNetCore.Modules
                 args.Auditor = user.Id;
                 if (user.Status != ComStatus.Enabled) throw new ApiException("Account has been disabled!");
                 //谷歌校验码
-                var res = this.CheckGoogleKey(user.GoogleKey, args.Code, enableGoogleToken);
+                var res = this.CheckGoogleKey(user.GoogleKey, args.Code, this._userOption.EnableGoogleToken);
                 if (!res)
                 {
                     this.GetByUsernameCache(args.Username, false);
@@ -128,7 +132,7 @@ namespace ViazyNetCore.Modules
                 //管理员 授权所有按钮权限
                 //if (user.RoleId == Globals.ADMIN_ROLE_ID) permissions = new List<string>() { ((int)BMSPermissionCode.All).ToString() };
 
-                if (user.Password == DataSecurity.GenerateSaltedHash(args.Password, user.PasswordSalt))
+                if (UserPasswordHelper.CheckPassword(args.Password, user.Password, user.PasswordSalt, this._userOption.UserPasswordFormat))
                 {
                     this.GetByUsernameCache(args.Username, true);
                     return new BmsIdentity
@@ -173,7 +177,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">用户编号。</param>
         /// <returns>重置成功返回 随机密码,否则抛出异常</returns>
-        public async Task<string> ResetPasswordAsync(string id,string randPwd)
+        public async Task<string> ResetPasswordAsync(string id, string randPwd)
         {
             var password = DataSecurity.GenerateSaltedHash(randPwd, out var salt);
             await _userRepository.ModifyPasswordAsync(password, salt, id);
@@ -191,7 +195,7 @@ namespace ViazyNetCore.Modules
         {
             var user = await _userRepository.GetEnabledUserByIdAsync(id);
 
-            if (user != null && DataSecurity.GenerateSaltedHash(args.OldPassword, user.PasswordSalt) == user.Password)
+            if (user != null && UserPasswordHelper.CheckPassword(args.OldPassword, user.Password, user.PasswordSalt, this._userOption.UserPasswordFormat))
             {
                 var password = DataSecurity.GenerateSaltedHash(args.NewPassword, out var salt);
                 await _userRepository.ModifyPasswordAsync(password, salt, id);

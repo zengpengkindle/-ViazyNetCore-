@@ -381,7 +381,7 @@ namespace ViazyNetCore.DI
         private static string GetHttpVerb(ActionModel action)
         {
             var getValueSuccess = AppConsts.AssemblyDynamicApiOptions
-                .TryGetValue(action.Controller.ControllerType.Assembly, out DynamicAssemblyControllerOptions assemblyDynamicApiOptions);
+                .TryGetValue(action.Controller.ControllerType.Assembly, out DynamicAssemblyControllerOptions? assemblyDynamicApiOptions);
             if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicApiOptions?.HttpVerb))
             {
                 return assemblyDynamicApiOptions.HttpVerb;

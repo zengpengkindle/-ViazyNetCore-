@@ -24,6 +24,6 @@ namespace ViazyNetCore.Auth.Authorization.ViewModels
         /// </summary>
         public string Nickname { get; set; }
 
-        public string[] Permissions { get; set; }
+        public string[]? Permissions { get; set; }
     }
 }

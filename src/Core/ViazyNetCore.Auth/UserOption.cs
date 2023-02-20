@@ -126,6 +126,8 @@ namespace ViazyNetCore.Auth
         public int MinNoAuditedUserRank { get; set; } = 18;
 
         public string GetRandomPassword => FastRandom.Instance.NextString(8);
+
+        public bool EnableGoogleToken { get; set; } = false;
     }
 
     public enum RegisterType
