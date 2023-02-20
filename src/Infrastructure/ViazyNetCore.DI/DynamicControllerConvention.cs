@@ -43,7 +43,7 @@ namespace ViazyNetCore.DI
 
         public string GetFormatName(string value)
         {
-            return GetSeparateWords(value);
+            return GetSeparateWords(value).ToCamel();
         }
 
         public void Apply(ApplicationModel application)

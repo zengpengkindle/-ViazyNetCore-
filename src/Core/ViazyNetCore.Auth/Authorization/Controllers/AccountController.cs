@@ -21,8 +21,7 @@ namespace ViazyNetCore.Controllers.Authorization
     /// <summary>
     /// 账号管理
     /// </summary>
-    [Route("api/account")]
-    public class AccountController : ControllerBase
+    public class AccountController : DynamicControllerBase
     {
         private readonly IUserService _userService;
         private readonly IEventBus _eventBus;
@@ -39,7 +38,7 @@ namespace ViazyNetCore.Controllers.Authorization
         }
 
         [AllowAnonymous]
-        [Route("login"), HttpPost]
+        [HttpPost]
         public async Task<UserTokenModel> LoginAsync([Required][FromBody] UserLoginArgs args, [FromServices] IPermissionService permissionService)
         {
             var ip = this._httpContextAccessor.HttpContext!?.GetRequestIP();
@@ -96,14 +95,14 @@ namespace ViazyNetCore.Controllers.Authorization
 
 
         [ApiTitle("获取用户标识")]
-        [Route("getuserinfo"), HttpPost]
+        [HttpPost]
         public Task<AuthUser> GetIdentityAsync()
         {
             return Task.FromResult(this._httpContextAccessor.HttpContext!.GetAuthUser());
         }
 
         [AllowAnonymous]
-        [Route("logout"), HttpPost]
+        [HttpPost]
         public Task LogoutAsync()
         {
             this._tokenProvider.RemoveToken(this._httpContextAccessor.HttpContext!.User.GetUserId());
@@ -111,7 +110,7 @@ namespace ViazyNetCore.Controllers.Authorization
         }
 
         [Authorize, ApiTitle("修改密码")]
-        [Route("modifyPassword"), HttpPost]
+        [HttpPost]
         public async Task<bool> ModifyPasswordAsync([Required] UserModifyPasswordArgs args)
         {
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();

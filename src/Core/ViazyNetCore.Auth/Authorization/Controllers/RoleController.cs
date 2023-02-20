@@ -16,7 +16,6 @@ using ViazyNetCore.Auth.Authorization.Controllers;
 namespace ViazyNetCore.Authrozation
 {
     [Permission(PermissionIds.User)]
-    [Route("api/[controller]")]
     public class RoleController : DynamicControllerBase
     {
         private readonly RoleService _roleService;
@@ -28,19 +27,19 @@ namespace ViazyNetCore.Authrozation
             this._permissionService = permissionService;
         }
 
-        [HttpPost, Route("findRoles")]
+        [HttpPost]
         public Task<PageData<RoleFindAllModel>> FindRoles(FindRolesParameters args)
         {
             return this._roleService.FindRoles(args);
         }
 
-        [HttpPost, Route("getAll")]
+        [HttpPost]
         public Task<List<RoleSimpleModel>> GetAll()
         {
             return this._roleService.GetAllAsync();
         }
 
-        [HttpPost, Route("removeRole")]
+        [HttpPost]
         public async Task<bool> RemoveRole(string id)
         {
             if (id == RoleIds.Instance().SuperAdministrator())
@@ -54,7 +53,7 @@ namespace ViazyNetCore.Authrozation
 
         }
 
-        [HttpPost, Route("updateRole")]
+        [HttpPost]
         public async Task<bool> UpdateRole(UpdateBmsRoleArgs args)
         {
             var role = args.CopyTo<BmsRole>();
@@ -63,20 +62,20 @@ namespace ViazyNetCore.Authrozation
             return true;
         }
 
-        [HttpPost, Route("findRole")]
+        [HttpPost]
         public async Task<BmsRole> FindRole(string id)
         {
             var role = await this._roleService.GetAsync(id);
             return role;
         }
 
-        [Route("getUserRoleIds"), HttpPost]
+        [HttpPost]
         public Task<List<string>> GetUserRole(string userId)
         {
             return this._roleService.GetRoleIdsOfUser(userId);
         }
 
-        [Route("updateUserRoles"), HttpPost]
+        [HttpPost]
         public async Task<bool> UpdateUserRoles(string userId, List<string> roleIds)
         {
             await this._roleService.UpdateUserToRoles(userId, roleIds);

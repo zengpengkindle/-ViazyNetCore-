@@ -10,8 +10,7 @@ using ViazyNetCore.DI;
 namespace ViazyNetCore.Auth.Authorization.Controllers
 {
     [Authorize]
-    [ApiController]
-    [DynamicApi()]
+    [DynamicApi]
     public abstract class DynamicControllerBase : IDynamicController
     {
     }

@@ -13,7 +13,6 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
     /// <summary>
     /// 用户管理
     /// </summary>
-    [Route("api/[controller]")]
     public class UserController : DynamicControllerBase
     {
         private readonly IUserService _userService;
@@ -30,7 +29,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         }
 
         [ApiTitle("所有查询")]
-        [Route("findAll"), HttpPost]
+        [HttpPost]
         [Permission(PermissionIds.User)]
         public Task<PageData<UserFindAllModel>> FindAllAsync([Required] UserFindAllArgs args)
         {
@@ -38,7 +37,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         }
 
         [ApiTitle("单个查询")]
-        [Route("find"), HttpPost]
+        [HttpPost]
         [Permission(PermissionIds.User)]
         public Task<UserFindModel> FindAsync([Required] string id)
         {
@@ -46,7 +45,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         }
 
         [ApiTitle("管理")]
-        [Route("manage"), HttpPost]
+        [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<UserManageDto> ManageAsync([Required] UserModel model)
         {
@@ -75,7 +74,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         }
 
         [ApiTitle("删除")]
-        [Route("remove"), HttpPost]
+        [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<bool> RemoveAsync([Required] string id)
         {
@@ -104,7 +103,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         /// <param name="id"></param>
         /// <returns></returns>
         [ApiTitle("重置密码")]
-        [Route("restPassword"), HttpPost]
+        [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<string> ResetPasswordAsync(string id)
         {
@@ -128,7 +127,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         }
 
         [ApiTitle("重置登录限制")]
-        [Route("resetTime"), HttpPost]
+        [HttpPost]
         [Permission(PermissionIds.User)]
         public bool ResetTime(string username)
         {

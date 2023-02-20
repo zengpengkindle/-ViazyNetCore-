@@ -574,5 +574,26 @@ namespace System
             string str = s.First().ToString().ToUpper() + s.Substring(1);
             return str;
         }
+
+        public static string ToPascal(this string str)
+        {
+            string[] split = str.Split(new char[] { '/', ' ', '_', '.', '-' });
+            string newStr = "";
+            foreach (var item in split)
+            {
+                char[] chars = item.ToCharArray();
+                chars[0] = char.ToUpper(chars[0]);
+                for (int i = 1; i < chars.Length; i++)
+                {
+                    chars[i] = char.ToLower(chars[i]);
+                }
+                newStr += new string(chars);
+            }
+            return newStr;
+        }
+        public static string ToCamel(this string str)
+        {
+            return str.ToPascal().FirstCharToLower();
+        }
     }
 }
