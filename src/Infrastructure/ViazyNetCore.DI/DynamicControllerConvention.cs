@@ -43,7 +43,8 @@ namespace ViazyNetCore.DI
 
         public string GetFormatName(string value)
         {
-            return GetSeparateWords(value).ToCamel();
+            return value.FirstCharToLower();
+            //return GetSeparateWords(value).ToCamel();
         }
 
         public void Apply(ApplicationModel application)
@@ -186,10 +187,10 @@ namespace ViazyNetCore.DI
 
         private void ConfigureApiExplorer(ControllerModel controller)
         {
-            //if (controller.ApiExplorer.GroupName.IsNull())
-            //{
-            //    controller.ApiExplorer.GroupName = controller.ControllerName;
-            //}
+            if (controller.ApiExplorer.GroupName.IsNull())
+            {
+                controller.ApiExplorer.GroupName = controller.ControllerName;
+            }
 
             if (controller.ApiExplorer.IsVisible == null)
             {

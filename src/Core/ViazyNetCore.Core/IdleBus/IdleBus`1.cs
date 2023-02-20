@@ -10,7 +10,7 @@ namespace ViazyNetCore.IdleBus
     /// <summary>
     /// 空闲对象容器管理，可实现自动创建、销毁、扩张收缩，解决【实例】长时间占用问题
     /// </summary>
-    public partial class IdleBus<TKey, TValue> : IDisposable where TValue : class, IDisposable
+    public partial class IdleBus<TKey, TValue> : IDisposable where TValue : class, IDisposable where TKey : notnull
     {
 
         ConcurrentDictionary<TKey, ItemInfo> _dic;

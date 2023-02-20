@@ -62,7 +62,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddDynamicController(options =>
             {
-                //options.AddAssemblyOptions(typeof(AuthConfiguraionSteup).Assembly);
+                options.AddAssemblyOptions(typeof(AuthConfiguraionSteup).Assembly);
             });
         }
     }

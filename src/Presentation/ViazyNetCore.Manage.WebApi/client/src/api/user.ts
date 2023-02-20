@@ -37,9 +37,9 @@ export class UserApi {
       data: param1
     });
   }
-  public apiUserRestPassword(id?: string): Promise<string> {
+  public apiUserResetPassword(id?: string): Promise<string> {
     return http.request({
-      url: "/api/User/restPassword",
+      url: "/api/User/resetPassword",
       method: "post",
       params: { id }
     });

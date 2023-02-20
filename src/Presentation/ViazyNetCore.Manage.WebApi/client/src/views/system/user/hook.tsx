@@ -213,7 +213,7 @@ export function useUser() {
 
   async function handleResetPassword(row: any) {
     if (row?.id) {
-      const data = await UserApi.apiUserRestPassword(row.id);
+      const data = await UserApi.apiUserResetPassword(row.id);
       ElMessageBox.alert(`重置后密码为<strong> ${data} </strong>`, "提示", {
         confirmButtonText: "确定",
         type: "success",

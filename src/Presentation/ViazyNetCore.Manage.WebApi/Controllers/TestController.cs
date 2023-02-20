@@ -16,6 +16,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
     [Route("test")]
     [ApiController]
     [Authorize]
+    [Area("test")]
     public class TestController : ControllerBase
     {
         /// <summary>
