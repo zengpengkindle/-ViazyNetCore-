@@ -9,7 +9,7 @@ import IconSelect from "@/components/ReIcon/src/Select.vue";
 export interface Props {
   modelValue: boolean;
   readonly id: string | null;
-  readonly treeData?: any[]
+  readonly treeData?: any[];
 }
 const props = defineProps<Props>();
 const visible = ref(false);
@@ -54,8 +54,8 @@ const menuInfo: Ref<BmsMenus> = ref(defaultMenuInfo);
 
 async function getUserInfo() {
   if (props.id) {
-    var result = await PermissionApi.apiPermissionGetMenu(props.id);
-    if (result.parentId === '') result.parentId = null;
+    const result = await PermissionApi.apiPermissionGetMenu(props.id);
+    if (result.parentId === "") result.parentId = null;
     menuInfo.value = result;
     if (!menuInfo.value.icon) menuInfo.value.icon = "ep:";
   } else {
@@ -73,7 +73,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       });
       message("修改成功", { type: "success" });
       emit("refresh");
-      handleClose(() => { });
+      handleClose(() => {});
     } else {
       return false;
     }
@@ -81,71 +81,122 @@ const submitForm = (formEl: FormInstance | undefined) => {
 };
 
 const closeForm = () => {
-  handleClose(() => { });
+  handleClose(() => {});
 };
 const rules = reactive<FormRules>({
   name: [{ required: true, message: "请输入菜单名称", trigger: "blur" }],
-  url: [{
-    trigger: "blur", validator: (rule, value, callback) => {
-      if (menuInfo.value.type != MenuType.Button && value === '') {
-        callback(new Error('请输入Url路径'));
-      } else {
-        callback();
+  url: [
+    {
+      trigger: "blur",
+      validator: (rule, value, callback) => {
+        if (menuInfo.value.type != MenuType.Button && value === "") {
+          callback(new Error("请输入Url路径"));
+        } else {
+          callback();
+        }
       }
     }
-  }],
-  description: [{
-    trigger: "blur", validator: (rule, value, callback) => {
-      if (menuInfo.value.type != MenuType.MidNode && value === '') {
-        callback(new Error('请输入填写描述'));
-      } else {
-        callback();
+  ],
+  description: [
+    {
+      trigger: "blur",
+      validator: (rule, value, callback) => {
+        if (menuInfo.value.type != MenuType.MidNode && value === "") {
+          callback(new Error("请输入填写描述"));
+        } else {
+          callback();
+        }
       }
     }
-  }]
+  ]
 });
 
 const DisabledTreeSelect = function (data, node) {
   return data.type == MenuType.Button;
-}
-
+};
 </script>
 <template>
-  <el-drawer v-model="visible" size="35%" :title="id ? '编辑菜单' : '新增菜单'" :before-close="handleClose">
-    <el-form ref="formRef" :rules="rules" :model="menuInfo" label-width="100px" class="demo-ruleForm">
+  <el-drawer
+    v-model="visible"
+    size="35%"
+    :title="id ? '编辑菜单' : '新增菜单'"
+    :before-close="handleClose"
+  >
+    <el-form
+      ref="formRef"
+      :rules="rules"
+      :model="menuInfo"
+      label-width="100px"
+      class="demo-ruleForm"
+    >
       <el-form-item label="菜单名称" prop="name">
         <el-input v-model="menuInfo.name" type="text" />
       </el-form-item>
       <el-form-item label="描述" prop="description">
-        <el-input v-model="menuInfo.description" type="text" autocomplete="off" />
+        <el-input
+          v-model="menuInfo.description"
+          type="text"
+          autocomplete="off"
+        />
       </el-form-item>
       <el-form-item label="类型" prop="type">
         <el-radio-group v-model="menuInfo.type">
-          <el-radio-button :label="MenuType.Node" size="default">节点</el-radio-button>
-          <el-radio-button :label="MenuType.MidNode" size="default">中间节点</el-radio-button>
-          <el-radio-button :label="MenuType.Button" size="default">按钮</el-radio-button>
+          <el-radio-button :label="MenuType.Node" size="default"
+            >节点</el-radio-button
+          >
+          <el-radio-button :label="MenuType.MidNode" size="default"
+            >中间节点</el-radio-button
+          >
+          <el-radio-button :label="MenuType.Button" size="default"
+            >按钮</el-radio-button
+          >
         </el-radio-group>
       </el-form-item>
       <el-form-item label="路径" prop="url">
         <el-input v-model="menuInfo.url" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item label="父节点">
-        <el-tree-select :data="treeData" v-model="menuInfo.parentId" default-expand-all check-strictly
-          :props="{ value: 'id', label: 'name', emitPath: false, disabled: DisabledTreeSelect }" clearable></el-tree-select>
+        <el-tree-select
+          :data="treeData"
+          v-model="menuInfo.parentId"
+          default-expand-all
+          check-strictly
+          :props="{
+            value: 'id',
+            label: 'name',
+            emitPath: false,
+            disabled: DisabledTreeSelect
+          }"
+          clearable
+        />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-switch v-model="menuInfo.status" :active-value="ComStatus.Enabled" active-text="启用" inactive-text="禁用"
-          :inactive-value="ComStatus.Disabled" />
+        <el-switch
+          v-model="menuInfo.status"
+          :active-value="ComStatus.Enabled"
+          active-text="启用"
+          inactive-text="禁用"
+          :inactive-value="ComStatus.Disabled"
+        />
       </el-form-item>
       <el-form-item label="图标" prop="Icon">
         <el-input v-model="menuInfo.icon" type="text" autocomplete="off" />
         <icon-select v-model="menuInfo.icon" />
       </el-form-item>
       <el-form-item label="排序" prop="orderId">
-        <el-input v-model.number="menuInfo.orderId" type="number" autocomplete="off" />
+        <el-input
+          v-model.number="menuInfo.orderId"
+          type="number"
+          autocomplete="off"
+        />
       </el-form-item>
       <el-form-item label="扩展信息" prop="extraData">
-        <el-input :rows="5" v-model="menuInfo.exdata" type="textarea" autocomplete="off" />
+        <el-input
+          :rows="5"
+          v-model="menuInfo.exdata"
+          type="textarea"
+          autocomplete="off"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(formRef)">提交</el-button>

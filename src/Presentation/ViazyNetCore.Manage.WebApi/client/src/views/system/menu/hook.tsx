@@ -6,8 +6,7 @@ import { reactive, ref, onMounted } from "vue";
 import { IconifyIconOffline, IconifyIconOnline } from "@/components/ReIcon";
 
 export function useDept() {
-  const form: { user?: string, status?: number } = reactive({
-  });
+  const form: { user?: string; status?: number } = reactive({});
   const dataList = ref([]);
   const loading = ref(true);
 
@@ -59,9 +58,9 @@ export function useDept() {
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.type === 0 ? "warning" :row.type === 1? "":"info"}
+          type={row.type === 0 ? "warning" : row.type === 1 ? "" : "info"}
         >
-          {row.type === 0 ? "子节点" :row.type === 1? "中间节点":"按钮"}
+          {row.type === 0 ? "子节点" : row.type === 1 ? "中间节点" : "按钮"}
         </el-tag>
       )
     },

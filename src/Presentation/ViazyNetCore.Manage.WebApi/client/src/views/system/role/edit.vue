@@ -8,7 +8,6 @@ import {
   ElForm,
   ElFormItem,
   ElInput,
-  ElSwitch,
   FormInstance,
   FormRules
 } from "element-plus";
