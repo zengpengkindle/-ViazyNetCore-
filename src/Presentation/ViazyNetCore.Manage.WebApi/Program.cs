@@ -6,6 +6,7 @@ using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
+using ViazyNetCore.DI;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
@@ -40,15 +41,17 @@ builder.Services.AddJwtAuthentication(option =>
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<PermissionFilter>();
+    options.Conventions.Add(new DynamicControllerGroupConvention());
 }).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.InitializeDefault();
-});
+}).AddControllersAsServices();
 //.AddApplicationPart(typeof(TestController).Assembly)
 ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwagger("ViazyNetCore-Manage");
+
+builder.Services.AddAuthenticationController();
 
 builder.Services.AddFreeMySqlDb(builder.Configuration);
 builder.Services.AddEventBus();
@@ -59,11 +62,27 @@ builder.Services.AddApiDescriptor(option =>
     option.CachePrefix = "Viazy";
     option.ServiceName = "BMS";
 });
-
 //- 添加自动依赖注入
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
-builder.Services.AddAuthenticationController();
+
+builder.Services.AddSwagger("ViazyNetCore-Manage", config =>
+{
+    config.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
+    {
+        Code = "auth",
+        Description = "后台管理",
+        Name = "ViazyNetCore",
+        Version = "v1",
+    });
+    config.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
+    {
+        Code = "test",
+        Description = "Test",
+        Name = "Test",
+        Version = "v1",
+    });
+});
 
 var app = builder.Build();
 app.UseFreeSql();

@@ -43,7 +43,8 @@ namespace ViazyNetCore.DI
 
         public string GetFormatName(string value)
         {
-            return GetSeparateWords(value).ToCamel();
+            return value.FirstCharToLower();
+            //return GetSeparateWords(value).ToCamel();
         }
 
         public void Apply(ApplicationModel application)
@@ -186,10 +187,10 @@ namespace ViazyNetCore.DI
 
         private void ConfigureApiExplorer(ControllerModel controller)
         {
-            //if (controller.ApiExplorer.GroupName.IsNull())
-            //{
-            //    controller.ApiExplorer.GroupName = controller.ControllerName;
-            //}
+            if (controller.ApiExplorer.GroupName.IsNull())
+            {
+                controller.ApiExplorer.GroupName = controller.ControllerName;
+            }
 
             if (controller.ApiExplorer.IsVisible == null)
             {
@@ -381,7 +382,7 @@ namespace ViazyNetCore.DI
         private static string GetHttpVerb(ActionModel action)
         {
             var getValueSuccess = AppConsts.AssemblyDynamicApiOptions
-                .TryGetValue(action.Controller.ControllerType.Assembly, out DynamicAssemblyControllerOptions assemblyDynamicApiOptions);
+                .TryGetValue(action.Controller.ControllerType.Assembly, out DynamicAssemblyControllerOptions? assemblyDynamicApiOptions);
             if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicApiOptions?.HttpVerb))
             {
                 return assemblyDynamicApiOptions.HttpVerb;

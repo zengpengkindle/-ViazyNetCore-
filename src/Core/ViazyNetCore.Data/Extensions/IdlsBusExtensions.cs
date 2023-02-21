@@ -24,11 +24,11 @@ namespace ViazyNetCore
 
         public static IServiceCollection AddRepository(this IServiceCollection services, params Assembly[] assemblies)
         {
-            services.AddScoped(typeof(IBaseRepository<>), typeof(DefaultIdleRepository<>));
-            services.AddScoped(typeof(BaseRepository<>), typeof(DefaultIdleRepository<>));
+            services.AddScoped(typeof(IBaseRepository<>), typeof(DefaultIdlsRepository<>));
+            services.AddScoped(typeof(BaseRepository<>), typeof(DefaultIdlsRepository<>));
 
-            services.AddScoped(typeof(IBaseRepository<,>), typeof(DefaultIdleRepository<,>));
-            services.AddScoped(typeof(BaseRepository<,>), typeof(DefaultIdleRepository<,>));
+            services.AddScoped(typeof(IBaseRepository<,>), typeof(DefaultIdlsRepository<,>));
+            services.AddScoped(typeof(BaseRepository<,>), typeof(DefaultIdlsRepository<,>));
 
             if (assemblies?.Any() == true)
                 foreach (var asse in assemblies)

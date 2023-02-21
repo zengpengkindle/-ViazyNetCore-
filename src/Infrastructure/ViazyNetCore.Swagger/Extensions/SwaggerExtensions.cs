@@ -21,8 +21,11 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class SwaggerExtensions
     {
         private const string AUTHENTICATION_SCHEME = "Bearer";
-        public static void AddSwagger(this IServiceCollection services, string apiName)
+        public static void AddSwagger(this IServiceCollection services, string apiName, Action<SwaggerConfig> action)
         {
+            var swaggerConfig = new SwaggerConfig();
+            action?.Invoke(swaggerConfig);
+            services.Configure(action);
             services.TryAddEnumerable(ServiceDescriptor.Transient<IApplicationModelProvider, ProduceResponseTypeModelProvider>());
 
             services.AddSwaggerGen(options =>
@@ -46,14 +49,15 @@ namespace Microsoft.Extensions.DependencyInjection
                     return docName == apiDescription.GroupName || groupNames.Any(a => a == docName) || nonGroup;
                 });
 
-                var versionProvider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-                foreach (var description in versionProvider.ApiVersionDescriptions)
+                //options.ResolveConflictingActions(apiDescription => apiDescription.First());
+
+                foreach (var project in swaggerConfig.Projects)
                 {
-                    options.SwaggerDoc($"{description.GroupName}", new OpenApiInfo
+                    options.SwaggerDoc(project.Code.ToLower(), new OpenApiInfo
                     {
-                        Title = $"{description.GroupName}-{apiName}-接口文档",
-                        Description = $"{apiName} HTTP API {description.GroupName}",
-                        Version = $"{description.GroupName}",
+                        Title = project.Name,
+                        Version = project.Version,
+                        Description = project.Description
                     });
                 }
 
@@ -64,8 +68,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     options.IncludeXmlComments(file.FullName, true);
                 }
-                options.DocumentFilter<SwaggerEnumFilter>();
-
+                if (swaggerConfig.EnableEnumSchemaFilter)
+                {
+                    options.DocumentFilter<SwaggerEnumFilter>();
+                }
                 // 启用 SwaggerResponse 备注
                 options.EnableAnnotations();
                 options.CustomOperationIds(apiDesc =>
@@ -104,12 +110,19 @@ namespace Microsoft.Extensions.DependencyInjection
             }).AddSwaggerGenNewtonsoftSupport();
         }
 
-        public static void UseSwaggerAndUI(this WebApplication app, Action<List<OpenApiServer>>? action = null)
+        public static void UseSwaggerAndUI(this WebApplication app)
         {
 
             if (app.Environment.IsDevelopment())
             {
+                var swaggerConfig = app.Services.GetService<IOptions<SwaggerConfig>>();
+                if (swaggerConfig == null)
+                    throw new NotImplementedException($"{nameof(SwaggerConfig)} 未注入");
+
                 var swaggerGenOptions = app.Services.GetService<IOptions<SwaggerGenOptions>>();
+                var routePrefix = swaggerConfig.Value.RoutePrefix;
+                var routePath = routePrefix.IsNotNull() ? $"{routePrefix}/" : "";
+
                 app.UseSwagger(options =>
                 {
                     options.PreSerializeFilters.Add((swagger, httpReq) =>
@@ -119,25 +132,22 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             servers.Add(new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}", Description = "本地环境" });
                         }
-                        action?.Invoke(servers);
+                        //action?.Invoke(servers);
+                        foreach (var item in swaggerConfig.Value.ApiServer)
+                        {
+                            servers.Add(new OpenApiServer { Url = $"{item.Scheme}://{item.Host.Value}", Description = item.Description });
+                        }
                         swagger.Servers = servers;
                     });
                 });
 
                 app.UseKnife4UI(options =>
                 {
-                    options.RoutePrefix = "swagger"; // serve the UI at root
-                    if (swaggerGenOptions?.Value == null)
+                    options.RoutePrefix = routePrefix;
+                    swaggerConfig.Value.Projects?.ForEach(project =>
                     {
-                        options.SwaggerEndpoint($"v1/swagger.json", "HTTP API v1");
-                    }
-                    else
-                    {
-                        foreach (var description in swaggerGenOptions.Value.SwaggerGeneratorOptions.SwaggerDocs)
-                        {
-                            options.SwaggerEndpoint($"{description.Key}/swagger.json", description.Value.Description);
-                        }
-                    }
+                        options.SwaggerEndpoint($"/{project.Code.ToLower()}/swagger.json", project.Name);
+                    });
                 });
 
                 //app.MapSwagger("/k4/{documentName}/swagger.json");

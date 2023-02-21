@@ -5,7 +5,7 @@ using ViazyNetCore.Authorization;
 namespace ViazyNetCore.Authorization.Dtos
 {
     /// <summary>
-    /// 表示一个三方银行信息。
+    /// 表示一个用户信息。
     /// </summary>
     public partial class UserDto
     {
