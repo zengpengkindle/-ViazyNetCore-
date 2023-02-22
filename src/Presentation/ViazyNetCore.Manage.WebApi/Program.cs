@@ -61,7 +61,7 @@ builder.Services.AddAuthenticationController();
 
 builder.Services.AddFreeMySqlDb(builder.Configuration);
 builder.Services.AddEventBus();
-// Redis 注入
+// Redis 分布式缓存注入
 //builder.Services.AddRedisDistributedHashCache(options =>
 //{
 //    options.Configuration = AppSettingsConstVars.RedisConfigConnectionString;
