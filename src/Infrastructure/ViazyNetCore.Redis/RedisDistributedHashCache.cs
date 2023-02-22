@@ -72,7 +72,7 @@ namespace ViazyNetCore.Redis
             }
         }
 
-        private async Task ConnectAsync(CancellationToken token = default(CancellationToken))
+        private async Task ConnectAsync(CancellationToken token = default)
         {
             CheckDisposed();
             token.ThrowIfCancellationRequested();

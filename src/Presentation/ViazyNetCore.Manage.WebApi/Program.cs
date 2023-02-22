@@ -6,6 +6,7 @@ using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
+using ViazyNetCore.Configuration;
 using ViazyNetCore.DI;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
@@ -29,7 +30,6 @@ var ServiceAssemblies = new Assembly?[]
     RuntimeHelper.GetAssembly("ViazyNetCore.Auth")
 };
 
-builder.Services.AddCustomApiVersioning();
 builder.Services.AddJwtAuthentication(option =>
 {
     var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
@@ -37,7 +37,11 @@ builder.Services.AddJwtAuthentication(option =>
     option.ExpiresIn = optionJson.ExpiresIn;
     option.Issuer = optionJson.Issuer;
     option.AppName = optionJson.AppName;
+    option.UseDistributedCache = true;
 });
+
+builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath));
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<PermissionFilter>();
@@ -46,15 +50,22 @@ builder.Services.AddControllers(options =>
 {
     options.SerializerSettings.InitializeDefault();
 }).AddControllersAsServices();
+
+builder.Services.AddAuthenticationController();
+//builder.Services.AddCustomApiVersioning();
 //.AddApplicationPart(typeof(TestController).Assembly)
 ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddAuthenticationController();
 
 builder.Services.AddFreeMySqlDb(builder.Configuration);
 builder.Services.AddEventBus();
+// Redis 分布式缓存注入
+//builder.Services.AddRedisDistributedHashCache(options =>
+//{
+//    options.Configuration = AppSettingsConstVars.RedisConfigConnectionString;
+//});
 builder.Services.AddRumtimeCacheService();
 
 builder.Services.AddApiDescriptor(option =>
@@ -70,10 +81,10 @@ builder.Services.AddSwagger("ViazyNetCore-Manage", config =>
 {
     config.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
     {
-        Code = "auth",
+        Code = "admin",
         Description = "后台管理",
         Name = "ViazyNetCore",
-        Version = "v1",
+        Version = "v2.0",
     });
     config.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
     {

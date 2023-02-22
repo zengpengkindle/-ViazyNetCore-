@@ -15,12 +15,12 @@ using Microsoft.AspNetCore.Http;
 namespace ViazyNetCore.DI
 {
 
-    public class DynamicControllerConvention : IApplicationModelConvention
+    public class DynamicApplicationModelConvention : IApplicationModelConvention
     {
         private readonly ISelectController _selectController;
         private readonly IActionRouteFactory _actionRouteFactory;
 
-        public DynamicControllerConvention(ISelectController selectController, IActionRouteFactory actionRouteFactory)
+        public DynamicApplicationModelConvention(ISelectController selectController, IActionRouteFactory actionRouteFactory)
         {
             _selectController = selectController;
             _actionRouteFactory = actionRouteFactory;
@@ -54,7 +54,7 @@ namespace ViazyNetCore.DI
                 var type = controller.ControllerType.AsType();
                 var DynamicApiAttr = type.GetTypeInfo().GetAttribute<DynamicApiAttribute>();
 
-                if (!(_selectController is DefaultSelectController) && _selectController.IsController(type))
+                if (this._selectController is not DefaultSelectController && this._selectController.IsController(type))
                 {
                     controller.ControllerName = controller.ControllerName.RemovePostFix(AppConsts.ControllerPostfixes.ToArray());
 
