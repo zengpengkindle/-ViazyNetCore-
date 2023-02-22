@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 #if NETSTANDARD2_0
 using IWebHostEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 #endif
@@ -31,6 +32,7 @@ namespace ViazyNetCore.Swagger.Knife4jUI
                 var hostingEnv = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
                 options.ConfigObject.Urls = new[] { new UrlDescriptor { Name = $"{hostingEnv.ApplicationName} v1", Url = "v1/swagger.json" } };
             }
+            var apiDescriptionsProvider = app.ApplicationServices.GetService<IApiDescriptionGroupCollectionProvider>();
             return app.UseKnife4UI(options);
         }
     }

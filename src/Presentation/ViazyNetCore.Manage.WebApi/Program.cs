@@ -29,7 +29,6 @@ var ServiceAssemblies = new Assembly?[]
     RuntimeHelper.GetAssembly("ViazyNetCore.Auth")
 };
 
-builder.Services.AddCustomApiVersioning();
 builder.Services.AddJwtAuthentication(option =>
 {
     var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
@@ -38,6 +37,8 @@ builder.Services.AddJwtAuthentication(option =>
     option.Issuer = optionJson.Issuer;
     option.AppName = optionJson.AppName;
 });
+
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<PermissionFilter>();
@@ -46,12 +47,14 @@ builder.Services.AddControllers(options =>
 {
     options.SerializerSettings.InitializeDefault();
 }).AddControllersAsServices();
+
+builder.Services.AddAuthenticationController();
+//builder.Services.AddCustomApiVersioning();
 //.AddApplicationPart(typeof(TestController).Assembly)
 ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddAuthenticationController();
 
 builder.Services.AddFreeMySqlDb(builder.Configuration);
 builder.Services.AddEventBus();
@@ -70,10 +73,10 @@ builder.Services.AddSwagger("ViazyNetCore-Manage", config =>
 {
     config.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
     {
-        Code = "auth",
+        Code = "admin",
         Description = "后台管理",
         Name = "ViazyNetCore",
-        Version = "v1",
+        Version = "v2.0",
     });
     config.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
     {

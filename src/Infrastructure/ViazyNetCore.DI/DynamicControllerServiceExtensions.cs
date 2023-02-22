@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
 
             var mvcOptions = application.ApplicationServices.GetRequiredService<IOptions<MvcOptions>>();
-            var dynamicControllerConvention = application.ApplicationServices.GetRequiredService<DynamicControllerConvention>();
+            var dynamicControllerConvention = application.ApplicationServices.GetRequiredService<DynamicApplicationModelConvention>();
 
             mvcOptions.Value.Conventions.Add(dynamicControllerConvention);
 
@@ -65,7 +65,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddSingleton<ISelectController, TSelectController>();
             services.AddSingleton<IActionRouteFactory, TActionRouteFactory>();
-            services.AddSingleton<DynamicControllerConvention>();
+            services.AddSingleton<DynamicApplicationModelConvention>();
             services.AddSingleton<DynamicControllerControllerFeatureProvider>();
             return services;
         }
@@ -103,12 +103,13 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             // Add a custom controller checker
-            partManager.FeatureProviders.Add(new DynamicControllerControllerFeatureProvider(options.SelectController));
+            //partManager.FeatureProviders.Add(new DynamicControllerControllerFeatureProvider(options.SelectController));
 
             services.Configure<MvcOptions>(o =>
             {
                 // Register Controller Routing Information Converter
-                o.Conventions.Add(new DynamicControllerConvention(options.SelectController, options.ActionRouteFactory));
+                //o.Conventions.Add(new DynamicApplicationModelConvention(options.SelectController, options.ActionRouteFactory));
+                o.Conventions.Add(new DynamicApplicationModelConvention(options.SelectController, options.ActionRouteFactory));
             });
 
             return services;
