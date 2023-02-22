@@ -87,20 +87,20 @@ namespace ViazyNetCore.DI
 
             if (string.IsNullOrEmpty(DefaultAreaName))
             {
-                DefaultAreaName = string.Empty;
+                this.DefaultAreaName = string.Empty;
             }
 
             if (string.IsNullOrEmpty(DefaultApiPrefix))
             {
-                DefaultApiPrefix = string.Empty;
+                this.DefaultApiPrefix = string.Empty;
             }
 
-            if (FormBodyBindingIgnoredTypes == null)
+            if (this.FormBodyBindingIgnoredTypes == null)
             {
                 throw new ArgumentException($"{nameof(FormBodyBindingIgnoredTypes)} can not be null.");
             }
 
-            if (RemoveControllerPostfixes == null)
+            if (this.RemoveControllerPostfixes == null)
             {
                 throw new ArgumentException($"{nameof(RemoveControllerPostfixes)} can not be null.");
             }
@@ -112,7 +112,7 @@ namespace ViazyNetCore.DI
         /// <param name="assembly"></param>
         /// <param name="apiPreFix"></param>
         /// <param name="httpVerb"></param>
-        public void AddAssemblyOptions(Assembly assembly, string apiPreFix = null, string httpVerb = null)
+        public void AddAssemblyOptions(Assembly assembly, string? apiPreFix = null, string? httpVerb = null)
         {
             if (assembly == null)
             {
@@ -128,7 +128,7 @@ namespace ViazyNetCore.DI
         /// <param name="assemblies"></param>
         /// <param name="apiPreFix"></param>
         /// <param name="httpVerb"></param>
-        public void AddAssemblyOptions(Assembly[] assemblies, string apiPreFix = null, string httpVerb = null)
+        public void AddAssemblyOptions(Assembly[] assemblies, string? apiPreFix = null, string? httpVerb = null)
         {
             if (assemblies == null)
             {
@@ -137,7 +137,7 @@ namespace ViazyNetCore.DI
 
             foreach (var assembly in assemblies)
             {
-                AddAssemblyOptions(assembly, apiPreFix, httpVerb);
+                this.AddAssemblyOptions(assembly, apiPreFix, httpVerb);
             }
         }
     }

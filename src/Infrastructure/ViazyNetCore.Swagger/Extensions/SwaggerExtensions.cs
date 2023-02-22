@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddSwaggerGen(options =>
             {
-
+                //options.DocumentFilter<DynamicDocumentFilter>();
                 //支持多分组
                 options.DocInclusionPredicate((docName, apiDescription) =>
                 {
@@ -44,6 +44,15 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             groupNames.AddRange(dynamicApi.GroupNames);
                         }
+                    }
+                    var controllerGroupAttributes = apiDescription.ActionDescriptor.EndpointMetadata.FirstOrDefault(x => x is ControllerGroupAttribute);
+                    if (controllerGroupAttributes is ControllerGroupAttribute controllerGroup)
+                    {
+                        if (controllerGroup.GroupNames?.Length > 0)
+                        {
+                            groupNames.AddRange(controllerGroup.GroupNames);
+                        }
+                        nonGroup = controllerGroup.NonGroup;
                     }
 
                     return docName == apiDescription.GroupName || groupNames.Any(a => a == docName) || nonGroup;
@@ -140,7 +149,6 @@ namespace Microsoft.Extensions.DependencyInjection
                         swagger.Servers = servers;
                     });
                 });
-
                 app.UseKnife4UI(options =>
                 {
                     options.RoutePrefix = routePrefix;
