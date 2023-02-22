@@ -57,7 +57,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.DI", "Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Domain", "src\ViazyNetCore.Domain\ViazyNetCore.Domain.csproj", "{954A9763-C2A3-4B96-94FA-B1590033632D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.TaskScheduler", "Infrastructure\ViazyNetCore.TaskScheduler\ViazyNetCore.TaskScheduler.csproj", "{6BE8BDBD-A14C-4649-859D-EB3655C131C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.TaskScheduler", "Infrastructure\ViazyNetCore.TaskScheduler\ViazyNetCore.TaskScheduler.csproj", "{6BE8BDBD-A14C-4649-859D-EB3655C131C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.RabbitMQ", "Infrastructure\ViazyNetCore.RabbitMQ\ViazyNetCore.RabbitMQ.csproj", "{9BEC3DC1-1CC4-4F54-84DC-A682200179E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,6 +151,10 @@ Global
 		{6BE8BDBD-A14C-4649-859D-EB3655C131C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BE8BDBD-A14C-4649-859D-EB3655C131C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE8BDBD-A14C-4649-859D-EB3655C131C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BEC3DC1-1CC4-4F54-84DC-A682200179E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BEC3DC1-1CC4-4F54-84DC-A682200179E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BEC3DC1-1CC4-4F54-84DC-A682200179E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BEC3DC1-1CC4-4F54-84DC-A682200179E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,6 +181,7 @@ Global
 		{418AC4CD-55AA-4637-B260-C6A3DFB4E96E} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{954A9763-C2A3-4B96-94FA-B1590033632D} = {987C4986-66FA-4984-90E6-76B9CD4C73E4}
 		{6BE8BDBD-A14C-4649-859D-EB3655C131C4} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{9BEC3DC1-1CC4-4F54-84DC-A682200179E3} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}
