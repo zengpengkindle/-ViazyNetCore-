@@ -85,7 +85,7 @@ namespace ViazyNetCore.Controllers.Authorization
             catch (Exception ex)
             {
                 //operationLog.Description = $"登录用户：{args.Username},登陆失败!{ex.Message}";
-                throw new ApiException("登录失败");
+                throw new ApiException(ex);
             }
             finally
             {

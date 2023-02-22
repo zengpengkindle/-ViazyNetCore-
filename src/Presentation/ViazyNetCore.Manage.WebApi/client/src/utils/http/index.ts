@@ -10,9 +10,11 @@ import {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { getToken, formatToken } from "@/utils/auth";
+import { getToken, formatToken, removeToken } from "@/utils/auth";
 import { message } from "@/utils/message";
 import { ApiResponse, ApiReponseError } from "@/api/model/apiResponseBase";
+import route from "@/router";
+import { VNode, RendererNode, RendererElement } from "vue-demi";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -139,7 +141,16 @@ class PureHttp {
       }
     );
   }
-
+  openErrorMessage = (msg: string): void => {
+    const isMessageLen = document.getElementsByClassName(
+      "el-message el-message--error pure-message"
+    ).length;
+    if (isMessageLen !== 0) {
+      return;
+    } else {
+      message(msg, { type: "error" });
+    }
+  };
   /** 响应拦截 */
   private httpInterceptorsResponse(): void {
     const instance = PureHttp.axiosInstance;
@@ -180,7 +191,10 @@ class PureHttp {
           } else if (response.code === 400) {
             message(response.message, { type: "error" });
           } else if (response.code === 401) {
-            message(response.message || `登录过期`, { type: "error" });
+            // router.push("/login");
+            removeToken();
+            this.openErrorMessage(`登录过期,请重新登录`);
+            route.push({ path: "/login" });
           } else if (response.code === 403) {
             message("您的权限不足！", {
               type: "error",
@@ -196,6 +210,8 @@ class PureHttp {
               type: "warning",
               customClass: "antd"
             });
+            removeToken();
+            route.push({ name: "/login" });
           } else if (response.code === 500) {
             message(`Oop~ 服务器繁忙,请稍候再试！`, {
               type: "error",

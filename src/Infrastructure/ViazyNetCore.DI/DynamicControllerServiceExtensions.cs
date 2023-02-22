@@ -84,7 +84,6 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             options.Valid();
-
             AppConsts.DefaultAreaName = options.DefaultAreaName;
             AppConsts.DefaultHttpVerb = options.DefaultHttpVerb;
             AppConsts.DefaultApiPreFix = options.DefaultApiPrefix;

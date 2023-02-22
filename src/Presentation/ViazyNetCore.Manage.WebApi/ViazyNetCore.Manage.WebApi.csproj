@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\Core\ViazyNetCore.Filter\ViazyNetCore.Filter.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Formatter.Response\ViazyNetCore.Formatter.Response.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Redis\ViazyNetCore.Redis.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Web.DevServer\ViazyNetCore.Web.DevServer.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />

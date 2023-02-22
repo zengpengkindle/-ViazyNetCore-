@@ -6,6 +6,7 @@ using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
+using ViazyNetCore.Configuration;
 using ViazyNetCore.DI;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
@@ -36,8 +37,10 @@ builder.Services.AddJwtAuthentication(option =>
     option.ExpiresIn = optionJson.ExpiresIn;
     option.Issuer = optionJson.Issuer;
     option.AppName = optionJson.AppName;
+    option.UseDistributedCache = true;
 });
 
+builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath));
 
 builder.Services.AddControllers(options =>
 {
@@ -58,6 +61,11 @@ builder.Services.AddAuthenticationController();
 
 builder.Services.AddFreeMySqlDb(builder.Configuration);
 builder.Services.AddEventBus();
+// Redis ×¢Èë
+//builder.Services.AddRedisDistributedHashCache(options =>
+//{
+//    options.Configuration = AppSettingsConstVars.RedisConfigConnectionString;
+//});
 builder.Services.AddRumtimeCacheService();
 
 builder.Services.AddApiDescriptor(option =>
