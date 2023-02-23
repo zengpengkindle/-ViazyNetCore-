@@ -10,7 +10,7 @@ namespace ViazyNetCore.Http
     public class DefaultHttpClientFactory : IHttpClientFactory
     {
         private static readonly TimerCallback _cleanupCallback = (s) => ((DefaultHttpClientFactory)s).CleanupTimer_Tick();
-        private readonly Func<CaesarProxy, Lazy<ActiveHandlerTrackingEntry>> _entryFactory;
+        private readonly Func<EasyHttpProxy, Lazy<ActiveHandlerTrackingEntry>> _entryFactory;
 
         private readonly TimeSpan DefaultCleanupInterval = TimeSpan.FromSeconds(10);
 
@@ -18,7 +18,7 @@ namespace ViazyNetCore.Http
         private readonly object _cleanupTimerLock;
         private readonly object _cleanupActiveLock;
 
-        internal readonly ConcurrentDictionary<CaesarProxy, Lazy<ActiveHandlerTrackingEntry>> _activeHandlers;
+        internal readonly ConcurrentDictionary<EasyHttpProxy, Lazy<ActiveHandlerTrackingEntry>> _activeHandlers;
 
         // Collection of 'expired' but not yet disposed handlers.
         //
@@ -32,7 +32,7 @@ namespace ViazyNetCore.Http
         public DefaultHttpClientFactory()
         {
             // case-sensitive because named options is.
-            _activeHandlers = new ConcurrentDictionary<CaesarProxy, Lazy<ActiveHandlerTrackingEntry>>();
+            _activeHandlers = new ConcurrentDictionary<EasyHttpProxy, Lazy<ActiveHandlerTrackingEntry>>();
             _entryFactory = (proxy) =>
             {
                 return new Lazy<ActiveHandlerTrackingEntry>(() =>
@@ -48,16 +48,16 @@ namespace ViazyNetCore.Http
 
 
 
-        public HttpClient CreateClient(CaesarProxy proxy)
+        public HttpClient CreateClient(EasyHttpProxy proxy)
         {
-            proxy ??= new CaesarProxy();
+            proxy ??= new EasyHttpProxy();
 
             HttpMessageHandler handler = CreateHandler(proxy);
             var client = new HttpClient(handler, disposeHandler: false);
             return client;
         }
 
-        public HttpMessageHandler CreateHandler(CaesarProxy proxy)
+        public HttpMessageHandler CreateHandler(EasyHttpProxy proxy)
         {
             if (proxy == null)
             {
@@ -71,7 +71,7 @@ namespace ViazyNetCore.Http
             return entry.Handler;
         }
 
-        internal ActiveHandlerTrackingEntry CreateHandlerEntry(CaesarProxy proxy)
+        internal ActiveHandlerTrackingEntry CreateHandlerEntry(EasyHttpProxy proxy)
         {
 
             try

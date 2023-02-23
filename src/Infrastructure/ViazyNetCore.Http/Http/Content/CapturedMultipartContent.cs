@@ -13,7 +13,7 @@ namespace ViazyNetCore.Http
 	/// </summary>
 	public class CapturedMultipartContent : MultipartContent
 	{
-		private readonly CaesarHttpSettings _settings;
+		private readonly EasyHttpSettings _settings;
 		private readonly List<HttpContent> _capturedParts = new List<HttpContent>();
 
 		/// <summary>
@@ -25,8 +25,8 @@ namespace ViazyNetCore.Http
 		/// Initializes a new instance of the <see cref="CapturedMultipartContent"/> class.
 		/// </summary>
 		/// <param name="settings">The CaesarHttpSettings used to serialize each content part. (Defaults to CaesarHttp.GlobalSettings.)</param>
-		public CapturedMultipartContent(CaesarHttpSettings settings = null) : base("form-data") {
-			_settings = settings ?? CaesarHttp.GlobalSettings;
+		public CapturedMultipartContent(EasyHttpSettings settings = null) : base("form-data") {
+			_settings = settings ?? EasyHttp.GlobalSettings;
 		}
 
 		/// <summary>

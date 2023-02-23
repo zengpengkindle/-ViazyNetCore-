@@ -46,43 +46,4 @@ namespace ViazyNetCore.Model
         TouTiaoApp = 6,
     }
 
-    public enum OperatorTypeEnum
-    {
-        Bms = 1
-    }
-
-    /// <summary>
-    /// 表示日志级别。
-    /// </summary>
-    public enum LogRecordLevel
-    {
-        /// <summary>
-        /// 表示跟踪级别。
-        /// </summary>
-        Trace = 0,
-        /// <summary>
-        /// 表示调试级别。
-        /// </summary>
-        Debug = 1,
-        /// <summary>
-        /// 表示信息级别。
-        /// </summary>
-        Information = 2,
-        /// <summary>
-        /// 表示警告级别。
-        /// </summary>
-        Warning = 3,
-        /// <summary>
-        /// 表示错误级别。
-        /// </summary>
-        Error = 4,
-        /// <summary>
-        /// 表示严重错误级别。
-        /// </summary>
-        Critical = 5,
-        /// <summary>
-        /// 表示无级别。
-        /// </summary>
-        None = 6
-    }
 }

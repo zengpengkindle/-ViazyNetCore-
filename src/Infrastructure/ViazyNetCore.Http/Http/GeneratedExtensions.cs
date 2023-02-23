@@ -26,7 +26,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendJsonAsync(this ICaesarRequest request, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendJsonAsync(this IEasyRequest request, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedJsonContent(request.Settings.JsonSerializer.Serialize(data));
             return request.SendAsync(verb, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -42,7 +42,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendStringAsync(this ICaesarRequest request, HttpMethod verb, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendStringAsync(this IEasyRequest request, HttpMethod verb, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedStringContent(data);
             return request.SendAsync(verb, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -57,7 +57,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendUrlEncodedAsync(this ICaesarRequest request, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendUrlEncodedAsync(this IEasyRequest request, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedUrlEncodedContent(request.Settings.UrlEncodedSerializer.Serialize(data));
             return request.SendAsync(verb, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -70,7 +70,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> GetAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> GetAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Get, cancellationToken: cancellationToken, completionOption: completionOption);
         }
@@ -82,7 +82,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the JSON response body deserialized to an object of type T.</returns>
-        public static Task<T> GetJsonAsync<T>(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<T> GetJsonAsync<T>(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Get, cancellationToken: cancellationToken, completionOption: completionOption).ReceiveJson<T>();
         }
@@ -94,7 +94,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the JSON response body deserialized to a dynamic.</returns>
-        public static Task<dynamic> GetJsonAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<dynamic> GetJsonAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Get, cancellationToken: cancellationToken, completionOption: completionOption).ReceiveJson();
         }
@@ -106,7 +106,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the JSON response body deserialized to a list of dynamics.</returns>
-        public static Task<IList<dynamic>> GetJsonListAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IList<dynamic>> GetJsonListAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Get, cancellationToken: cancellationToken, completionOption: completionOption).ReceiveJsonList();
         }
@@ -118,7 +118,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the response body as a string.</returns>
-        public static Task<string> GetStringAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<string> GetStringAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Get, cancellationToken: cancellationToken, completionOption: completionOption).ReceiveString();
         }
@@ -130,7 +130,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the response body as a Stream.</returns>
-        public static Task<Stream> GetStreamAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<Stream> GetStreamAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Get, cancellationToken: cancellationToken, completionOption: completionOption).ReceiveStream();
         }
@@ -142,7 +142,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the response body as a byte array.</returns>
-        public static Task<byte[]> GetBytesAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<byte[]> GetBytesAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Get, cancellationToken: cancellationToken, completionOption: completionOption).ReceiveBytes();
         }
@@ -155,7 +155,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostAsync(this ICaesarRequest request, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostAsync(this IEasyRequest request, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             if (content != null)
                 request.Content = content;
@@ -170,7 +170,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostJsonAsync(this ICaesarRequest request, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostJsonAsync(this IEasyRequest request, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedJsonContent(request.Settings.JsonSerializer.Serialize(data));
             return request.SendAsync(HttpMethod.Post, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -185,13 +185,13 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostJsonAsync(this ICaesarRequest request, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostJsonAsync(this IEasyRequest request, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedJsonContent(data);
             return request.SendAsync(HttpMethod.Post, cancellationToken: cancellationToken, completionOption: completionOption);
         }
 
-        public static Task<ICaesarResponse> PostOctetAsync(this ICaesarRequest request, byte[] data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostOctetAsync(this IEasyRequest request, byte[] data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedOctetContent(data);
             return request.SendAsync(HttpMethod.Post, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -205,7 +205,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostStringAsync(this ICaesarRequest request, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostStringAsync(this IEasyRequest request, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedStringContent(data);
             return request.SendAsync(HttpMethod.Post, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -219,7 +219,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostUrlEncodedAsync(this ICaesarRequest request, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostUrlEncodedAsync(this IEasyRequest request, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedUrlEncodedContent(request.Settings.UrlEncodedSerializer.Serialize(data));
             return request.SendAsync(HttpMethod.Post, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -232,7 +232,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> HeadAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> HeadAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Head, cancellationToken: cancellationToken, completionOption: completionOption);
         }
@@ -245,7 +245,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutAsync(this ICaesarRequest request, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutAsync(this IEasyRequest request, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = content;
             return request.SendAsync(HttpMethod.Put, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -259,7 +259,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutJsonAsync(this ICaesarRequest request, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutJsonAsync(this IEasyRequest request, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedJsonContent(request.Settings.JsonSerializer.Serialize(data));
             return request.SendAsync(HttpMethod.Put, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -273,7 +273,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutStringAsync(this ICaesarRequest request, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutStringAsync(this IEasyRequest request, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedStringContent(data);
             return request.SendAsync(HttpMethod.Put, cancellationToken: cancellationToken, completionOption: completionOption);
@@ -286,7 +286,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> DeleteAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> DeleteAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Delete, cancellationToken: cancellationToken, completionOption: completionOption);
         }
@@ -299,7 +299,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchAsync(this ICaesarRequest request, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchAsync(this IEasyRequest request, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = content;
             return request.SendAsync(new HttpMethod("PATCH"), cancellationToken: cancellationToken, completionOption: completionOption);
@@ -313,7 +313,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchJsonAsync(this ICaesarRequest request, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchJsonAsync(this IEasyRequest request, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedJsonContent(request.Settings.JsonSerializer.Serialize(data));
             return request.SendAsync(new HttpMethod("PATCH"), cancellationToken: cancellationToken, completionOption: completionOption);
@@ -327,7 +327,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchStringAsync(this ICaesarRequest request, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchStringAsync(this IEasyRequest request, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             request.Content = new CapturedStringContent(data);
             return request.SendAsync(new HttpMethod("PATCH"), cancellationToken: cancellationToken, completionOption: completionOption);
@@ -340,7 +340,7 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> OptionsAsync(this ICaesarRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> OptionsAsync(this IEasyRequest request, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             return request.SendAsync(HttpMethod.Options, cancellationToken: cancellationToken, completionOption: completionOption);
         }
@@ -354,9 +354,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendAsync(this Url url, HttpMethod verb, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendAsync(this Url url, HttpMethod verb, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            var request = new CaesarRequest(url) { Content = content };
+            var request = new EasyRequest(url) { Content = content };
             return request.SendAsync(verb, cancellationToken, completionOption);
         }
 
@@ -369,9 +369,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendJsonAsync(this Url url, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendJsonAsync(this Url url, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).SendJsonAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(url).SendJsonAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -383,9 +383,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendStringAsync(this Url url, HttpMethod verb, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendStringAsync(this Url url, HttpMethod verb, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).SendStringAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(url).SendStringAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -397,9 +397,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendUrlEncodedAsync(this Url url, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendUrlEncodedAsync(this Url url, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).SendUrlEncodedAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(url).SendUrlEncodedAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -409,9 +409,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> GetAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> GetAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -423,7 +423,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to an object of type T.</returns>
         public static Task<T> GetJsonAsync<T>(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetJsonAsync<T>(cancellationToken, completionOption);
+            return new EasyRequest(url).GetJsonAsync<T>(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to a dynamic.</returns>
         public static Task<dynamic> GetJsonAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetJsonAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetJsonAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -447,7 +447,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to a list of dynamics.</returns>
         public static Task<IList<dynamic>> GetJsonListAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetJsonListAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetJsonListAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a string.</returns>
         public static Task<string> GetStringAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetStringAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetStringAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -471,7 +471,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a Stream.</returns>
         public static Task<Stream> GetStreamAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetStreamAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetStreamAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -483,7 +483,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a byte array.</returns>
         public static Task<byte[]> GetBytesAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetBytesAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetBytesAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -494,9 +494,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostAsync(this Url url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostAsync(this Url url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(url).PostAsync(content, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -507,27 +507,14 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostJsonAsync(this Url url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostJsonAsync(this Url url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PostJsonAsync(data, cancellationToken, completionOption);
         }
 
-        public static Task<ICaesarResponse> PostOctetAsync(this Url url, byte[] data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostOctetAsync(this Url url, byte[] data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostOctetAsync(data, cancellationToken, completionOption);
-        }
-
-        /// <summary>
-        /// Creates a CaesarRequest and sends an asynchronous POST request.
-        /// </summary>
-        /// <param name="url">This Caesar.Url.</param>
-        /// <param name="data">Contents of the request body.</param>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
-        /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostStringAsync(this Url url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
-        {
-            return new CaesarRequest(url).PostStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PostOctetAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -538,9 +525,22 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostUrlEncodedAsync(this Url url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostStringAsync(this Url url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostUrlEncodedAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PostStringAsync(data, cancellationToken, completionOption);
+        }
+
+        /// <summary>
+        /// Creates a CaesarRequest and sends an asynchronous POST request.
+        /// </summary>
+        /// <param name="url">This Caesar.Url.</param>
+        /// <param name="data">Contents of the request body.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+        /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
+        /// <returns>A Task whose result is the received ICaesarResponse.</returns>
+        public static Task<IEasyResponse> PostUrlEncodedAsync(this Url url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            return new EasyRequest(url).PostUrlEncodedAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -550,9 +550,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> HeadAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> HeadAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).HeadAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).HeadAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -563,9 +563,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutAsync(this Url url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutAsync(this Url url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PutAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(url).PutAsync(content, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -576,9 +576,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutJsonAsync(this Url url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutJsonAsync(this Url url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PutJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PutJsonAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -589,9 +589,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutStringAsync(this Url url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutStringAsync(this Url url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PutStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PutStringAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -601,9 +601,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> DeleteAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> DeleteAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).DeleteAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).DeleteAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -614,9 +614,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchAsync(this Url url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchAsync(this Url url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PatchAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(url).PatchAsync(content, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -627,9 +627,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchJsonAsync(this Url url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchJsonAsync(this Url url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PatchJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PatchJsonAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -640,9 +640,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchStringAsync(this Url url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchStringAsync(this Url url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PatchStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PatchStringAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -652,9 +652,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> OptionsAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> OptionsAsync(this Url url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).OptionsAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).OptionsAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -664,9 +664,9 @@ namespace ViazyNetCore.Http
         /// <param name="name">The header name.</param>
         /// <param name="value">The header value.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithHeader(this Url url, string name, object value)
+        public static IEasyRequest WithHeader(this Url url, string name, object value)
         {
-            return new CaesarRequest(url).WithHeader(name, value);
+            return new EasyRequest(url).WithHeader(name, value);
         }
 
         /// <summary>
@@ -676,9 +676,9 @@ namespace ViazyNetCore.Http
         /// <param name="headers">Names/values of HTTP headers to set. Typically an anonymous object or IDictionary.</param>
         /// <param name="replaceUnderscoreWithHyphen">If true, underscores in property names will be replaced by hyphens. Default is true.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithHeaders(this Url url, object headers, bool replaceUnderscoreWithHyphen = true)
+        public static IEasyRequest WithHeaders(this Url url, object headers, bool replaceUnderscoreWithHyphen = true)
         {
-            return new CaesarRequest(url).WithHeaders(headers, replaceUnderscoreWithHyphen);
+            return new EasyRequest(url).WithHeaders(headers, replaceUnderscoreWithHyphen);
         }
 
         /// <summary>
@@ -688,9 +688,9 @@ namespace ViazyNetCore.Http
         /// <param name="username">Username of authenticating user.</param>
         /// <param name="password">Password of authenticating user.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithBasicAuth(this Url url, string username, string password)
+        public static IEasyRequest WithBasicAuth(this Url url, string username, string password)
         {
-            return new CaesarRequest(url).WithBasicAuth(username, password);
+            return new EasyRequest(url).WithBasicAuth(username, password);
         }
 
         /// <summary>
@@ -699,9 +699,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="token">The acquired oAuth bearer token.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithOAuthBearerToken(this Url url, string token)
+        public static IEasyRequest WithOAuthBearerToken(this Url url, string token)
         {
-            return new CaesarRequest(url).WithOAuthBearerToken(token);
+            return new EasyRequest(url).WithOAuthBearerToken(token);
         }
 
         /// <summary>
@@ -711,9 +711,9 @@ namespace ViazyNetCore.Http
         /// <param name="name">The cookie name.</param>
         /// <param name="value">The cookie value.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookie(this Url url, string name, object value)
+        public static IEasyRequest WithCookie(this Url url, string name, object value)
         {
-            return new CaesarRequest(url).WithCookie(name, value);
+            return new EasyRequest(url).WithCookie(name, value);
         }
 
         /// <summary>
@@ -722,9 +722,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="values">Names/values of HTTP cookies to set. Typically an anonymous object or IDictionary.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this Url url, object values)
+        public static IEasyRequest WithCookies(this Url url, object values)
         {
-            return new CaesarRequest(url).WithCookies(values);
+            return new EasyRequest(url).WithCookies(values);
         }
 
         /// <summary>
@@ -733,9 +733,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="cookieJar">The CookieJar.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this Url url, CookieJar cookieJar)
+        public static IEasyRequest WithCookies(this Url url, CookieJar cookieJar)
         {
-            return new CaesarRequest(url).WithCookies(cookieJar);
+            return new EasyRequest(url).WithCookies(cookieJar);
         }
 
         /// <summary>
@@ -744,9 +744,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="cookieJar">The created CookieJar, which can be reused in subsequent requests.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this Url url, out CookieJar cookieJar)
+        public static IEasyRequest WithCookies(this Url url, out CookieJar cookieJar)
         {
-            return new CaesarRequest(url).WithCookies(out cookieJar);
+            return new EasyRequest(url).WithCookies(out cookieJar);
         }
 
 
@@ -757,9 +757,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="action">A delegate defining the Settings changes.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest ConfigureRequest(this Url url, Action<CaesarHttpSettings> action)
+        public static IEasyRequest ConfigureRequest(this Url url, Action<EasyHttpSettings> action)
         {
-            return new CaesarRequest(url).ConfigureRequest(action);
+            return new EasyRequest(url).ConfigureRequest(action);
         }
 
         /// <summary>
@@ -768,9 +768,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="timespan">Time to wait before the request times out.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithTimeout(this Url url, TimeSpan timespan)
+        public static IEasyRequest WithTimeout(this Url url, TimeSpan timespan)
         {
-            return new CaesarRequest(url).WithTimeout(timespan);
+            return new EasyRequest(url).WithTimeout(timespan);
         }
 
         /// <summary>
@@ -779,9 +779,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="seconds">Seconds to wait before the request times out.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithTimeout(this Url url, int seconds)
+        public static IEasyRequest WithTimeout(this Url url, int seconds)
         {
-            return new CaesarRequest(url).WithTimeout(seconds);
+            return new EasyRequest(url).WithTimeout(seconds);
         }
 
         /// <summary>
@@ -790,9 +790,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="pattern">Examples: "3xx", "100,300,600", "100-299,6xx"</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowHttpStatus(this Url url, string pattern)
+        public static IEasyRequest AllowHttpStatus(this Url url, string pattern)
         {
-            return new CaesarRequest(url).AllowHttpStatus(pattern);
+            return new EasyRequest(url).AllowHttpStatus(pattern);
         }
 
         /// <summary>
@@ -801,9 +801,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="statusCodes">The HttpStatusCode(s) to allow.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowHttpStatus(this Url url, params HttpStatusCode[] statusCodes)
+        public static IEasyRequest AllowHttpStatus(this Url url, params HttpStatusCode[] statusCodes)
         {
-            return new CaesarRequest(url).AllowHttpStatus(statusCodes);
+            return new EasyRequest(url).AllowHttpStatus(statusCodes);
         }
 
         /// <summary>
@@ -811,9 +811,9 @@ namespace ViazyNetCore.Http
         /// </summary>
         /// <param name="url">This Caesar.Url.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowAnyHttpStatus(this Url url)
+        public static IEasyRequest AllowAnyHttpStatus(this Url url)
         {
-            return new CaesarRequest(url).AllowAnyHttpStatus();
+            return new EasyRequest(url).AllowAnyHttpStatus();
         }
 
         /// <summary>
@@ -822,9 +822,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This Caesar.Url.</param>
         /// <param name="enabled">true if Caesar should automatically send a new request to the redirect URL, false if it should not.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithAutoRedirect(this Url url, bool enabled)
+        public static IEasyRequest WithAutoRedirect(this Url url, bool enabled)
         {
-            return new CaesarRequest(url).WithAutoRedirect(enabled);
+            return new EasyRequest(url).WithAutoRedirect(enabled);
         }
 
 
@@ -840,7 +840,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the local path of the downloaded file.</returns>
         public static Task<string> DownloadFileAsync(this Url url, string localFolderPath, string localFileName = null, int bufferSize = 4096, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new CaesarRequest(url).DownloadFileAsync(localFolderPath, localFileName, bufferSize, cancellationToken);
+            return new EasyRequest(url).DownloadFileAsync(localFolderPath, localFileName, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -850,9 +850,9 @@ namespace ViazyNetCore.Http
         /// <param name="buildContent">A delegate for building the content parts.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostMultipartAsync(this Url url, Action<CapturedMultipartContent> buildContent, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<IEasyResponse> PostMultipartAsync(this Url url, Action<CapturedMultipartContent> buildContent, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new CaesarRequest(url).PostMultipartAsync(buildContent, cancellationToken);
+            return new EasyRequest(url).PostMultipartAsync(buildContent, cancellationToken);
         }
 
         /// <summary>
@@ -864,9 +864,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendAsync(this string url, HttpMethod verb, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendAsync(this string url, HttpMethod verb, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            var request = new CaesarRequest(url)
+            var request = new EasyRequest(url)
             {
                 Content = content
             };
@@ -882,9 +882,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendJsonAsync(this string url, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendJsonAsync(this string url, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).SendJsonAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(url).SendJsonAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -896,9 +896,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendStringAsync(this string url, HttpMethod verb, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendStringAsync(this string url, HttpMethod verb, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).SendStringAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(url).SendStringAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -910,9 +910,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendUrlEncodedAsync(this string url, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendUrlEncodedAsync(this string url, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).SendUrlEncodedAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(url).SendUrlEncodedAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -922,9 +922,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> GetAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> GetAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -936,7 +936,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to an object of type T.</returns>
         public static Task<T> GetJsonAsync<T>(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetJsonAsync<T>(cancellationToken, completionOption);
+            return new EasyRequest(url).GetJsonAsync<T>(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -948,7 +948,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to a dynamic.</returns>
         public static Task<dynamic> GetJsonAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetJsonAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetJsonAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -960,7 +960,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to a list of dynamics.</returns>
         public static Task<IList<dynamic>> GetJsonListAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetJsonListAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetJsonListAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -972,7 +972,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a string.</returns>
         public static Task<string> GetStringAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetStringAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetStringAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -984,7 +984,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a Stream.</returns>
         public static Task<Stream> GetStreamAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetStreamAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetStreamAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -996,7 +996,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a byte array.</returns>
         public static Task<byte[]> GetBytesAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).GetBytesAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).GetBytesAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1007,9 +1007,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostAsync(this string url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostAsync(this string url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(url).PostAsync(content, cancellationToken, completionOption);
         }
 
 
@@ -1022,9 +1022,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostJsonAsync(this string url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostJsonAsync(this string url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PostJsonAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1035,27 +1035,14 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostJsonAsync(this string url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostJsonAsync(this string url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PostJsonAsync(data, cancellationToken, completionOption);
         }
 
-        public static Task<ICaesarResponse> PostOctetAsync(this string url, byte[] data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostOctetAsync(this string url, byte[] data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostOctetAsync(data, cancellationToken, completionOption);
-        }
-
-        /// <summary>
-        /// Creates a CaesarRequest and sends an asynchronous POST request.
-        /// </summary>
-        /// <param name="url">This URL.</param>
-        /// <param name="data">Contents of the request body.</param>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
-        /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostStringAsync(this string url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
-        {
-            return new CaesarRequest(url).PostStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PostOctetAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1066,57 +1053,70 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostUrlEncodedAsync(this string url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostStringAsync(this string url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PostUrlEncodedAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PostStringAsync(data, cancellationToken, completionOption);
+        }
+
+        /// <summary>
+        /// Creates a CaesarRequest and sends an asynchronous POST request.
+        /// </summary>
+        /// <param name="url">This URL.</param>
+        /// <param name="data">Contents of the request body.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+        /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
+        /// <returns>A Task whose result is the received ICaesarResponse.</returns>
+        public static Task<IEasyResponse> PostUrlEncodedAsync(this string url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            return new EasyRequest(url).PostUrlEncodedAsync(data, cancellationToken, completionOption);
         }
 
 
-        public static ICaesarRequest WithPostUrlEncoded(this string url, object data)
+        public static IEasyRequest WithPostUrlEncoded(this string url, object data)
         {
-            var request = new CaesarRequest(url);
+            var request = new EasyRequest(url);
             request.Content = new CapturedUrlEncodedContent(request.Settings.UrlEncodedSerializer.Serialize(data));
             return request;
         }
 
-        public static ICaesarRequest WithPostJson(this string url, object data)
+        public static IEasyRequest WithPostJson(this string url, object data)
         {
-            var request = new CaesarRequest(url);
+            var request = new EasyRequest(url);
             request.Content = new CapturedJsonContent(request.Settings.JsonSerializer.Serialize(data));
             return request;
         }
 
-        public static ICaesarRequest WithPostJson(this Url url, object data)
+        public static IEasyRequest WithPostJson(this Url url, object data)
         {
-            var request = new CaesarRequest(url);
+            var request = new EasyRequest(url);
             request.Content = new CapturedJsonContent(request.Settings.JsonSerializer.Serialize(data));
             return request;
         }
 
-        public static ICaesarRequest WithPostJson(this string url, string data)
+        public static IEasyRequest WithPostJson(this string url, string data)
         {
-            var request = new CaesarRequest(url);
+            var request = new EasyRequest(url);
             request.Content = new CapturedJsonContent(data);
             return request;
         }
 
-        public static ICaesarRequest WithPostString(this string url, string data)
+        public static IEasyRequest WithPostString(this string url, string data)
         {
-            var request = new CaesarRequest(url);
+            var request = new EasyRequest(url);
             request.Content = new CapturedStringContent(data);
             return request;
         }
 
-        public static ICaesarRequest WithPostData(this string url, HttpContent content)
+        public static IEasyRequest WithPostData(this string url, HttpContent content)
         {
-            var request = new CaesarRequest(url);
+            var request = new EasyRequest(url);
             request.Content = content;
             return request;
         }
 
-        public static ICaesarRequest WithPostOctet(this string url, byte[] data)
+        public static IEasyRequest WithPostOctet(this string url, byte[] data)
         {
-            var request = new CaesarRequest(url);
+            var request = new EasyRequest(url);
             request.Content = new CapturedOctetContent(data); ;
             return request;
         }
@@ -1128,9 +1128,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> HeadAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> HeadAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).HeadAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).HeadAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1141,9 +1141,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutAsync(this string url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutAsync(this string url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PutAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(url).PutAsync(content, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1154,9 +1154,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutJsonAsync(this string url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutJsonAsync(this string url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PutJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PutJsonAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1167,9 +1167,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutStringAsync(this string url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutStringAsync(this string url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PutStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PutStringAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1179,9 +1179,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> DeleteAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> DeleteAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).DeleteAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).DeleteAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1192,9 +1192,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchAsync(this string url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchAsync(this string url, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PatchAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(url).PatchAsync(content, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1205,9 +1205,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchJsonAsync(this string url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchJsonAsync(this string url, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PatchJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PatchJsonAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1218,9 +1218,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchStringAsync(this string url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchStringAsync(this string url, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).PatchStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(url).PatchStringAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1230,9 +1230,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> OptionsAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> OptionsAsync(this string url, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(url).OptionsAsync(cancellationToken, completionOption);
+            return new EasyRequest(url).OptionsAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1242,19 +1242,19 @@ namespace ViazyNetCore.Http
         /// <param name="name">The header name.</param>
         /// <param name="value">The header value.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithHeader(this string url, string name, object value)
+        public static IEasyRequest WithHeader(this string url, string name, object value)
         {
-            return new CaesarRequest(url).WithHeader(name, value);
+            return new EasyRequest(url).WithHeader(name, value);
         }
 
-        public static ICaesarRequest WithUserAgent(this string url, object value)
+        public static IEasyRequest WithUserAgent(this string url, object value)
         {
-            return new CaesarRequest(url).WithUserAgent(value);
+            return new EasyRequest(url).WithUserAgent(value);
         }
 
-        public static ICaesarRequest WithReferer(this string url, string value)
+        public static IEasyRequest WithReferer(this string url, string value)
         {
-            return new CaesarRequest(url).WithReferer(value);
+            return new EasyRequest(url).WithReferer(value);
         }
 
         /// <summary>
@@ -1264,9 +1264,9 @@ namespace ViazyNetCore.Http
         /// <param name="headers">Names/values of HTTP headers to set. Typically an anonymous object or IDictionary.</param>
         /// <param name="replaceUnderscoreWithHyphen">If true, underscores in property names will be replaced by hyphens. Default is true.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithHeaders(this string url, object headers, bool replaceUnderscoreWithHyphen = true)
+        public static IEasyRequest WithHeaders(this string url, object headers, bool replaceUnderscoreWithHyphen = true)
         {
-            return new CaesarRequest(url).WithHeaders(headers, replaceUnderscoreWithHyphen);
+            return new EasyRequest(url).WithHeaders(headers, replaceUnderscoreWithHyphen);
         }
 
         /// <summary>
@@ -1276,9 +1276,9 @@ namespace ViazyNetCore.Http
         /// <param name="username">Username of authenticating user.</param>
         /// <param name="password">Password of authenticating user.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithBasicAuth(this string url, string username, string password)
+        public static IEasyRequest WithBasicAuth(this string url, string username, string password)
         {
-            return new CaesarRequest(url).WithBasicAuth(username, password);
+            return new EasyRequest(url).WithBasicAuth(username, password);
         }
 
         /// <summary>
@@ -1287,9 +1287,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="token">The acquired oAuth bearer token.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithOAuthBearerToken(this string url, string token)
+        public static IEasyRequest WithOAuthBearerToken(this string url, string token)
         {
-            return new CaesarRequest(url).WithOAuthBearerToken(token);
+            return new EasyRequest(url).WithOAuthBearerToken(token);
         }
 
         /// <summary>
@@ -1299,9 +1299,9 @@ namespace ViazyNetCore.Http
         /// <param name="name">The cookie name.</param>
         /// <param name="value">The cookie value.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookie(this string url, string name, object value)
+        public static IEasyRequest WithCookie(this string url, string name, object value)
         {
-            return new CaesarRequest(url).WithCookie(name, value);
+            return new EasyRequest(url).WithCookie(name, value);
         }
 
         /// <summary>
@@ -1310,9 +1310,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="values">Names/values of HTTP cookies to set. Typically an anonymous object or IDictionary.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this string url, object values)
+        public static IEasyRequest WithCookies(this string url, object values)
         {
-            return new CaesarRequest(url).WithCookies(values);
+            return new EasyRequest(url).WithCookies(values);
         }
 
         /// <summary>
@@ -1321,9 +1321,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="cookieJar">The CookieJar.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this string url, CookieJar cookieJar)
+        public static IEasyRequest WithCookies(this string url, CookieJar cookieJar)
         {
-            return new CaesarRequest(url).WithCookies(cookieJar);
+            return new EasyRequest(url).WithCookies(cookieJar);
         }
 
         /// <summary>
@@ -1332,9 +1332,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="cookieJar">The created CookieJar, which can be reused in subsequent requests.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this string url, out CookieJar cookieJar)
+        public static IEasyRequest WithCookies(this string url, out CookieJar cookieJar)
         {
-            return new CaesarRequest(url).WithCookies(out cookieJar);
+            return new EasyRequest(url).WithCookies(out cookieJar);
         }
 
 
@@ -1345,9 +1345,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="action">A delegate defining the Settings changes.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest ConfigureRequest(this string url, Action<CaesarHttpSettings> action)
+        public static IEasyRequest ConfigureRequest(this string url, Action<EasyHttpSettings> action)
         {
-            return new CaesarRequest(url).ConfigureRequest(action);
+            return new EasyRequest(url).ConfigureRequest(action);
         }
 
         /// <summary>
@@ -1356,9 +1356,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="timespan">Time to wait before the request times out.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithTimeout(this string url, TimeSpan timespan)
+        public static IEasyRequest WithTimeout(this string url, TimeSpan timespan)
         {
-            return new CaesarRequest(url).WithTimeout(timespan);
+            return new EasyRequest(url).WithTimeout(timespan);
         }
 
         /// <summary>
@@ -1367,9 +1367,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="seconds">Seconds to wait before the request times out.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithTimeout(this string url, int seconds)
+        public static IEasyRequest WithTimeout(this string url, int seconds)
         {
-            return new CaesarRequest(url).WithTimeout(seconds);
+            return new EasyRequest(url).WithTimeout(seconds);
         }
 
         /// <summary>
@@ -1378,9 +1378,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="pattern">Examples: "3xx", "100,300,600", "100-299,6xx"</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowHttpStatus(this string url, string pattern)
+        public static IEasyRequest AllowHttpStatus(this string url, string pattern)
         {
-            return new CaesarRequest(url).AllowHttpStatus(pattern);
+            return new EasyRequest(url).AllowHttpStatus(pattern);
         }
 
         /// <summary>
@@ -1389,9 +1389,9 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="statusCodes">The HttpStatusCode(s) to allow.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowHttpStatus(this string url, params HttpStatusCode[] statusCodes)
+        public static IEasyRequest AllowHttpStatus(this string url, params HttpStatusCode[] statusCodes)
         {
-            return new CaesarRequest(url).AllowHttpStatus(statusCodes);
+            return new EasyRequest(url).AllowHttpStatus(statusCodes);
         }
 
         /// <summary>
@@ -1399,9 +1399,9 @@ namespace ViazyNetCore.Http
         /// </summary>
         /// <param name="url">This URL.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowAnyHttpStatus(this string url)
+        public static IEasyRequest AllowAnyHttpStatus(this string url)
         {
-            return new CaesarRequest(url).AllowAnyHttpStatus();
+            return new EasyRequest(url).AllowAnyHttpStatus();
         }
 
         /// <summary>
@@ -1410,32 +1410,32 @@ namespace ViazyNetCore.Http
         /// <param name="url">This URL.</param>
         /// <param name="enabled">true if Caesar should automatically send a new request to the redirect URL, false if it should not.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithAutoRedirect(this string url, bool enabled)
+        public static IEasyRequest WithAutoRedirect(this string url, bool enabled)
         {
-            return new CaesarRequest(url).WithAutoRedirect(enabled);
+            return new EasyRequest(url).WithAutoRedirect(enabled);
         }
 
 
 
-        public static ICaesarRequest WithProxy(this string url, WebProxy proxy)
+        public static IEasyRequest WithProxy(this string url, WebProxy proxy)
         {
-            return new CaesarRequest(url).WithProxy(proxy);
+            return new EasyRequest(url).WithProxy(proxy);
         }
-        public static ICaesarRequest WithProxy(this string url, string proxyIp)
+        public static IEasyRequest WithProxy(this string url, string proxyIp)
         {
-            return new CaesarRequest(url).WithProxy(proxyIp);
+            return new EasyRequest(url).WithProxy(proxyIp);
         }
-        public static ICaesarRequest WithProxy(this string url, Func<string> func)
+        public static IEasyRequest WithProxy(this string url, Func<string> func)
         {
-            return new CaesarRequest(url).WithProxy(func?.Invoke());
+            return new EasyRequest(url).WithProxy(func?.Invoke());
         }
-        public static ICaesarRequest WithProxy(this string url, Func<ProxyInfo> func)
+        public static IEasyRequest WithProxy(this string url, Func<ProxyInfo> func)
         {
-            return new CaesarRequest(url).WithProxy(func?.Invoke()?.ProxyIp);
+            return new EasyRequest(url).WithProxy(func?.Invoke()?.ProxyIp);
         }
-        public static ICaesarRequest WithProxy(this Url url, Func<ProxyInfo> func)
+        public static IEasyRequest WithProxy(this Url url, Func<ProxyInfo> func)
         {
-            return new CaesarRequest(url).WithProxy(func?.Invoke()?.ProxyIp);
+            return new EasyRequest(url).WithProxy(func?.Invoke()?.ProxyIp);
         }
         /// <summary>
         /// Creates a new CaesarRequest and asynchronously downloads a file.
@@ -1448,7 +1448,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the local path of the downloaded file.</returns>
         public static Task<string> DownloadFileAsync(this string url, string localFolderPath, string localFileName = null, int bufferSize = 4096, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new CaesarRequest(url).DownloadFileAsync(localFolderPath, localFileName, bufferSize, cancellationToken);
+            return new EasyRequest(url).DownloadFileAsync(localFolderPath, localFileName, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -1458,9 +1458,9 @@ namespace ViazyNetCore.Http
         /// <param name="buildContent">A delegate for building the content parts.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostMultipartAsync(this string url, Action<CapturedMultipartContent> buildContent, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<IEasyResponse> PostMultipartAsync(this string url, Action<CapturedMultipartContent> buildContent, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new CaesarRequest(url).PostMultipartAsync(buildContent, cancellationToken);
+            return new EasyRequest(url).PostMultipartAsync(buildContent, cancellationToken);
         }
 
         /// <summary>
@@ -1472,9 +1472,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendAsync(this Uri uri, HttpMethod verb, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendAsync(this Uri uri, HttpMethod verb, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            var request = new CaesarRequest(uri)
+            var request = new EasyRequest(uri)
             {
                 Content = content
             };
@@ -1490,9 +1490,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendJsonAsync(this Uri uri, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendJsonAsync(this Uri uri, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).SendJsonAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(uri).SendJsonAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1504,9 +1504,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendStringAsync(this Uri uri, HttpMethod verb, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendStringAsync(this Uri uri, HttpMethod verb, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).SendStringAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(uri).SendStringAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1518,9 +1518,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> SendUrlEncodedAsync(this Uri uri, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> SendUrlEncodedAsync(this Uri uri, HttpMethod verb, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).SendUrlEncodedAsync(verb, data, cancellationToken, completionOption);
+            return new EasyRequest(uri).SendUrlEncodedAsync(verb, data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1530,9 +1530,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> GetAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> GetAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).GetAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).GetAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1544,7 +1544,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to an object of type T.</returns>
         public static Task<T> GetJsonAsync<T>(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).GetJsonAsync<T>(cancellationToken, completionOption);
+            return new EasyRequest(uri).GetJsonAsync<T>(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1556,7 +1556,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to a dynamic.</returns>
         public static Task<dynamic> GetJsonAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).GetJsonAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).GetJsonAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1568,7 +1568,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the JSON response body deserialized to a list of dynamics.</returns>
         public static Task<IList<dynamic>> GetJsonListAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).GetJsonListAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).GetJsonListAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1580,7 +1580,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a string.</returns>
         public static Task<string> GetStringAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).GetStringAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).GetStringAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1592,7 +1592,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a Stream.</returns>
         public static Task<Stream> GetStreamAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).GetStreamAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).GetStreamAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1604,7 +1604,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the response body as a byte array.</returns>
         public static Task<byte[]> GetBytesAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).GetBytesAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).GetBytesAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1615,9 +1615,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostAsync(this Uri uri, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostAsync(this Uri uri, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PostAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(uri).PostAsync(content, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1628,9 +1628,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostJsonAsync(this Uri uri, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostJsonAsync(this Uri uri, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PostJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(uri).PostJsonAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1641,9 +1641,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostStringAsync(this Uri uri, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostStringAsync(this Uri uri, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PostStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(uri).PostStringAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1654,9 +1654,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostUrlEncodedAsync(this Uri uri, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PostUrlEncodedAsync(this Uri uri, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PostUrlEncodedAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(uri).PostUrlEncodedAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1666,9 +1666,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> HeadAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> HeadAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).HeadAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).HeadAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1679,9 +1679,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutAsync(this Uri uri, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutAsync(this Uri uri, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PutAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(uri).PutAsync(content, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1692,9 +1692,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutJsonAsync(this Uri uri, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutJsonAsync(this Uri uri, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PutJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(uri).PutJsonAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1705,9 +1705,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PutStringAsync(this Uri uri, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PutStringAsync(this Uri uri, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PutStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(uri).PutStringAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1717,9 +1717,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> DeleteAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> DeleteAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).DeleteAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).DeleteAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1730,9 +1730,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchAsync(this Uri uri, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchAsync(this Uri uri, HttpContent content = null, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PatchAsync(content, cancellationToken, completionOption);
+            return new EasyRequest(uri).PatchAsync(content, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1743,9 +1743,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchJsonAsync(this Uri uri, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchJsonAsync(this Uri uri, object data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PatchJsonAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(uri).PatchJsonAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1756,9 +1756,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PatchStringAsync(this Uri uri, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> PatchStringAsync(this Uri uri, string data, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).PatchStringAsync(data, cancellationToken, completionOption);
+            return new EasyRequest(uri).PatchStringAsync(data, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1768,9 +1768,9 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> OptionsAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public static Task<IEasyResponse> OptionsAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            return new CaesarRequest(uri).OptionsAsync(cancellationToken, completionOption);
+            return new EasyRequest(uri).OptionsAsync(cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -1780,9 +1780,9 @@ namespace ViazyNetCore.Http
         /// <param name="name">The header name.</param>
         /// <param name="value">The header value.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithHeader(this Uri uri, string name, object value)
+        public static IEasyRequest WithHeader(this Uri uri, string name, object value)
         {
-            return new CaesarRequest(uri).WithHeader(name, value);
+            return new EasyRequest(uri).WithHeader(name, value);
         }
 
         /// <summary>
@@ -1792,9 +1792,9 @@ namespace ViazyNetCore.Http
         /// <param name="headers">Names/values of HTTP headers to set. Typically an anonymous object or IDictionary.</param>
         /// <param name="replaceUnderscoreWithHyphen">If true, underscores in property names will be replaced by hyphens. Default is true.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithHeaders(this Uri uri, object headers, bool replaceUnderscoreWithHyphen = true)
+        public static IEasyRequest WithHeaders(this Uri uri, object headers, bool replaceUnderscoreWithHyphen = true)
         {
-            return new CaesarRequest(uri).WithHeaders(headers, replaceUnderscoreWithHyphen);
+            return new EasyRequest(uri).WithHeaders(headers, replaceUnderscoreWithHyphen);
         }
 
         /// <summary>
@@ -1804,9 +1804,9 @@ namespace ViazyNetCore.Http
         /// <param name="username">Username of authenticating user.</param>
         /// <param name="password">Password of authenticating user.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithBasicAuth(this Uri uri, string username, string password)
+        public static IEasyRequest WithBasicAuth(this Uri uri, string username, string password)
         {
-            return new CaesarRequest(uri).WithBasicAuth(username, password);
+            return new EasyRequest(uri).WithBasicAuth(username, password);
         }
 
         /// <summary>
@@ -1815,9 +1815,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="token">The acquired oAuth bearer token.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithOAuthBearerToken(this Uri uri, string token)
+        public static IEasyRequest WithOAuthBearerToken(this Uri uri, string token)
         {
-            return new CaesarRequest(uri).WithOAuthBearerToken(token);
+            return new EasyRequest(uri).WithOAuthBearerToken(token);
         }
 
         /// <summary>
@@ -1827,9 +1827,9 @@ namespace ViazyNetCore.Http
         /// <param name="name">The cookie name.</param>
         /// <param name="value">The cookie value.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookie(this Uri uri, string name, object value)
+        public static IEasyRequest WithCookie(this Uri uri, string name, object value)
         {
-            return new CaesarRequest(uri).WithCookie(name, value);
+            return new EasyRequest(uri).WithCookie(name, value);
         }
 
         /// <summary>
@@ -1838,9 +1838,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="values">Names/values of HTTP cookies to set. Typically an anonymous object or IDictionary.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this Uri uri, object values)
+        public static IEasyRequest WithCookies(this Uri uri, object values)
         {
-            return new CaesarRequest(uri).WithCookies(values);
+            return new EasyRequest(uri).WithCookies(values);
         }
 
         /// <summary>
@@ -1849,9 +1849,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="cookieJar">The CookieJar.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this Uri uri, CookieJar cookieJar)
+        public static IEasyRequest WithCookies(this Uri uri, CookieJar cookieJar)
         {
-            return new CaesarRequest(uri).WithCookies(cookieJar);
+            return new EasyRequest(uri).WithCookies(cookieJar);
         }
 
         /// <summary>
@@ -1860,9 +1860,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="cookieJar">The created CookieJar, which can be reused in subsequent requests.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithCookies(this Uri uri, out CookieJar cookieJar)
+        public static IEasyRequest WithCookies(this Uri uri, out CookieJar cookieJar)
         {
-            return new CaesarRequest(uri).WithCookies(out cookieJar);
+            return new EasyRequest(uri).WithCookies(out cookieJar);
         }
 
         /// <summary>
@@ -1871,9 +1871,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="action">A delegate defining the Settings changes.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest ConfigureRequest(this Uri uri, Action<CaesarHttpSettings> action)
+        public static IEasyRequest ConfigureRequest(this Uri uri, Action<EasyHttpSettings> action)
         {
-            return new CaesarRequest(uri).ConfigureRequest(action);
+            return new EasyRequest(uri).ConfigureRequest(action);
         }
 
         /// <summary>
@@ -1882,9 +1882,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="timespan">Time to wait before the request times out.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithTimeout(this Uri uri, TimeSpan timespan)
+        public static IEasyRequest WithTimeout(this Uri uri, TimeSpan timespan)
         {
-            return new CaesarRequest(uri).WithTimeout(timespan);
+            return new EasyRequest(uri).WithTimeout(timespan);
         }
 
         /// <summary>
@@ -1893,9 +1893,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="seconds">Seconds to wait before the request times out.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithTimeout(this Uri uri, int seconds)
+        public static IEasyRequest WithTimeout(this Uri uri, int seconds)
         {
-            return new CaesarRequest(uri).WithTimeout(seconds);
+            return new EasyRequest(uri).WithTimeout(seconds);
         }
 
         /// <summary>
@@ -1904,9 +1904,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="pattern">Examples: "3xx", "100,300,600", "100-299,6xx"</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowHttpStatus(this Uri uri, string pattern)
+        public static IEasyRequest AllowHttpStatus(this Uri uri, string pattern)
         {
-            return new CaesarRequest(uri).AllowHttpStatus(pattern);
+            return new EasyRequest(uri).AllowHttpStatus(pattern);
         }
 
         /// <summary>
@@ -1915,9 +1915,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="statusCodes">The HttpStatusCode(s) to allow.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowHttpStatus(this Uri uri, params HttpStatusCode[] statusCodes)
+        public static IEasyRequest AllowHttpStatus(this Uri uri, params HttpStatusCode[] statusCodes)
         {
-            return new CaesarRequest(uri).AllowHttpStatus(statusCodes);
+            return new EasyRequest(uri).AllowHttpStatus(statusCodes);
         }
 
         /// <summary>
@@ -1925,9 +1925,9 @@ namespace ViazyNetCore.Http
         /// </summary>
         /// <param name="uri">This System.Uri.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest AllowAnyHttpStatus(this Uri uri)
+        public static IEasyRequest AllowAnyHttpStatus(this Uri uri)
         {
-            return new CaesarRequest(uri).AllowAnyHttpStatus();
+            return new EasyRequest(uri).AllowAnyHttpStatus();
         }
 
         /// <summary>
@@ -1936,9 +1936,9 @@ namespace ViazyNetCore.Http
         /// <param name="uri">This System.Uri.</param>
         /// <param name="enabled">true if Caesar should automatically send a new request to the redirect URL, false if it should not.</param>
         /// <returns>A new ICaesarRequest.</returns>
-        public static ICaesarRequest WithAutoRedirect(this Uri uri, bool enabled)
+        public static IEasyRequest WithAutoRedirect(this Uri uri, bool enabled)
         {
-            return new CaesarRequest(uri).WithAutoRedirect(enabled);
+            return new EasyRequest(uri).WithAutoRedirect(enabled);
         }
 
 
@@ -1954,7 +1954,7 @@ namespace ViazyNetCore.Http
         /// <returns>A Task whose result is the local path of the downloaded file.</returns>
         public static Task<string> DownloadFileAsync(this Uri uri, string localFolderPath, string localFileName = null, int bufferSize = 4096, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new CaesarRequest(uri).DownloadFileAsync(localFolderPath, localFileName, bufferSize, cancellationToken);
+            return new EasyRequest(uri).DownloadFileAsync(localFolderPath, localFileName, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -1964,9 +1964,9 @@ namespace ViazyNetCore.Http
         /// <param name="buildContent">A delegate for building the content parts.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        public static Task<ICaesarResponse> PostMultipartAsync(this Uri uri, Action<CapturedMultipartContent> buildContent, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<IEasyResponse> PostMultipartAsync(this Uri uri, Action<CapturedMultipartContent> buildContent, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new CaesarRequest(uri).PostMultipartAsync(buildContent, cancellationToken);
+            return new EasyRequest(uri).PostMultipartAsync(buildContent, cancellationToken);
         }
 
     }

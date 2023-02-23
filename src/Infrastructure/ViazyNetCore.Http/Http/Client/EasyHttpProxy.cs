@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Http
 {
-    public class CaesarProxy
+    public class EasyHttpProxy
     {
         private readonly WebProxy _proxy;
 
@@ -21,14 +21,14 @@ namespace ViazyNetCore.Http
         /// 代理生命周期，默认有效时间   <see cref="DefaultLifeSecond"/>
         /// </summary>
         public TimeSpan Lifetime { get; private set; }
-        public CaesarProxy(WebProxy proxy)
+        public EasyHttpProxy(WebProxy proxy)
         {
             _proxy = proxy;
 
             Lifetime = TimeSpan.FromSeconds(DefaultLifeSecond);
         }
 
-        public CaesarProxy(string proxyIp)
+        public EasyHttpProxy(string proxyIp)
         {
             if (proxyIp == Default)
             {
@@ -47,18 +47,18 @@ namespace ViazyNetCore.Http
             Lifetime = TimeSpan.FromSeconds(DefaultLifeSecond);
         }
 
-        public CaesarProxy()
+        public EasyHttpProxy()
         {
             Lifetime = TimeSpan.FromHours(1);
         }
 
-        public static implicit operator CaesarProxy(WebProxy proxy) => new(proxy);
+        public static implicit operator EasyHttpProxy(WebProxy proxy) => new(proxy);
 
-        public static implicit operator CaesarProxy(string proxyIp) => new(proxyIp);
+        public static implicit operator EasyHttpProxy(string proxyIp) => new(proxyIp);
 
-        public static implicit operator string(CaesarProxy proxy) => proxy?.ToString() ?? Default;
+        public static implicit operator string(EasyHttpProxy proxy) => proxy?.ToString() ?? Default;
 
-        public CaesarProxy SetLifetime(TimeSpan lifetime)
+        public EasyHttpProxy SetLifetime(TimeSpan lifetime)
         {
             Lifetime = lifetime;
             return this;
@@ -84,9 +84,9 @@ namespace ViazyNetCore.Http
         {
             if (obj == this)
                 return true;
-            if (!(obj is CaesarProxy))
+            if (!(obj is EasyHttpProxy))
                 return false;
-            var proxy = (CaesarProxy)obj;
+            var proxy = (EasyHttpProxy)obj;
             return ToString()==proxy.ToString();
         }
     }

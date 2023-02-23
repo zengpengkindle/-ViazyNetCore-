@@ -9,26 +9,26 @@ namespace ViazyNetCore.Http
 	/// <summary>
 	/// A set of properties that affect Caesar.Http behavior
 	/// </summary>
-	public class CaesarHttpSettings
+	public class EasyHttpSettings
 	{
 		// Values are dictionary-backed so we can check for key existence. Can't do null-coalescing
 		// because if a setting is set to null at the request level, that should stick.
 		private readonly IDictionary<string, object> _vals = new Dictionary<string, object>();
 
-		private CaesarHttpSettings _defaults;
+		private EasyHttpSettings _defaults;
 
 		/// <summary>
 		/// Creates a new CaesarHttpSettings object.
 		/// </summary>
-		public CaesarHttpSettings() {
+		public EasyHttpSettings() {
 			Redirects = new RedirectSettings(this);
 			ResetDefaults();
 		}
 		/// <summary>
 		/// Gets or sets the default values to fall back on when values are not explicitly set on this instance.
 		/// </summary>
-		public virtual CaesarHttpSettings Defaults {
-			get => _defaults ?? CaesarHttp.GlobalSettings;
+		public virtual EasyHttpSettings Defaults {
+			get => _defaults ?? EasyHttp.GlobalSettings;
 			set => _defaults = value;
 		}
 
@@ -74,32 +74,32 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// Gets or sets a callback that is invoked immediately before every HTTP request is sent.
 		/// </summary>
-		public Action<CaesarCall> BeforeCall {
-			get => Get<Action<CaesarCall>>();
+		public Action<EasyCall> BeforeCall {
+			get => Get<Action<EasyCall>>();
 			set => Set(value);
 		}
 
 		/// <summary>
 		/// Gets or sets a callback that is invoked asynchronously immediately before every HTTP request is sent.
 		/// </summary>
-		public Func<CaesarCall, Task> BeforeCallAsync {
-			get => Get<Func<CaesarCall, Task>>();
+		public Func<EasyCall, Task> BeforeCallAsync {
+			get => Get<Func<EasyCall, Task>>();
 			set => Set(value);
 		}
 
 		/// <summary>
 		/// Gets or sets a callback that is invoked immediately after every HTTP response is received.
 		/// </summary>
-		public Action<CaesarCall> AfterCall {
-			get => Get<Action<CaesarCall>>();
+		public Action<EasyCall> AfterCall {
+			get => Get<Action<EasyCall>>();
 			set => Set(value);
 		}
 
 		/// <summary>
 		/// Gets or sets a callback that is invoked asynchronously immediately after every HTTP response is received.
 		/// </summary>
-		public Func<CaesarCall, Task> AfterCallAsync {
-			get => Get<Func<CaesarCall, Task>>();
+		public Func<EasyCall, Task> AfterCallAsync {
+			get => Get<Func<EasyCall, Task>>();
 			set => Set(value);
 		}
 
@@ -107,8 +107,8 @@ namespace ViazyNetCore.Http
 		/// Gets or sets a callback that is invoked when an error occurs during any HTTP call, including when any non-success
 		/// HTTP status code is returned in the response. Response should be null-checked if used in the event handler.
 		/// </summary>
-		public Action<CaesarCall> OnError {
-			get => Get<Action<CaesarCall>>();
+		public Action<EasyCall> OnError {
+			get => Get<Action<EasyCall>>();
 			set => Set(value);
 		}
 
@@ -116,8 +116,8 @@ namespace ViazyNetCore.Http
 		/// Gets or sets a callback that is invoked asynchronously when an error occurs during any HTTP call, including when any non-success
 		/// HTTP status code is returned in the response. Response should be null-checked if used in the event handler.
 		/// </summary>
-		public Func<CaesarCall, Task> OnErrorAsync {
-			get => Get<Func<CaesarCall, Task>>();
+		public Func<EasyCall, Task> OnErrorAsync {
+			get => Get<Func<EasyCall, Task>>();
 			set => Set(value);
 		}
 
@@ -126,8 +126,8 @@ namespace ViazyNetCore.Http
 		/// You can inspect/manipulate the call.Redirect object to determine what will happen next.
 		/// An auto-redirect will only happen if call.Redirect.Follow is true upon exiting the callback.
 		/// </summary>
-		public Action<CaesarCall> OnRedirect {
-			get => Get<Action<CaesarCall>>();
+		public Action<EasyCall> OnRedirect {
+			get => Get<Action<EasyCall>>();
 			set => Set(value);
 		}
 
@@ -136,8 +136,8 @@ namespace ViazyNetCore.Http
 		/// You can inspect/manipulate the call.Redirect object to determine what will happen next.
 		/// An auto-redirect will only happen if call.Redirect.Follow is true upon exiting the callback.
 		/// </summary>
-		public Func<CaesarCall, Task> OnRedirectAsync {
-			get => Get<Func<CaesarCall, Task>>();
+		public Func<EasyCall, Task> OnRedirectAsync {
+			get => Get<Func<EasyCall, Task>>();
 			set => Set(value);
 		}
 
@@ -172,7 +172,7 @@ namespace ViazyNetCore.Http
 	/// <summary>
 	/// Client-level settings for Caesar.Http
 	/// </summary>
-	public class ClientCaesarHttpSettings : CaesarHttpSettings
+	public class EasyClientHttpSettings : EasyHttpSettings
 	{
 		/// <summary>
 		/// Specifies the time to keep the underlying HTTP/TCP connection open. When expired, a Connection: close header
@@ -198,7 +198,7 @@ namespace ViazyNetCore.Http
 	/// <summary>
 	/// Global default settings for Caesar.Http
 	/// </summary>
-	public class GlobalCaesarHttpSettings : ClientCaesarHttpSettings
+	public class GlobalCaesarHttpSettings : EasyClientHttpSettings
 	{
 		internal GlobalCaesarHttpSettings() {
 			ResetDefaults();
@@ -207,7 +207,7 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// Defaults at the global level do not make sense and will always be null.
 		/// </summary>
-		public override CaesarHttpSettings Defaults {
+		public override EasyHttpSettings Defaults {
 			get => null;
 			set => throw new Exception("Global settings cannot be backed by any higher-level defauts.");
 		}

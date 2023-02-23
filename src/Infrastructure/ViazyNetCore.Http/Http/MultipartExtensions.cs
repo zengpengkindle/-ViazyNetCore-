@@ -19,7 +19,7 @@ namespace ViazyNetCore.Http
 		/// <param name="request">The ICaesarRequest.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
 		/// <returns>A Task whose result is the received ICaesarResponse.</returns>
-		public static Task<ICaesarResponse> PostMultipartAsync(this ICaesarRequest request, Action<CapturedMultipartContent> buildContent, CancellationToken cancellationToken = default(CancellationToken)) {
+		public static Task<IEasyResponse> PostMultipartAsync(this IEasyRequest request, Action<CapturedMultipartContent> buildContent, CancellationToken cancellationToken = default(CancellationToken)) {
 			var cmc = new CapturedMultipartContent(request.Settings);
 			buildContent(cmc);
             request.Content = cmc;

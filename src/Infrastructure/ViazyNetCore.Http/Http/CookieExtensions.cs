@@ -17,13 +17,13 @@ namespace ViazyNetCore.Http
 		/// <param name="name">The cookie name.</param>
 		/// <param name="value">The cookie value.</param>
 		/// <returns>This ICaesarClient instance.</returns>
-		public static ICaesarRequest WithCookie(this ICaesarRequest request, string name, object value) {
+		public static IEasyRequest WithCookie(this IEasyRequest request, string name, object value) {
 			var cookies = new NameValueList<string>(request.Cookies, true); // cookie names are case-sensitive https://stackoverflow.com/a/11312272/62600
 			cookies.AddOrReplace(name, value.ToInvariantString());
 			return request.WithHeader("Cookie", CookieCutter.ToRequestHeader(cookies));
 		}
 
-        public static ICaesarRequest RemoveCookie(this ICaesarRequest request, string name)
+        public static IEasyRequest RemoveCookie(this IEasyRequest request, string name)
         {
             var cookies = new NameValueList<string>(request.Cookies, true); // cookie names are case-sensitive https://stackoverflow.com/a/11312272/62600
             cookies.Remove(name);
@@ -38,7 +38,7 @@ namespace ViazyNetCore.Http
 		/// <param name="request">The ICaesarRequest.</param>
 		/// <param name="values">Names/values of HTTP cookies to set. Typically an anonymous object or IDictionary.</param>
 		/// <returns>This ICaesarClient.</returns>
-		public static ICaesarRequest WithCookies(this ICaesarRequest request, object values) {
+		public static IEasyRequest WithCookies(this IEasyRequest request, object values) {
 			var cookies = new NameValueList<string>(request.Cookies, true); // cookie names are case-sensitive https://stackoverflow.com/a/11312272/62600
 			// although rare, we need to accommodate the possibility of multiple cookies with the same name
 			foreach (var group in values.ToKeyValuePairs().GroupBy(x => x.Key)) {
@@ -58,7 +58,7 @@ namespace ViazyNetCore.Http
 		/// <param name="request">The ICaesarRequest.</param>
 		/// <param name="cookieJar">The CookieJar.</param>
 		/// <returns>This ICaesarClient instance.</returns>
-		public static ICaesarRequest WithCookies(this ICaesarRequest request, CookieJar cookieJar) {
+		public static IEasyRequest WithCookies(this IEasyRequest request, CookieJar cookieJar) {
 			request.CookieJar = cookieJar;
 			return request;
 		}
@@ -70,7 +70,7 @@ namespace ViazyNetCore.Http
 		/// <param name="request">The ICaesarRequest.</param>
 		/// <param name="cookieJar">The created CookieJar, which can be reused in subsequent requests.</param>
 		/// <returns>This ICaesarClient instance.</returns>
-		public static ICaesarRequest WithCookies(this ICaesarRequest request, out CookieJar cookieJar) {
+		public static IEasyRequest WithCookies(this IEasyRequest request, out CookieJar cookieJar) {
 			cookieJar = new CookieJar();
 			return request.WithCookies(cookieJar);
 		}

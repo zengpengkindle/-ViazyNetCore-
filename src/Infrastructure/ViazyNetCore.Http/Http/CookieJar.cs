@@ -10,9 +10,9 @@ namespace ViazyNetCore.Http
     /// A collection of CaesarCookies that can be attached to one or more CaesarRequests, either explicitly via WithCookies
     /// or implicitly via a CookieSession. Stores cookies received via Set-Cookie response headers.
     /// </summary>
-    public class CookieJar : IReadOnlyCollection<CaesarCookie>
+    public class CookieJar : IReadOnlyCollection<EasyHttpCookie>
     {
-        private readonly ConcurrentDictionary<string, CaesarCookie> _dict = new();
+        private readonly ConcurrentDictionary<string, EasyHttpCookie> _dict = new();
 
         /// <summary>
         /// Adds a cookie to the jar or replaces one with the same Name/Domain/Path.
@@ -23,13 +23,13 @@ namespace ViazyNetCore.Http
         /// <param name="originUrl">URL of request that sent the original Set-Cookie header.</param>
         /// <param name="dateReceived">Date/time that original Set-Cookie header was received. Defaults to current date/time. Important for Max-Age to be enforced correctly.</param>
         public CookieJar AddOrReplace(string name, object value, string originUrl, DateTimeOffset? dateReceived = null) =>
-            AddOrReplace(new CaesarCookie(name, value.ToInvariantString(), originUrl, dateReceived));
+            AddOrReplace(new EasyHttpCookie(name, value.ToInvariantString(), originUrl, dateReceived));
 
         /// <summary>
         /// Adds a cookie to the jar or replaces one with the same Name/Domain/Path.
         /// Throws InvalidCookieException if cookie is invalid.
         /// </summary>
-        public CookieJar AddOrReplace(CaesarCookie cookie)
+        public CookieJar AddOrReplace(EasyHttpCookie cookie)
         {
             if (!TryAddOrReplace(cookie, out var reason))
                 throw new InvalidCookieException(reason);
@@ -37,7 +37,7 @@ namespace ViazyNetCore.Http
             return this;
         }
 
-        public CaesarCookie TryGet(string name)
+        public EasyHttpCookie TryGet(string name)
         {
             _dict.TryGetValue(name, out var value);
             return value;
@@ -49,7 +49,7 @@ namespace ViazyNetCore.Http
         /// but only if it is valid and not expired.
         /// </summary>
         /// <returns>true if cookie is valid and was added or updated. If false, provides descriptive reason.</returns>
-        public bool TryAddOrReplace(CaesarCookie cookie, out string reason)
+        public bool TryAddOrReplace(EasyHttpCookie cookie, out string reason)
         {
             if (!cookie.IsValid(out reason))
                 return false;
@@ -71,7 +71,7 @@ namespace ViazyNetCore.Http
         /// <summary>
         /// Removes all cookies matching the given predicate.
         /// </summary>
-        public CookieJar Remove(Func<CaesarCookie, bool> predicate)
+        public CookieJar Remove(Func<EasyHttpCookie, bool> predicate)
         {
             var keys = _dict.Where(kv => predicate(kv.Value)).Select(kv => kv.Key).ToList();
             foreach (var key in keys)
@@ -89,7 +89,7 @@ namespace ViazyNetCore.Http
         }
 
         /// <inheritdoc/>
-        public IEnumerator<CaesarCookie> GetEnumerator() => _dict.Values.GetEnumerator();
+        public IEnumerator<EasyHttpCookie> GetEnumerator() => _dict.Values.GetEnumerator();
 
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator() => _dict.GetEnumerator();

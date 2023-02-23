@@ -42,32 +42,32 @@ namespace ViazyNetCore.Controllers.Authorization
         public async Task<UserTokenModel> LoginAsync([Required][FromBody] UserLoginArgs args, [FromServices] IPermissionService permissionService)
         {
             var ip = this._httpContextAccessor.HttpContext!?.GetRequestIP();
-            //OperationLog operationLog = new OperationLog
-            //{
-            //    CreateTime = DateTime.Now,
-            //    OperateUserId = args.Username,
-            //    OperationType = "登录",
-            //    OperatorType = OperatorTypeEnum.Bms,
-            //    OperatorIP = ip,
-            //};
+            OperationLog operationLog = new OperationLog
+            {
+                CreateTime = DateTime.Now,
+                OperateUserId = args.Username,
+                OperationType = "登录",
+                OperatorType = OperatorTypeEnum.Bms,
+                OperatorIP = ip,
+            };
             if (args.Mark.IsNotNull() && args.Mark != "tools")
             {
                 throw new ApiException("无效登录方式!");
             }
             try
             {
-                //using (_lockProvider.Lock<UserLoginArgs>(args.Username))
+                using (GA.Lock("UserLoginArgs" + args.Username))
                 {
                     var identity = await this._userService.GetUserLoginIdentityAsync(args, ip, false);
                     var permissions = await permissionService.ResolveUserPermission(identity.Id);
-                    var token = await this._tokenProvider.IssueToken(identity.Id, identity.Username, permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
+                    var token = await this._tokenProvider.IssueToken(identity.Id, identity.Nickname, permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
                     //登陆成功，清空缓存
                     _userService.ClearCache(args.Username);
 
-                    //operationLog.OperateUserId = identity.Id;
-                    //operationLog.ObjectName = identity.Nickname;
-                    //operationLog.ObjectId = identity.Id;
-                    //operationLog.Description = $"登录用户：{args.Username},登陆成功";
+                    operationLog.OperateUserId = identity.Id;
+                    operationLog.ObjectName = identity.Nickname;
+                    operationLog.ObjectId = identity.Id;
+                    operationLog.Description = $"登录用户：{args.Username},登陆成功";
 
                     return new UserTokenModel
                     {
@@ -84,12 +84,12 @@ namespace ViazyNetCore.Controllers.Authorization
             }
             catch (Exception ex)
             {
-                //operationLog.Description = $"登录用户：{args.Username},登陆失败!{ex.Message}";
+                operationLog.Description = $"登录用户：{args.Username},登陆失败!{ex.Message}";
                 throw new ApiException(ex);
             }
             finally
             {
-                //this._eventBus.Publish(new OperationLogEventData(operationLog));
+                this._eventBus.Publish(new OperationLogEventData(operationLog));
             }
         }
 
@@ -114,26 +114,22 @@ namespace ViazyNetCore.Controllers.Authorization
         public async Task<bool> ModifyPasswordAsync([Required] UserModifyPasswordArgs args)
         {
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            //OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
-            //{
-            //    ObjectName = $"{authUser.UserName}",
-            //    ObjectId = authUser.UserKey,
-            //    OperationType = $"用户密码修改",
-            //    Description = $"用户名：{authUser.UserName}",
-            //    LogLevel = LogRecordLevel.Warning
-            //};
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
+            {
+                ObjectName = $"{authUser.UserName}",
+                ObjectId = authUser.UserKey,
+                OperationType = $"用户密码修改",
+                Description = $"用户名：{authUser.UserName}",
+                LogLevel = LogRecordLevel.Warning
+            };
 
             try
             {
                 var res = await this._userService.ModifyPasswordAsync(authUser.UserKey, args);
-                //if (res)
-                //{
-                //    this._eventBus.Publish(new OperationLogEventData()
-                //    {
-                //        Data = operationLog,
-                //        EventTime = DateTime.Now
-                //    });
-                //}
+                if (res)
+                {
+                    this._eventBus.Publish(new OperationLogEventData(operationLog));
+                }
                 return res;
             }
             finally

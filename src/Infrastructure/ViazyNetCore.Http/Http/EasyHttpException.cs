@@ -7,37 +7,37 @@ namespace ViazyNetCore.Http
 	/// An exception that is thrown when an HTTP call made by Caesar.Http fails, including when the response
 	/// indicates an unsuccessful HTTP status code.
 	/// </summary>
-	public class CaesarHttpException : Exception
+	public class EasyHttpException : Exception
 	{
 		/// <summary>
 		/// An object containing details about the failed HTTP call
 		/// </summary>
-		public CaesarCall Call { get; }
+		public EasyCall Call { get; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="CaesarHttpException"/> class.
+		/// Initializes a new instance of the <see cref="EasyHttpException"/> class.
 		/// </summary>
 		/// <param name="call">The call.</param>
 		/// <param name="message">The message.</param>
 		/// <param name="inner">The inner.</param>
-		public CaesarHttpException(CaesarCall call, string message, Exception inner) : base(message, inner) {
+		public EasyHttpException(EasyCall call, string message, Exception inner) : base(message, inner) {
 			Call = call;
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="CaesarHttpException"/> class.
+		/// Initializes a new instance of the <see cref="EasyHttpException"/> class.
 		/// </summary>
 		/// <param name="call">The call.</param>
 		/// <param name="inner">The inner.</param>
-		public CaesarHttpException(CaesarCall call, Exception inner) : this(call, BuildMessage(call, inner), inner) { }
+		public EasyHttpException(EasyCall call, Exception inner) : this(call, BuildMessage(call, inner), inner) { }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="CaesarHttpException"/> class.
+		/// Initializes a new instance of the <see cref="EasyHttpException"/> class.
 		/// </summary>
 		/// <param name="call">The call.</param>
-		public CaesarHttpException(CaesarCall call) : this(call, BuildMessage(call, null), null) { }
+		public EasyHttpException(EasyCall call) : this(call, BuildMessage(call, null), null) { }
 
-		private static string BuildMessage(CaesarCall call, Exception inner) {
+		private static string BuildMessage(EasyCall call, Exception inner) {
 			if (call?.Response != null && !call.Succeeded)
 				return $"Call failed with status code {call.Response.StatusCode} ({call.HttpResponseMessage.ReasonPhrase}): {call}";
 
@@ -75,23 +75,23 @@ namespace ViazyNetCore.Http
 	/// <summary>
 	/// An exception that is thrown when an HTTP call made by Caesar.Http times out.
 	/// </summary>
-	public class CaesarHttpTimeoutException : CaesarHttpException
+	public class CaesarHttpTimeoutException : EasyHttpException
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CaesarHttpTimeoutException"/> class.
 		/// </summary>
 		/// <param name="call">Details of the HTTP call that caused the exception.</param>
 		/// <param name="inner">The inner exception.</param>
-		public CaesarHttpTimeoutException(CaesarCall call, Exception inner) : base(call, BuildMessage(call), inner) { }
+		public CaesarHttpTimeoutException(EasyCall call, Exception inner) : base(call, BuildMessage(call), inner) { }
 
-		private static string BuildMessage(CaesarCall call) =>
+		private static string BuildMessage(EasyCall call) =>
 			(call == null) ? "Call timed out." :  $"Call timed out: {call.Request?.Proxy}";
 	}
 
 	/// <summary>
 	/// An exception that is thrown when an HTTP response could not be parsed to a particular format.
 	/// </summary>
-	public class CaesarParsingException : CaesarHttpException
+	public class CaesarParsingException : EasyHttpException
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CaesarParsingException"/> class.
@@ -99,7 +99,7 @@ namespace ViazyNetCore.Http
 		/// <param name="call">Details of the HTTP call that caused the exception.</param>
 		/// <param name="expectedFormat">The format that could not be parsed to, i.e. JSON.</param>
 		/// <param name="inner">The inner exception.</param>
-		public CaesarParsingException(CaesarCall call, string expectedFormat, Exception inner) : base(call, BuildMessage(call, expectedFormat), inner) {
+		public CaesarParsingException(EasyCall call, string expectedFormat, Exception inner) : base(call, BuildMessage(call, expectedFormat), inner) {
 			ExpectedFormat = expectedFormat;
 		}
 
@@ -108,7 +108,7 @@ namespace ViazyNetCore.Http
 		/// </summary>
 		public string ExpectedFormat { get; }
 
-		private static string BuildMessage(CaesarCall call, string expectedFormat) {
+		private static string BuildMessage(EasyCall call, string expectedFormat) {
 			var msg = $"Response could not be deserialized to {expectedFormat}";
 			return msg + ((call == null) ? "." : $": {call}");
 		}

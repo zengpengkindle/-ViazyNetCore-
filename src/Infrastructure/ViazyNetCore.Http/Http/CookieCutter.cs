@@ -27,13 +27,13 @@ namespace ViazyNetCore.Http
 		/// <param name="url">The URL that sent the response.</param>
 		/// <param name="headerValue">Value of the Set-Cookie header.</param>
 		/// <returns></returns>
-		public static CaesarCookie ParseResponseHeader(string url, string headerValue) {
+		public static EasyHttpCookie ParseResponseHeader(string url, string headerValue) {
 			if (string.IsNullOrEmpty(headerValue)) return null;
 
-			CaesarCookie cookie = null;
+			EasyHttpCookie cookie = null;
 			foreach (var pair in GetPairs(headerValue)) {
 				if (cookie == null)
-					cookie = new CaesarCookie(pair.Name, Url.Decode(pair.Value.Trim('"'), false), url, DateTimeOffset.UtcNow);
+					cookie = new EasyHttpCookie(pair.Name, Url.Decode(pair.Value.Trim('"'), false), url, DateTimeOffset.UtcNow);
 
 				// ordinal string compare is both safest and fastest
 				// https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices-strings#recommendations-for-string-usage
@@ -88,7 +88,7 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// True if this cookie passes well-accepted rules for the Set-Cookie header. If false, provides a descriptive reason.
 		/// </summary>
-		public static bool IsValid(this CaesarCookie cookie, out string reason) {
+		public static bool IsValid(this EasyHttpCookie cookie, out string reason) {
 			// TODO: validate name and value? https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 			if (cookie.OriginUrl == null) {
@@ -172,7 +172,7 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// True if this cookie is expired. If true, provides a descriptive reason (Expires or Max-Age).
 		/// </summary>
-		public static bool IsExpired(this CaesarCookie cookie, out string reason) {
+		public static bool IsExpired(this EasyHttpCookie cookie, out string reason) {
 			// Max-Age takes precedence over Expires
 			if (cookie.MaxAge.HasValue) {
 				if (cookie.MaxAge.Value <= 0 || cookie.DateReceived.AddSeconds(cookie.MaxAge.Value) < DateTimeOffset.UtcNow) {
@@ -191,7 +191,7 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// True if this cookie should be sent in a request to the given URL. If false, provides a descriptive reason.
 		/// </summary>
-		public static bool ShouldSendTo(this CaesarCookie cookie, Url requestUrl, out string reason) {
+		public static bool ShouldSendTo(this EasyHttpCookie cookie, Url requestUrl, out string reason) {
 			if (cookie.Secure && !requestUrl.IsSecureScheme) {
 				reason = $"Cookie is marked Secure and request URL is insecure ({requestUrl.Scheme}).";
 				return false;
@@ -204,7 +204,7 @@ namespace ViazyNetCore.Http
 				IsPathMatch(cookie, requestUrl, out reason);
 		}
 
-		private static bool IsDomainMatch(this CaesarCookie cookie, Url requestUrl, out string reason) {
+		private static bool IsDomainMatch(this EasyHttpCookie cookie, Url requestUrl, out string reason) {
 			reason = "ok";
 
 			if (!string.IsNullOrEmpty(cookie.Domain)) {
@@ -227,7 +227,7 @@ namespace ViazyNetCore.Http
 			}
 		}
 
-		private static bool IsPathMatch(this CaesarCookie cookie, Url requestUrl, out string reason) {
+		private static bool IsPathMatch(this EasyHttpCookie cookie, Url requestUrl, out string reason) {
 			reason = "ok";
 
 			// implementation of default-path algorithm https://tools.ietf.org/html/rfc6265#section-5.1.4

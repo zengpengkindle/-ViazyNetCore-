@@ -11,7 +11,7 @@ namespace ViazyNetCore.Http
 	    /// <summary>
 	    /// Gets or sets the CaesarHttpSettings object used by this client or request.
 	    /// </summary>
-	    CaesarHttpSettings Settings { get; set; }
+	    EasyHttpSettings Settings { get; set; }
 
 		/// <summary>
 		/// Collection of headers sent on this request or all requests using this client.

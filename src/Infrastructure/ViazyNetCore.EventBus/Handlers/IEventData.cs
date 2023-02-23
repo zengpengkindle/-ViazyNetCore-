@@ -36,5 +36,11 @@ namespace ViazyNetCore
         {
             this.EventTime = DateTime.Now;
         }
+
+        public CommonEventData(TData eventdata)
+        {
+            this.Data = eventdata;
+            this.EventTime = DateTime.Now;
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace ViazyNetCore.Http
 	/// <summary>
 	/// A static container for global configuration settings affecting Caesar.Http behavior.
 	/// </summary>
-	public static class CaesarHttp
+	public static class EasyHttp
 	{
 		private static readonly object _configLock = new();
 

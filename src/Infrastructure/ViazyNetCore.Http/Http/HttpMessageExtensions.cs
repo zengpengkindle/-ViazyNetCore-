@@ -36,7 +36,7 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// Associate a CaesarCall object with this request
 		/// </summary>
-		internal static void SetCaesarCall(this HttpRequestMessage request, CaesarCall call) {
+		internal static void SetCaesarCall(this HttpRequestMessage request, EasyCall call) {
 			if (request?.Properties != null)
 				request.Properties["CaesarHttpCall"] = call;
 		}
@@ -44,8 +44,8 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// Get the CaesarCall associated with this request, if any.
 		/// </summary>
-		internal static CaesarCall GetCaesarCall(this HttpRequestMessage request) {
-			if (request?.Properties != null && request.Properties.TryGetValue("CaesarHttpCall", out var obj) && obj is CaesarCall call)
+		internal static EasyCall GetCaesarCall(this HttpRequestMessage request) {
+			if (request?.Properties != null && request.Properties.TryGetValue("CaesarHttpCall", out var obj) && obj is EasyCall call)
 				return call;
 			return null;
 		}

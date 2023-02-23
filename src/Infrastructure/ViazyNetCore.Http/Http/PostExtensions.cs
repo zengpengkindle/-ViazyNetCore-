@@ -9,32 +9,32 @@ namespace ViazyNetCore.Http
 {
     public static class PostExtensions
     {
-        public static ICaesarRequest WithPostUrlEncoded(this ICaesarRequest request, object data)
+        public static IEasyRequest WithPostUrlEncoded(this IEasyRequest request, object data)
         {
             request.Content = new CapturedUrlEncodedContent(request.Settings.UrlEncodedSerializer.Serialize(data));
             return request;
         }
 
-        public static ICaesarRequest WithPostJson(this ICaesarRequest request, object data)
+        public static IEasyRequest WithPostJson(this IEasyRequest request, object data)
         {
             request.Content = new CapturedJsonContent(request.Settings.JsonSerializer.Serialize(data));
             return request;
         }
 
 
-        public static ICaesarRequest WithPostString(this ICaesarRequest request, string data)
+        public static IEasyRequest WithPostString(this IEasyRequest request, string data)
         {
             request.Content = new CapturedStringContent(data);
             return request;
         }
 
-        public static ICaesarRequest WithPostData(this ICaesarRequest request, HttpContent content)
+        public static IEasyRequest WithPostData(this IEasyRequest request, HttpContent content)
         {
             request.Content = content;
             return request;
         }
 
-        public static ICaesarRequest WithPostOctet(this ICaesarRequest request, byte[] data)
+        public static IEasyRequest WithPostOctet(this IEasyRequest request, byte[] data)
         {
             request.Content = new CapturedOctetContent(data); ;
             return request;

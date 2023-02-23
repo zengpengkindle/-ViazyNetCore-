@@ -18,12 +18,12 @@ namespace ViazyNetCore.Http
         /// </summary>
         /// <param name="proxy"></param>
         /// <returns></returns>
-        HttpClient CreateClient(CaesarProxy proxy);
+        HttpClient CreateClient(EasyHttpProxy proxy);
 
         /// <summary>
         /// Defines how the 
         /// </summary>
         /// <returns></returns>
-        HttpMessageHandler CreateHandler(CaesarProxy proxy);
+        HttpMessageHandler CreateHandler(EasyHttpProxy proxy);
     }
 }

@@ -15,14 +15,14 @@ namespace ViazyNetCore.Http
 		private readonly bool _negate;
 		private readonly IList<string> _expectedConditions = new List<string>();
 
-		private IList<CaesarCall> _calls;
+		private IList<EasyCall> _calls;
 
 		/// <summary>
 		/// Constructs a new instance of HttpCallAssertion.
 		/// </summary>
 		/// <param name="loggedCalls">Set of calls (usually from HttpTest.CallLog) to assert against.</param>
 		/// <param name="negate">If true, assertions pass when calls matching criteria were NOT made.</param>
-		public HttpCallAssertion(IEnumerable<CaesarCall> loggedCalls, bool negate = false) {
+		public HttpCallAssertion(IEnumerable<EasyCall> loggedCalls, bool negate = false) {
 			_calls = loggedCalls.ToList();
 			_negate = negate;
 		}
@@ -45,7 +45,7 @@ namespace ViazyNetCore.Http
 		/// </summary>
 		/// <param name="match">Predicate (usually a lambda expression) that tests a CaesarCall and returns a bool.</param>
 		/// <param name="descrip">A description of what is being asserted.</param>
-		public HttpCallAssertion With(Func<CaesarCall, bool> match, string descrip = null) {
+		public HttpCallAssertion With(Func<EasyCall, bool> match, string descrip = null) {
 		    if (!string.IsNullOrEmpty(descrip))
 			    _expectedConditions.Add(descrip);
 		    _calls = _calls.Where(match).ToList();
@@ -58,7 +58,7 @@ namespace ViazyNetCore.Http
 		/// </summary>
 		/// <param name="match">Predicate (usually a lambda expression) that tests a CaesarCall and returns a bool.</param>
 		/// <param name="descrip">A description of what is being asserted.</param>
-		public HttpCallAssertion Without(Func<CaesarCall, bool> match, string descrip = null) {
+		public HttpCallAssertion Without(Func<EasyCall, bool> match, string descrip = null) {
 		    return With(c => !match(c), descrip);
 	    }
 
@@ -98,7 +98,7 @@ namespace ViazyNetCore.Http
 		/// Asserts whether calls were made containing given JSON-encoded request body. body may contain * wildcard.
 		/// </summary>
 		public HttpCallAssertion WithRequestJson(object body) {
-			var serializedBody = CaesarHttp.GlobalSettings.JsonSerializer.Serialize(body);
+			var serializedBody = EasyHttp.GlobalSettings.JsonSerializer.Serialize(body);
 			return WithRequestBody(serializedBody);
 		}
 
@@ -106,7 +106,7 @@ namespace ViazyNetCore.Http
 		/// Asserts whether calls were made containing given URL-encoded request body. body may contain * wildcard.
 		/// </summary>
 		public HttpCallAssertion WithRequestUrlEncoded(object body) {
-			var serializedBody = CaesarHttp.GlobalSettings.UrlEncodedSerializer.Serialize(body);
+			var serializedBody = EasyHttp.GlobalSettings.UrlEncodedSerializer.Serialize(body);
 			return WithRequestBody(serializedBody);
 		}
 		#endregion

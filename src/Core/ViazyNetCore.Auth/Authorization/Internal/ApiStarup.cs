@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddBMSAuthorization(this IServiceCollection services, Action<MenusOptions> menuOption = null)
         {
-            if(menuOption != null)
+            if (menuOption != null)
             {
                 services.Configure(menuOption);
             }
@@ -31,13 +31,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
             if (freeSql == null)
                 throw new ArgumentNullException(nameof(freeSql));
-            if (usershipService==null)
+            if (usershipService == null)
                 throw new ArgumentNullException(nameof(usershipService));
-            if (permissionService==null)
+            if (permissionService == null)
                 throw new ArgumentNullException(nameof(permissionService));
 
             var bmsUsers = freeSql.Select<BmsUser>();
-            if(!await bmsUsers.AnyAsync(u => u.Username == "admin"))
+            if (!await bmsUsers.AnyAsync(u => u.Username == "admin"))
             {
                 var user = new BmsUser()
                 {
@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 await usershipService.CreateUser(user, "123456".ToMd5());
             }
 
-            if(!await permissionService.ExistsPermissionByPermissionKey(PermissionItemKeys.Instance().User()))
+            if (!await permissionService.ExistsPermissionByPermissionKey(PermissionItemKeys.Instance().User()))
             {
                 await permissionService.AddPermission("用户管理", PermissionItemKeys.Instance().User());
 
@@ -68,18 +68,18 @@ namespace Microsoft.Extensions.DependencyInjection
                     IsHomeShow = true,
                     OpenType = 0,
                     OrderId = 99,
-                    ParentId = "10000",
+                    ParentId = null,
                     ProjectId = null,
                     Status = ComStatus.Enabled,
                     SysId = null,
-                    Type =MenuType.MidNode,
+                    Type = MenuType.MidNode,
                     Url = null
                 });
 
                 menuIds.Add(parentMenuId);
 
                 var orderId = 0;
-                foreach(var menu in options.Default)
+                foreach (var menu in options.Default)
                 {
                     var menuId = await permissionService.UpdateMenus(new BmsMenus
                     {
@@ -103,12 +103,12 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
 
                 await permissionService.UpdateMenusInPermission(PermissionItemKeys.Instance().User(), menuIds.ToArray());
-                if(options.OtherMenus != null)
+                if (options.OtherMenus != null)
                     await AddMenus(permissionService, options.OtherMenus);
 
-                if(options.PermissionKeys != null)
+                if (options.PermissionKeys != null)
                 {
-                    foreach(var key in options.PermissionKeys)
+                    foreach (var key in options.PermissionKeys)
                     {
                         await permissionService.AddPermission(key.Name, key.Key);
                     }
@@ -123,7 +123,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static async Task AddMenus(PermissionService permissionService, List<Menu> menus, string parentId = "10000")
         {
             var orderId = 0;
-            foreach(var menu in menus)
+            foreach (var menu in menus)
             {
                 var menuId = await permissionService.UpdateMenus(new BmsMenus
                 {
@@ -143,7 +143,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     Type = menu.Type,
                     Url = menu.Url
                 });
-                if(menu.Children != null)
+                if (menu.Children != null)
                 {
                     await AddMenus(permissionService, menu.Children, menuId);
                 }

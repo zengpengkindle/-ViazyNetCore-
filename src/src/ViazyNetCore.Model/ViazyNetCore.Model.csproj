@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logs\" />
+  </ItemGroup>
+
 </Project>

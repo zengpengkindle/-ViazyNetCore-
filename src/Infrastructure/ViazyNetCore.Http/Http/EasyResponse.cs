@@ -14,7 +14,7 @@ namespace ViazyNetCore.Http
 	/// <summary>
 	/// Represents an HTTP response.
 	/// </summary>
-	public interface ICaesarResponse : IDisposable
+	public interface IEasyResponse : IDisposable
 	{
 		/// <summary>
 		/// Gets the collection of response headers received.
@@ -24,14 +24,14 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// Gets the collection of HTTP cookies received in this response via Set-Cookie headers.
 		/// </summary>
-		IReadOnlyList<CaesarCookie> Cookies { get; }
+		IReadOnlyList<EasyHttpCookie> Cookies { get; }
 
 		/// <summary>
 		/// Gets the raw HttpResponseMessage that this ICaesarResponse wraps.
 		/// </summary>
 		HttpResponseMessage ResponseMessage { get; }
 
-        CaesarCall Call { get; set; }
+        EasyCall Call { get; set; }
 
 		/// <summary>
 		/// Gets the HTTP status code of the response.
@@ -44,7 +44,7 @@ namespace ViazyNetCore.Http
 		/// <typeparam name="T">A type whose structure matches the expected JSON response.</typeparam>
 		/// <returns>A Task whose result is an object containing data in the response body.</returns>
 		/// <example>x = await url.PostAsync(data).GetJson&lt;T&gt;()</example>
-		/// <exception cref="CaesarHttpException">Condition.</exception>
+		/// <exception cref="EasyHttpException">Condition.</exception>
 		Task<T> GetJsonAsync<T>();
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace ViazyNetCore.Http
 		/// </summary>
 		/// <returns>A Task whose result is a dynamic object containing data in the response body.</returns>
 		/// <example>d = await url.PostAsync(data).GetJson()</example>
-		/// <exception cref="CaesarHttpException">Condition.</exception>
+		/// <exception cref="EasyHttpException">Condition.</exception>
 		Task<dynamic> GetJsonAsync();
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace ViazyNetCore.Http
 		/// </summary>
 		/// <returns>A Task whose result is a list of dynamic objects containing data in the response body.</returns>
 		/// <example>d = await url.PostAsync(data).GetJsonList()</example>
-		/// <exception cref="CaesarHttpException">Condition.</exception>
+		/// <exception cref="EasyHttpException">Condition.</exception>
 		Task<IList<dynamic>> GetJsonListAsync();
 
 		/// <summary>
@@ -86,10 +86,10 @@ namespace ViazyNetCore.Http
 	}
 
 	/// <inheritdoc />
-	public class CaesarResponse : ICaesarResponse
+	public class EasyResponse : IEasyResponse
 	{
 		private readonly Lazy<IReadOnlyNameValueList<string>> _headers;
-		private readonly Lazy<IReadOnlyList<CaesarCookie>> _cookies;
+		private readonly Lazy<IReadOnlyList<EasyHttpCookie>> _cookies;
 		private object _capturedBody = null;
 		private bool _streamRead = false;
 		private ISerializer _serializer = null;
@@ -98,12 +98,12 @@ namespace ViazyNetCore.Http
 		public IReadOnlyNameValueList<string> Headers => _headers.Value;
 
 		/// <inheritdoc />
-		public IReadOnlyList<CaesarCookie> Cookies => _cookies.Value;
+		public IReadOnlyList<EasyHttpCookie> Cookies => _cookies.Value;
 
 		/// <inheritdoc />
 		public HttpResponseMessage ResponseMessage { get; }
 
-        public CaesarCall Call { get; set; }
+        public EasyCall Call { get; set; }
 
         /// <inheritdoc />
 		public int StatusCode => (int)ResponseMessage.StatusCode;
@@ -111,11 +111,11 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// Creates a new CaesarResponse that wraps the give HttpResponseMessage.
 		/// </summary>
-		public CaesarResponse(HttpResponseMessage resp,CaesarCall call, CookieJar cookieJar = null) {
+		public EasyResponse(HttpResponseMessage resp,EasyCall call, CookieJar cookieJar = null) {
 			ResponseMessage = resp;
             Call = call;
 			_headers = new Lazy<IReadOnlyNameValueList<string>>(LoadHeaders);
-			_cookies = new Lazy<IReadOnlyList<CaesarCookie>>(LoadCookies);
+			_cookies = new Lazy<IReadOnlyList<EasyHttpCookie>>(LoadCookies);
 			LoadCookieJar(cookieJar);
 		}
 
@@ -136,11 +136,11 @@ namespace ViazyNetCore.Http
 			return result;
 		}
 
-		private IReadOnlyList<CaesarCookie> LoadCookies() {
+		private IReadOnlyList<EasyHttpCookie> LoadCookies() {
 			var url = ResponseMessage.RequestMessage.RequestUri.AbsoluteUri;
 			return ResponseMessage.Headers.TryGetValues("Set-Cookie", out var headerValues) ?
 				headerValues.Select(hv => CookieCutter.ParseResponseHeader(url, hv)).ToList() :
-				new List<CaesarCookie>();
+				new List<EasyHttpCookie>();
 		}
 
 		private void LoadCookieJar(CookieJar jar) {
@@ -167,7 +167,7 @@ namespace ViazyNetCore.Http
 					_capturedBody = await ResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 					_streamRead = true;
 					call.Exception = new CaesarParsingException(call, "JSON", ex);
-					await CaesarRequest.HandleExceptionAsync(call, call.Exception, CancellationToken.None).ConfigureAwait(false);
+					await EasyRequest.HandleExceptionAsync(call, call.Exception, CancellationToken.None).ConfigureAwait(false);
 					return default(T);
 				}
 			}

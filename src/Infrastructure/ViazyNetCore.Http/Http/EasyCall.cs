@@ -8,12 +8,12 @@ namespace ViazyNetCore.Http
 	/// Encapsulates request, response, and other details associated with an HTTP call. Useful for diagnostics and available in
 	/// global event handlers and CaesarHttpException.Call.
 	/// </summary>
-	public class CaesarCall
+	public class EasyCall
 	{
 		/// <summary>
 		/// The ICaesarRequest associated with this call.
 		/// </summary>
-		public ICaesarRequest Request { get; set; }
+		public IEasyRequest Request { get; set; }
 
 		/// <summary>
 		/// The raw HttpRequestMessage associated with this call.
@@ -28,12 +28,12 @@ namespace ViazyNetCore.Http
 		/// <summary>
 		/// The ICaesarResponse associated with this call if the call completed, otherwise null.
 		/// </summary>
-		public ICaesarResponse Response { get; set; }
+		public IEasyResponse Response { get; set; }
 
 		/// <summary>
 		/// The CaesarCall that received a 3xx response and automatically triggered this call.
 		/// </summary>
-		public CaesarCall RedirectedFrom { get; set; }
+		public EasyCall RedirectedFrom { get; set; }
 
 		/// <summary>
 		/// If this call has a 3xx response and Location header, contains information about how to handle the redirect.

@@ -5,12 +5,12 @@
 	/// </summary>
 	public class RedirectSettings
 	{
-		private readonly CaesarHttpSettings _settings;
+		private readonly EasyHttpSettings _settings;
 
 		/// <summary>
 		/// Creates a new instance of RedirectSettings.
 		/// </summary>
-		public RedirectSettings(CaesarHttpSettings settings) {
+		public RedirectSettings(EasyHttpSettings settings) {
 			_settings = settings;
 		}
 

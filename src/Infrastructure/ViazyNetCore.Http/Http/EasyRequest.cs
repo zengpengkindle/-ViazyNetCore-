@@ -14,7 +14,7 @@ namespace ViazyNetCore.Http
     /// Represents an HTTP request. Can be created explicitly via new CaesarRequest(), fluently via Url.Request(),
     /// or implicitly when a call is made via methods like Url.GetAsync().
     /// </summary>
-    public interface ICaesarRequest : IHttpSettingsContainer
+    public interface IEasyRequest : IHttpSettingsContainer
     {
         /// <summary>
         /// Gets or sets the ICaesarClient to use when sending the request.
@@ -34,7 +34,7 @@ namespace ViazyNetCore.Http
         /// <summary>
         /// 
         /// </summary>
-        CaesarProxy Proxy { get; set; }
+        EasyHttpProxy Proxy { get; set; }
 
         /// <summary>
         /// Gets Name/Value pairs parsed from the Cookie request header.
@@ -60,23 +60,23 @@ namespace ViazyNetCore.Http
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <param name="completionOption">The HttpCompletionOption used in the request. Optional.</param>
         /// <returns>A Task whose result is the received ICaesarResponse.</returns>
-        Task<ICaesarResponse> SendAsync(HttpMethod verb, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
+        Task<IEasyResponse> SendAsync(HttpMethod verb, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
     }
 
     /// <inheritdoc />
-    public class CaesarRequest : ICaesarRequest
+    public class EasyRequest : IEasyRequest
     {
-        private CaesarHttpSettings _settings;
+        private EasyHttpSettings _settings;
         private HttpClient _client;
         private Url _url;
-        private CaesarCall _redirectedFrom;
+        private EasyCall _redirectedFrom;
         private CookieJar _jar;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CaesarRequest"/> class.
+        /// Initializes a new instance of the <see cref="EasyRequest"/> class.
         /// </summary>
         /// <param name="url">The URL to call with this CaesarRequest instance.</param>
-        public CaesarRequest(Url url = null)
+        public EasyRequest(Url url = null)
         {
             _url = url;
         }
@@ -84,7 +84,7 @@ namespace ViazyNetCore.Http
         /// <summary>
         /// Used internally by CaesarClient.Request and CookieSession.Request
         /// </summary>
-        internal CaesarRequest(string baseUrl, object[] urlSegments)
+        internal EasyRequest(string baseUrl, object[] urlSegments)
         {
             var parts = new List<string>(urlSegments.Select(s => s.ToInvariantString()));
             if (!Url.IsValid(parts.FirstOrDefault()) && !string.IsNullOrEmpty(baseUrl))
@@ -101,13 +101,13 @@ namespace ViazyNetCore.Http
         /// <summary>
         /// Gets or sets the CaesarHttpSettings used by this request.
         /// </summary>
-        public CaesarHttpSettings Settings
+        public EasyHttpSettings Settings
         {
             get
             {
                 if (_settings == null)
                 {
-                    _settings = new CaesarHttpSettings();
+                    _settings = new EasyHttpSettings();
                     //ResetDefaultSettings();
                 }
                 return _settings;
@@ -123,7 +123,7 @@ namespace ViazyNetCore.Http
         public HttpClient Client
         {
             get =>
-                _client ?? ((Url != null) ? CaesarHttp.GlobalSettings.HttpClientFactory.CreateClient(Proxy) :
+                _client ?? ((Url != null) ? EasyHttp.GlobalSettings.HttpClientFactory.CreateClient(Proxy) :
                     null);
             set
             {
@@ -149,7 +149,7 @@ namespace ViazyNetCore.Http
         /// <summary>
         /// 
         /// </summary>
-        public CaesarProxy Proxy { get; set; } = new CaesarProxy();
+        public EasyHttpProxy Proxy { get; set; } = new EasyHttpProxy();
 
 
 
@@ -195,14 +195,14 @@ namespace ViazyNetCore.Http
 
 
         /// <inheritdoc />
-		public async Task<ICaesarResponse> SendAsync(HttpMethod verb, CancellationToken cancellationToken = default, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+		public async Task<IEasyResponse> SendAsync(HttpMethod verb, CancellationToken cancellationToken = default, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             _client = Client; // "freeze" the client at this point to avoid excessive calls to CaesarClientFactory.Get (#374)
             Verb = verb;
 
             var request = new HttpRequestMessage(verb, Url) { Content = Content };
             SyncHeaders(request);
-            var call = new CaesarCall
+            var call = new EasyCall
             {
                 Request = this,
                 RedirectedFrom = _redirectedFrom,
@@ -225,7 +225,7 @@ namespace ViazyNetCore.Http
                 var response = await Client.SendAsync(request, completionOption, ct).ConfigureAwait(false);
                 call.HttpResponseMessage = response;
                 call.HttpResponseMessage.RequestMessage = request;
-                call.Response = new CaesarResponse(call.HttpResponseMessage, call, CookieJar);
+                call.Response = new EasyResponse(call.HttpResponseMessage, call, CookieJar);
 
                 if (call.Succeeded)
                 {
@@ -233,7 +233,7 @@ namespace ViazyNetCore.Http
                     return redirResponse ?? call.Response;
                 }
                 else
-                    throw new CaesarHttpException(call, null);
+                    throw new EasyHttpException(call, null);
             }
             catch (Exception ex)
             {
@@ -278,7 +278,7 @@ namespace ViazyNetCore.Http
             }
         }
 
-        private async Task<ICaesarResponse> ProcessRedirectAsync(CaesarCall call, CancellationToken cancellationToken, HttpCompletionOption completionOption)
+        private async Task<IEasyResponse> ProcessRedirectAsync(EasyCall call, CancellationToken cancellationToken, HttpCompletionOption completionOption)
         {
             if (Settings.Redirects.Enabled)
                 call.Redirect = GetRedirect(call);
@@ -293,7 +293,7 @@ namespace ViazyNetCore.Http
 
             CheckForCircularRedirects(call);
 
-            var redir = new CaesarRequest(call.Redirect.Url);
+            var redir = new EasyRequest(call.Redirect.Url);
             redir.Client = Client;
             redir._redirectedFrom = call;
             redir.Settings.Defaults = Settings;
@@ -321,7 +321,7 @@ namespace ViazyNetCore.Http
         }
 
         // partially lifted from https://github.com/dotnet/runtime/blob/master/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/RedirectHandler.cs
-        private CaesarRedirect GetRedirect(CaesarCall call)
+        private CaesarRedirect GetRedirect(EasyCall call)
         {
             if (call.Response.StatusCode < 300 || call.Response.StatusCode > 399)
                 return null;
@@ -378,17 +378,17 @@ namespace ViazyNetCore.Http
             return redir;
         }
 
-        private void CheckForCircularRedirects(CaesarCall call, HashSet<string> visited = null)
+        private void CheckForCircularRedirects(EasyCall call, HashSet<string> visited = null)
         {
             if (call == null) return;
             visited ??= new HashSet<string>();
             if (visited.Contains(call.Request.Url))
-                throw new CaesarHttpException(call, "Circular redirects detected.", null);
+                throw new EasyHttpException(call, "Circular redirects detected.", null);
             visited.Add(call.Request.Url);
             CheckForCircularRedirects(call.RedirectedFrom, visited);
         }
 
-        internal static async Task<ICaesarResponse> HandleExceptionAsync(CaesarCall call, Exception ex, CancellationToken token)
+        internal static async Task<IEasyResponse> HandleExceptionAsync(EasyCall call, Exception ex, CancellationToken token)
         {
             call.Exception = ex;
             await RaiseEventAsync(call.Request.Settings.OnError, call.Request.Settings.OnErrorAsync, call).ConfigureAwait(false);
@@ -399,13 +399,13 @@ namespace ViazyNetCore.Http
             if (ex is OperationCanceledException && !token.IsCancellationRequested)
                 throw new CaesarHttpTimeoutException(call, ex);
 
-            if (ex is CaesarHttpException)
+            if (ex is EasyHttpException)
                 throw ex;
 
-            throw new CaesarHttpException(call, ex);
+            throw new EasyHttpException(call, ex);
         }
 
-        private static Task RaiseEventAsync(Action<CaesarCall> syncHandler, Func<CaesarCall, Task> asyncHandler, CaesarCall call)
+        private static Task RaiseEventAsync(Action<EasyCall> syncHandler, Func<EasyCall, Task> asyncHandler, EasyCall call)
         {
             syncHandler?.Invoke(call);
             if (asyncHandler != null)

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ViazyNetCore.Model
+﻿namespace ViazyNetCore.Authorization.Models
 {
     public class OperationLog : EntityBase
     {
@@ -19,7 +13,7 @@ namespace ViazyNetCore.Model
         /// <param name="operateUserId">操作人用户编号</param>
         /// <param name="operatorNickname">操作人名（昵称）</param>
         /// <param name="operatorType">用户类型（BMS用户，Merchant用户，子商户）</param>
-        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，上分，下分，字符型)</param>
+        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除字符型)</param>
         public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorTypeEnum operatorType) : this()
         {
             this.LogLevel = LogRecordLevel.Information;
@@ -36,7 +30,7 @@ namespace ViazyNetCore.Model
         /// <param name="operateUserId">操作人用户编号</param>
         /// <param name="operatorNickname">操作人名（昵称）</param>
         /// <param name="operatorType">用户类型（BMS用户，Merchant用户，子商户）</param>
-        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，上分，下分，字符型)</param>
+        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，字符型)</param>
         /// <param name="objectId">操作对象ID</param>
         /// <param name="objectName">操作对象名称</param>
         public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorTypeEnum operatorType, string operationType, string objectId, string objectName) : this(operatorIp, operateUserId, operatorNickname, operatorType)
@@ -53,7 +47,7 @@ namespace ViazyNetCore.Model
         /// <param name="operateUserId">操作人用户编号</param>
         /// <param name="operatorNickname">操作人名（昵称）</param>
         /// <param name="operatorType">用户类型（BMS用户，Merchant用户，子商户）</param>
-        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，上分，下分，字符型)</param>
+        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，字符型)</param>
         /// <param name="objectId">操作对象ID</param>
         /// <param name="objectName">操作对象名称</param>
         /// <param name="descripation">描述</param>
@@ -69,7 +63,7 @@ namespace ViazyNetCore.Model
         /// <param name="operateUserId">操作人用户编号</param>
         /// <param name="operatorNickname">操作人名（昵称）</param>
         /// <param name="operatorType">用户类型（BMS用户，Merchant用户，子商户）</param>
-        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，上分，下分，字符型)</param>
+        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，字符型)</param>
         /// <param name="objectId">操作对象ID</param>
         /// <param name="objectName">操作对象名称</param>
         /// <param name="descripation">描述</param>
@@ -83,7 +77,7 @@ namespace ViazyNetCore.Model
         /// 
         /// </summary>
         /// <param name="operatorType">用户类型（BMS用户，Merchant用户，子商户）</param>
-        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，上分，下分，字符型)</param>
+        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，字符型)</param>
         /// <param name="objectId">操作对象ID</param>
         /// <param name="objectName">操作对象名称</param>
         /// <param name="descripation">描述</param>
@@ -139,7 +133,7 @@ namespace ViazyNetCore.Model
         /// </summary>
         public OperatorTypeEnum OperatorType { get; set; }
         /// <summary>
-        /// 操作类型(一般直接写事件，一个单词，如新增，删除，上分，下分，字符型)
+        /// 操作类型(一般直接写事件，一个单词，如新增，删除，字符型)
         /// </summary>
         public string OperationType { get; set; }
         /// <summary>
@@ -167,5 +161,45 @@ namespace ViazyNetCore.Model
         /// 日志级别
         /// </summary>
         public LogRecordLevel LogLevel { get; set; }
+    }
+
+    public enum OperatorTypeEnum
+    {
+        Bms = 1
+    }
+
+    /// <summary>
+    /// 表示日志级别。
+    /// </summary>
+    public enum LogRecordLevel
+    {
+        /// <summary>
+        /// 表示跟踪级别。
+        /// </summary>
+        Trace = 0,
+        /// <summary>
+        /// 表示调试级别。
+        /// </summary>
+        Debug = 1,
+        /// <summary>
+        /// 表示信息级别。
+        /// </summary>
+        Information = 2,
+        /// <summary>
+        /// 表示警告级别。
+        /// </summary>
+        Warning = 3,
+        /// <summary>
+        /// 表示错误级别。
+        /// </summary>
+        Error = 4,
+        /// <summary>
+        /// 表示严重错误级别。
+        /// </summary>
+        Critical = 5,
+        /// <summary>
+        /// 表示无级别。
+        /// </summary>
+        None = 6
     }
 }
