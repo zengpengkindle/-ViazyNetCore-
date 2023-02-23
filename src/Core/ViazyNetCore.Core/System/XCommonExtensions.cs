@@ -231,93 +231,108 @@ namespace System
         //    return new TypeLockProvider(typeof(TModel), lockProvider);
         //}
 
-        ///// <summary>
-        ///// 以安全的方式执行代码，并释放当前对象。
-        ///// </summary>
-        ///// <typeparam name="T">方法执行后要释放对象的数据类型。</typeparam>
-        ///// <param name="disposable">可释放对象。</param>
-        ///// <param name="execute">执行方法。</param>
-        //public static void Using<T>(this T disposable, Action<T> execute) where T : IDisposable
-        //{
-        //    if(disposable is null) throw new ArgumentNullException(nameof(disposable));
-        //    if(execute is null) throw new ArgumentNullException(nameof(execute));
+        /// <summary>
+        /// 以安全的方式执行代码，并释放当前对象。
+        /// </summary>
+        /// <typeparam name="T">方法执行后要释放对象的数据类型。</typeparam>
+        /// <param name="disposable">可释放对象。</param>
+        /// <param name="execute">执行方法。</param>
+        public static void Using<T>(this T disposable, Action<T> execute) where T : IDisposable
+        {
+            if (disposable is null) throw new ArgumentNullException(nameof(disposable));
+            if (execute is null) throw new ArgumentNullException(nameof(execute));
 
-        //    try
-        //    {
-        //        execute(disposable);
-        //    }
-        //    finally
-        //    {
-        //        disposable.Dispose();
-        //    }
-        //}
+            try
+            {
+                execute(disposable);
+            }
+            finally
+            {
+                disposable.Dispose();
+            }
+        }
 
-        ///// <summary>
-        ///// 以安全的方式执行代码返回结果，并释放当前对象。
-        ///// </summary>
-        ///// <typeparam name="T">方法执行后要释放对象的数据类型。</typeparam>
-        ///// <typeparam name="TResult">结果的数据类型。</typeparam>
-        ///// <param name="disposable">可释放对象。</param>
-        ///// <param name="execute">执行方法。</param>
-        ///// <returns>执行无异常时的结果。</returns>
-        //public static TResult Using<T, TResult>(this T disposable, Func<T, TResult> execute) where T : IDisposable
-        //{
-        //    if(disposable is null) throw new ArgumentNullException(nameof(disposable));
-        //    if(execute is null) throw new ArgumentNullException(nameof(execute));
+        /// <summary>
+        /// 以安全的方式执行代码返回结果，并释放当前对象。
+        /// </summary>
+        /// <typeparam name="T">方法执行后要释放对象的数据类型。</typeparam>
+        /// <typeparam name="TResult">结果的数据类型。</typeparam>
+        /// <param name="disposable">可释放对象。</param>
+        /// <param name="execute">执行方法。</param>
+        /// <returns>执行无异常时的结果。</returns>
+        public static TResult Using<T, TResult>(this T disposable, Func<T, TResult> execute) where T : IDisposable
+        {
+            if (disposable is null) throw new ArgumentNullException(nameof(disposable));
+            if (execute is null) throw new ArgumentNullException(nameof(execute));
 
-        //    try
-        //    {
-        //        return execute(disposable);
-        //    }
-        //    finally
-        //    {
-        //        disposable.Dispose();
-        //    }
+            try
+            {
+                return execute(disposable);
+            }
+            finally
+            {
+                disposable.Dispose();
+            }
 
-        //}
+        }
 
-        ///// <summary>
-        ///// 以安全的方式执行异步代码，并释放当前对象。
-        ///// </summary>
-        ///// <typeparam name="T">方法执行后要释放对象的数据类型。</typeparam>
-        ///// <param name="disposable">可释放对象。</param>
-        ///// <param name="execute">执行方法。</param>
-        ///// <returns>异步任务。</returns>
-        //public static async Task Using<T>(this T disposable, Func<T, Task> execute) where T : IDisposable
-        //{
-        //    if(disposable is null) throw new ArgumentNullException(nameof(disposable));
-        //    if(execute is null) throw new ArgumentNullException(nameof(execute));
-        //    try
-        //    {
-        //        await execute(disposable);
-        //    }
-        //    finally
-        //    {
-        //        disposable.Dispose();
-        //    }
-        //}
+        /// <summary>
+        /// 以安全的方式执行异步代码，并释放当前对象。
+        /// </summary>
+        /// <typeparam name="T">方法执行后要释放对象的数据类型。</typeparam>
+        /// <param name="disposable">可释放对象。</param>
+        /// <param name="execute">执行方法。</param>
+        /// <returns>异步任务。</returns>
+        public static async Task Using<T>(this T disposable, Func<T, Task> execute) where T : IDisposable
+        {
+            if (disposable is null) throw new ArgumentNullException(nameof(disposable));
+            if (execute is null) throw new ArgumentNullException(nameof(execute));
+            try
+            {
+                await execute(disposable);
+            }
+            finally
+            {
+                disposable.Dispose();
+            }
+        }
 
-        ///// <summary>
-        ///// 以安全的方式执行异步代码返回结果，并释放当前对象。
-        ///// </summary>
-        ///// <typeparam name="T">方法执行后要释放对象的数据类型。</typeparam>
-        ///// <typeparam name="TResult">结果的数据类型。</typeparam>
-        ///// <param name="disposable">可释放对象。</param>
-        ///// <param name="execute">执行方法。</param>
-        ///// <returns>异步任务。</returns>
-        //public static async Task<TResult> Using<T, TResult>(this T disposable, Func<T, Task<TResult>> execute) where T : IDisposable
-        //{
-        //    if(disposable is null) throw new ArgumentNullException(nameof(disposable));
-        //    if(execute is null) throw new ArgumentNullException(nameof(execute));
-        //    try
-        //    {
-        //        return await execute(disposable);
-        //    }
-        //    finally
-        //    {
-        //        disposable.Dispose();
-        //    }
-        //}
+        /// <summary>
+        /// 以安全的方式执行异步代码返回结果，并释放当前对象。
+        /// </summary>
+        /// <typeparam name="T">方法执行后要释放对象的数据类型。</typeparam>
+        /// <typeparam name="TResult">结果的数据类型。</typeparam>
+        /// <param name="disposable">可释放对象。</param>
+        /// <param name="execute">执行方法。</param>
+        /// <returns>异步任务。</returns>
+        public static async Task<TResult> Using<T, TResult>(this T disposable, Func<T, Task<TResult>> execute) where T : IDisposable
+        {
+            if (disposable is null) throw new ArgumentNullException(nameof(disposable));
+            if (execute is null) throw new ArgumentNullException(nameof(execute));
+            try
+            {
+                return await execute(disposable);
+            }
+            finally
+            {
+                disposable.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// 对已释放的对象执行操作时所引发的异常。
+        /// </summary>
+        /// <typeparam name="TDisposable">可释放对象的数据类型。</typeparam>
+        /// <param name="disposable">可释放对象实例。</param>
+        /// <exception cref="ArgumentNullException">参数 <paramref name="disposable"/> 为 <see langword="null"/> 值时抛出。</exception>
+        /// <exception cref="ObjectDisposedException">已释放的对象执行操作时抛出。</exception>
+        /// <returns>可释放对象实例。</returns>
+        public static TDisposable ThrowIfDisposed<TDisposable>(this TDisposable disposable) where TDisposable : IObjectDisposable
+        {
+            if (disposable is null) throw new ArgumentNullException(nameof(disposable));
+            if (disposable.IsDisposed) throw new ObjectDisposedException(disposable.GetType().FullName);
+            return disposable;
+        }
 
         /// <summary>
         /// 将当前对象和更多对象的属性合并成新的对象。

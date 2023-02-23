@@ -56,19 +56,15 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             var userId = await this._userService.ManageAsync(model, randPwd);
 
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            //OperationLog operationLog = new OperationLog(this.HttpContext.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
-            //{
-            //    ObjectName = $"用户{describe}",
-            //    ObjectId = model.Id.ToString(),
-            //    OperationType = $"{describe}用户",
-            //    Description = $"用户名：{model.Username}",
-            //    LogLevel = LogRecordLevel.Warning
-            //};
-            //this._eventBus.Publish(new OperationLogEventData()
-            //{
-            //    Data = operationLog,
-            //    EventTime = DateTime.Now
-            //});
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
+            {
+                ObjectName = $"用户{describe}",
+                ObjectId = model.Id.ToString(),
+                OperationType = $"{describe}用户",
+                Description = $"用户名：{model.Username}",
+                LogLevel = LogRecordLevel.Warning
+            };
+            this._eventBus.Publish(new OperationLogEventData(operationLog));
 
             return new UserManageDto() { UserId = userId, UserName = model.Username, Password = randPwd };
         }
@@ -80,20 +76,16 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         {
             await this._userService.RemoveAsync(id);
 
-            //var authUser = this.HttpContext.GetAuthUser();
-            //OperationLog operationLog = new OperationLog(this.HttpContext.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
-            //{
-            //    ObjectName = "用户删除",
-            //    ObjectId = id.ToString(),
-            //    OperationType = "删除用户",
-            //    Description = $"用户编码:{id}",
-            //    LogLevel = LogRecordLevel.Warning
-            //};
-            //this._eventBus.Publish(new OperationLogEventData()
-            //{
-            //    Data = operationLog,
-            //    EventTime = DateTime.Now
-            //});
+            var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
+            {
+                ObjectName = "用户删除",
+                ObjectId = id.ToString(),
+                OperationType = "删除用户",
+                Description = $"用户编码:{id}",
+                LogLevel = LogRecordLevel.Warning
+            };
+            this._eventBus.Publish(new OperationLogEventData(operationLog));
             return true;
         }
 
@@ -107,20 +99,16 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         [Permission(PermissionIds.User)]
         public async Task<string> ResetPasswordAsync(string id)
         {
-            //var authUser = this.HttpContext.GetAuthUser();
+            var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
             var res = await this._userService.ResetPasswordAsync(id, _options.Value.GetRandomPassword);
-            //OperationLog operationLog = new OperationLog(this.HttpContext.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
-            //{
-            //    ObjectName = "重置密码",
-            //    ObjectId = id.ToString(),
-            //    OperationType = "重置密码",
-            //    Description = $"编码:{id}"
-            //};
-            //this._eventBus.Publish(new OperationLogEventData()
-            //{
-            //    Data = operationLog,
-            //    EventTime = DateTime.Now
-            //});
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
+            {
+                ObjectName = "重置密码",
+                ObjectId = id.ToString(),
+                OperationType = "重置密码",
+                Description = $"编码:{id}"
+            };
+            this._eventBus.Publish(new OperationLogEventData(operationLog));
 
 
             return res;
