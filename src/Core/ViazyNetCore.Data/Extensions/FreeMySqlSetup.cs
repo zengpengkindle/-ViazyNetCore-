@@ -20,10 +20,12 @@ namespace Microsoft.Extensions.DependencyInjection
 #pragma warning disable IDE0039 // 使用本地函数
             Func<IServiceProvider, IFreeSql> fsqlFunc = r =>
             {
+                FreeSqlCloud<string> freeSqlCloud = new FreeSqlCloud<string>();
+
                 var fsql = new FreeSqlBuilder().UseConnectionString(DataType.MySql, configuration.GetConnectionString("master"))
 #if DEBUG
               //监听SQL语句
-              .UseMonitorCommand(cmd => Console.WriteLine($"[master]Sql：{cmd.CommandText}"))
+              .UseMonitorCommand(cmd => Console.WriteLine($"[master][ThreadId:{Environment.CurrentManagedThreadId}]\r\nSql：{cmd.CommandText}"))
               //.UseAutoSyncStructure(true) //自动同步实体结构到数据库，FreeSql不会扫描程序集，只有CRUD时才会生成表。
 #endif
               .Build();
@@ -33,13 +35,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 fsql.Aop.ConfigEntityProperty += (s, e) =>
                 {
                     if (e.Property.PropertyType.IsEnum)
-                        e.ModifyResult.MapType = typeof(int);
+                        e.ModifyResult.MapType = typeof(short);
                 };
 
                 fsql.Aop.CurdAfter += (s, e) =>
                 {
 #if DEBUG
-                    Debug.WriteLine($"ManagedThreadId:{Environment.CurrentManagedThreadId}; ElapsedMilliseconds:{e.ElapsedMilliseconds}ms,\r\n [SQL:] {e.Sql}");
+                    Debug.WriteLine($"ThreadId:{Environment.CurrentManagedThreadId}; ElapsedMilliseconds:{e.ElapsedMilliseconds}ms");
 #endif
                     if (e.ElapsedMilliseconds > 500)
                     {
@@ -48,8 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     }
                 };
                 fsql.Aop.CommandAfter += Aop_CommandAfter;
-
-                return fsql;
+                freeSqlCloud.Register("default", () => fsql);
+                return freeSqlCloud;
             };
 #pragma warning restore IDE0039 // 使用本地函数
 

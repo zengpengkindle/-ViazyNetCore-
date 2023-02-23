@@ -1,4 +1,5 @@
 ﻿using FreeScheduler;
+using FreeSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,15 +28,20 @@ namespace ViazyNetCore.TaskScheduler
         public static IServiceCollection AddTaskScheduler(this IServiceCollection services, string dbKey, Action<TaskSchedulerOptions> configureOptions = null)
         {
             var serviceProvider = services.BuildServiceProvider();
+            var freeSql = serviceProvider.GetService<IFreeSql>();
+            if (freeSql == null)
+            {
+                throw new ArgumentNullException(nameof(freeSql));
+            }
             var options = new TaskSchedulerOptions()
             {
-                FreeSql = serviceProvider.GetService<IFreeSql>()
+                FreeSql = freeSql
             };
             configureOptions?.Invoke(options);
 
-            var freeSql = options.FreeSql;
+            var taskFreeSql = options.FreeSql.UseDb("task");
 
-            freeSql.CodeFirst
+            taskFreeSql.CodeFirst
             .ConfigEntity<TaskInfo>(a =>
             {
                 a.Name("ad_task");
@@ -55,12 +61,12 @@ namespace ViazyNetCore.TaskScheduler
                 a.Property(b => b.CreateTime).ServerTime(DateTimeKind.Local);
             });
 
-            options.ConfigureFreeSql?.Invoke(freeSql);
+            options.ConfigureFreeSql?.Invoke(taskFreeSql);
 
             if (true)
             {
-                freeSql.CodeFirst.SyncStructure<TaskInfo>();
-                freeSql.CodeFirst.SyncStructure<TaskLog>();
+                taskFreeSql.CodeFirst.SyncStructure<TaskInfo>();
+                taskFreeSql.CodeFirst.SyncStructure<TaskLog>();
             }
 
             if (options.TaskHandler != null && options.CustomTaskHandler == null)
