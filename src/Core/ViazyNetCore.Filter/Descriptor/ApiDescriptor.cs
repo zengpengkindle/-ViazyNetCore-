@@ -44,10 +44,6 @@ namespace ViazyNetCore.Filter
         /// </summary>
         public string? DisplayControllerName { get; set; }
         /// <summary>
-        /// 英文控制器名称
-        /// </summary>
-        public string? EnDisplayControllerName { get; set; }
-        /// <summary>
         /// 方法名称。
         /// </summary>
         public string? ActionName { get; set; }
@@ -55,10 +51,6 @@ namespace ViazyNetCore.Filter
         /// 显示方法名称
         /// </summary>
         public string? DisplayActionName { get; set; }
-        /// <summary>
-        /// 英文显示方法名称
-        /// </summary>
-        public string? EnDisplayActionName { get; set; }
         /// <summary>
         /// 方法描述
         /// </summary>
@@ -92,10 +84,6 @@ namespace ViazyNetCore.Filter
         /// 控制显示名称。
         /// </summary>
         public string DisplayControllerName { get; set; }
-        /// <summary>
-        /// 英文控制器名称
-        /// </summary>
-        public string EnDisplayControllerName { get; set; }
         /// <summary>
         /// API集合
         /// </summary>

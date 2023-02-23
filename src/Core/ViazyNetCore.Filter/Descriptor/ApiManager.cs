@@ -100,11 +100,9 @@ namespace ViazyNetCore.Filter.Descriptor
                    }
                    var controller = x.ControllerTypeInfo.GetCustomAttribute<ApiDescriptorAttribute>();
                    string controllerDisplayName = controller?.DisplayName ?? x.ControllerName;
-                   string enControllerDisplayName = controller?.EnDisplayName ?? x.ControllerName;
 
                    var action = x.MethodInfo.GetCustomAttribute<ApiDescriptorAttribute>();
                    string actionDisplayName = action?.DisplayName ?? x.ActionName;
-                   string enActionDisplayName = action?.EnDisplayName ?? x.ActionName;
                    var descriptor = new ApiDescriptor
                    {
                        ControllerName = x.ControllerName,
@@ -113,8 +111,6 @@ namespace ViazyNetCore.Filter.Descriptor
                        DisplayActionName = actionDisplayName,
                        RouteTemplate = x.AttributeRouteInfo?.Template,
                        HttpMethod = x.MethodInfo.GetHttpMethod(),
-                       EnDisplayActionName = enActionDisplayName,
-                       EnDisplayControllerName = enControllerDisplayName,
                        ApiVersion = apiVersion!,
                        ServiceName = _options.ServiceName
                    };
@@ -126,7 +122,6 @@ namespace ViazyNetCore.Filter.Descriptor
                    {
                        ControllerName = c.Key,
                        DisplayControllerName = first?.DisplayControllerName,
-                       EnDisplayControllerName = first?.EnDisplayControllerName,
                        Apis = c.ToList()
                    };
                    return descriptor;
