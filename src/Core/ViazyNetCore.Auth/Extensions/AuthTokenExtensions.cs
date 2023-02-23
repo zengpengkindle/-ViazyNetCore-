@@ -53,7 +53,7 @@ namespace Microsoft.AspNetCore.Http
             if(roles.IsNull())
                 return new int[0];
             else
-                return roles!.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(p=>p.CastTo<int>()).ToArray();
+                return roles!.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(p=>p.ParseTo<int>()).ToArray();
         }
         #endregion
 

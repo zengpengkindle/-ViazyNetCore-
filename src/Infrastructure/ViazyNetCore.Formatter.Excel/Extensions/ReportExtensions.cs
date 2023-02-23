@@ -170,7 +170,7 @@ namespace ViazyNetCore.Formatter.Excel.Extensions
 
                 ws.Tables.FirstOrDefault().Theme = XLTableTheme.None;
 
-                ws.Author = "yuantuitui.com";
+                //ws.Author = "";
                 ws.ShowGridLines = true;
                 ws.Tables.FirstOrDefault().ShowAutoFilter = false;
                 ws.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;

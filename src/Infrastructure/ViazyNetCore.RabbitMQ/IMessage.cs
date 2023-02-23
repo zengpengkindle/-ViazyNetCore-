@@ -66,7 +66,7 @@ namespace System.MQueue
             var ma = bodyType.GetAttribute<MessageAttribute>();
             string? id = null, queue = null, exchange = null;
 
-            if(ma is not null)
+            if (ma is not null)
             {
                 id = ma.Id;
                 queue = ma.Queue;
@@ -83,28 +83,30 @@ namespace System.MQueue
 
         private IQueueDeclare? _queue;
 
+        private static object _lockObject = new();
+
         /// <inheritdoc />
         public IQueueDeclare Build(IDeclareFactory declareFactory)
         {
-            if(declareFactory is null)
+            if (declareFactory is null)
             {
                 throw new ArgumentNullException(nameof(declareFactory));
             }
 
-            if(this._queue is not null) return this._queue;
+            if (this._queue is not null) return this._queue;
 
-            using(Providers.LockProvider.Default.Lock<DefaultDeclareFactory>(this.Id))
+            lock (_lockObject)
             {
-                if(this._queue is not null) return this._queue;
+                if (this._queue is not null) return this._queue;
 
                 var queue = declareFactory.Queue(this.Queue);
 
-                foreach(var binder in this._messageBinders)
+                foreach (var binder in this._messageBinders)
                 {
                     queue = binder.Bind(declareFactory, this, queue);
                 }
 
-                if(queue.Sources.Count == 0)
+                if (queue.Sources.Count == 0)
                 {
                     queue.Sources.Add(new ExchangeSource(null, declareFactory.Exchange(this.Exchange), null));
                 }

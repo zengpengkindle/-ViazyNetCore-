@@ -16,6 +16,8 @@ namespace System
         /// </summary>
 #pragma warning disable CA2211 // 非常量字段应当不可见
         public static TimeSpan DefaultLockTimeout = TimeSpan.FromSeconds(15);
+
+        public static DateTime Now => DateTime.Now;
 #pragma warning restore CA2211 // 非常量字段应当不可见
 
         internal static void TimeoutError(string key, TimeSpan timeout)
@@ -30,9 +32,9 @@ namespace System
             public SimpleLockItem(Action disposing) => this._disposing = disposing;
             public void Dispose()
             {
-                lock(this)
+                lock (this)
                 {
-                    if(this._isDisposed) return;
+                    if (this._isDisposed) return;
                     this._isDisposed = true;
                     this._disposing();
                 }
@@ -63,7 +65,7 @@ namespace System
         /// <returns>可解锁的对象。</returns>
         public static IDisposable Lock<TSeed>(TSeed seed, TimeSpan timeout) where TSeed : notnull
         {
-            if(Equals(seed, default(TSeed))) throw new ArgumentNullException(nameof(seed));
+            if (Equals(seed, default(TSeed))) throw new ArgumentNullException(nameof(seed));
 
             var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed<TSeed>(key));
             return s.LockSeed(timeout);
@@ -89,7 +91,7 @@ namespace System
         /// <returns>可解锁的异步操作。</returns>
         public static Task<IDisposable> LockAsync<TSeed>(TSeed seed, TimeSpan timeout) where TSeed : notnull
         {
-            if(Equals(seed, default(TSeed))) throw new ArgumentNullException(nameof(seed));
+            if (Equals(seed, default(TSeed))) throw new ArgumentNullException(nameof(seed));
 
             var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed<TSeed>(key));
             return s.LockSeedAsync(timeout);
@@ -116,21 +118,21 @@ namespace System
                 return new SimpleLockItem(() =>
                 {
                     this._sema.Release();
-                    if(Interlocked.Decrement(ref this._length) == 0) LockeableObjects.TryRemove(this._key, out var s);
+                    if (Interlocked.Decrement(ref this._length) == 0) LockeableObjects.TryRemove(this._key, out var s);
                 });
             }
 
             public IDisposable LockSeed(TimeSpan timeout)
             {
                 Interlocked.Increment(ref this._length);
-                if(!this._sema.Wait(timeout)) TimeoutError(Convert.ToString(this._key)!, timeout);
+                if (!this._sema.Wait(timeout)) TimeoutError(Convert.ToString(this._key)!, timeout);
                 return this.GetDisposable();
             }
 
             public async Task<IDisposable> LockSeedAsync(TimeSpan timeout)
             {
                 Interlocked.Increment(ref this._length);
-                if(!await this._sema.WaitAsync(timeout)) TimeoutError(Convert.ToString(this._key)!, timeout);
+                if (!await this._sema.WaitAsync(timeout)) TimeoutError(Convert.ToString(this._key)!, timeout);
                 return this.GetDisposable();
             }
 

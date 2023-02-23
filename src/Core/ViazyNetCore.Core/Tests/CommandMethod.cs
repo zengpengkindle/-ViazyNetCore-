@@ -99,7 +99,7 @@ namespace System.Tests
 
                 if (r is T v) return v;
 
-                return r.CastTo<T>();
+                return r.ParseTo<T>();
             }
             catch (Exception ex)
             {

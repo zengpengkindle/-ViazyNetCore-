@@ -77,18 +77,18 @@ namespace System.MQueue
         private static IBasicProperties? CreatePublishPropertie(IModel channel, PublishOptions? options)
         {
             IBasicProperties? properties = null;
-            if(options is not null)
+            if (options is not null)
             {
-                if(options.PropertiesSetup is not null)
+                if (options.PropertiesSetup is not null)
                 {
                     properties = channel.CreateBasicProperties();
                     options.PropertiesSetup(properties);
                 }
 
-                if(options.DelayTimeSpan != default)
+                if (options.DelayTimeSpan != default)
                 {
-                    if(properties is null) properties = channel.CreateBasicProperties();
-                    if(properties.Headers is null) properties.Headers = new Dictionary<string, object>();
+                    if (properties is null) properties = channel.CreateBasicProperties();
+                    if (properties.Headers is null) properties.Headers = new Dictionary<string, object>();
                     properties.Headers.Add("x-delay", (int)options.DelayTimeSpan.TotalMilliseconds); //- 此处如果不是 int 类型会导致延迟失败
                 }
 
@@ -99,13 +99,13 @@ namespace System.MQueue
         protected virtual IMessage GetMessage<TBody>()
         {
             var message = this._messageFactory.Get<TBody>();
-            if(message is null) throw new InvalidOperationException($"The type '{typeof(TBody).FullName}' is not declare message type.");
+            if (message is null) throw new InvalidOperationException($"The type '{typeof(TBody).FullName}' is not declare message type.");
             return message;
         }
 
         public virtual Task PublishAsync<TBody>(TBody body, PublishOptions? options = null, CancellationToken cancellationToken = default)
         {
-            if(body is null) throw new ArgumentNullException(nameof(body));
+            if (body is null) throw new ArgumentNullException(nameof(body));
 
             this.ThrowIfDisposed();
 
@@ -118,31 +118,31 @@ namespace System.MQueue
                 Exception? exception = null;
 
                 var bytes = this._messageSerializer.Serialize(body);
-                for(int i = 0; i < this.Manager.Options.PublishRetryCount; i++)
+                for (int i = 0; i < this.Manager.Options.PublishRetryCount; i++)
                 {
-                    if(cancellationToken.IsCancellationRequested) throw new TaskCanceledException();
+                    if (cancellationToken.IsCancellationRequested) throw new TaskCanceledException();
                     try
                     {
                         channel.BasicPublish(message.Exchange, routerKey, options?.Mandatory ?? false, properties, bytes);
                         break;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         this.Manager.EmitError(this, ex);
                         exception = ex;
-                        if(!MQueueExtensions.IsContinueOnError(ex)) break;
-                        if(!channelProxy.IsOpen) break;
+                        if (!MQueueExtensions.IsContinueOnError(ex)) break;
+                        if (!channelProxy.IsOpen) break;
                         await Task.Delay(TimeSpan.FromSeconds(this.Manager.Options.PublishRetrySeconds));
                     }
                 }
 
-                if(exception is not null) throw exception;
+                if (exception is not null) throw exception;
             }, options?.ConnectionName);
         }
 
         public virtual Task SubscribeAsync<TBody>(AsyncEventHandler<SubscribeEventArgs<TBody>> handler, SubscribeOptions? options = null, CancellationToken cancellationToken = default)
         {
-            if(handler is null)
+            if (handler is null)
             {
                 throw new ArgumentNullException(nameof(handler));
             }
@@ -152,10 +152,10 @@ namespace System.MQueue
             return this.CallAsync<Task>(this.GetMessage<TBody>(), async (channelProxy, message) =>
             {
                 var channel = channelProxy.Channel.MustBe();
-                
+
                 var completionSource = new TaskCompletionSource<bool>();
 
-                using(cancellationToken.Register(() =>
+                using (cancellationToken.Register(() =>
                 {
                     completionSource.TrySetCanceled();
                 }))
@@ -169,20 +169,20 @@ namespace System.MQueue
                     consumer.Received += async (model, ea) =>
                     {
                         var redeliveredCount = ea.BasicProperties.Headers is not null && ea.BasicProperties.Headers.TryGetValue(HEADER_REDELIVERED_COUNT, out var obj) && obj is int count ? count : 0;
-                        if(redeliveredCount > 0) ea.Redelivered = true;
+                        if (redeliveredCount > 0) ea.Redelivered = true;
                         var bodyBytes = ea.Body.ToArray();
                         var eventArgs = new SubscribeEventArgs<TBody>
                         {
                             Redelivered = ea.Redelivered,
-                            RedeliveredCount = redeliveredCount,
+                            RedeliveredCount = redeliveredCount
                         };
                         try
                         {
-                            if(this._messageSerializer.Deserialize(typeof(TBody), bodyBytes) is not TBody body)
+                            if (this._messageSerializer.Deserialize(typeof(TBody), bodyBytes) is not TBody body)
                                 throw new InvalidCastException($"Cannot cast message body to {typeof(TBody)} type.");
                             eventArgs.Body = body;
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             this.Manager.EmitError(this, ex);
                             return;
@@ -192,26 +192,26 @@ namespace System.MQueue
                         {
                             await handler(this, eventArgs);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             this.Manager.EmitError(this, ex);
                             eventArgs.Ack = false;
                             eventArgs.Requeue = true;
                         }
-                        if(eventArgs.Requeue && (autoAck || !eventArgs.Ack))
+                        if (eventArgs.Requeue && (autoAck || !eventArgs.Ack))
                         {
-                            if(ea.BasicProperties.Headers is null) ea.BasicProperties.Headers = new Dictionary<string, object>();
+                            if (ea.BasicProperties.Headers is null) ea.BasicProperties.Headers = new Dictionary<string, object>();
                             ea.BasicProperties.Headers[HEADER_REDELIVERED_COUNT] = redeliveredCount + 1;
                         }
-                        if(!autoAck)
+                        if (!autoAck)
                         {
-                            if(eventArgs.Ack)
+                            if (eventArgs.Ack)
                             {
                                 channel.BasicAck(ea.DeliveryTag, eventArgs.Multiple);
                             }
                             else
                             {
-                                if(eventArgs.Requeue && !eventArgs.Multiple)
+                                if (eventArgs.Requeue && !eventArgs.Multiple)
                                 {
                                     channel.BasicNack(ea.DeliveryTag, false, false);
                                     channel.BasicPublish(ea.Exchange, ea.RoutingKey, mandatory, ea.BasicProperties, bodyBytes);
@@ -224,7 +224,7 @@ namespace System.MQueue
                         }
                         else
                         {
-                            if(eventArgs.Requeue)
+                            if (eventArgs.Requeue && eventArgs.Ack)
                             {
                                 channel.BasicPublish(ea.Exchange, ea.RoutingKey, mandatory, ea.BasicProperties, bodyBytes);
                             }
@@ -232,13 +232,13 @@ namespace System.MQueue
                     };
                     consumer.Shutdown += (ss, ee) =>
                     {
-                        if(!completionSource.Task.IsCanceled)
+                        if (!completionSource.Task.IsCanceled)
                         {
                             completionSource.TrySetException(new RabbitMQ.Client.Exceptions.ConnectFailureException($"Message consumer is shutdown <{ee.ReplyCode}> {ee.ReplyText}", null));
                         }
                     };
 
-                    if(qosPrefetchCount > 0)
+                    if (qosPrefetchCount > 0)
                     {
                         channel.BasicQos(0, qosPrefetchCount, false);
                     }
@@ -249,8 +249,8 @@ namespace System.MQueue
                     {
                         await completionSource.Task;
                     }
-                    catch(TaskCanceledException) { }
-                    catch(Exception ex)
+                    catch (TaskCanceledException) { }
+                    catch (Exception ex)
                     {
                         this.Manager.EmitError(this, ex);
                         exception = ex;
@@ -259,8 +259,8 @@ namespace System.MQueue
                     {
                         channel.BasicCancel(tag);
                     }
-                    catch(Exception) { }
-                    if(exception is not null) throw exception;
+                    catch (Exception) { }
+                    if (exception is not null) throw exception;
                 }
             }, options?.ConnectionName);
 
@@ -268,7 +268,7 @@ namespace System.MQueue
 
         public virtual Task BatchPublish<TBody>(IEnumerable<TBody> bodies, PublishOptions? options = null, CancellationToken cancellationToken = default)
         {
-            if(bodies is null)
+            if (bodies is null)
             {
                 throw new ArgumentNullException(nameof(bodies));
             }
@@ -282,30 +282,34 @@ namespace System.MQueue
                 var basicPublishBatch = channel.CreateBasicPublishBatch();
                 var routerKey = options?.RouterKey ?? string.Empty;
 
-                foreach(var body in bodies)
+                foreach (var body in bodies)
                 {
                     basicPublishBatch.Add(message.Exchange, routerKey, options?.Mandatory ?? false, properties, new ReadOnlyMemory<byte>(this._messageSerializer.Serialize(body)));
                 }
                 Exception? exception = null;
 
-                for(int i = 0; i < this.Manager.Options.PublishRetryCount; i++)
+                for (int i = 0; i < this.Manager.Options.PublishRetryCount; i++)
                 {
                     try
                     {
                         basicPublishBatch.Publish();
                         break;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         this.Manager.EmitError(this, ex);
                         exception = ex;
-                        if(!MQueueExtensions.IsContinueOnError(ex)) break;
-                        if(!channelProxy.IsOpen) break;
+                        if (!MQueueExtensions.IsContinueOnError(ex)) break;
+                        if (!channelProxy.IsOpen) break;
                         await Task.Delay(TimeSpan.FromSeconds(this.Manager.Options.PublishRetrySeconds));
                     }
                 }
-                if(exception is not null) throw exception;
+                if (exception is not null) throw exception;
             }, options?.ConnectionName);
+        }
+
+        protected override void DisposeManaged()
+        {
         }
     }
 

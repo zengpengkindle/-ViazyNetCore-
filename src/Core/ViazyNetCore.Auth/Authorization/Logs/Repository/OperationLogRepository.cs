@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Modules.Repository
+namespace ViazyNetCore.Authorization.Modules.Repository
 {
     [Injection]
     public class OperationLogRepository : DefaultRepository<OperationLog, long>, IOperationLogRepository

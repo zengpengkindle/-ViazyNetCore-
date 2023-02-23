@@ -24,6 +24,8 @@
         /// </summary>
         /// <value>若为 <see langword="true"/> 值时，该队列公对首次声明它的连接可见，并在连接断开时自动删除。</value>
         bool Exclusive { get; set; }
+
+        QueueType QueueType { get; set; }
         ///// <summary>
         ///// 获取最后一次声明的结果。
         ///// </summary>
@@ -43,6 +45,9 @@
         public virtual bool AutoDelete { get; set; }
         /// <inheritdoc />
         public virtual bool Exclusive { get; set; }
+
+        public QueueType QueueType { get; set; } = QueueType.Classic;
+
         ///// <inheritdoc />
         //public QueueDeclareOk? LastDeclare { get; private set; }
 
@@ -64,5 +69,12 @@
         {
             channelProxy.Channel?.QueueBind(this.Name, source.Exchange.Name, source.RouterKey, source.Arguments);
         }
+    }
+
+    public enum QueueType
+    {
+        Classic = 1,
+        Quorum = 2,
+        Steam = 3
     }
 }

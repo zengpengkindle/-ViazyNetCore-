@@ -14,7 +14,6 @@ import { getToken, formatToken, removeToken } from "@/utils/auth";
 import { message } from "@/utils/message";
 import { ApiResponse, ApiReponseError } from "@/api/model/apiResponseBase";
 import route from "@/router";
-import { VNode, RendererNode, RendererElement } from "vue-demi";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -143,7 +142,7 @@ class PureHttp {
   }
   openErrorMessage = (msg: string): void => {
     const isMessageLen = document.getElementsByClassName(
-      "el-message el-message--error pure-message"
+      "el-message el-message--error"
     ).length;
     if (isMessageLen !== 0) {
       return;

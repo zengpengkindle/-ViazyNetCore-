@@ -443,7 +443,7 @@ namespace System
         /// <typeparam name="T">要转换的数据类型。</typeparam>
         /// <param name="value">请求类型转换的值。</param>
         /// <returns>将 <paramref name="value"/> 转换为 <typeparamref name="T"/> 的值。</returns>
-        public static T CastTo<T>(this object value) => (T)CastTo(value, typeof(T));
+        public static T ParseTo<T>(this object value) => (T)CastTo(value, typeof(T));
 
         /// <summary>
         /// 尝试将给定值转换为指定的数据类型。

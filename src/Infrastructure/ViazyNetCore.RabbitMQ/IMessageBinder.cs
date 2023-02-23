@@ -33,7 +33,7 @@ namespace System
 
         IQueueDeclare IMessageBinder.Bind(IDeclareFactory declareFactory, IMessage message, IQueueDeclare queue)
         {
-            queue.Sources.Add(new ExchangeSource(null, declareFactory.Exchange(message.Exchange).UseTypeDelayed(), null));
+            queue.Sources.Add(new ExchangeSource(null, declareFactory.Exchange(message.Exchange).WithTypeDelayed(), null));
             return queue;
         }
     }

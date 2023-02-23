@@ -48,7 +48,7 @@
 
         public void Commit()
         {
-            if(this._isTransaction && !this._isSubmited && this._lazyChannelProxy is not null)
+            if (this._isTransaction && !this._isSubmited && this._lazyChannelProxy is not null)
             {
                 this._autoRollback = false;
                 this._isSubmited = true;
@@ -58,7 +58,7 @@
 
         public void Rollback()
         {
-            if(this._isTransaction && !this._isSubmited && this._lazyChannelProxy is not null)
+            if (this._isTransaction && !this._isSubmited && this._lazyChannelProxy is not null)
             {
                 this._autoRollback = false;
                 this._isSubmited = true;
@@ -70,23 +70,23 @@
         {
             base.DisposeManaged();
 
-            if(this._autoRollback) this.Rollback();
+            if (this._autoRollback) this.Rollback();
             this.FreeChannel();
             this._owner.ResetContext();
         }
 
         private Lazy<IChannelProxy> GetChannel(string? connectionName, IMessage message)
         {
-            if(this._lazyChannelProxy is null)
+            if (this._lazyChannelProxy is null)
             {
-                lock(this._syncObject)
+                lock (this._syncObject)
                 {
-                    if(this._lazyChannelProxy is null)
+                    if (this._lazyChannelProxy is null)
                     {
                         this._lazyChannelProxy = new Lazy<IChannelProxy>(() =>
                         {
                             var c = this._channelPool.GetChannel(connectionName, message);
-                            if(this._isTransaction) c.Channel?.TxSelect();
+                            if (this._isTransaction) c.Channel?.TxSelect();
                             return c;
                         });
                     }
@@ -102,23 +102,23 @@
 
         public override TTask CallAsync<TTask>(IMessage message, Func<IChannelProxy, IMessage, TTask> channelAction, string? connectionName)
         {
-            if(message is null)
+            if (message is null)
             {
                 throw new ArgumentNullException(nameof(message));
             }
 
-            if(channelAction is null)
+            if (channelAction is null)
             {
                 throw new ArgumentNullException(nameof(channelAction));
             }
 
             this.ThrowIfDisposed();
 
-            if(this._isSubmited) throw new NotSupportedException("The operation is submited.");
+            if (this._isSubmited) throw new NotSupportedException("The operation is submited.");
 
             var channelProxy = this.GetChannel(connectionName, message).Value;
 
-            if(!channelProxy.IsOpen)
+            if (!channelProxy.IsOpen)
             {
                 this.FreeChannel();
                 throw new InvalidOperationException("The channel is closed.");
@@ -128,10 +128,10 @@
             {
                 return channelAction(channelProxy, message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.Manager.EmitError(this, ex);
-                if(!channelProxy.IsOpen)
+                if (!channelProxy.IsOpen)
                 {
                     this.FreeChannel();
                 }

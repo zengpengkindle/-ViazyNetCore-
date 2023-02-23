@@ -14,6 +14,8 @@ interface MessageParams {
   dangerouslyUseHTMLString?: boolean;
   /** 消息风格，可选 `el` 、`antd` ，默认 `antd` */
   customClass?: messageStyle;
+  /** 错误编码，当存在相同错误编码的弹窗时，将只弹出一个。 */
+  errorCode?: number;
   /** 显示时间，单位为毫秒。设为 `0` 则不会自动关闭，`element-plus` 默认是 `3000` ，平台改成默认 `2000` */
   duration?: number;
   /** 是否显示关闭按钮，默认值 `false` */
@@ -56,9 +58,13 @@ const message = (
       offset = 20,
       appendTo = document.body,
       grouping = false,
-      onClose
+      onClose,
+      errorCode = 0
     } = params;
-
+    let errorClass = "";
+    if (errorCode) {
+      errorClass = "el-message-error__" + errorCode;
+    }
     return ElMessage({
       message,
       type,
@@ -71,7 +77,8 @@ const message = (
       appendTo,
       grouping,
       // 全局搜 pure-message 即可知道该类的样式位置
-      customClass: customClass === "antd" ? "pure-message" : "",
+      customClass:
+        (customClass === "antd" ? "pure-message" : "") + " " + errorClass,
       onClose: () => (isFunction(onClose) ? onClose() : null)
     });
   }

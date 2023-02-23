@@ -29,7 +29,7 @@
         }
 
         public IMessageManager Manager { get; }
-
+        
         public IChannelProxy GetChannel(string? connectionName, IMessage message)
         {
             if(message is null)

@@ -1,0 +1,16 @@
+{
+  "MQueue": {
+    "ConnectionStrings": { "Default": "hosts=localhost:5673;user=guest;pwd=guest" },
+    "Options": {
+      "PreheatCount": 10, //预热通道数。
+      "MaxChannelPerConnection": 211, //每个连接最多可以创建的通道数量
+      "ChannelInactiveSeconds": 180, //通道空闲失效时间
+      "PublishRetryCount": 3, //发布重试的次数。
+      "PublishRetrySeconds": 3, //发布每次重试的间隔。
+      "ChannelCreateRetryCount": 3, //通道创建重试的次数。
+      "ChannelCreateRetrySeconds": 3, //通道创建每次重试的间隔。
+      "ConnectionCreateRetryCount": 3, //连接创建重试的次数。
+      "ConnectionCreateRetrySeconds": 3 //连接创建每次重试的间隔。
+    }
+  }
+}

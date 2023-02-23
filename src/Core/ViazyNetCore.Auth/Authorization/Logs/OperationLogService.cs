@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.Authorization.Modules.Repository;
 
-namespace ViazyNetCore.Modules.Logs
+namespace ViazyNetCore.Authorization.Modules
 {
     [Injection]
-    public class OperationLogService: IOperationLogService
+    public class OperationLogService : IOperationLogService
     {
         private readonly IOperationLogRepository _repository;
 
@@ -17,9 +18,9 @@ namespace ViazyNetCore.Modules.Logs
         }
         private bool CheckArgs(OperationLog operationLog)
         {
-            if(operationLog == null)
+            if (operationLog == null)
                 return false;
-            if(string.IsNullOrWhiteSpace(operationLog.OperateUserId))
+            if (string.IsNullOrWhiteSpace(operationLog.OperateUserId))
                 throw new Exception("OperateUserId can not be null!");
             return true;
         }
@@ -32,10 +33,10 @@ namespace ViazyNetCore.Modules.Logs
         public bool AddOperationLog(OperationLog operationLog)
         {
             //截取长度，防止异常
-            if(operationLog.Description.IsNotNull() && operationLog.Description.Length > 1000)
+            if (operationLog.Description.IsNotNull() && operationLog.Description.Length > 1000)
                 operationLog.Description = operationLog.Description.Substring(0, 1000);
 
-            if(CheckArgs(operationLog))
+            if (CheckArgs(operationLog))
             {
                 _repository.Insert(operationLog);
                 return true;
@@ -47,8 +48,8 @@ namespace ViazyNetCore.Modules.Logs
         public PageData<OperationLog> GetOperationLog(int page, int limit, OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
         {
             var query = _repository.Select.Where(a => a.LogLevel == logRecordLevel).OrderByDescending(a => a.CreateTime);
-            if(!string.IsNullOrWhiteSpace(keyword))
-                switch(searchType)
+            if (!string.IsNullOrWhiteSpace(keyword))
+                switch (searchType)
                 {
                     case OperationLogSearchTypeEnum.Default:
                         break;
@@ -82,8 +83,8 @@ namespace ViazyNetCore.Modules.Logs
         public PageData<OperationLog> GetOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
         {
             var query = _repository.Select.Where(a => a.CreateTime >= beginTime && a.CreateTime <= endTime && a.LogLevel == logRecordLevel).OrderByDescending(a => a.CreateTime);
-            if(!string.IsNullOrWhiteSpace(keyword))
-                switch(searchType)
+            if (!string.IsNullOrWhiteSpace(keyword))
+                switch (searchType)
                 {
                     case OperationLogSearchTypeEnum.Default:
                         break;
@@ -118,8 +119,8 @@ namespace ViazyNetCore.Modules.Logs
         public PageData<OperationLog> GetMerchantOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, string merchantId = "", OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
         {
             var query = _repository.Select.Where(a => a.MerchantId == merchantId && a.CreateTime >= beginTime && a.CreateTime <= endTime && a.LogLevel == logRecordLevel).OrderByDescending(a => a.CreateTime);
-            if(!string.IsNullOrWhiteSpace(keyword))
-                switch(searchType)
+            if (!string.IsNullOrWhiteSpace(keyword))
+                switch (searchType)
                 {
                     case OperationLogSearchTypeEnum.Default:
                         break;

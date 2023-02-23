@@ -53,7 +53,7 @@ namespace System.MQueue
         /// <para>默认为 <see langword="true"/> 值，当发生异常时消息将会重新返回队列。如不希望返回队列，应手动捕获错误，并将该属性设置为 <see langword="false"/> 值。</para>
         /// <para>当手动应答模式，并且 <see cref="Ack"/> 值为 <see langword="true"/> 时，该属性无效。</para>
         /// </summary>
-        public bool Requeue { get; set; } = true;
+        public bool Requeue { get; set; } = false;
 
     }
 
