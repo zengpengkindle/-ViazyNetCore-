@@ -49,7 +49,7 @@ namespace ViazyNetCore.Authorization.Modules
         {
             if (user == null)
                 return false;
-            if (user.Username == "admin")
+            if (user.Username == "Administrator")
             {
                 return true;
             }

@@ -58,7 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
             });
         }
 
-        public static void AddAuthenticationController(this IServiceCollection services)
+        public static void AddAuthorizationController(this IServiceCollection services)
         {
             services.AddDynamicController(options =>
             {

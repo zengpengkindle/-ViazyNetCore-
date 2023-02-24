@@ -102,7 +102,7 @@ namespace Microsoft.AspNetCore.Http
         public static string GetUserId(this ClaimsPrincipal claims)
         {
             //ids4用户的唯一标识符
-            var userid = claims.GetFirstValue(JwtRegisteredClaimNames.Sub);
+            var userid = claims.GetFirstValue(JwtRegisteredClaimNames.Sid);
             return userid;
         }
 
@@ -113,7 +113,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static string GetUserId(this Claim[] claims)
         {
-            var sub = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            var sub = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value;
             //ids4用户的唯一标识符
             return sub;
         }
@@ -124,7 +124,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns>返回用户Id，如果未登录则返回null。</returns>
         public static string GetUserId(this HttpRequest request)
         {
-            var sub = request.Claims().FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            var sub = request.Claims().FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value;
             //ids4用户的唯一标识符
             return sub;
         }

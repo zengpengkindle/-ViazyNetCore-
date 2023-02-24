@@ -15,14 +15,14 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class FreeMySqlSetup
     {
-        public static void AddFreeMySqlDb(this IServiceCollection services, IConfiguration configuration)
+        public static void AddFreeMySqlDb(this IServiceCollection services)
         {
 #pragma warning disable IDE0039 // 使用本地函数
-            Func<IServiceProvider, IFreeSql> fsqlFunc = r =>
+            Func<IServiceProvider, IFreeSql> fsqlFunc = sp =>
             {
                 FreeSqlCloud<string> freeSqlCloud = new FreeSqlCloud<string>();
 
-                var fsql = new FreeSqlBuilder().UseConnectionString(DataType.MySql, configuration.GetConnectionString("master"))
+                var fsql = new FreeSqlBuilder().UseConnectionString(DataType.MySql, sp.GetService<IConfiguration>().GetConnectionString("master"))
 #if DEBUG
               //监听SQL语句
               .UseMonitorCommand(cmd => Console.WriteLine($"[master][ThreadId:{Environment.CurrentManagedThreadId}]\r\nSql：{cmd.CommandText}"))

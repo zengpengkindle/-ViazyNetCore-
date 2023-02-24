@@ -40,7 +40,7 @@ builder.Services.AddJwtAuthentication(option =>
     option.UseDistributedCache = true;
 });
 
-builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath));
+builder.Services.AddSingleton(new AppSettingsHelper());
 
 builder.Services.AddControllers(options =>
 {
@@ -51,7 +51,7 @@ builder.Services.AddControllers(options =>
     options.SerializerSettings.InitializeDefault();
 }).AddControllersAsServices();
 
-builder.Services.AddAuthenticationController();
+builder.Services.AddAuthorizationController();
 //builder.Services.AddCustomApiVersioning();
 //.AddApplicationPart(typeof(TestController).Assembly)
 ;
@@ -59,7 +59,7 @@ builder.Services.AddAuthenticationController();
 //builder.Services.AddEndpointsApiExplorer();
 
 
-builder.Services.AddFreeMySqlDb(builder.Configuration);
+builder.Services.AddFreeMySqlDb();
 builder.Services.AddEventBus();
 // Redis 分布式缓存注入
 //builder.Services.AddRedisDistributedHashCache(options =>

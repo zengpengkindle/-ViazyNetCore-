@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.Hosting;
 
 namespace ViazyNetCore.Configuration
 {
@@ -12,10 +13,15 @@ namespace ViazyNetCore.Configuration
     {
         static IConfiguration Configuration { get; set; }
 
-        public AppSettingsHelper(string contentPath)
+        static AppSettingsHelper()
         {
-            string Path = "appsettings.json";
-            Configuration = new ConfigurationBuilder().SetBasePath(contentPath).Add(new JsonConfigurationSource { Path = Path, Optional = false, ReloadOnChange = true }).Build();
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Environment.CurrentDirectory)
+               .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+               .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
+               .Build();
         }
 
         /// <summary>
@@ -29,12 +35,12 @@ namespace ViazyNetCore.Configuration
             try
             {
 
-                if(sections.Any())
+                if (sections.Any())
                 {
                     return Configuration[string.Join(":", sections)];
                 }
             }
-            catch(Exception) { }
+            catch (Exception) { }
 
             return "";
         }
