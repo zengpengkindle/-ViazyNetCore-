@@ -17,15 +17,15 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="operateUserId">操作人用户编号</param>
         /// <param name="operatorNickname">操作人名（昵称）</param>
         /// <param name="operatorType">用户类型（BMS用户，Merchant用户，子商户）</param>
-        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，上分，下分，字符型)</param>
+        /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，字符型)</param>
         /// <param name="objectId">操作对象ID</param>
         /// <param name="objectName">操作对象名称</param>
         /// <param name="descripation">描述</param>
         /// <returns></returns>
-        bool AddOperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorTypeEnum operatorType, string operationType, string objectId, string objectName, string descripation);
+        bool AddOperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName, string descripation);
         bool AddOperationLog(OperationLog operationLog);
-        PageData<OperationLog> GetOperationLog(int page, int limit, OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information);
-        PageData<OperationLog> GetOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information);
+        PageData<OperationLog> GetOperationLog(int page, int limit, OperationLogSearchType searchType = OperationLogSearchType.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information);
+        PageData<OperationLog> GetOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, OperationLogSearchType searchType = OperationLogSearchType.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information);
 
         /// <summary>
         /// 获取商户端操作日志
@@ -38,6 +38,6 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="searchType"></param>
         /// <param name="keyword"></param>
         /// <returns></returns>
-        PageData<OperationLog> GetMerchantOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, string merchantId = "", OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information);
+        PageData<OperationLog> GetMerchantOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, string merchantId = "", OperationLogSearchType searchType = OperationLogSearchType.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information);
     }
 }

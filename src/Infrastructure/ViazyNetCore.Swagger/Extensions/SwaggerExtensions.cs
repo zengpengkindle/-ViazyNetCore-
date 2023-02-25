@@ -21,7 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class SwaggerExtensions
     {
         private const string AUTHENTICATION_SCHEME = "Bearer";
-        public static void AddSwagger(this IServiceCollection services, string apiName, Action<SwaggerConfig> action)
+        public static void AddSwagger(this IServiceCollection services, Action<SwaggerConfig> action)
         {
             var swaggerConfig = new SwaggerConfig();
             action?.Invoke(swaggerConfig);

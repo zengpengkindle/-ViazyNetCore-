@@ -24,7 +24,7 @@ namespace ViazyNetCore.Authorization.Modules
                 throw new Exception("OperateUserId can not be null!");
             return true;
         }
-        public bool AddOperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorTypeEnum operatorType, string operationType, string objectId, string objectName, string descripation)
+        public bool AddOperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName, string descripation)
         {
             OperationLog log = new OperationLog(operatorIp, operateUserId, operatorNickname, operatorType, operationType, objectId, objectName, descripation);
             return AddOperationLog(log);
@@ -45,33 +45,33 @@ namespace ViazyNetCore.Authorization.Modules
                 return false;
         }
 
-        public PageData<OperationLog> GetOperationLog(int page, int limit, OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
+        public PageData<OperationLog> GetOperationLog(int page, int limit, OperationLogSearchType searchType = OperationLogSearchType.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
         {
             var query = _repository.Select.Where(a => a.LogLevel == logRecordLevel).OrderByDescending(a => a.CreateTime);
             if (!string.IsNullOrWhiteSpace(keyword))
                 switch (searchType)
                 {
-                    case OperationLogSearchTypeEnum.Default:
+                    case OperationLogSearchType.Default:
                         break;
-                    case OperationLogSearchTypeEnum.Ip:
+                    case OperationLogSearchType.Ip:
                         query = query.Where(a => a.OperatorIP == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.UserId:
+                    case OperationLogSearchType.UserId:
                         query = query.Where(a => a.OperateUserId == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.OperatorNickname:
+                    case OperationLogSearchType.OperatorNickname:
                         query = query.Where(a => a.Operator == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.OperationType:
+                    case OperationLogSearchType.OperationType:
                         query = query.Where(a => a.OperationType == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.ObjectId:
+                    case OperationLogSearchType.ObjectId:
                         query = query.Where(a => a.ObjectId == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.ObjectName:
+                    case OperationLogSearchType.ObjectName:
                         query = query.Where(a => a.ObjectName.Contains(keyword));
                         break;
-                    case OperationLogSearchTypeEnum.Description:
+                    case OperationLogSearchType.Description:
                         query = query.Where(a => a.Description.Contains(keyword));
                         break;
                     default:
@@ -80,75 +80,75 @@ namespace ViazyNetCore.Authorization.Modules
             return query.ToPage(page, limit);
         }
 
-        public PageData<OperationLog> GetOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
+        public PageData<OperationLog> GetOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, OperationLogSearchType searchType = OperationLogSearchType.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
         {
-            var query = _repository.Select.Where(a => a.CreateTime >= beginTime && a.CreateTime <= endTime && a.LogLevel == logRecordLevel).OrderByDescending(a => a.CreateTime);
+            var query = _repository.Select.Where(a => a.CreateTime >= beginTime && a.CreateTime <= endTime && a.LogLevel == logRecordLevel);
             if (!string.IsNullOrWhiteSpace(keyword))
                 switch (searchType)
                 {
-                    case OperationLogSearchTypeEnum.Default:
+                    case OperationLogSearchType.Default:
                         break;
-                    case OperationLogSearchTypeEnum.Ip:
+                    case OperationLogSearchType.Ip:
                         query = query.Where(a => a.OperatorIP == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.UserId:
+                    case OperationLogSearchType.UserId:
                         query = query.Where(a => a.OperateUserId == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.OperatorNickname:
+                    case OperationLogSearchType.OperatorNickname:
                         query = query.Where(a => a.Operator == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.OperationType:
+                    case OperationLogSearchType.OperationType:
                         query = query.Where(a => a.OperationType == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.ObjectId:
+                    case OperationLogSearchType.ObjectId:
                         query = query.Where(a => a.ObjectId == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.ObjectName:
+                    case OperationLogSearchType.ObjectName:
                         query = query.Where(a => a.ObjectName.Contains(keyword));
                         break;
-                    case OperationLogSearchTypeEnum.Description:
+                    case OperationLogSearchType.Description:
                         query = query.Where(a => a.Description.Contains(keyword));
                         break;
                     default:
                         break;
                 }
-            return query.ToPage(page, limit);
+            return query.OrderByDescending(a => a.CreateTime).ToPage(page, limit);
         }
 
 
-        public PageData<OperationLog> GetMerchantOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, string merchantId = "", OperationLogSearchTypeEnum searchType = OperationLogSearchTypeEnum.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
+        public PageData<OperationLog> GetMerchantOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, string merchantId = "", OperationLogSearchType searchType = OperationLogSearchType.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information)
         {
-            var query = _repository.Select.Where(a => a.MerchantId == merchantId && a.CreateTime >= beginTime && a.CreateTime <= endTime && a.LogLevel == logRecordLevel).OrderByDescending(a => a.CreateTime);
+            var query = _repository.Select.Where(a => a.MerchantId == merchantId && a.CreateTime >= beginTime && a.CreateTime <= endTime && a.LogLevel == logRecordLevel);
             if (!string.IsNullOrWhiteSpace(keyword))
                 switch (searchType)
                 {
-                    case OperationLogSearchTypeEnum.Default:
+                    case OperationLogSearchType.Default:
                         break;
-                    case OperationLogSearchTypeEnum.Ip:
+                    case OperationLogSearchType.Ip:
                         query = query.Where(a => a.OperatorIP == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.UserId:
+                    case OperationLogSearchType.UserId:
                         query = query.Where(a => a.OperateUserId == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.OperatorNickname:
+                    case OperationLogSearchType.OperatorNickname:
                         query = query.Where(a => a.Operator == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.OperationType:
+                    case OperationLogSearchType.OperationType:
                         query = query.Where(a => a.OperationType == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.ObjectId:
+                    case OperationLogSearchType.ObjectId:
                         query = query.Where(a => a.ObjectId == keyword);
                         break;
-                    case OperationLogSearchTypeEnum.ObjectName:
+                    case OperationLogSearchType.ObjectName:
                         query = query.Where(a => a.ObjectName.Contains(keyword));
                         break;
-                    case OperationLogSearchTypeEnum.Description:
+                    case OperationLogSearchType.Description:
                         query = query.Where(a => a.Description.Contains(keyword));
                         break;
                     default:
                         break;
                 }
-            return query.ToPage(page, limit);
+            return query.OrderByDescending(a => a.CreateTime).ToPage(page, limit);
         }
     }
 }

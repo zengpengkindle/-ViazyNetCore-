@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ViazyNetCore.Modules;
 using ViazyNetCore.Caching;
 using Microsoft.Extensions.DependencyInjection;
+using ViazyNetCore.Core.System;
 
 namespace ViazyNetCore.Authorization.Modules
 {
@@ -60,7 +61,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="permissionItemKeys">待更新的权限项目规则集合</param>
         /// <param name="ownerId">拥有者Id</param>
         /// <param name="ownerType">拥有者所属类别</param>
-        public async Task UpdatePermissionsInUserRole(IEnumerable<string> permissionItemKeys, string ownerId, OwnerType ownerType)
+        public async Task UpdatePermissionsInUserRole(IEnumerable<string>? permissionItemKeys, string ownerId, OwnerType ownerType)
         {
             using (var context = _uowm.Begin())
             {
@@ -76,7 +77,7 @@ namespace ViazyNetCore.Authorization.Modules
                         {
                             await this._freeSql.Insert<BmsOwnerPermission>().MySqlIgnoreInto().AppendData(new BmsOwnerPermission
                             {
-                                Id = Snowflake.NextIdString(),
+                                Id = Snowflake<BmsOwnerPermission>.NextIdString(),
                                 IsLock = false,
                                 Status = ComStatus.Enabled,
                                 OwnerId = ownerId,
@@ -126,7 +127,7 @@ namespace ViazyNetCore.Authorization.Modules
         {
             if (menu.Id.IsNull())
             {
-                menu.Id = Snowflake.NextIdString();
+                menu.Id = Snowflake<BmsMenus>.NextIdString();
                 menu.CreateTime = DateTime.Now;
                 await this._freeSql.Insert(menu).ExecuteAffrowsAsync();
                 return menu.Id;

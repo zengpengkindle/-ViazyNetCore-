@@ -47,7 +47,7 @@ namespace ViazyNetCore.Controllers.Authorization
                 CreateTime = DateTime.Now,
                 OperateUserId = args.Username,
                 OperationType = "登录",
-                OperatorType = OperatorTypeEnum.Bms,
+                OperatorType = OperatorType.Bms,
                 OperatorIP = ip,
             };
             if (args.Mark.IsNotNull() && args.Mark != "tools")
@@ -114,7 +114,7 @@ namespace ViazyNetCore.Controllers.Authorization
         public async Task<bool> ModifyPasswordAsync([Required] UserModifyPasswordArgs args)
         {
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.UserKey, authUser.UserName, OperatorType.Bms)
             {
                 ObjectName = $"{authUser.UserName}",
                 ObjectId = authUser.UserKey,

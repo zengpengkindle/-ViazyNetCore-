@@ -23,7 +23,7 @@
         /// <param name="permissionItemKeys">待更新的权限项目规则集合</param>
         /// <param name="ownerId">拥有者Id</param>
         /// <param name="ownerType">拥有者所属类别</param>
-        Task UpdatePermissionsInUserRole(IEnumerable<string> permissionItemKeys, string ownerId, OwnerType ownerType);
+        Task UpdatePermissionsInUserRole(IEnumerable<string>? permissionItemKeys, string ownerId, OwnerType ownerType);
 
         /// <summary>
         /// 移出权限

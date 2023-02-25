@@ -14,7 +14,7 @@
         /// <param name="operatorNickname">操作人名（昵称）</param>
         /// <param name="operatorType">用户类型（BMS用户，Merchant用户，子商户）</param>
         /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除字符型)</param>
-        public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorTypeEnum operatorType) : this()
+        public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType) : this()
         {
             this.LogLevel = LogRecordLevel.Information;
             this.OperatorIP = operatorIp;
@@ -33,7 +33,7 @@
         /// <param name="operationType">操作类型(一般直接写事件，一个单词，如新增，删除，字符型)</param>
         /// <param name="objectId">操作对象ID</param>
         /// <param name="objectName">操作对象名称</param>
-        public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorTypeEnum operatorType, string operationType, string objectId, string objectName) : this(operatorIp, operateUserId, operatorNickname, operatorType)
+        public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName) : this(operatorIp, operateUserId, operatorNickname, operatorType)
         {
             this.LogLevel = LogRecordLevel.Information;
             this.OperationType = operationType;
@@ -51,7 +51,7 @@
         /// <param name="objectId">操作对象ID</param>
         /// <param name="objectName">操作对象名称</param>
         /// <param name="descripation">描述</param>
-        public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorTypeEnum operatorType, string operationType, string objectId, string objectName, string description) : this(operatorIp, operateUserId, operatorNickname, operatorType, operationType, objectId, objectName)
+        public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName, string description) : this(operatorIp, operateUserId, operatorNickname, operatorType, operationType, objectId, objectName)
         {
             this.LogLevel = LogRecordLevel.Information;
             this.Description = description;
@@ -68,7 +68,7 @@
         /// <param name="objectName">操作对象名称</param>
         /// <param name="descripation">描述</param>
         /// <param name="createTime">日志产生时间</param>
-        public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorTypeEnum operatorType, string operationType, string objectId, string objectName, string description, DateTime createTime) : this(operatorIp, operateUserId, operatorNickname, operatorType, operationType, objectId, objectName, description)
+        public OperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName, string description, DateTime createTime) : this(operatorIp, operateUserId, operatorNickname, operatorType, operationType, objectId, objectName, description)
         {
             this.LogLevel = LogRecordLevel.Information;
             this.CreateTime = createTime;
@@ -82,7 +82,7 @@
         /// <param name="objectName">操作对象名称</param>
         /// <param name="descripation">描述</param>
         /// <param name="createTime">日志产生时间</param>
-        public OperationLog(OperatorTypeEnum operatorType, string operationType, string objectId, string objectName, string description, DateTime createTime) : this("", "", "", operatorType, operationType, objectId, objectName, description)
+        public OperationLog(OperatorType operatorType, string operationType, string objectId, string objectName, string description, DateTime createTime) : this("", "", "", operatorType, operationType, objectId, objectName, description)
         {
             this.LogLevel = LogRecordLevel.Information;
             this.CreateTime = createTime;
@@ -99,7 +99,7 @@
         /// <param name="logLevel">日志等级</param>
         /// <param name="description">操作详细描述</param>
         /// <returns></returns>
-        public static OperationLog CreateLog(string objectId = null, string objectName = null, string merchantId = null, OperatorTypeEnum operatorType = OperatorTypeEnum.Bms, string operationType = null, LogRecordLevel logLevel = LogRecordLevel.Information, string description = null)
+        public static OperationLog CreateLog(string objectId = null, string objectName = null, string merchantId = null, OperatorType operatorType = OperatorType.Bms, string operationType = null, LogRecordLevel logLevel = LogRecordLevel.Information, string description = null)
         {
             return new OperationLog()
             {
@@ -131,7 +131,7 @@
         /// <summary>
         /// 用户类型（BMS用户，Merchant用户，子商户）
         /// </summary>
-        public OperatorTypeEnum OperatorType { get; set; }
+        public OperatorType OperatorType { get; set; }
         /// <summary>
         /// 操作类型(一般直接写事件，一个单词，如新增，删除，字符型)
         /// </summary>
@@ -163,7 +163,7 @@
         public LogRecordLevel LogLevel { get; set; }
     }
 
-    public enum OperatorTypeEnum
+    public enum OperatorType
     {
         Bms = 1
     }

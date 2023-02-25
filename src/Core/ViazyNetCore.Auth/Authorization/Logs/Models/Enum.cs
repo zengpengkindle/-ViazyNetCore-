@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization.Modules
 {
-    public enum OperationLogSearchTypeEnum
+    public enum OperationLogSearchType
     {
         /// <summary>
         /// 默认的无意义的
@@ -25,7 +25,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// </summary>
         OperatorNickname = 3,
         /// <summary>
-        /// 操作类型(一般直接写事件，一个单词，如新增，删除，上分，下分，字符型)
+        /// 操作类型(一般直接写事件，一个单词，如新增，删除，字符型)
         /// </summary>
         OperationType = 4,
         /// <summary>

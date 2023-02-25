@@ -77,16 +77,16 @@ builder.Services.AddApiDescriptor(option =>
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
 
-builder.Services.AddSwagger("ViazyNetCore-Manage", config =>
+builder.Services.AddSwagger(option =>
 {
-    config.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
+    option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
     {
         Code = "admin",
         Description = "后台管理",
         Name = "ViazyNetCore",
         Version = "v2.0",
     });
-    config.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
+    option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
     {
         Code = "test",
         Description = "Test",
@@ -100,6 +100,7 @@ app.UseFreeSql();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseEventBusWithStore(ServiceAssemblies);
 // Configure the HTTP response wrapper.
 app.UseApiResponseWrapper(option =>
 {

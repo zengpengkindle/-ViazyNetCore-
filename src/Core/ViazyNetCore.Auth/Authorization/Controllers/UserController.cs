@@ -56,7 +56,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             var userId = await this._userService.ManageAsync(model, randPwd);
 
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorType.Bms)
             {
                 ObjectName = $"用户{describe}",
                 ObjectId = model.Id.ToString(),
@@ -77,7 +77,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             await this._userService.RemoveAsync(id);
 
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorType.Bms)
             {
                 ObjectName = "用户删除",
                 ObjectId = id.ToString(),
@@ -101,7 +101,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         {
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
             var res = await this._userService.ResetPasswordAsync(id, _options.Value.GetRandomPassword);
-            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorTypeEnum.Bms)
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser.UserKey, authUser.UserName, OperatorType.Bms)
             {
                 ObjectName = "重置密码",
                 ObjectId = id.ToString(),
