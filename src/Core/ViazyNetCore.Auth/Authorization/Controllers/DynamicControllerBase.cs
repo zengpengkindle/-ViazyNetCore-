@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.DI;
 
-namespace ViazyNetCore.Auth.Authorization.Controllers
+namespace ViazyNetCore.Authorization
 {
     [Authorize]
     [Area("admin")]

@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Auth;
-using ViazyNetCore.Auth.Authorization.Controllers;
 using ViazyNetCore.Authorization.Dtos;
 using ViazyNetCore.Modules;
 

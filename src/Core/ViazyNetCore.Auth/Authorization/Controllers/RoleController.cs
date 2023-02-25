@@ -1,17 +1,6 @@
-using ViazyNetCore.Authorization;
-using ViazyNetCore.Authorization.Models;
-using ViazyNetCore.Authorization.Modules;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ViazyNetCore.Dtos;
-using Microsoft.AspNetCore.Authorization;
 using ViazyNetCore.Auth.Authorization.ViewModels;
-using ViazyNetCore.Auth.Authorization.Controllers;
+using ViazyNetCore.Authorization.Modules;
 
 namespace ViazyNetCore.Authrozation
 {
@@ -70,7 +59,7 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost]
-        public Task<List<string>> GetUserRole(string userId)
+        public Task<List<string>> GetUserRoleIds(string userId)
         {
             return this._roleService.GetRoleIdsOfUser(userId);
         }

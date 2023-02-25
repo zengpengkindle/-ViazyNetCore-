@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
 #pragma warning disable IDE0039 // 使用本地函数
             Func<IServiceProvider, IFreeSql> fsqlFunc = sp =>
             {
-                FreeSqlCloud<string> freeSqlCloud = new FreeSqlCloud<string>();
+                //FreeSqlCloud<string> freeSqlCloud = new FreeSqlCloud<string>();
 
                 var fsql = new FreeSqlBuilder().UseConnectionString(DataType.MySql, sp.GetService<IConfiguration>().GetConnectionString("master"))
 #if DEBUG
@@ -50,8 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     }
                 };
                 fsql.Aop.CommandAfter += Aop_CommandAfter;
-                freeSqlCloud.Register("default", () => fsql);
-                return freeSqlCloud;
+                //freeSqlCloud.Register("default", () => fsql);
+                return fsql;
             };
 #pragma warning restore IDE0039 // 使用本地函数
 

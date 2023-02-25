@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
-namespace ViazyNetCore.Core.System
+namespace System
 {
     /// <summary>
     /// 定义一个 Twitter-Snowflake 算法的分布式编号生成器的工厂。

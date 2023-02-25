@@ -27,6 +27,18 @@ namespace ViazyNetCore
             return new PageData<T1>(items.ToArray(), pagingInfo.Count);
         }
 
+
+        public static async Task<PageData<T2>> ToPageAsync<T1,T2>(this ISelect<T1> select, int? page, int? limit)
+        {
+            var pagingInfo = new BasePagingInfo
+            {
+                PageNumber = page ?? 1,
+                PageSize = limit ?? 10
+            };
+            var items = await select.Page(pagingInfo).ToListAsync<T2>();
+            return new PageData<T2>(items.ToArray(), pagingInfo.Count);
+        }
+
         public static PageData<T1> ToPage<T1>(this ISelect<T1> select, int page, int limit)
         {
             var pagingInfo = new BasePagingInfo

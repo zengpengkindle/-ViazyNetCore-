@@ -18,18 +18,12 @@ namespace System
         public long Total { get; set; }
 
         /// <summary>
-        /// 获取行的数据。
-        /// </summary>
-        /// <returns>行的数据。</returns>
-        public abstract Array GetRows();
-
-        /// <summary>
         /// 创建一个表格数据源。
         /// </summary>
         /// <typeparam name="TModel">数据源的行数据类型。</typeparam>
         /// <param name="rows">所有数据的行。可以一个 <see langword="null"/> 值。</param>
         /// <returns>一个 <see cref="PageData{TModel}"/> 的新实例。</returns>
-        public static PageData<TModel> Create<TModel>(TModel[]? rows) => Create(rows, rows is null ? 0 : rows.Length);
+        public static PageData<TModel> Create<TModel>(List<TModel>? rows) => Create(rows, rows is null ? 0 : rows.Count);
 
         /// <summary>
         /// 创建一个表格数据源。
@@ -38,7 +32,7 @@ namespace System
         /// <param name="total">行的总数。</param>
         /// <param name="rows">所有数据的行。可以一个 <see langword="null"/> 值。</param>
         /// <returns>一个 <see cref="PageData{TModel}"/> 的新实例。</returns>
-        public static PageData<TModel> Create<TModel>(TModel[]? rows, long total) => new(rows, total);
+        public static PageData<TModel> Create<TModel>(List<TModel>? rows, long total) => new(rows, total);
     }
 
     /// <summary>
@@ -65,6 +59,20 @@ namespace System
             if (rows.Length > total) throw new ArgumentException("The length of rows exceed the total number of rows.", nameof(rows));
 
             this.Total = total;
+            this.Rows = rows.ToList();
+        }
+        /// <summary>
+        /// 提供行的总数和数据，初始化一个 <see cref="PageData{TModel}"/> 类的新实例。
+        /// </summary>
+        /// <param name="total">行的总数。</param>
+        /// <param name="rows">所有数据的行。可以一个 <see langword="null"/> 值。</param>
+        public PageData(List<TModel>? rows, long total)
+        {
+            if (total < 0) throw new ArgumentOutOfRangeException(nameof(total));
+            if (rows is null) rows = new List<TModel>();
+            if (rows?.Count > total) throw new ArgumentException("The length of rows exceed the total number of rows.", nameof(rows));
+
+            this.Total = total;
             this.Rows = rows;
         }
 
@@ -79,12 +87,6 @@ namespace System
         /// 获取行的数据。
         /// </summary>
         [Required]
-        public TModel[] Rows { get; }
-
-        /// <summary>
-        /// 获取行的数据。
-        /// </summary>
-        /// <returns>行的数据。</returns>
-        public override Array GetRows() => this.Rows;
+        public List<TModel> Rows { get; set; }
     }
 }

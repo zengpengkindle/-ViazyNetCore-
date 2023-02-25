@@ -1,18 +1,8 @@
-using ViazyNetCore.Authorization;
-using ViazyNetCore.Authorization.Models;
-using ViazyNetCore.Authorization.Modules;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ViazyNetCore.Auth.Authorization.ViewModels;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.DependencyInjection;
-using ViazyNetCore.Auth.Authorization.Controllers;
+using ViazyNetCore.Auth.Authorization.ViewModels;
+using ViazyNetCore.Authorization.Modules;
 
 namespace ViazyNetCore.Authrozation
 {

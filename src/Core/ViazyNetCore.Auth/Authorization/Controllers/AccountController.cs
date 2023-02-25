@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using ViazyNetCore.Auth;
-using ViazyNetCore.Auth.Authorization.Controllers;
 using ViazyNetCore.Auth.Authorization.ViewModels;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
-using ViazyNetCore.Dtos;
 using ViazyNetCore.Modules;
 
-namespace ViazyNetCore.Controllers.Authorization
+namespace ViazyNetCore.Authorization
 {
     /// <summary>
     /// 账号管理
