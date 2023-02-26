@@ -44,7 +44,6 @@ namespace ViazyNetCore.Authorization.Modules
             return data;
         }
 
-
         /// <summary>
         /// 新增
         /// </summary>
@@ -86,6 +85,16 @@ namespace ViazyNetCore.Authorization.Modules
 
             //删除数据字典类型
             await _dictionaryTypeRepository.DeleteAsync(a => a.Id == id);
+        }
+
+        public Task<DictionaryType> GetAsync(long id)
+        {
+            return this._dictionaryTypeRepository.GetAsync(id);
+        }
+
+        public Task<DictionaryValue> GetValueAsync(long id)
+        {
+            return this._dictionaryValueRepository.GetAsync(id);
         }
     }
 }

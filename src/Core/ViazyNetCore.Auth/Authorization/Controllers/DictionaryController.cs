@@ -46,5 +46,20 @@ namespace ViazyNetCore.Authorization
             await this._dictionaryService.DeleteAsync(id);
             return true;
         }
+
+
+        [HttpPost]
+        [Permission(PermissionIds.Setting)]
+        public async Task<DictionaryType> GetAsync(long id)
+        {
+            return await this._dictionaryService.GetAsync(id);
+        }
+
+        [HttpPost]
+        [Permission(PermissionIds.Setting)]
+        public async Task<DictionaryValue> GetValueAsync(long id)
+        {
+            return await this._dictionaryService.GetValueAsync(id);
+        }
     }
 }

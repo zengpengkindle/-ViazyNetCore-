@@ -6,6 +6,7 @@ import { ElMessageBox } from "element-plus";
 import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted, type Ref } from "vue";
 import { nextTick } from "process";
+import { number } from "echarts/core";
 
 
 
@@ -71,7 +72,16 @@ export function useDic() {
             slot: "operation"
         }
     ]
+    interface EditDialog {
+        show: boolean;
+        editId: number;
+    }
+    const editDialog = reactive<EditDialog>({
+        show: false,
+        editId: 0
+    });
     function handleUpdate(row?: DictionaryFindAllModel) {
+        (editDialog.show = true), (editDialog.editId = row?.id ?? 0);
     }
 
     async function handleDelete(row) {
@@ -95,8 +105,6 @@ export function useDic() {
             loading.value = false;
         });
     }
-
-
     onMounted(() => {
         onSearch();
     });
@@ -108,6 +116,7 @@ export function useDic() {
         columns,
         dataList,
         pagination,
+        editDialog,
         onSearch,
         handleUpdate,
         handleDelete

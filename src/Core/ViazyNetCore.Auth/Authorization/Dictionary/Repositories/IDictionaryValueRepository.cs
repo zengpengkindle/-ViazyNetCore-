@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ViazyNetCore.Authorization.Modules.Repositories
 {
     [Injection]
-    public interface IDictionaryValueRepository : IBaseRepository<DictionaryValue, string>
+    public interface IDictionaryValueRepository : IBaseRepository<DictionaryValue, long>
     {
 
     }

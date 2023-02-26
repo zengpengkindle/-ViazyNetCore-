@@ -16,5 +16,7 @@ namespace ViazyNetCore.Authorization.Modules
         Task UpdateAsync(DictionaryTypeUpdateInput input);
 
         Task DeleteAsync(long id);
+        Task<DictionaryValue> GetValueAsync(long id);
+        Task<DictionaryType> GetAsync(long id);
     }
 }

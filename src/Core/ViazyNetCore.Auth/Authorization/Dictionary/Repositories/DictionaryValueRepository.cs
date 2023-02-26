@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ViazyNetCore.Authorization.Modules.Repositories
 {
     [Injection]
-    public class DictionaryValueRepository : DefaultRepository<DictionaryValue, string>, IDictionaryValueRepository
+    public class DictionaryValueRepository : DefaultRepository<DictionaryValue, long>, IDictionaryValueRepository
     {
         public DictionaryValueRepository(IFreeSql fsql) : base(fsql)
         {
