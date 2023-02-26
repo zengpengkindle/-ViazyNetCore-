@@ -30,12 +30,12 @@ namespace Microsoft.Extensions.DependencyInjection
             if (service.All(c => c.ServiceType != typeof(IMemoryCache)))
                 service.AddMemoryCache();
             service.AddSingleton<IApiManager, ApiManager>();
-            service.AddSingleton(sp =>
-            {
-                var apiManager = sp.GetRequiredService<IApiManager>();
-                var apiDescriptors = apiManager.GetApiDescriptors();
-                return apiDescriptors;
-            });
+            //service.AddSingleton(sp =>
+            //{
+            //    var apiManager = sp.GetRequiredService<IApiManager>();
+            //    var apiDescriptors = apiManager.GetApiDescriptors();
+            //    return apiDescriptors;
+            //});
 
             return service;
         }
