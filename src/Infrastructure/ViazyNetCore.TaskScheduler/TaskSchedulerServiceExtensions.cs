@@ -39,7 +39,7 @@ namespace ViazyNetCore.TaskScheduler
             };
             configureOptions?.Invoke(options);
 
-            var taskFreeSql = options.FreeSql.UseDb("task");
+            var taskFreeSql = options.FreeSql.UseDb(dbKey);
 
             taskFreeSql.CodeFirst
             .ConfigEntity<TaskInfo>(a =>
