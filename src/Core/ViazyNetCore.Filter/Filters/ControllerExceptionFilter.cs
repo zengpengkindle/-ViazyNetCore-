@@ -28,7 +28,7 @@ public class ControllerExceptionFilter : IExceptionFilter, IAsyncExceptionFilter
             var apiException = context.Exception is ApiException;
             if (_env.IsProduction())
             {
-                message = apiException ? context.Exception.Message;
+                message = apiException ? context.Exception.Message : "系统异常";
             }
             else
             {
@@ -39,9 +39,11 @@ public class ControllerExceptionFilter : IExceptionFilter, IAsyncExceptionFilter
             {
                 _logger.LogError(context.Exception, "");
             }
-            
-            var data = new ApiResponse { 
-            
+
+            var data = new ApiResponse
+            {
+                StatusCode = 500,
+                Message = message,
             };
             context.Result = new InternalServerErrorResult(data, apiException);
         }

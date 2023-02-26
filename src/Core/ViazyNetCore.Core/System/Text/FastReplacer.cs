@@ -227,24 +227,6 @@ namespace System
             if(token.IndexOf(this.TokenOpen, this.TokenOpen.Length, StringComparison.InvariantCultureIgnoreCase) != -1)
                 throw new ArgumentException(string.Format("Invalid identity '{0}'. The string is '{1}'.", token, context));
         }
-
-        /// <summary>
-        /// 获取当前字符串描述。
-        /// </summary>
-        /// <returns>字符串描述。</returns>
-        public override string ToString()
-        {
-            var builder = Collections.Concurrent.StringBuilderPool.Default.Acquire();
-            try
-            {
-                this._rootSnippet.ToString(builder);
-                return builder.ToString();
-            }
-            finally
-            {
-                Collections.Concurrent.StringBuilderPool.Default.Release(builder);
-            }
-        }
     }
 
     class FastReplacerSnippet
