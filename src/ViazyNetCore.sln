@@ -67,7 +67,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.xUnitTest.Rabb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.CommondTest", "tests\ViazyNetCore.CommondTest\ViazyNetCore.CommondTest.csproj", "{D1B61A76-6A82-4903-A3CC-BD73476C1DC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.MongoDB", "Infrastructure\ViazyNetCore.MongoDB\ViazyNetCore.MongoDB.csproj", "{8F3E2FA3-92CE-4295-8512-C7B3A1B4623C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.MongoDB", "Infrastructure\ViazyNetCore.MongoDB\ViazyNetCore.MongoDB.csproj", "{8F3E2FA3-92CE-4295-8512-C7B3A1B4623C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Authorization", "Core\ViazyNetCore.Authorization\ViazyNetCore.Authorization.csproj", "{3C75A4C7-E2CF-4AB6-B787-5C21009CE123}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +177,10 @@ Global
 		{8F3E2FA3-92CE-4295-8512-C7B3A1B4623C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F3E2FA3-92CE-4295-8512-C7B3A1B4623C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F3E2FA3-92CE-4295-8512-C7B3A1B4623C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C75A4C7-E2CF-4AB6-B787-5C21009CE123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C75A4C7-E2CF-4AB6-B787-5C21009CE123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C75A4C7-E2CF-4AB6-B787-5C21009CE123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C75A4C7-E2CF-4AB6-B787-5C21009CE123}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -205,6 +211,7 @@ Global
 		{9ACE857D-E2B9-46ED-8A9A-420B6DF18CC8} = {3699B480-8954-45C1-AD64-53542BDD6AEC}
 		{D1B61A76-6A82-4903-A3CC-BD73476C1DC7} = {3699B480-8954-45C1-AD64-53542BDD6AEC}
 		{8F3E2FA3-92CE-4295-8512-C7B3A1B4623C} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{3C75A4C7-E2CF-4AB6-B787-5C21009CE123} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

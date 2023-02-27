@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using ViazyNetCore;
+using ViazyNetCore.Authorization;
+using ViazyNetCore.Authorization.Models;
 using ViazyNetCore.Authorization.Modules;
 
 namespace Microsoft.Extensions.DependencyInjection

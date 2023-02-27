@@ -57,13 +57,5 @@ namespace Microsoft.Extensions.DependencyInjection
                 };
             });
         }
-
-        public static void AddAuthorizationController(this IServiceCollection services)
-        {
-            services.AddDynamicController(options =>
-            {
-                options.AddAssemblyOptions(typeof(AuthConfiguraionSteup).Assembly);
-            });
-        }
     }
 }

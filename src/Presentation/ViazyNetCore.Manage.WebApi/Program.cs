@@ -27,7 +27,7 @@ builder.WebHost.ConfigureLogging(logging =>
 var ServiceAssemblies = new Assembly?[]
 {
     RuntimeHelper.GetAssembly("ViazyNetCore.Modules"),
-    RuntimeHelper.GetAssembly("ViazyNetCore.Auth")
+    RuntimeHelper.GetAssembly("ViazyNetCore.Authorization")
 };
 
 builder.Services.AddJwtAuthentication(option =>
@@ -52,6 +52,7 @@ builder.Services.AddControllers(options =>
 }).AddControllersAsServices();
 
 builder.Services.AddAuthorizationController();
+
 //builder.Services.AddCustomApiVersioning();
 //.AddApplicationPart(typeof(TestController).Assembly)
 ;
@@ -98,6 +99,7 @@ builder.Services.AddSwagger(option =>
 var app = builder.Build();
 app.UseFreeSql();
 app.UseHttpsRedirection();
+//app.UseDynamicController();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseEventBusWithStore(ServiceAssemblies);

@@ -93,13 +93,15 @@ namespace Microsoft.Extensions.DependencyInjection
             AppConsts.GetRestFulControllerName = options.GetRestFulControllerName;
             AppConsts.GetRestFulActionName = options.GetRestFulActionName;
             AppConsts.AssemblyDynamicApiOptions = options.DynamicAssemblyControllerOptions;
-            var partManager = (ApplicationPartManager?)services.FirstOrDefault(d => d.ServiceType == typeof(ApplicationPartManager))
-            ?.ImplementationInstance;
+            //var partManager = (ApplicationPartManager?)services.FirstOrDefault(d => d.ServiceType == typeof(ApplicationPartManager))
+            //?.ImplementationInstance;
 
-            if (partManager == null)
-            {
-                throw new InvalidOperationException("\"AddDynamicController\" must be after \"AddMvc\".");
-            }
+            //if (partManager == null)
+            //{
+            //    throw new InvalidOperationException("\"AddDynamicController\" must be after \"AddMvc\".");
+            //}
+            services.AddSingleton(sp=>options.SelectController);
+            services.AddSingleton(sp => options.ActionRouteFactory);
 
             // Add a custom controller checker
             //partManager.FeatureProviders.Add(new DynamicControllerControllerFeatureProvider(options.SelectController));
@@ -121,11 +123,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddDynamicController(this IServiceCollection services, Action<DynamicControllerOptions> optionsAction)
         {
-            var DynamicApiOptions = new DynamicControllerOptions();
+            var options = new DynamicControllerOptions();
 
-            optionsAction?.Invoke(DynamicApiOptions);
+            optionsAction?.Invoke(options);
 
-            return AddDynamicController(services, DynamicApiOptions);
+            return AddDynamicController(services, options);
         }
     }
 }
