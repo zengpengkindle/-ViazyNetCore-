@@ -2,7 +2,8 @@
 
 namespace ViazyNetCore.Formatter.Response.Filters
 {
-    public class RequestDataLogIgnoreAttribute: Attribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    public class RequestDataLogIgnoreAttribute : Attribute
     {
     }
 }
