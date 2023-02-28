@@ -18,5 +18,9 @@ namespace ViazyNetCore.Authorization.Modules
         Task DeleteAsync(long id);
         Task<DictionaryValue> GetValueAsync(long id);
         Task<DictionaryType> GetAsync(long id);
+        Task<PageData<DictionaryValue>> GetValuePageAsync(DictionaryValueFindAllArgs args);
+        Task DeleteValueAsync(long id);
+        Task<long> AddValueAsync(DictionaryValueAddInput input);
+        Task UpdateValueAsync(DictionaryValueUpdateInput input);
     }
 }

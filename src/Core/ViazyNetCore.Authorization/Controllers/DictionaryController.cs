@@ -47,7 +47,6 @@ namespace ViazyNetCore.Authorization
             return true;
         }
 
-
         [HttpPost]
         [Permission(PermissionIds.Setting)]
         public async Task<DictionaryType> GetAsync(long id)
@@ -60,6 +59,38 @@ namespace ViazyNetCore.Authorization
         public async Task<DictionaryValue> GetValueAsync(long id)
         {
             return await this._dictionaryService.GetValueAsync(id);
+        }
+
+        [HttpPost]
+        [Permission(PermissionIds.Setting)]
+        public async Task<PageData<DictionaryValue>> FindValuesAsync(DictionaryValueFindAllArgs args)
+        {
+            return await this._dictionaryService.GetValuePageAsync(args);
+        }
+
+
+
+        [HttpPost]
+        [Permission(PermissionIds.Setting)]
+        public Task<long> AddValueAsync(DictionaryValueAddInput input)
+        {
+            return this._dictionaryService.AddValueAsync(input);
+        }
+
+        [HttpPost]
+        [Permission(PermissionIds.Setting)]
+        public async Task<bool> UpdateValueAsync(DictionaryValueUpdateInput input)
+        {
+            await this._dictionaryService.UpdateValueAsync(input);
+            return true;
+        }
+
+        [HttpPost]
+        [Permission(PermissionIds.Setting)]
+        public async Task<bool> DeleteValueAsync(long id)
+        {
+            await this._dictionaryService.DeleteValueAsync(id);
+            return true;
         }
     }
 }

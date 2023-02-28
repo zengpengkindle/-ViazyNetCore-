@@ -1,5 +1,5 @@
-import { http } from '@/utils/http';
-import { UserLoginArgs, JwtTokenResult } from './model'
+import { http } from "@/utils/http";
+import { UserLoginArgs, JwtTokenResult } from "./model";
 
 export class AccountApi {
   /**
@@ -7,8 +7,8 @@ export class AccountApi {
    */
   public accountLogin(param1: UserLoginArgs): Promise<JwtTokenResult> {
     return http.request({
-      url: '/api/account/login',
-      method: 'post',
+      url: "/api/account/login",
+      method: "post",
       data: param1
     });
   }

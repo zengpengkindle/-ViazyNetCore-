@@ -25,10 +25,10 @@ namespace ViazyNetCore.xUnitTest.RabbitMq
                 throw new ArgumentNullException(nameof(bus));
             using var context = bus.Context;
             await context.PublishAsync(new MqTestModel());
-            await context.SubscribeAsync<MqTestModel>((ss, ee) => this.OnSubscribe(context, ee)); ;
+            await context.SubscribeAsync<MqTestModel>((ss, ee) => OnSubscribe(context, ee)); ;
         }
 
-        private async Task OnSubscribe<TBody>(IMessageBusContext context, SubscribeEventArgs<TBody> args)
+        private static async Task OnSubscribe<TBody>(IMessageBusContext context, SubscribeEventArgs<TBody> args)
         {
             Console.WriteLine(JSON.Stringify(args.Body));
             args.Ack = true;

@@ -31,7 +31,7 @@ namespace ViazyNetCore.Authorization.Modules
             var list = await this._dictionaryTypeRepository.Select
             .WhereIf(args.Name.IsNotNull(), a => a.Name.Contains(key) || a.Code.Contains(key))
             .Count(out var total)
-            .OrderByDescending(true, c => c.Id)
+            .OrderByDescending(true, c => c.Sort)
             .Page(args.Page, args.Limit)
             .ToListAsync<DictionaryTypeListOutput>();
 
@@ -95,6 +95,44 @@ namespace ViazyNetCore.Authorization.Modules
         public Task<DictionaryValue> GetValueAsync(long id)
         {
             return this._dictionaryValueRepository.GetAsync(id);
+        }
+
+        public async Task<PageData<DictionaryValue>> GetValuePageAsync(DictionaryValueFindAllArgs args)
+        {
+            var key = args.Name;
+
+            var result = await this._dictionaryValueRepository.Select
+            .Where(p => p.DictionaryTypeId == args.DictionaryTypeId)
+            .WhereIf(args.Name.IsNotNull(), a => a.Name.Contains(key) || a.Code.Contains(key))
+            .OrderByDescending(true, c => c.Sort)
+            .ToPageAsync(args);
+            return result;
+        }
+
+        public Task DeleteValueAsync(long id)
+        {
+            //删除字典数据
+            return this._dictionaryValueRepository.DeleteAsync(a => a.Id == id);
+        }
+
+        public async Task<long> AddValueAsync(DictionaryValueAddInput input)
+        {
+            var dictionaryValue = input.CopyTo<DictionaryValue>();
+            dictionaryValue.CreateTime = DateTime.Now;
+            await _dictionaryValueRepository.InsertAsync(dictionaryValue);
+            return dictionaryValue.Id;
+        }
+
+        public async Task UpdateValueAsync(DictionaryValueUpdateInput input)
+        {
+            var entity = await _dictionaryValueRepository.GetAsync(input.Id);
+            if (!(entity?.Id > 0))
+            {
+                throw new ApiException("数据字典不存在！");
+            }
+
+            input.CopyTo(entity);
+            await _dictionaryValueRepository.UpdateAsync(entity);
         }
     }
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ComStatus } from "@/api/model";
-import DictionaryApi, { DictionaryTypeModel } from "@/api/system";
+import DictionaryApi, { DictionaryValueModel } from "@/api/system";
 import { message } from "@/utils/message";
 import { FormInstance, FormRules } from "element-plus";
 import { ref, watch, Ref, reactive } from "vue";
@@ -8,6 +8,7 @@ import { ref, watch, Ref, reactive } from "vue";
 export interface EditProps {
   modelValue: boolean;
   readonly id: number | null;
+  readonly typeId: number;
 }
 const props = defineProps<EditProps>();
 const visible = ref(false);
@@ -30,21 +31,22 @@ const handleClose = (done: () => void) => {
   emit("update:modelValue", false);
   done();
 };
-const defaultUserInfo: DictionaryTypeModel = {
+const defaultValueInfo: DictionaryValueModel = {
   id: 0,
   name: "",
   code: "",
   status: ComStatus.Disabled,
-  description: ""
+  description: "",
+  dictionaryTypeId: 0
 };
 
-const dicInfo: Ref<DictionaryTypeModel> = ref({ ...defaultUserInfo });
+const dicInfo: Ref<DictionaryValueModel> = ref({ ...defaultValueInfo });
 
 async function getDicInfo() {
   if (props.id) {
-    dicInfo.value = await DictionaryApi.apiGet(props.id);
+    dicInfo.value = await DictionaryApi.apiGetValue(props.id);
   } else {
-    dicInfo.value = { ...defaultUserInfo };
+    dicInfo.value = { ...defaultValueInfo, dictionaryTypeId: props.typeId };
   }
 }
 const formRef = ref<FormInstance>();
@@ -56,11 +58,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate(async valid => {
     if (valid) {
       if (props.id !== 0) {
-        await DictionaryApi.apiUpdate({
+        await DictionaryApi.apiUpdateValue({
           ...dicInfo.value
         });
       } else {
-        await DictionaryApi.apiAdd({
+        await DictionaryApi.apiAddValue({
           ...dicInfo.value
         });
       }
