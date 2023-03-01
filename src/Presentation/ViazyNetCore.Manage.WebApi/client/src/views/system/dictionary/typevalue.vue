@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { PureTableBar } from "@/components/RePureTableBar";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ElButton, ElPopconfirm } from "element-plus";
@@ -11,7 +11,6 @@ import PureTable, { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, onMounted, type Ref, defineProps, watch } from "vue";
 import { nextTick } from "process";
 import EditValueDialog from "./editValueDialog.vue";
-import xstatus from "@/components/ui/status.vue";
 
 import EditPen from "@iconify-icons/ep/edit-pen";
 import Delete from "@iconify-icons/ep/delete";
@@ -76,6 +75,14 @@ const columns: TableColumnList = [
     minWidth: 80
   },
   {
+    label: "状态",
+    prop: "status",
+    minWidth: 90,
+    cellRenderer: ({ row }) => (
+      <x-status v-model={row.status} type="cell" class="!w-[200px]" />
+    )
+  },
+  {
     label: "操作",
     fixed: "right",
     width: 180,
@@ -119,7 +126,10 @@ async function onSearch() {
 }
 
 onMounted(() => {
-  onSearch();
+  if (props.typeId) {
+    form.dictionaryTypeId = props.typeId;
+    onSearch();
+  }
 });
 </script>
 <template>

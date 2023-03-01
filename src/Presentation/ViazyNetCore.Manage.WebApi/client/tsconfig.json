@@ -15,7 +15,7 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "allowJs": false,
+    "allowJs": true,
     "resolveJsonModule": true,
     "lib": ["dom", "esnext"],
     "incremental": true,
