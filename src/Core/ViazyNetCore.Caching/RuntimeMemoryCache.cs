@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using ViazyNetCore.Caching;
 
 namespace ViazyNetCore.Caching
@@ -82,6 +84,28 @@ namespace ViazyNetCore.Caching
                 return;//throw new ArgumentNullException(nameof(value));
 
             _cache.Set(cacheKey, value, new MemoryCacheEntryOptions().SetAbsoluteExpiration(expiresIn));
+        }
+
+        public Task RemoveByPatternAsync(string pattern)
+        {
+            if (pattern.IsNull())
+                return Task.CompletedTask;
+            pattern = Regex.Replace(pattern, @"\{.*\}", "*");
+            var cacheKeys = GetCacheKeys();
+            var keys = cacheKeys.Where(k => Regex.IsMatch(k, pattern)).ToList();
+            foreach (var key in keys)
+            {
+                if (key != null)
+                    _cache.Remove(key);
+            }
+            return Task.CompletedTask;
+            //if (pattern.IsNull())
+            //    return default;
+
+            //pattern = Regex.Replace(pattern, @"\{.*\}", "*");
+
+            //_cache.TryGetValue(pattern, out var result);
+            //throw new NotImplementedException();
         }
     }
 

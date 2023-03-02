@@ -1,4 +1,6 @@
-﻿using Nito.AsyncEx;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using Nito.AsyncEx;
 
 namespace ViazyNetCore.Caching
 {
@@ -177,6 +179,15 @@ namespace ViazyNetCore.Caching
                 }
             }
             return result;
+        }
+
+        public async Task RemoveByPatternAsync(string cacheKeyPattern)
+        {
+            await _cache.RemoveByPatternAsync(cacheKeyPattern);
+            if (EnableDistributedCache)
+            {
+                await _localCache.RemoveByPatternAsync(cacheKeyPattern);
+            }
         }
     }
 

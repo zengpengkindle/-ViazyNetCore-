@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Auth.Authorization.Models
+namespace ViazyNetCore.Authorization.Models
 {
-    public class BmsUserOrg
+    public class BmsUserOrg : EntityBase
     {
         /// <summary>
         /// 设置或获取一个值，表示角色编号。

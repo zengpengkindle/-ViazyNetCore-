@@ -126,7 +126,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerAndUI();
     app.UseSpa(spa =>
     {
-        spa.Options.SourcePath = "client";
+        spa.Options.SourcePath = "../../../fontend/ele-admin-ui";
         //spa.Options.PackageManagerCommand = "pnpm";
         spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions()
         {

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using System.Text.RegularExpressions;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using ViazyNetCore.Caching;
 
 namespace ViazyNetCore.Caching
@@ -37,6 +39,21 @@ namespace ViazyNetCore.Caching
         public void Remove(string cacheKey)
         {
             this._distributedCache.Remove(cacheKey);
+        }
+
+        public Task RemoveByPatternAsync(string pattern)
+        {
+            if (pattern.IsNull())
+                return Task.CompletedTask;
+            pattern = Regex.Replace(pattern, @"\{.*\}", "*");
+            //var cacheKeys = GetCacheKeys();
+            //var keys = cacheKeys.Where(k => Regex.IsMatch(k, pattern)).ToList();
+            //foreach (var key in keys)
+            //{
+            //    if (key != null)
+            //        _cache.Remove(key);
+            //}
+            return Task.CompletedTask;
         }
 
         public void Set(string cacheKey, object value, TimeSpan expiresIn)

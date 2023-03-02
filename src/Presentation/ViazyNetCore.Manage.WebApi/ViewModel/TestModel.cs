@@ -42,6 +42,5 @@ namespace ViazyNetCore.Manage.WebApi.ViewModel
         /// 数字类型
         /// </summary>
         public int Number { get; set; }
-        public WeatherForecast WeatherForecast { get; set; }
     }
 }

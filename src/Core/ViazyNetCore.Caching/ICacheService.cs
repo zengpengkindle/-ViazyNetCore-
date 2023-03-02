@@ -13,6 +13,7 @@
         void Remove(string cacheKey);
         void Set(string cacheKey, object value, TimeSpan timeSpan);
         void Set(string cacheKey, object value, CachingExpirationType cachingExpirationType);
+        Task RemoveByPatternAsync(string cacheKeyPattern);
 
         bool EnableDistributedCache { get; }
     }
