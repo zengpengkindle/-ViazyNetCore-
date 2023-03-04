@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
+    <ProjectReference Include="..\..\src\ViazyNetCore.Modules\ViazyNetCore.Modules.csproj" />
+  </ItemGroup>
+
 </Project>

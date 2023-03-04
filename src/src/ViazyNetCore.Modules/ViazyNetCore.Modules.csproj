@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\sdks\payment\Essensoft.AspNetCore.Payment.Alipay\Essensoft.AspNetCore.Payment.Alipay.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Domain\ViazyNetCore.Domain.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Model\ViazyNetCore.Model.csproj" />

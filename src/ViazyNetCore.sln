@@ -79,6 +79,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essensoft.AspNetCore.Paymen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essensoft.AspNetCore.Payment.Security", "sdks\payment\Essensoft.AspNetCore.Payment.Security\Essensoft.AspNetCore.Payment.Security.csproj", "{A513C7F7-1042-4344-BAEF-4B0ECB2CF2D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.ShopMall.AppApi", "Presentation\ViazyNetCore.ShopMall.AppApi\ViazyNetCore.ShopMall.AppApi.csproj", "{DB61695C-51A4-4EB1-AB9A-6BF9C405BE15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -197,6 +199,10 @@ Global
 		{A513C7F7-1042-4344-BAEF-4B0ECB2CF2D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A513C7F7-1042-4344-BAEF-4B0ECB2CF2D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A513C7F7-1042-4344-BAEF-4B0ECB2CF2D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB61695C-51A4-4EB1-AB9A-6BF9C405BE15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB61695C-51A4-4EB1-AB9A-6BF9C405BE15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB61695C-51A4-4EB1-AB9A-6BF9C405BE15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB61695C-51A4-4EB1-AB9A-6BF9C405BE15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -231,6 +237,7 @@ Global
 		{CE2CCA46-921A-4321-B277-430F0A52F499} = {699676F3-5567-47C3-8BB8-3448DBB75089}
 		{A0163EB8-93BF-4C3B-8901-A48E5D2B6227} = {CE2CCA46-921A-4321-B277-430F0A52F499}
 		{A513C7F7-1042-4344-BAEF-4B0ECB2CF2D1} = {CE2CCA46-921A-4321-B277-430F0A52F499}
+		{DB61695C-51A4-4EB1-AB9A-6BF9C405BE15} = {57CCA8FF-D37C-4F0E-91CB-C0B155DB5861}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}
