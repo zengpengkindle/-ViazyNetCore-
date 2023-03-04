@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
     <ProjectReference Include="..\..\Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
     <ProjectReference Include="..\..\Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.EventBus\ViazyNetCore.EventBus.csproj" />

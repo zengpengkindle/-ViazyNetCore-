@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.Domain\ViazyNetCore.Domain.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Model\ViazyNetCore.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="EventDatas\Logs\" />
+    <Folder Include="EventHandler\" />
   </ItemGroup>
 
 </Project>
