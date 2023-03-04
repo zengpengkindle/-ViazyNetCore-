@@ -1,11 +1,4 @@
-﻿using ViazyNetCore.Modules.ShopMall.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ViazyNetCore.Modules.ShopMall
+﻿namespace ViazyNetCore.Modules.ShopMall
 {
     public interface ITradeCreateHandler
     {

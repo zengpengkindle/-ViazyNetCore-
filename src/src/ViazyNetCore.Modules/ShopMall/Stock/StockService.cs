@@ -280,9 +280,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     {
                         foreach (var handler in this._stockChangeHandler)
                         {
-                            var result = await handler.OnUpdateLockStockAsync(context, productId, skuId, lockNum);
-                            if (result.Fail())
-                                return result;
+                            await handler.OnUpdateLockStockAsync(context, productId, skuId, lockNum);
                         }
                     }
                 }
@@ -397,9 +395,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     {
                         foreach (var handler in this._stockChangeHandler)
                         {
-                            var result = await handler.OnUpdateOutStockAsync(context, productId, skuId, outStockNum);
-                            if (result.Fail())
-                                return result;
+                            await handler.OnUpdateOutStockAsync(context, productId, skuId, outStockNum);
                         }
                     }
                 }
@@ -460,9 +456,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     {
                         foreach (var handler in this._stockChangeHandler)
                         {
-                            var result = await handler.OnUpdateInStockAsync(context, stockId, inStockNum, remark, userId);
-                            if (result.Fail())
-                                throw new ApiException(result.Message, result.Status);
+                            await handler.OnUpdateInStockAsync(context, stockId, inStockNum, remark, userId);
                         }
                     }
                 }
@@ -504,9 +498,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     {
                         foreach (var handler in this._stockChangeHandler)
                         {
-                            var result = await handler.OnUpdateRefundStockAsync(context, productId, skuId, refundNum);
-                            if (result.Fail())
-                                return result;
+                           await handler.OnUpdateRefundStockAsync(context, productId, skuId, refundNum);
                         }
                     }
                 }
@@ -550,9 +542,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     {
                         foreach (var handler in this._stockChangeHandler)
                         {
-                            var result = await handler.OnUpdateExchangeStockAsync(context, productId, skuId, exchangeNum);
-                            if (result.Fail())
-                                return result;
+                            await handler.OnUpdateExchangeStockAsync(context, productId, skuId, exchangeNum);
                         }
                     }
                 }

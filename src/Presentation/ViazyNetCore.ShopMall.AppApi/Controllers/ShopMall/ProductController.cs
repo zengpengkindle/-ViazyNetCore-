@@ -6,7 +6,7 @@ namespace ViazyNetCore.ShopMall.AppApi
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         private readonly ProductService _productService;
         private readonly ILockProvider _lockProvider;
@@ -19,6 +19,7 @@ namespace ViazyNetCore.ShopMall.AppApi
             this._lockProvider = lockProvider;
         }
 
+        [HttpPost]
         public async Task<ProductModel> GetProductSku([Required] string productId)
         {
             if (productId.IsNull())
@@ -55,6 +56,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
+        [HttpPost]
         public async Task<ProductInfoModel> GetProductInfo(string productId)
         {
             if (productId.IsNull())

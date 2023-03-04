@@ -8,7 +8,7 @@ namespace ViazyNetCore.Modules.ShopMall
 {
     public static class ShopExtensions
     {
-        public static IServiceCollection AddShop(this IServiceCollection services, IMemberService memberService = null)
+        public static IServiceCollection AddShopMall(this IServiceCollection services, IMemberService memberService = null)
         {
             services.TryAddEnumerable(ServiceDescriptor.Scoped<IPayNotifyHandler, TradePayNotifyHandler>());
             services.AddScoped<PaymentService>();

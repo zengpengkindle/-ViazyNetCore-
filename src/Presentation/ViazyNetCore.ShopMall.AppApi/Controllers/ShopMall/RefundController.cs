@@ -5,7 +5,7 @@ namespace ViazyNetCore.ShopMall.AppApi
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class RefundController : ControllerBase
+    public class RefundController : BaseController
     {
         private readonly RefundService _refundService;
         private readonly ILockProvider _lockProvider;
@@ -21,6 +21,7 @@ namespace ViazyNetCore.ShopMall.AppApi
             this._httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpPost]
         public async Task<RefundTradeModel> FindTradeRefundInfo(string tradeId)
         {
             var result = await this._refundService.FindRefundTradeInfo(this._memberId, tradeId);

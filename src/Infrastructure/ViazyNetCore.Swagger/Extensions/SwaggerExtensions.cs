@@ -121,45 +121,41 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void UseSwaggerAndUI(this WebApplication app)
         {
+            var swaggerConfig = app.Services.GetService<IOptions<SwaggerConfig>>();
+            if (swaggerConfig == null)
+                throw new NotImplementedException($"{nameof(SwaggerConfig)} 未注入");
 
-            if (app.Environment.IsDevelopment())
+            var swaggerGenOptions = app.Services.GetService<IOptions<SwaggerGenOptions>>();
+            var routePrefix = swaggerConfig.Value.RoutePrefix;
+            var routePath = routePrefix.IsNotNull() ? $"{routePrefix}/" : "";
+
+            app.UseSwagger(options =>
             {
-                var swaggerConfig = app.Services.GetService<IOptions<SwaggerConfig>>();
-                if (swaggerConfig == null)
-                    throw new NotImplementedException($"{nameof(SwaggerConfig)} 未注入");
-
-                var swaggerGenOptions = app.Services.GetService<IOptions<SwaggerGenOptions>>();
-                var routePrefix = swaggerConfig.Value.RoutePrefix;
-                var routePath = routePrefix.IsNotNull() ? $"{routePrefix}/" : "";
-
-                app.UseSwagger(options =>
+                options.PreSerializeFilters.Add((swagger, httpReq) =>
                 {
-                    options.PreSerializeFilters.Add((swagger, httpReq) =>
+                    var servers = new List<OpenApiServer>();
+                    if (httpReq.IsLocal())
                     {
-                        var servers = new List<OpenApiServer>();
-                        if (httpReq.IsLocal())
-                        {
-                            servers.Add(new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}", Description = "本地环境" });
-                        }
-                        //action?.Invoke(servers);
-                        foreach (var item in swaggerConfig.Value.ApiServer)
-                        {
-                            servers.Add(new OpenApiServer { Url = $"{item.Scheme}://{item.Host.Value}", Description = item.Description });
-                        }
-                        swagger.Servers = servers;
-                    });
+                        servers.Add(new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}", Description = "本地环境" });
+                    }
+                    //action?.Invoke(servers);
+                    foreach (var item in swaggerConfig.Value.ApiServer)
+                    {
+                        servers.Add(new OpenApiServer { Url = $"{item.Scheme}://{item.Host.Value}", Description = item.Description });
+                    }
+                    swagger.Servers = servers;
                 });
-                app.UseKnife4UI(options =>
+            });
+            app.UseKnife4UI(options =>
+            {
+                options.RoutePrefix = routePrefix;
+                swaggerConfig.Value.Projects?.ForEach(project =>
                 {
-                    options.RoutePrefix = routePrefix;
-                    swaggerConfig.Value.Projects?.ForEach(project =>
-                    {
-                        options.SwaggerEndpoint($"/{project.Code.ToLower()}/swagger.json", project.Name);
-                    });
+                    options.SwaggerEndpoint($"/{project.Code.ToLower()}/swagger.json", project.Name);
                 });
+            });
 
-                //app.MapSwagger("/k4/{documentName}/swagger.json");
-            }
+            //app.MapSwagger("/k4/{documentName}/swagger.json");
         }
     }
 

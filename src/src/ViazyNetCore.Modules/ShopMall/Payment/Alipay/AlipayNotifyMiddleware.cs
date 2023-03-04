@@ -1,19 +1,17 @@
-﻿using Aoite.WebApi;
-using Essensoft.AspNetCore.Payment.Alipay;
+﻿using Essensoft.AspNetCore.Payment.Alipay;
+using Essensoft.AspNetCore.Payment.Alipay.Domain;
 using Essensoft.AspNetCore.Payment.Alipay.Notify;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ViazyNetCore.Modules.ShopMall
 {
     public class AlipayNotifyMiddleware
     {
+        private readonly static Microsoft.AspNetCore.Routing.RouteData EmptyRouteData = new Microsoft.AspNetCore.Routing.RouteData();
+        private readonly static Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor EmptyActionDescriptor = new Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor();
+
         private RequestDelegate _nextDelegate;
         private readonly PaymentService _paymentService;
         private readonly IAlipayNotifyClient _notifyClient;
@@ -43,7 +41,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     if ("TRADE_SUCCESS" == notify.TradeStatus)
                     {
                         await _paymentService.PaySuccessNotify(notify.OutTradeNo);
-                        await AlipayNotifyResult.Success.ExecuteResultAsync(httpContext);
+                        await AlipayNotifyResult.Success.ExecuteResultAsync(new ActionContext(httpContext, EmptyRouteData, EmptyActionDescriptor));
                         return;
                     }
                 }
@@ -53,7 +51,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     if ("TRADE_SUCCESS" == notify.TradeStatus)
                     {
                         await _paymentService.PaySuccessNotify(notify.OutTradeNo);
-                        await AlipayNotifyResult.Success.ExecuteResultAsync(httpContext);
+                        await AlipayNotifyResult.Success.ExecuteResultAsync(new ActionContext(httpContext, EmptyRouteData, EmptyActionDescriptor));
                         return;
                     }
                 }
@@ -63,11 +61,11 @@ namespace ViazyNetCore.Modules.ShopMall
                     if ("TRADE_SUCCESS" == notify.TradeStatus)
                     {
                         await _paymentService.PaySuccessNotify(notify.OutTradeNo);
-                        await AlipayNotifyResult.Success.ExecuteResultAsync(httpContext);
+                        await AlipayNotifyResult.Success.ExecuteResultAsync(new ActionContext(httpContext, EmptyRouteData, EmptyActionDescriptor));
                         return;
                     }
                 }
-                await new OkResult().ExecuteResultAsync(httpContext);
+                await new OkResult().ExecuteResultAsync(new ActionContext(httpContext, EmptyRouteData, EmptyActionDescriptor));
             }
             else
             {

@@ -6,7 +6,7 @@ namespace ViazyNetCore.ShopMall.AppApi
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class ProductCartController : ControllerBase
+    public class ProductCartController : BaseController
     {
         private readonly CartService _cartService;
         private readonly ILockProvider _lockProvider;
@@ -22,6 +22,7 @@ namespace ViazyNetCore.ShopMall.AppApi
             this._httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpPost]
         public async Task<ShoppingCart> FindCart()
         {
             var result = await this._cartService.GetShoppingCart(_memberId);
@@ -36,6 +37,7 @@ namespace ViazyNetCore.ShopMall.AppApi
             return result;
         }
 
+        [HttpPost]
         public async Task<bool> AddCart(ShoppingCartProduct product)
         {
             var result = await this._cartService.AddShoppingCartProduct(product, _memberId);
@@ -44,6 +46,7 @@ namespace ViazyNetCore.ShopMall.AppApi
             return true;
         }
 
+        [HttpPost]
         public async Task<bool> RemoveCart(ShoppingCartProduct product)
         {
             var result = await this._cartService.RemoveShoppingCartProduct(product, _memberId);

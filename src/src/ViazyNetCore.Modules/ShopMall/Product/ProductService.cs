@@ -51,10 +51,6 @@ namespace ViazyNetCore.Modules.ShopMall
                 foreach (var handler in this._productHandlers)
                 {
                     var result = await handler.OnFindProductAllAsync(args);
-                    if (result.Fail())
-                    {
-                        throw new ApiException(result.Message, result.Status);
-                    }
                 }
             }
 
@@ -301,11 +297,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     {
                         foreach (var handler in this._editProductHanlders)
                         {
-                            var result = await handler.OnAddProductAsync(item);
-                            if (result.Fail())
-                            {
-                                return result;
-                            }
+                            await handler.OnAddProductAsync(item);
                         }
                     }
                     context.Commit();
@@ -389,11 +381,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     {
                         foreach (var handler in this._editProductHanlders)
                         {
-                            var result = await handler.OnUpdateProductAsync(item);
-                            if (result.Fail())
-                            {
-                                return result;
-                            }
+                            await handler.OnUpdateProductAsync(item);
                         }
                     }
                     context.Commit();
@@ -422,9 +410,7 @@ namespace ViazyNetCore.Modules.ShopMall
             {
                 foreach (var handler in _editProductHanlders)
                 {
-                    var result = await handler.OnModifyProductStatusAsync(id, shopId, status);
-                    if (result.Fail())
-                        return result;
+                    await handler.OnModifyProductStatusAsync(id, shopId, status);
                 }
             }
 

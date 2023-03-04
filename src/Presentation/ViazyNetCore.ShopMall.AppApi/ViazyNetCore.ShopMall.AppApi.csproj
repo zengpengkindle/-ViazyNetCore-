@@ -8,7 +8,25 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
+    <ProjectReference Include="..\..\Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Formatter.Response\ViazyNetCore.Formatter.Response.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />
+    <ProjectReference Include="..\..\src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.Modules\ViazyNetCore.Modules.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
