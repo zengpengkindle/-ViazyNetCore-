@@ -3,6 +3,7 @@
     /// <summary>
     /// 退换货处理记录
     /// </summary>
+    [Table(Name = "ShopMall.RefunTradeLog")]
     public partial class RefunTradeLog : EntityBase<string>
     {
         /// <summary>

@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 表示一个商品子订单。
     /// </summary>
+    [Table(Name = "ShopMall.ProductTradeOrder")]
     public partial class ProductTradeOrder : EntityBase<string>
     {
         /// <summary>

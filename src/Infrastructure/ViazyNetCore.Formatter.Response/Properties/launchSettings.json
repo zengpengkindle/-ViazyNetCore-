@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ViazyNetCore.Formatter.Response": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56198;http://localhost:56202"
+    }
+  }
+}

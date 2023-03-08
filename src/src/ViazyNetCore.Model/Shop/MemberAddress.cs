@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 表示一个会员收货地址。
     /// </summary>
+    [Table(Name = "ShopMall.MemberAddress")]
     public partial class MemberAddress : EntityBase<string>
     {
         /// <summary>

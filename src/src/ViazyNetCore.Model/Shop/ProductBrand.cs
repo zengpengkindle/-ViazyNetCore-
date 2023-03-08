@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 表示一个商品品牌。
     /// </summary>
+    [Table(Name = "ShopMall.ProductBrand")]
     public partial class ProductBrand : EntityBase<string>
     {
         /// <summary>

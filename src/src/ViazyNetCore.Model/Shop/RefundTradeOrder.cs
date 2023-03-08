@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 
     /// </summary>
+    [Table(Name = "ShopMall.RefundTradeOrder")]
     public partial class RefundTradeOrder : EntityBase<string>
     {
         /// <summary>

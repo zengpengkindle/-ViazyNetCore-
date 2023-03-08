@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 表示一个商品分类。
     /// </summary>
+    [Table(Name = "ShopMall.ProductCat")]
     public partial class ProductCat : EntityBase<string>
     {
         /// <summary>

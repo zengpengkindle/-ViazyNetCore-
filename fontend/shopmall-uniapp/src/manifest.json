@@ -1,6 +1,6 @@
 {
-    "name" : "",
-    "appid" : "",
+    "name" : "shopmall",
+    "appid" : "__UNI__A897C7F",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -50,7 +50,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx74f27a2a8c4e5a70",
         "setting" : {
             "urlCheck" : false
         },
@@ -65,8 +65,8 @@
     "mp-toutiao" : {
         "usingComponents" : true
     },
-    "uniStatistics": {  
-        "enable": false
+    "uniStatistics" : {
+        "enable" : false
     },
     "vueVersion" : "3"
 }

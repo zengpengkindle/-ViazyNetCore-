@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 表示一个商品SKU。
     /// </summary>
+    [Table(Name = "ShopMall.ProductSku")]
     public partial class ProductSku : EntityBase<string>
     {
         /// <summary>

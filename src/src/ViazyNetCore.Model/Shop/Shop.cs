@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 表示一个供应商表。
     /// </summary>
+    [Table(Name = "ShopMall.Shop")]
     public partial class Shop : EntityBase<string>
     {
         /// <summary>

@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 商品在库库存变更记录（只记录后台主动修改数值）
     /// </summary>
+    [Table(Name = "ShopMall.ProductStockUpdateLog")]
     public partial class ProductStockUpdateLog : EntityBase<string>
     {
         /// <summary>

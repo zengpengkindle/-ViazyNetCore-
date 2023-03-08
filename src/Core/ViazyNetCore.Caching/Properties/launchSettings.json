@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ViazyNetCore.Caching": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56199;http://localhost:56201"
+    }
+  }
+}

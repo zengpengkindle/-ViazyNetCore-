@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 表示一个退换货记录
     /// </summary>
+    [Table(Name = "ShopMall.RefundTrade")]
     public partial class RefundTrade : EntityBase<string>
     {
         /// <summary>

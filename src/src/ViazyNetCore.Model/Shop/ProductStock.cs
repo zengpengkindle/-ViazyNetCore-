@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 商品库存记录
     /// </summary>
+    [Table(Name = "ShopMall.ProductStock")]
     public partial class ProductStock : EntityBase<string>
     {
         /// <summary>

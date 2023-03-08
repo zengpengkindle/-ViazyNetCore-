@@ -1,5 +1,6 @@
 ﻿namespace ViazyNetCore.Model
 {
+    [Table(Name = "ShopMall.MemberPayment")]
     public class MemberPayment : EntityBase<string>
     {
         public string MemberId { get; set; }

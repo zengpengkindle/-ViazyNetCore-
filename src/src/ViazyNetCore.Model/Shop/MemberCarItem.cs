@@ -3,6 +3,7 @@ namespace ViazyNetCore.Model
     /// <summary>
     /// 
     /// </summary>
+    [Table(Name = "ShopMall.MemberCarItem")]
     public partial class MemberCarItem : EntityBase<string>
     {
         /// <summary>
