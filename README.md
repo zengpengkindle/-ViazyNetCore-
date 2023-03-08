@@ -2,7 +2,7 @@
 
 > 这目前只是一个简单的 .Net6 后台管理项目。
 
-## 🚩 组件介绍 
+## 🚩 项目介绍 
 - ViazyNetCore.Data.FreeSql 引入 FreeSql 作为数据ORM框架
 - ViazyNetCore.Auth 权限管理模块
 - ViazyNetCore.Caching 缓存模块
@@ -13,10 +13,12 @@
 - ViazyNetCore.Formmatter.Excel 数据转Excel文件下载模块
 - ViazyNetCore.Web.DevServer ViteNode Spa处理模块。
 - 
+- fontend/ele-admin-ui vue3 管理后台-前端UI
+- fontend/shopmall-uniapp 前端商城小程序 uni-app项目
 ## 🚀 快速入门
 
-> 前端使用 Vite + Vue3 + TypeScripe +ElementUI + PureAdmin 
-
+> 前端管理后台使用 Vite + Vue3 + TypeScripe +ElementUI + PureAdmin
+> 前端商城使用 uni-app nvue3 + TypeScripe + kv-uview-ui
 > SwaggerUI 项目采用 knife4j-vue 并调整 TypeScripe文档生成
 
 > 示范
