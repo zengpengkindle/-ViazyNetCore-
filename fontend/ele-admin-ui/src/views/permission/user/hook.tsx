@@ -15,6 +15,7 @@ export function useUser() {
     roleId: "",
     sort: 0,
     sortField: null,
+    orgId: 0,
     page: 1,
     limit: 10
   });
@@ -111,6 +112,12 @@ export function useUser() {
       "dark:hover:!text-primary"
     ];
   });
+
+  function onOrgChange(orgId?: number) {
+    form.orgId = orgId;
+    onSearch();
+  }
+
   interface EditDrawer {
     show: boolean;
     editId: string;
@@ -243,6 +250,7 @@ export function useUser() {
     handleCurrentChange,
     handleSelectionChange,
     handleResetPassword,
-    handleRoleUpdate
+    handleRoleUpdate,
+    onOrgChange
   };
 }

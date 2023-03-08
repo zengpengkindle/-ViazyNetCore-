@@ -27,21 +27,21 @@ export interface OrgGetOutput {
 export interface OrgListOutput {
   id: number;
 
-  parentId: number;
+  parentId?: number;
 
   name: string;
 
-  code: string;
+  code?: string;
 
-  value: string;
+  value?: string;
 
   status: ComStatus;
 
   sort: number;
 
-  description: string;
+  description?: string;
 
-  createdTime: string;
+  createdTime?: string;
 }
 /**
  * OrgAddInput

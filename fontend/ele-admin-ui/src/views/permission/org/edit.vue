@@ -59,7 +59,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async valid => {
     if (valid) {
-      if (props.id == 0) {
+      if (!props.id) {
         await OrgApi.apiOrgAdd({
           ...orgInfo.value
         });

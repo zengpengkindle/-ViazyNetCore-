@@ -50,7 +50,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="args">查询参数。</param>
         /// <returns>模型的集合。</returns>
-        Task<PageData<UserFindAllModel>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, Pagination args);
+        Task<PageData<UserFindAllModel>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, long? orgId, Pagination args);
 
         /// <summary>
         /// 根据用户名获取UserRoleDTO

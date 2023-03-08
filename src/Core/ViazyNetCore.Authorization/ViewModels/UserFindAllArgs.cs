@@ -21,5 +21,7 @@ namespace ViazyNetCore.Dtos
         /// 获取或设置一个值，表示状态，为空表示查询所有。
         /// </summary>
         public ComStatus? Status { get; set; }
+
+        public long? OrgId { get; set; }
     }
 }

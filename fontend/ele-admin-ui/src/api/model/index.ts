@@ -1,10 +1,10 @@
 ﻿export interface PageFindArgs {
-  sort: 0 | 1,
-  sortField: string | null,
-  page: number,
-  limit: number
+  sort: 0 | 1;
+  sortField: string | null;
+  page: number;
+  limit: number;
 }
-export interface PageData<TModel>{
+export interface PageData<TModel> {
   rows: Array<TModel>;
   total: number;
 }
@@ -45,6 +45,7 @@ export interface UserFindAllArgs {
   page: number | null;
 
   limit: number | null;
+  orgId: number | null;
 }
 
 /**

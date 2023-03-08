@@ -14,6 +14,7 @@ import Refresh from "@iconify-icons/ep/refresh";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 import edit from "./edit.vue";
 import roledrawer from "./role.vue";
+import tree from "./tree.vue";
 
 defineOptions({
   name: "User"
@@ -37,13 +38,17 @@ const {
   handleCurrentChange,
   handleSelectionChange,
   handleResetPassword,
-  handleRoleUpdate
+  handleRoleUpdate,
+  onOrgChange
 } = useUser();
 </script>
 
 <template>
   <div class="main">
-    <div>
+    <div class="w-[20%] float-left">
+      <tree @change="onOrgChange" />
+    </div>
+    <div class="w-[79%] float-right">
       <el-form
         ref="formRef"
         :inline="true"
@@ -170,13 +175,13 @@ const {
           </pure-table>
         </template>
       </PureTableBar>
+      <edit
+        v-model="editDrawer.show"
+        :id="editDrawer.editId"
+        @refresh="onSearch"
+      />
+      <roledrawer v-model="editRoleDrawer.show" :id="editRoleDrawer.editId" />
     </div>
-    <edit
-      v-model="editDrawer.show"
-      :id="editDrawer.editId"
-      @refresh="onSearch"
-    />
-    <roledrawer v-model="editRoleDrawer.show" :id="editRoleDrawer.editId" />
   </div>
 </template>
 

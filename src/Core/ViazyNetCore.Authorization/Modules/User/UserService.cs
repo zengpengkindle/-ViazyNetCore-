@@ -106,7 +106,7 @@ namespace ViazyNetCore.Modules
         /// <returns>模型的集合。</returns>
         public Task<PageData<UserFindAllModel>> FindAllAsync(UserFindAllArgs args)
         {
-            return _userRepository.FindAllAsync(args.UsernameLike, args.RoleId, args.Status, args);
+            return _userRepository.FindAllAsync(args.UsernameLike, args.RoleId, args.Status, args.OrgId, args);
         }
 
         /// <summary>

@@ -241,13 +241,15 @@ namespace ViazyNetCore.Modules
             }).FirstAsync();
         }
 
-        public Task<PageData<UserFindAllModel>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, Pagination args)
+        public Task<PageData<UserFindAllModel>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, long? orgId, Pagination args)
         {
             var query = this.Select;
             if (usernameLike.IsNotNull()) query = query.Where(u => u.Username.Contains(usernameLike));
             if (status.HasValue) query = query.Where(u => u.Status == status.Value);
 
-            var query2 = query.OrderByDescending(u => u.ModifyTime)
+            var query2 = query
+                .WhereIf(orgId.GetValueOrDefault() != 0, u => this.Orm.Select<BmsUserOrg>().Where(p => p.OrgId == orgId && p.UserId == u.Id).Any())
+                .OrderByDescending(u => u.ModifyTime)
                          .WithTempQuery(u => new UserFindAllModel
                          {
                              Id = u.Id,
