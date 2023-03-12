@@ -4,7 +4,7 @@ import { ComStatus } from "../model";
  * SpecialCreditPagination
  */
 export interface SpecialCreditPagination {
-  outerType?: string | null;
+  outerType: string | null;
 
   page: number | null;
 

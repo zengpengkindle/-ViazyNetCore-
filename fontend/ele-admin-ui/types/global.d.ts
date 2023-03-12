@@ -250,9 +250,5 @@ declare global {
     $echarts: ECharts;
     $storage: ResponsiveStorage;
     $config: ServerConfigs;
-    $pickerOptions:PickerOptions;
-  }
-  interface PickerOptions{
-    shortcuts:any[]
   }
 }
