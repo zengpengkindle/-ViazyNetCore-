@@ -13,7 +13,6 @@ defineOptions({
 });
 
 const {
-  form,
   loading,
   columns,
   dataList,
@@ -61,7 +60,7 @@ const {
             @current-change="handleCurrentChange"
           >
             <template #operation="{ row }">
-                <el-button
+              <el-button
                 class="reset-margin"
                 link
                 type="primary"

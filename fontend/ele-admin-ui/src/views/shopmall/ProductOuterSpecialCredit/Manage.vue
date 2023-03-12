@@ -1,129 +1,138 @@
 <template title="类别/活动管理">
-    <el-card v-loading="loading">
-        <div slot="header">
-            <span>{{ state ? '修改' : '创建' }}定价方式</span>
-        </div>
-        <el-form ref="form" :model="item" :rules="rules" @submit.native.prevent :validate-on-rule-change="false">
-            <el-form-item label="价格类型标识" prop="objectKey">
-                <el-input v-model="item.objectKey" v-if="state" :disabled="true"></el-input>
-                <el-input v-model="item.objectKey" v-else></el-input>
-            </el-form-item>
-            <el-form-item label="价格类型名称" prop="objectName">
-                <el-input v-model="item.objectName"></el-input>
-            </el-form-item>
-            <el-form-item label="类别/活动" prop="outerType">
-                <el-input v-model="item.outerType" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="货币类型">
-                <el-select v-model="item.creditKey" placeholder="请选择">
-                    <el-option v-for="opt in credits"
-                               :key="opt.value"
-                               :label="opt.label"
-                               :value="opt.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="价格计算方式">
-                <el-select v-model="item.computeType" placeholder="请选择">
-                    <el-option v-for="opt in computeTypes"
-                               :key="opt.value"
-                               :label="opt.label"
-                               :value="opt.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="固定手续费" v-if="item.computeType==2">
-                <el-input-number v-model="item.feeMoney" :precision="2" :step="1"></el-input-number>
-            </el-form-item>
-            <el-form-item label="百分比手续费" v-if="item.computeType==3">
-                <el-input-number v-model="item.feePercent" :precision="3" :step="0.01" :min="0" :max="1"></el-input-number>
-            </el-form-item>
-            <el-form-item label="备注" prop="exdata">
-                <el-input v-model="item.exdata" type="textarea" :rows="3" ></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="submit">提交</el-button>
-                <el-button @click="$router.back()">返回</el-button>
-            </el-form-item>
-        </el-form>
-    </el-card>
+  <el-card v-loading="loading">
+    <el-form
+      ref="form"
+      :model="item"
+      :rules="rules"
+      :validate-on-rule-change="false"
+    >
+      <el-form-item label="价格类型标识" prop="objectKey">
+        <el-input v-model="item.objectKey" v-if="state" :disabled="true" />
+        <el-input v-model="item.objectKey" v-else />
+      </el-form-item>
+      <el-form-item label="价格类型名称" prop="objectName">
+        <el-input v-model="item.objectName" />
+      </el-form-item>
+      <el-form-item label="类别/活动" prop="outerType">
+        <el-input v-model="item.outerType" :disabled="true" />
+      </el-form-item>
+      <el-form-item label="货币类型">
+        <el-select v-model="item.creditKey" placeholder="请选择">
+          <el-option
+            v-for="opt in credits"
+            :key="opt.value"
+            :label="opt.label"
+            :value="opt.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="价格计算方式">
+        <el-select v-model="item.computeType" placeholder="请选择">
+          <el-option
+            v-for="opt in computeTypes"
+            :key="opt.value"
+            :label="opt.label"
+            :value="opt.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="固定手续费" v-if="item.computeType == 2">
+        <el-input-number v-model="item.feeMoney" :precision="2" :step="1" />
+      </el-form-item>
+      <el-form-item label="百分比手续费" v-if="item.computeType == 3">
+        <el-input-number
+          v-model="item.feePercent"
+          :precision="3"
+          :step="0.01"
+          :min="0"
+          :max="1"
+        />
+      </el-form-item>
+      <el-form-item label="备注" prop="exdata">
+        <el-input v-model="item.exdata" type="textarea" :rows="3" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submit">提交</el-button>
+        <el-button @click="$router.back()">返回</el-button>
+      </el-form-item>
+    </el-form>
+  </el-card>
 </template>
 <script>
+import { productOuterSpecialCredit, credit } from "../../apis";
 
-    import { productOuterSpecialCredit, credit } from '../../apis';
+export default {
+  data() {
+    const vm = this;
+    var state = vm.$route.query && vm.$route.query.id ? 1 : 0;
+    var outerType = this.$route.query && this.$route.query.outerType;
+    return {
+      state: state,
+      loading: state ? true : false,
+      outerType: outerType,
+      item: {},
+      credits: [],
+      computeTypes: [
+        { value: 0, label: "独立价格" },
+        { value: 1, label: "与商品设置价格等价" },
+        { value: 2, label: "与商品等价但计算兑换手续费-固定" },
+        { value: 3, label: "计算百分比手续费" },
+        { value: 4, label: "混合价格" },
+        { value: 5, label: "条件式" }
+      ],
+      rules: {
+        objectKey: [
+          { required: true, message: "请输入价格类型标识" },
+          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+        ],
+        objectName: [
+          { required: true, message: "请输入价格类型名称" },
+          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+        ]
+      }
+    };
+  },
+  init() {
+    const vm = this;
 
-    export default {
-        data() {
-            const vm = this;
-            var state = vm.$route.query && vm.$route.query.id ? 1 : 0;
-            var outerType = this.$route.query && this.$route.query.outerType;
-            return {
-                state: state,
-                loading: state ? true : false,
-                outerType: outerType,
-                item: {},
-                credits: [],
-                computeTypes: [
-                    { value: 0, label: '独立价格' },
-                    { value: 1, label: '与商品设置价格等价' },
-                    { value: 2, label: '与商品等价但计算兑换手续费-固定' },
-                    { value: 3, label: '计算百分比手续费' },
-                    { value: 4, label: '混合价格' },
-                    { value: 5, label: '条件式' }
-                ],
-                rules: {
-                    objectKey: [
-                        { required: true, message: '请输入价格类型标识' },
-                        { min: 1, max: 20, message: '长度在 1 到 20 个字符' }
-                    ],
-                    objectName: [
-                        { required: true, message: '请输入价格类型名称' },
-                        { min: 1, max: 20, message: '长度在 1 到 20 个字符' }
-                    ]
-                }
-            }
-        },
-        init() {
-            const vm = this;
-
-            credit.getAllAsync().then(cr => {
-                var list = cr.value;
-                vm.credits = Object.keys(list).map(function (listCode) {
-                    return {
-                        value: listCode,
-                        label: list[listCode]
-                    };
-                });
-                if (vm.state) {
-                    var outerId = vm.$route.query.id;
-                    productOuterSpecialCredit.getAsync(vm.$route.query.id).then(r => {
-                        if (r.status) {
-                            msg.error(r.message);
-                            return;
-                        }
-                        vm.item = r.value;
-                        vm.loading = false;
-                    });
-                } else {
-                    vm.item.outerType = vm.outerType
-                }
-            })
-        },
-        methods: {
-            submit() {
-                const vm = this;
-                vm.$refs.form.validate(function (valid) {
-                    if (!valid) return;
-                    productOuterSpecialCredit.mangerAsync(vm.item).then(r => {
-                        if (r.status) {
-                            msg.error(r.message);
-                            return;
-                        }
-                        msg.info('保存成功！');
-                        vm.$router.back();
-                    });
-                });
-            }
-        }
+    credit.getAllAsync().then(cr => {
+      var list = cr.value;
+      vm.credits = Object.keys(list).map(function (listCode) {
+        return {
+          value: listCode,
+          label: list[listCode]
+        };
+      });
+      if (vm.state) {
+        var outerId = vm.$route.query.id;
+        productOuterSpecialCredit.getAsync(vm.$route.query.id).then(r => {
+          if (r.status) {
+            msg.error(r.message);
+            return;
+          }
+          vm.item = r.value;
+          vm.loading = false;
+        });
+      } else {
+        vm.item.outerType = vm.outerType;
+      }
+    });
+  },
+  methods: {
+    submit() {
+      const vm = this;
+      vm.$refs.form.validate(function (valid) {
+        if (!valid) return;
+        productOuterSpecialCredit.mangerAsync(vm.item).then(r => {
+          if (r.status) {
+            msg.error(r.message);
+            return;
+          }
+          msg.info("保存成功！");
+          vm.$router.back();
+        });
+      });
     }
+  }
+};
 </script>

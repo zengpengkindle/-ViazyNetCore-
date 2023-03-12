@@ -105,6 +105,9 @@ declare global {
     }
 }
 
+interface PickerOptions{
+    shortcuts:any[]
+  }
 declare module '@vue/runtime-core' {
     export interface ComponentCustomProperties {
         $filters: GlobalFilters;
@@ -125,5 +128,6 @@ declare module '@vue/runtime-core' {
         $number(val: string | number, fixed?: number | string): string;
         $date(val: any, format?: 'now' | string): string;
         $copyText(val: string): void;
+        $pickerOptions:PickerOptions;
     }
 }

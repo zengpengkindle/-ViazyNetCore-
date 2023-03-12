@@ -75,12 +75,12 @@ namespace ViazyNetCore.Modules.ShopMall
             result.Stock = stock;
 
             result.Skus = new ProductSkuModel();
-            result.Skus.Hide_stock = false;
-            result.Skus.Collection_id = product.Id;
+            result.Skus.HideStock = false;
+            result.Skus.CollectionId = product.Id;
 
             result.Skus.Price = product.Price;
-            result.Skus.Stock_num = result.Stock.InStock;
-            result.Skus.None_sku = !result.OpenSpec;
+            result.Skus.StockNum = result.Stock.InStock;
+            result.Skus.NoneSku = !result.OpenSpec;
 
             if (product.OpenSpec)
             {

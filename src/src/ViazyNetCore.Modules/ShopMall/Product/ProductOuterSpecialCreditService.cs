@@ -78,7 +78,7 @@ namespace ViazyNetCore.Modules.ShopMall
 
         public Task<PageData<ProductOuterSpecialCredit>> FindAll(SpecialCreditPagination args)
         {
-            return this._engine.Select<ProductOuterSpecialCredit>().Where(p => p.OuterType == args.OuterType)
+            return this._engine.Select<ProductOuterSpecialCredit>().WhereIf(args.OuterType.IsNotNull(), p => p.OuterType == args.OuterType)
                 .OrderByDescending(p => p.CreateTime).ToPageAsync(args);
         }
 

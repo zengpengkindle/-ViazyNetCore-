@@ -30,6 +30,6 @@ namespace ViazyNetCore.Modules.ShopMall
 
     public class SpecialCreditPagination : Pagination
     {
-        public string OuterType { get; set; }
+        public string? OuterType { get; set; }
     }
 }

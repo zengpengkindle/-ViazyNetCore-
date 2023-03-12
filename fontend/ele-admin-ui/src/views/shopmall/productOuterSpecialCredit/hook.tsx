@@ -1,39 +1,32 @@
 import dayjs from "dayjs";
 import { message } from "@/utils/message";
-import { Pagination } from "@/api/model";
-import ProductOuterApi, { ProductOuter } from "@/api/shopmall/productOuter";
-import { ElMessageBox } from "element-plus";
+import CreditApi from "@/api/shopmall/credit";
+import ProductOuterSpecialCreditApi, {
+  ProductOuterSpecialCredit,
+  SpecialCreditPagination
+} from "@/api/shopmall/productOuterSpecialCredit";
 import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted, type Ref } from "vue";
 import { nextTick } from "process";
 import { ComStatus } from "@/api/model";
-import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
-export function useProductOuter() {
-  const form: Pagination = reactive({
+export function useProductOuterCredit() {
+  const form: SpecialCreditPagination = reactive({
+    outerType: null,
     sort: 0,
     sortField: null,
     page: 1,
     limit: 10
   });
-  const router = useRouter();
-  const dataList: Ref<Array<ProductOuter>> = ref([]);
+  const dataList: Ref<Array<ProductOuterSpecialCredit>> = ref([]);
   const loading = ref(true);
-  const switchLoadMap = ref({});
   const pagination = reactive<PaginationProps>({
     total: 0,
     pageSize: 10,
     currentPage: 1,
     background: true
   });
-  const goCreditPath = (row: ProductOuter) => {
-    router.push({
-      path: "../productOuterSpecialCredit/index",
-      query: {
-        outerType: row.outerType
-      }
-    });
-  };
   const columns: TableColumnList = [
     {
       type: "selection",
@@ -48,22 +41,49 @@ export function useProductOuter() {
       hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
-      label: "活动编号",
+      label: "编号",
       prop: "id",
       minWidth: 180
     },
     {
-      label: "类别/活动名称",
-      prop: "outerName",
+      label: "价格类型标识",
+      prop: "objectKey",
       minWidth: 180
     },
     {
-      label: "类别/活动标识",
+      label: "价格类型名称",
+      prop: "objectName",
+      minWidth: 180
+    },
+    {
+      label: "活动/类别",
       prop: "outerType",
-      cellRenderer: ({ row }) => (
-        <el-button type="primary" text onClick={() => goCreditPath(row)}>
-          {row.outerType}
-        </el-button>
+      minWidth: 180
+    },
+    {
+      label: "货币名称",
+      minWidth: 180,
+      cellRenderer: scope => (
+        <span>
+          {creditOptions[scope.row.creditKey]}({scope.row.creditKey})
+        </span>
+      )
+    },
+    {
+      label: "价格计算方式",
+      cellRenderer: scope => (
+        <template>
+          <span v-if="scope.row.computeType == 0">独立价格</span>
+          <span v-else-if="scope.row.computeType == 1">与商品设置价格等价</span>
+          <span v-else-if="scope.row.computeType == 2">
+            计算兑换手续费-固定 {scope.row.feeMoney}
+          </span>
+          <span v-else-if="scope.row.computeType == 3">
+            计算百分比手续费 {scope.row.feePercent}%
+          </span>
+          <span v-else-if="scope.row.computeType == 4">混合价格</span>
+          <span v-else-if="scope.row.computeType == 5">条件式</span>
+        </template>
       )
     },
     {
@@ -73,20 +93,6 @@ export function useProductOuter() {
       cellRenderer: scope => (
         <x-status v-model={scope.row.status} type="cell" class="!w-[200px]" />
       )
-    },
-    {
-      label: "开始时间",
-      minWidth: 120,
-      prop: "beginTime",
-      formatter: ({ createTime }) =>
-        dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
-    },
-    {
-      label: "结束时间",
-      minWidth: 120,
-      prop: "endTime",
-      formatter: ({ createTime }) =>
-        dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
       label: "创建时间",
@@ -119,54 +125,14 @@ export function useProductOuter() {
     show: false,
     editId: ""
   });
-  function onChange({ row, index }) {
-    ElMessageBox.confirm(
-      `确认要<strong>${
-        row.status === 0 ? "停用" : "启用"
-      }</strong><strong style='color:var(--el-color-primary)'>${
-        row.username
-      }</strong>吗?`,
-      "系统提示",
-      {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        dangerouslyUseHTMLString: true,
-        draggable: true
-      }
-    )
-      .then(() => {
-        switchLoadMap.value[index] = Object.assign(
-          {},
-          switchLoadMap.value[index],
-          {
-            loading: true
-          }
-        );
-        setTimeout(() => {
-          switchLoadMap.value[index] = Object.assign(
-            {},
-            switchLoadMap.value[index],
-            {
-              loading: false
-            }
-          );
-          message("已成功修改状态", {
-            type: "success"
-          });
-        }, 300);
-      })
-      .catch(() => {
-        row.status === 0 ? (row.status = 1) : (row.status = 0);
-      });
-  }
+  const creditOptions: Ref<any> = ref({});
 
-  function handleUpdate(row?: ProductOuter) {
+  function handleUpdate(row?: ProductOuterSpecialCredit) {
     (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
   async function handleDelete(row) {
     if (row?.id) {
-      await ProductOuterApi.apiProductOuterModifyStatus(
+      await ProductOuterSpecialCreditApi.apiProductOuterSpecialCreditModifyStatus(
         row.id,
         ComStatus.Deleted
       );
@@ -189,11 +155,12 @@ export function useProductOuter() {
 
   async function onSearch() {
     loading.value = true;
-    const data = await ProductOuterApi.apiProductOuterFindAll({
-      ...form,
-      page: pagination.currentPage,
-      limit: pagination.pageSize
-    });
+    const data =
+      await ProductOuterSpecialCreditApi.apiProductOuterSpecialCreditFindAll({
+        ...form,
+        page: pagination.currentPage,
+        limit: pagination.pageSize
+      });
     dataList.value = data.rows;
     pagination.total = data.total;
     nextTick(() => {
@@ -207,7 +174,12 @@ export function useProductOuter() {
     onSearch();
   };
 
-  onMounted(() => {
+  const route = useRoute();
+  onMounted(async () => {
+    creditOptions.value = await CreditApi.apiCreditGetAll();
+    console.log(route.query);
+    const outerType = route.query.outerType as string;
+    form.outerType = outerType;
     onSearch();
   });
 
