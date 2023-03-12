@@ -73,16 +73,16 @@ export function useProductOuterCredit() {
       label: "价格计算方式",
       cellRenderer: scope => (
         <template>
-          <span v-if="scope.row.computeType == 0">独立价格</span>
-          <span v-else-if="scope.row.computeType == 1">与商品设置价格等价</span>
-          <span v-else-if="scope.row.computeType == 2">
+          <span v-if={scope.row.computeType == 0}>独立价格</span>
+          <span v-else-if={scope.row.computeType == 1}>与商品设置价格等价</span>
+          <span v-else-if={scope.row.computeType == 2}>
             计算兑换手续费-固定 {scope.row.feeMoney}
           </span>
-          <span v-else-if="scope.row.computeType == 3">
+          <span v-else-if={scope.row.computeType == 3}>
             计算百分比手续费 {scope.row.feePercent}%
           </span>
-          <span v-else-if="scope.row.computeType == 4">混合价格</span>
-          <span v-else-if="scope.row.computeType == 5">条件式</span>
+          <span v-else-if={scope.row.computeType == 4}>混合价格</span>
+          <span v-else-if={scope.row.computeType == 5}>条件式</span>
         </template>
       )
     },
