@@ -1,3 +1,4 @@
+using System.Providers;
 using System.Reflection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -8,6 +9,7 @@ using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.DI;
+using ViazyNetCore.Modules.ShopMall;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
@@ -49,12 +51,11 @@ builder.Services.AddControllers(options =>
 }).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.InitializeDefault();
-}).AddControllersAsServices();
+}).AddApplicationPart(typeof(UserOption).Assembly);
 
 builder.Services.AddAuthorizationController();
 
 //builder.Services.AddCustomApiVersioning();
-//.AddApplicationPart(typeof(TestController).Assembly)
 ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
@@ -78,6 +79,8 @@ builder.Services.AddApiDescriptor(option =>
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
 
+builder.Services.AddSingleton(sp => LockProvider.Default);
+builder.Services.AddShopMall();
 builder.Services.AddSwagger(option =>
 {
     option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
@@ -89,9 +92,9 @@ builder.Services.AddSwagger(option =>
     });
     option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
     {
-        Code = "test",
-        Description = "Test",
-        Name = "Test",
+        Code = "shopmall",
+        Description = "ShopMall",
+        Name = "ShopMall",
         Version = "v1",
     });
 });

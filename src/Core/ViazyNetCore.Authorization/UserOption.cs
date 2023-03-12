@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.Auth;
 
-namespace ViazyNetCore.Auth
+namespace ViazyNetCore.Authorization
 {
     public class UserOption
     {

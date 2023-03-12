@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Modules.ShopMall
 {
+    [Injection]
     public class TradeService
     {
         private readonly IFreeSql _engine;

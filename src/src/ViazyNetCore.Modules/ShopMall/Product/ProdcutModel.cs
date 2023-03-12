@@ -372,6 +372,11 @@ namespace ViazyNetCore.Modules.ShopMall
         public decimal Price { get; set; }
         [JsonProperty("stock_num")]
         public int StockNum { get; set; }
+
+        /// <summary>
+        /// 特殊定价
+        /// </summary>
+        public Dictionary<string, decimal> SpecialPrices { get; set; }
     }
 
     public class FindAllArguments

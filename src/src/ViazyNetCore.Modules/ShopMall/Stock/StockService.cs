@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ViazyNetCore.Modules.ShopMall
 {
+    [Injection]
     public class StockService
     {
         private readonly IFreeSql _engine;
@@ -415,7 +416,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <param name="remark"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task UpdateInStock(IFreeSql context, string stockId, int inStockNum, string remark, string userId)
+        public async Task UpdateInStock(string stockId, int inStockNum, string remark, string userId)
         {
             try
             {
@@ -426,7 +427,7 @@ namespace ViazyNetCore.Modules.ShopMall
                 if (remark.IsNull())
                     throw new ApiException("备注必填");
 
-                var table = context.Select<ProductStock>().Where(t => t.Id == stockId);
+                var table = this._engine.Select<ProductStock>().Where(t => t.Id == stockId);
 
                 using (this._lockProvider.Lock(stockId))
                 {
@@ -441,7 +442,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     stocklog.Remark = remark;
                     stocklog.StockId = stock.Id;
                     stocklog.UserId = userId;
-                    await context.Insert<ProductStockUpdateLog>().AppendData(stocklog).ExecuteAffrowsAsync();
+                    await _engine.Insert<ProductStockUpdateLog>().AppendData(stocklog).ExecuteAffrowsAsync();
 
                     if (inStockNum < 0 && stock.InStock < -inStockNum)
                         throw new ApiException("商品库存在库数量变更异常：当前在库数小于在库数减少数量");
@@ -450,13 +451,13 @@ namespace ViazyNetCore.Modules.ShopMall
                     stock.InStock += inStockNum;
                     stock.UpdateTime = DateTime.Now;
 
-                    await context.Update<ProductStock>().SetDto(new { stock.Id, stock.InStock, stock.UpdateTime }).ExecuteAffrowsAsync();
+                    await _engine.Update<ProductStock>().SetDto(new { stock.Id, stock.InStock, stock.UpdateTime }).ExecuteAffrowsAsync();
 
                     if (this._stockChangeHandler != null)
                     {
                         foreach (var handler in this._stockChangeHandler)
                         {
-                            await handler.OnUpdateInStockAsync(context, stockId, inStockNum, remark, userId);
+                            await handler.OnUpdateInStockAsync(_engine, stockId, inStockNum, remark, userId);
                         }
                     }
                 }
@@ -498,7 +499,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     {
                         foreach (var handler in this._stockChangeHandler)
                         {
-                           await handler.OnUpdateRefundStockAsync(context, productId, skuId, refundNum);
+                            await handler.OnUpdateRefundStockAsync(context, productId, skuId, refundNum);
                         }
                     }
                 }

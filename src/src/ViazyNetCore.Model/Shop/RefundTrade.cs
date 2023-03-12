@@ -91,5 +91,33 @@ namespace ViazyNetCore.Model
         /// </summary>
         public DateTime? UpdateTime { get; set; }
 
+
+        /// <summary>
+        /// 物流单号-商家再寄出
+        /// </summary>
+        public string ConsigneeExpressNo { get; set; }
+
+        /// <summary>
+        /// 物流公司-商家再寄出
+        /// </summary>
+        public string ConsigneeLogisticsName { get; set; }
+
+
+        /// <summary>
+        /// 物流单号-用户回寄
+        /// </summary>
+        public string ReturnExpressNo { get; set; }
+
+        /// <summary>
+        /// 物流公司-用户回寄
+        /// </summary>
+        public string ReturnLogisticsName { get; set; }
+
+
+        /// <summary>
+        /// 最新的处理流程记录编号
+        /// </summary>
+        public string NewStepLogId { get; set; }
+
     }
 }

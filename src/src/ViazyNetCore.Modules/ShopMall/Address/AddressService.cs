@@ -2,6 +2,7 @@
 
 namespace ViazyNetCore.Modules.ShopMall
 {
+    [Injection]
     public class AddressService
     {
         private readonly IFreeSql _fsql;

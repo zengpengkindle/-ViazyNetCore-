@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.Model;
 
 namespace ViazyNetCore.Modules.ShopMall
 {
@@ -280,5 +282,264 @@ namespace ViazyNetCore.Modules.ShopMall
 
         public List<RefundLogModel> Children { get; set; }
     }
-    
+    #region 流程处理
+
+    /// <summary>
+    /// 列表搜索参数
+    /// </summary>
+    public class RefundArgments : Pagination
+    {
+        /// <summary>
+        /// 用户编号
+        /// </summary>
+        public string MemberId { get; set; }
+
+        public string Id { get; set; }
+
+        public string Username { get; set; }
+
+        public string NickNameLike { get; set; }
+
+        public string ShopId { get; set; }
+        public string ShopName { get; set; }
+
+        public RefundTradeLogType? HandleUserType { get; set; }
+
+        public RefundStatus? Status { get; set; }
+
+        public int TimeType { get; set; }
+
+        public DateTime[] CreateTimes { get; set; }
+    }
+
+    /// <summary>
+    /// 列表参数
+    /// </summary>
+    public class RefundListModel
+    {
+        public string Id { get; set; }
+
+        public string MemberId { get; set; }
+
+        public string MemberName { get; set; }
+
+        public string ShopId { get; set; }
+
+        public string ShopName { get; set; }
+
+        /// <summary>
+        /// 设置或获取一个值，表示步骤处理人类型 0商家1用户。
+        /// </summary>
+        public RefundTradeLogType HandleUserType { get; set; }
+
+        public RefundStatus Status { get; set; }
+
+        public string StepName { get; set; }
+
+        public decimal ReturnsAmount { get; set; }
+
+        public decimal ApplyAmount { get; set; }
+
+        public decimal? SellerPunishFee { get; set; }
+
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public DateTime? UpdateTime { get; set; }
+
+        public List<RefundListOrderModel> Orders { get; set; } = new List<RefundListOrderModel>();
+    }
+
+    public class RefundListOrderModel
+    {
+        public string ProductName { get; set; }
+
+        public string SkuText { get; set; }
+
+        public string ImgUrl { get; set; }
+
+        public decimal Price { get; set; }
+
+        public int Num { get; set; }
+    }
+
+    /// <summary>
+    /// 售后详情
+    /// </summary>
+    public class RefundDetailModel
+    {
+        public string Id { get; set; }
+
+        public string MemberId { get; set; }
+
+        public string MemberName { get; set; }
+
+        public string ShopId { get; set; }
+
+        public string ShopName { get; set; }
+
+        public string Title { get; set; }
+
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public DateTime? UpdateTime { get; set; }
+        public RefundStatus Status { get; set; }
+
+        public RefundTradeLogType HandleUserType { get; set; }
+
+        /// <summary>
+        /// 最新的处理流程记录编号
+        /// </summary>
+        public string NewStepLogId { get; set; }
+
+        public string StepName { get; set; }
+
+        public decimal ReturnsAmount { get; set; }
+
+        public decimal ApplyAmount { get; set; }
+
+        public decimal? SellerPunishFee { get; set; }
+
+        /// <summary>
+        /// 退货收货人
+        /// </summary>
+        public string ConsigneeName { get; set; }
+
+        /// <summary>
+        /// 退货人联系电话
+        /// </summary>
+        public string ConsigneeMobile { get; set; }
+
+        /// <summary>
+        /// 退货地址
+        /// </summary>
+        public string ConsigneeAddress { get; set; }
+
+        /// <summary>
+        /// 设置或获取一个值，表示邮政编码。
+        /// </summary>
+        public string ConsigneeZip { get; set; }
+
+        /// <summary>
+        /// 物流单号-用户回寄
+        /// </summary>
+        public string ReturnExpressNo { get; set; }
+
+        /// <summary>
+        /// 物流公司-用户回寄
+        /// </summary>
+        public string ReturnLogisticsName { get; set; }
+
+        /// <summary>
+        /// 物流单号-商家再寄出
+        /// </summary>
+        public string ConsigneeExpressNo { get; set; }
+
+        /// <summary>
+        /// 物流公司-商家再寄出
+        /// </summary>
+        public string ConsigneeLogisticsName { get; set; }
+
+        public RefundParamsModel Params { get; set; }
+
+        public List<RefundListOrderModel> Orders { get; set; } = new List<RefundListOrderModel>();
+    }
+
+    /// <summary>
+    /// 业务流程参数
+    /// </summary>
+    public class RefundParamsModel
+    {
+        #region 共通
+        public string RefundTradeId { get; set; }
+
+        public string NowStepId { get; set; }
+
+        public string NextStepConfigId { get; set; }
+
+        public List<NextStepModel> NextSteps { get; set; }
+
+        public string UserId { get; set; }
+
+        public string Message { get; set; }
+
+        public HandlingType? HandlingType { get; set; }
+
+        /// <summary>
+        /// 设置或获取一个值，表示步骤处理人类型 0商家1用户。
+        /// </summary>
+        public RefundTradeLogType HandleUserType { get; set; }
+
+
+        #endregion
+
+        #region 回寄地址
+        public string RefundAddress { get; set; }
+
+        public string RefundMobile { get; set; }
+
+        public string RefundName { get; set; }
+
+        public string RefundPostal { get; set; }
+        #endregion
+
+        #region 快递信息
+        public string LogisticId { get; set; }
+
+        public string LogisticName { get; set; }
+        #endregion
+
+        #region 财务信息
+        public decimal ReturnsAmount { get; set; }
+
+        public decimal SellerPunishFee { get; set; }
+
+        public decimal LogisticFee { get; set; }
+        #endregion
+
+        public List<RefundOrderParamsModel> RefundOrderParams { get; set; } = new List<RefundOrderParamsModel>();
+
+    }
+
+    /// <summary>
+    /// 子参数
+    /// </summary>
+    public class RefundOrderParamsModel
+    {
+        public string RefundOrderId { get; set; }
+
+        public HandlingType HandlingType { get; set; }
+    }
+
+    public class NextStepModel
+    {
+        public string NextStepConfigId { get; set; }
+
+        public string NextStepName { get; set; }
+
+        /// <summary>
+        /// 是否需要填写参数-用户回寄地址信息
+        /// </summary>
+        public bool ShowRefund { get; set; }
+
+        /// <summary>
+        /// 是否需要填写参数-快递信息
+        /// </summary>
+        public bool ShowLogistic { get; set; }
+
+        /// <summary>
+        /// 是否需要填写参数-退货产生的财务信息
+        /// </summary>
+        public bool ShowFinance { get; set; }
+    }
+    #endregion
 }

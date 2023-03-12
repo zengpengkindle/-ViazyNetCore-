@@ -2,6 +2,7 @@
 
 namespace ViazyNetCore.Modules.ShopMall
 {
+    [Injection]
     public class PaymentService
     {
         private readonly IFreeSql _engine;
