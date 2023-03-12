@@ -816,5 +816,74 @@ namespace ViazyNetCore.Modules.ShopMall
         {
             return this._engine.Select<ProductOuterSpecialPrice>().Where(p => p.ProductId == productId && p.OuterType == outerType).ToListAsync();
         }
+
+
+        public async Task<ProductSkuModel> GetProductSku(string productId, string outerType)
+        {
+            var product = await this._engine.Select<Product>().Where(p => p.Id == productId).FirstAsync();
+            if (product == null)
+                return null;
+
+            if (outerType.IsNotNull() && !product.OuterType.iEquals(outerType))
+            {
+                throw new ApiException("商品类型不对应");
+            }
+            var stock = await _stockService.FindProductStock(productId);
+            var result = new ProductSkuModel
+            {
+                HideStock = false,
+                CollectionId = product.Id,
+
+                Price = product.Price,
+                StockNum = stock.InStock,
+                NoneSku = !product.OpenSpec
+            };
+
+            if (product.OpenSpec)
+            {
+                result.Tree = JSON.Parse<List<SkuTree>>(product.SkuTree);
+
+                result.List = await this._engine.Select<ProductSku>()
+                                     .Where(s => s.ProductId == productId)
+                                     .WithTempQuery(s => new SkuModel
+                                     {
+                                         Id = s.Id,
+                                         Price = s.Price,
+                                         Cost = s.Cost,
+                                         S1 = s.S1,
+                                         S2 = s.S2,
+                                         S3 = s.S3,
+                                         Key1 = s.Key1,
+                                         Key2 = s.Key2,
+                                         Key3 = s.Key3,
+                                         Name1 = s.Name1,
+                                         Name2 = s.Name2,
+                                         Name3 = s.Name3
+
+                                     }).ToListAsync();
+                for (int i = 0; i < result.List.Count; i++)
+                {
+                    result.List[i].StockNum = stock.Skus.Find(t => t.ProductSkuId == result.List[i].Id).InStock;
+                }
+            }
+
+            if (outerType.IsNotNull())
+            {
+                var outerPrices = await GetProductSpecialPrice(productId, outerType);
+                if (product.OpenSpec)
+                {
+                    foreach (var sku in result.List)
+                    {
+                        sku.SpecialPrices = outerPrices.Where(p => p.SkuId == sku.Id).ToDictionary(p => p.ObjectKey, v => v.Price);
+                    }
+                }
+                else
+                {
+                    result.SpecialPrices = outerPrices.ToDictionary(p => p.ObjectKey, v => v.Price);
+                }
+            }
+
+            return result;
+        }
     }
 }

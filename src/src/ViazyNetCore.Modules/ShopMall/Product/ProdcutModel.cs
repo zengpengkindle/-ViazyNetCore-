@@ -186,13 +186,19 @@ namespace ViazyNetCore.Modules.ShopMall
 
         public decimal Price { get; set; }
 
-        public int Stock_num { get; set; }
+        [JsonProperty("stock_num")]
+        public int StockNum { get; set; }
 
-        public string Collection_id { get; set; }
+        [JsonProperty("collection_id")]
+        public string CollectionId { get; set; }
 
-        public bool None_sku { get; set; }
+        [JsonProperty("none_sku")]
+        public bool NoneSku { get; set; }
 
-        public bool Hide_stock { get; set; } = false;
+        [JsonProperty("hide_stock")]
+        public bool HideStock { get; set; } = false;
+
+        public Dictionary<string, decimal> SpecialPrices { get; set; }
     }
 
     public class ProductInfoModel
@@ -290,6 +296,7 @@ namespace ViazyNetCore.Modules.ShopMall
 
         public int Num { get; set; }
 
+        public ProductSkuModel Skus { get; set; }
     }
 
     public class SkuTree
