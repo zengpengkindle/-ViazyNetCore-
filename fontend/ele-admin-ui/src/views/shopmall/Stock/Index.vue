@@ -1,8 +1,8 @@
-<template title="商品管理">
+<template title="商品库存管理">
     <div>
         <header class="crum-title">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+                <el-breadcrumb-item>商品库存管理</el-breadcrumb-item>
             </el-breadcrumb>
         </header>
         <x-table :params="params" ref="table" :url="findAll">
@@ -43,18 +43,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-row>
-                    <el-col :span="18">
-                        <el-dropdown @command="dropCmdClick">
-                            <el-button type="primary">
-                                新增商品<i class="el-icon-arrow-down el-icon--right"></i>
-                            </el-button>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item v-for="opt in productOuters" :command="opt.value">{{opt.label}}</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                        <el-button type="success" round icon="el-icon-plus" @click="$router.push('/product/manage')">添加商品</el-button>
-                    </el-col>
-                    <el-col :span="6" align="right">
+                    <el-col :span="24" align="right">
                         <el-button type="primary" icon="el-icon-search" native-type="submit">搜索</el-button>
                     </el-col>
                 </el-row>
@@ -99,18 +88,14 @@
             <el-table-column prop="createTime" width="200" label="创建时间" :formatter="$dateFormatter"></el-table-column>
             <el-table-column label="操作" width="100" fixed="right">
                 <template slot-scope="scope">
-                    <router-link :to="{path:'/product/manage',query:{id:scope.row.id,outerType:scope.row.outerType}}" target="_blank">编辑</router-link>
                     <router-link :to="{path:'/stock/manage',query:{id:scope.row.id}}" target="_blank">库存</router-link>
-                    <el-button @click="modifyStatus(scope.row,2)" v-if="scope.row.status==0" type="text" size="small">上架</el-button>
-                    <el-button @click="modifyStatus(scope.row,0)" v-if="scope.row.status==2" type="text" size="small">下架</el-button>
-                    <el-button @click="remove(scope.row.id)" v-if="scope.row.status==0" type="text" size="small">删除</el-button>
                 </template>
             </el-table-column>
         </x-table>
     </div>
 </template>
 <script>
-    import { product, productOuter } from "../../apis";
+    import { product } from "../../apis";
 
     export default {
 
@@ -139,58 +124,11 @@
                     }, {
                         value: true,
                         label: '是'
-                    }],
-                productOuters: []
+                    }]
             }
         },
         keepAlive: true,
-        created() {
-            var vm = this;
-            productOuter.getAllAsync().then(cr => {
-                var list = cr.value;
-                vm.productOuters = [{ value: '', label: '普通商品' }];
-                var outers = Object.keys(list).map(function (listCode) {
-                    return {
-                        value: listCode,
-                        label: list[listCode]
-                    };
-                });
-                vm.productOuters = [...vm.productOuters,...outers]
-            })
-        },
         methods: {
-            remove(id) {
-                var vm = this;
-                msg.confirm("确定删除？", function () {
-                    product.remove(id)
-                        .then(r => {
-                            if (r.status) {
-                                vm.$alert(r.message, { type: 'error' });
-                            }
-                            else {
-                                vm.$message('删除成功！');
-                                vm.$refs.table.refresh();
-                            }
-                        });
-                });
-            },
-            dropCmdClick(cmd) {
-                this.$router.push('./manage?outerType=' + cmd);
-            },
-            modifyStatus(row, status) {
-                var vm = this;
-                product.modifyStatus(row.id, status)
-                    .then(r => {
-                        if (r.status) {
-                            vm.$alert(r.message, { type: 'error' });
-                        }
-                        else {
-                            vm.$message('操作成功！');
-                            vm.$refs.table.refresh();
-                        }
-                    });
-
-            }
         }
     }
 </script>
