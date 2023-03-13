@@ -47,6 +47,22 @@ export interface ProductOuterSpecialCredit {
   id: string;
 }
 
+/**
+ * OuterKeySpecialCredit
+ */
+export interface OuterKeySpecialCredit {
+  key: string;
+
+  name: string;
+
+  creditKey: string;
+
+  computeType: ComputeType;
+
+  feeMoney: number;
+
+  feePercent: number;
+}
 //
 export enum ComputeType {
   Alone = 0,
@@ -61,7 +77,7 @@ export class ProductOuterSpecialCreditApi {
   /**
    * 无
    */
-  public apiProductOuterSpecialCreditFindAll(
+  public findAll(
     param1?: SpecialCreditPagination
   ): Promise<ProductOuterSpecialCreditPageData> {
     return http.request({
@@ -70,14 +86,34 @@ export class ProductOuterSpecialCreditApi {
       data: param1
     });
   }
-  public apiProductOuterSpecialCreditModifyStatus(
-    outerId?: string,
-    status?: ComStatus
-  ): Promise<boolean> {
+  public get(id?: string): Promise<ProductOuterSpecialCredit> {
+    return http.request({
+      url: "/api/ProductOuterSpecialCredit/Get",
+      method: "post",
+      params: { id }
+    });
+  }
+  public modifyStatus(outerId?: string, status?: ComStatus): Promise<boolean> {
     return http.request({
       url: "/api/ProductOuterSpecialCredit/ModifyStatus",
       method: "post",
       params: { outerId, status }
+    });
+  }
+  public manger(param1?: ProductOuterSpecialCredit): Promise<void> {
+    return http.request({
+      url: "/api/ProductOuterSpecialCredit/Manger",
+      method: "post",
+      data: param1
+    });
+  }
+  public getSpecialCreditByOuterKey(
+    outerType?: string
+  ): Promise<Array<OuterKeySpecialCredit>> {
+    return http.request({
+      url: "/api/ProductOuterSpecialCredit/GetSpecialCreditByOuterKey",
+      method: "post",
+      params: { outerType }
     });
   }
 }

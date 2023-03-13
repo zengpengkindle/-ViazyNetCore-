@@ -112,6 +112,7 @@ app.UseApiResponseWrapper(option =>
     option.IsApiOnly = false;
     option.EnableResponseLogging = true;
     option.EnableExceptionLogging = true;
+    option.BypassHTMLValidation = true;
 
     option.IsDebug = app.Environment.IsDevelopment();
 });

@@ -166,10 +166,7 @@ export function useProductOuter() {
   }
   async function handleDelete(row) {
     if (row?.id) {
-      await ProductOuterApi.apiProductOuterModifyStatus(
-        row.id,
-        ComStatus.Deleted
-      );
+      await ProductOuterApi.modifyStatus(row.id, ComStatus.Deleted);
       message(`删除成功`, { type: "success" });
       onSearch();
     }

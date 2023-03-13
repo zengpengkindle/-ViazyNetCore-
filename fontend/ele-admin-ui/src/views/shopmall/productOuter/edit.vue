@@ -45,7 +45,7 @@ const isEdit = ref(false);
 const emit = defineEmits(["update:modelValue", "refresh"]);
 async function getProductOuter() {
   if (props.id) {
-    item.value = await ProductOuterApi.apiProductOuterGet(props.id);
+    item.value = await ProductOuterApi.get(props.id);
     createTimes.value = [item.value.beginTime, item.value.endTime];
   } else {
     item.value = { ...defaultItem };
@@ -64,7 +64,7 @@ const submit = (formEl: FormInstance | undefined) => {
   }
   formEl.validate(async valid => {
     if (valid) {
-      await ProductOuterApi.apiProductOuterMangerProductOuter(item.value);
+      await ProductOuterApi.mangerProductOuter(item.value);
       message("新增成功", { type: "success" });
       emit("refresh");
       handleClose(() => {});

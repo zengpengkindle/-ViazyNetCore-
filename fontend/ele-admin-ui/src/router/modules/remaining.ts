@@ -27,5 +27,33 @@ export default [
         component: () => import("@/layout/redirect.vue")
       }
     ]
+  },
+  {
+    path: "/shopmall",
+    component: Layout,
+    meta: {
+      title: "商品管理",
+      showLink: false,
+      rank: 104
+    },
+    children: [
+      {
+        path: "/shopmall/product/manage",
+        name: "productManage",
+        component: () => import("@/views/shopmall/product/manage.vue"),
+        meta: {
+          title: "商品编辑"
+        }
+      },
+      {
+        path: "/shopmall/productOuterSpecialCredit/manage",
+        name: "productOuterSpecialCreditManage",
+        component: () =>
+          import("@/views/shopmall/productOuterSpecialCredit/manage.vue"),
+        meta: {
+          title: "类别/活动管理"
+        }
+      }
+    ]
   }
 ] as Array<RouteConfigsTable>;

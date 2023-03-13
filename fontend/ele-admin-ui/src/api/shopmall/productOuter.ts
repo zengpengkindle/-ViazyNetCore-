@@ -45,26 +45,21 @@ export class ProductOuterApi {
       data: param1
     });
   }
-  public apiProductOuterModifyStatus(
-    outerId?: string,
-    status?: ComStatus
-  ): Promise<boolean> {
+  public modifyStatus(outerId?: string, status?: ComStatus): Promise<boolean> {
     return http.request({
       url: "/api/ProductOuter/ModifyStatus",
       method: "post",
       params: { outerId, status }
     });
   }
-  public apiProductOuterMangerProductOuter(
-    param1?: ProductOuter
-  ): Promise<boolean> {
+  public mangerProductOuter(param1?: ProductOuter): Promise<boolean> {
     return http.request({
       url: "/api/ProductOuter/MangerProductOuter",
       method: "post",
       data: param1
     });
   }
-  public apiProductOuterGet(id?: string): Promise<ProductOuter> {
+  public get(id?: string): Promise<ProductOuter> {
     return http.request({
       url: "/api/ProductOuter/Get",
       method: "post",

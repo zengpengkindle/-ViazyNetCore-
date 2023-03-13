@@ -9,7 +9,7 @@ import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted, type Ref } from "vue";
 import { nextTick } from "process";
 import { ComStatus } from "@/api/model";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export function useProductOuterCredit() {
   const form: SpecialCreditPagination = reactive({
@@ -126,13 +126,17 @@ export function useProductOuterCredit() {
     editId: ""
   });
   const creditOptions: Ref<any> = ref({});
-
+  const router = useRouter();
   function handleUpdate(row?: ProductOuterSpecialCredit) {
-    (editDrawer.show = true), (editDrawer.editId = row?.id);
+    // (editDrawer.show = true), (editDrawer.editId = row?.id);
+    router.push({
+      path: "/shopmall/productOuterSpecialCredit/manage",
+      query: { id: row?.id, outerType: row?.outerType }
+    });
   }
   async function handleDelete(row) {
     if (row?.id) {
-      await ProductOuterSpecialCreditApi.apiProductOuterSpecialCreditModifyStatus(
+      await ProductOuterSpecialCreditApi.modifyStatus(
         row.id,
         ComStatus.Deleted
       );
@@ -155,12 +159,11 @@ export function useProductOuterCredit() {
 
   async function onSearch() {
     loading.value = true;
-    const data =
-      await ProductOuterSpecialCreditApi.apiProductOuterSpecialCreditFindAll({
-        ...form,
-        page: pagination.currentPage,
-        limit: pagination.pageSize
-      });
+    const data = await ProductOuterSpecialCreditApi.findAll({
+      ...form,
+      page: pagination.currentPage,
+      limit: pagination.pageSize
+    });
     dataList.value = data.rows;
     pagination.total = data.total;
     nextTick(() => {
@@ -176,7 +179,7 @@ export function useProductOuterCredit() {
 
   const route = useRoute();
   onMounted(async () => {
-    creditOptions.value = await CreditApi.apiCreditGetAll();
+    creditOptions.value = await CreditApi.getAll();
     console.log(route.query);
     const outerType = route.query.outerType as string;
     form.outerType = outerType;

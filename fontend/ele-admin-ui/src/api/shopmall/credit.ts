@@ -78,7 +78,7 @@ export class CreditApi {
       data: param1
     });
   }
-  public apiCreditGetAll(): any {
+  public getAll(): any {
     return http.request({
       url: "/api/Credit/GetAll",
       method: "post"

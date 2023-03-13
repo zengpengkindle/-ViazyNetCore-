@@ -50,7 +50,7 @@ namespace ViazyNetCore.Modules.ShopMall
             var query = from t in table
                         orderby t.CreateTime descending
                         select t;
-            var value = query.ToPage(args.PageNumber, args.PageSize);
+            var value = await query.ToPageAsync(args);
 
             if (this._productHandlers != null)
             {
@@ -441,13 +441,13 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <param name="id"></param>
         /// <param name="outerType"></param>
         /// <returns></returns>
-        public async Task<ProductManageModel> GetManageProductInfo(string id, string outerType = null)
+        public async Task<ProductManageModel> GetManageProductInfo(string id, string? outerType = null)
         {
             var product = await this._engine.Select<Product>().Where(p => p.Id == id).ToOneAsync();
             if (product == null)
                 return null;
 
-            if (!product.OuterType.iEquals(outerType))
+            if (!product.OuterType.iEquals(outerType) && (product.OuterType.IsNotNull() || outerType.IsNotNull()))
             {
                 throw new ApiException("商品类型不对应");
             }

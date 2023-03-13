@@ -52,87 +52,78 @@
         <el-input v-model="item.exdata" type="textarea" :rows="3" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submit">提交</el-button>
+        <el-button type="primary" @click="submit(form)">提交</el-button>
         <el-button @click="$router.back()">返回</el-button>
       </el-form-item>
     </el-form>
   </el-card>
 </template>
-<script>
-import { productOuterSpecialCredit, credit } from "../../apis";
-
-export default {
-  data() {
-    const vm = this;
-    var state = vm.$route.query && vm.$route.query.id ? 1 : 0;
-    var outerType = this.$route.query && this.$route.query.outerType;
+<script lang="ts" setup>
+import ProductOuterSpecialCreditApi, {
+  ProductOuterSpecialCredit
+} from "@/api/shopmall/productOuterSpecialCredit";
+import CreditApi from "@/api/shopmall/credit";
+import { FormInstance, FormRules } from "element-plus";
+import { onMounted, reactive, Ref, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+const form = ref<FormInstance>();
+const rules = reactive<FormRules>({
+  objectKey: [
+    { required: true, message: "请输入价格类型标识" },
+    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+  ],
+  objectName: [
+    { required: true, message: "请输入价格类型名称" },
+    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+  ]
+});
+const route = useRoute();
+const router = useRouter();
+const computeTypes = reactive([
+  { value: 0, label: "独立价格" },
+  { value: 1, label: "与商品设置价格等价" },
+  { value: 2, label: "与商品等价但计算兑换手续费-固定" },
+  { value: 3, label: "计算百分比手续费" },
+  { value: 4, label: "混合价格" },
+  { value: 5, label: "条件式" }
+]);
+const state = ref(false);
+const outerType = ref("");
+const loading = ref(true);
+const item: Ref<ProductOuterSpecialCredit> = ref({});
+const credits = ref([]);
+onMounted(() => {
+  init();
+});
+const init = async () => {
+  state.value = route.query && route.query.id ? true : false;
+  outerType.value = route.query && (route.query.outerType as string);
+  loading.value = state.value;
+  const list = await CreditApi.getAll();
+  credits.value = Object.keys(list).map(function (listCode) {
     return {
-      state: state,
-      loading: state ? true : false,
-      outerType: outerType,
-      item: {},
-      credits: [],
-      computeTypes: [
-        { value: 0, label: "独立价格" },
-        { value: 1, label: "与商品设置价格等价" },
-        { value: 2, label: "与商品等价但计算兑换手续费-固定" },
-        { value: 3, label: "计算百分比手续费" },
-        { value: 4, label: "混合价格" },
-        { value: 5, label: "条件式" }
-      ],
-      rules: {
-        objectKey: [
-          { required: true, message: "请输入价格类型标识" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-        ],
-        objectName: [
-          { required: true, message: "请输入价格类型名称" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-        ]
-      }
+      value: listCode,
+      label: list[listCode]
     };
-  },
-  init() {
-    const vm = this;
-
-    credit.getAllAsync().then(cr => {
-      var list = cr.value;
-      vm.credits = Object.keys(list).map(function (listCode) {
-        return {
-          value: listCode,
-          label: list[listCode]
-        };
-      });
-      if (vm.state) {
-        var outerId = vm.$route.query.id;
-        productOuterSpecialCredit.getAsync(vm.$route.query.id).then(r => {
-          if (r.status) {
-            msg.error(r.message);
-            return;
-          }
-          vm.item = r.value;
-          vm.loading = false;
-        });
-      } else {
-        vm.item.outerType = vm.outerType;
-      }
-    });
-  },
-  methods: {
-    submit() {
-      const vm = this;
-      vm.$refs.form.validate(function (valid) {
-        if (!valid) return;
-        productOuterSpecialCredit.mangerAsync(vm.item).then(r => {
-          if (r.status) {
-            msg.error(r.message);
-            return;
-          }
-          msg.info("保存成功！");
-          vm.$router.back();
-        });
-      });
-    }
-  }
+  });
+  if (state.value) {
+    const outerId = route.query.id as string;
+    const outerTypes =
+      await ProductOuterSpecialCreditApi.getSpecialCreditByOuterKey(
+        outerType.value
+      );
+    item.value = await ProductOuterSpecialCreditApi.get(outerId);
+    outerTypes.find(p => p.key == item.value.outerType);
+    loading.value = false;
+  } else item.value.outerType = outerType.value;
 };
+function submit(form: FormInstance) {
+  form.validate(async valid => {
+    if (!valid) return;
+    await ProductOuterSpecialCreditApi.manger(item.value);
+
+    msg.info("保存成功！");
+    router.back();
+  });
+}
 </script>

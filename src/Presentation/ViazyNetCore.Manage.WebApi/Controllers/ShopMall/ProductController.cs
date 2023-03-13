@@ -32,7 +32,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
 
         [HttpPost]
         [Permission(PermissionIds.Stock, PermissionIds.Product)]
-        public async Task<ProductModifyModel> Find(string id, string outerType)
+        public async Task<ProductModifyModel> Find(string id, string? outerType)
         {
             var product = new ProductManageModel();
             if (id.IsNotNull())
@@ -57,19 +57,21 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         }
 
         [HttpPost]
-        public Task ModifyStatus(string id, ProductStatus status)
+        public async Task<bool> ModifyStatus(string id, ProductStatus status)
         {
-            return this._productService.ModifyProductStatus(id, this._shopId, status);
+            await this._productService.ModifyProductStatus(id, this._shopId, status);
+            return true;
         }
 
         [HttpPost]
-        public Task Remove(string id)
+        public async Task<bool> Remove(string id)
         {
-            return this._productService.ModifyProductStatus(id, this._shopId, ProductStatus.Delete);
+            await this._productService.ModifyProductStatus(id, this._shopId, ProductStatus.Delete);
+            return true;
         }
 
         [HttpPost]
-        public async Task<bool> Submit(string outerType, ProductManageModel item)
+        public async Task Submit(string outerType, ProductManageModel item)
         {
 
             item.ShopId = this._shopId;
@@ -78,7 +80,6 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             if (item.Image.IsNull())
                 throw new ApiException("请上传商品主图");
             await this._productService.ManageProduct(item, outerType);
-            return true;
         }
     }
 }

@@ -4,8 +4,7 @@ export let modelTpl=
 * <%= m.Description || m.Name %>
 */
 export interface <%= m.Name + (m.BaseModel?' extends '+m.BaseModel:'') %> {<% m.Properties.forEach( p => { %>
-  <% if(p.Description){ %>/** <%=p.Description %> */ <% } %>
-  <%= p.Name %>: <%- p.Type.TsType %><%=m.IsParameter?' | null':''%><% }) %>
+  <% if(p.Description){ %>/** <%=p.Description %> */ <% } %><%= p.Name %>: <%- p.Type.TsType %><%=m.IsParameter?' | null':''%><% }) %>
 }
 <% }) %>
 <% apiData.Enums.forEach( m => { %>// <%= m.Description || '' %><%
@@ -26,9 +25,9 @@ export let methodTpl=`import { http } from '@/utils/http';
 <% if(controller.Description){ %> /**
  * <%=controller.Description || '' %>
  */ <% } %>
-export class <%=controller.Name%> extends Base {<% controller.Methods.forEach( m => {
+export class <%=controller.Name%> {<% controller.Methods.forEach( m => {
   // 判断是否为导出函数
-  let isDownload=m.Responses.TsType=='any'
+  let isDownload=m.Responses.TsType==false //'any'
   
   // 方法参数-对象（排除请求头中参数）
   let ps = m.Parameters;

@@ -163,7 +163,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         public string OuterType { get; set; }
 
-        
+
 
         /// <summary>
         /// 设置或获取一个值，表示扩展数据。
@@ -386,24 +386,18 @@ namespace ViazyNetCore.Modules.ShopMall
         public Dictionary<string, decimal> SpecialPrices { get; set; }
     }
 
-    public class FindAllArguments
+    public class FindAllArguments : Pagination
     {
-        public string ShopId { get; set; }
+        public string? ShopId { get; set; }
 
-        public string TitleLike { get; set; }
+        public string? TitleLike { get; set; }
 
-        public string CatName { get; set; }
+        public string? CatName { get; set; }
 
         public bool? IsHidden { get; set; }
-
-
 
         public ProductStatus? Status { get; set; }
 
         public DateTime[] CreateTimes { get; set; }
-
-        public int PageSize { get; set; }
-
-        public int PageNumber { get; set; }
     }
 }
