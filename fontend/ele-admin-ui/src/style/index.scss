@@ -18,3 +18,7 @@
 .html-weakness {
   filter: invert(80%);
 }
+
+.el-button {
+  border-radius: var(--el-border-radius-small) !important;
+}
