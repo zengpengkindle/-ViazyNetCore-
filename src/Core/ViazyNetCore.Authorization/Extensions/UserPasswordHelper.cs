@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Auth
+namespace ViazyNetCore.Authorization
 {
     /// <summary>
     /// 用户密码存储格式
@@ -35,7 +35,7 @@ namespace ViazyNetCore.Auth
         /// <param name="passwordFormat">用户密码存储格式</param>
         public static bool CheckPassword(string password, string storedPassword, Guid slat, UserPasswordFormat passwordFormat)
         {
-            if(password.IsNull()) return false;
+            if (password.IsNull()) return false;
             return EncodePassword(password, slat, passwordFormat) == storedPassword;
         }
 
@@ -46,7 +46,7 @@ namespace ViazyNetCore.Auth
         /// <param name="passwordFormat">用户密码存储格式</param>
         public static string EncodePassword(string password, Guid slat, UserPasswordFormat passwordFormat)
         {
-            switch(passwordFormat)
+            switch (passwordFormat)
             {
                 case UserPasswordFormat.Clear:
                     return password;

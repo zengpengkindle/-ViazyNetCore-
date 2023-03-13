@@ -15,8 +15,8 @@ namespace ViazyNetCore.Modules.ShopMall
 
     public interface IEditProductHanlder
     {
-        Task OnAddProductAsync(ProductModel product);
-        Task OnUpdateProductAsync(ProductModel product);
+        Task OnAddProductAsync(ProductManageModel product);
+        Task OnUpdateProductAsync(ProductManageModel product);
         Task OnModifyProductStatusAsync(string productId, string shopId,ProductStatus status);
     }
 }

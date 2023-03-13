@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ViazyNetCore.Modules.ShopMall
 {
+    [Injection]
     public class RefundService
     {
         private readonly TradeService _tradeService;
@@ -17,103 +18,6 @@ namespace ViazyNetCore.Modules.ShopMall
             this._tradeService = tradeService;
             this._lockProvider = lockProvider;
         }
-
-        /// <summary>
-        /// 发起申请时先获取需要的数据
-        /// </summary>
-        /// <param name="tradeId"></param>
-        /// <returns></returns>
-        //public async Task<IResult> FindRefundInfo(string memberId, string tradeId)
-        //{
-        //    var model = new RefundModel();
-
-        //    var tradeResult = await this._tradeService.GetTradeDetail(memberId, tradeId);
-        //    if(tradeResult.Fail())
-        //        return tradeResult;
-        //    var trade = tradeResult.Value;
-
-        //    var shop = await this._engine.Select<Models.Shop>().Where(t => t.Id == trade.ShopId).FirstAsync();
-        //    if(shop == null)
-        //        throw new ApiException("店铺不存在");
-
-        //    model.ShopId = shop.Id;
-        //    model.ShopName = shop.ComponyName;
-        //    model.ConsigneeAddress = shop.AddressTH;
-        //    model.ConsigneeMobile = shop.Phone;
-        //    model.ConsigneeName = shop.Contact;
-
-        //    model.Trade = trade;
-
-        //    var refunds = await (from r in this._engine.Select<RefundTrade>()
-        //                         where r.TradeId == tradeId
-        //                         orderby r.CreateTime descending
-        //                         select new RefundTradeModel
-        //                         {
-        //                             ConsigneeAddress = "",
-        //                             ConsigneeName = "",
-        //                             ConsigneeMobile = "",
-        //                             ConsigneeZip = "",
-        //                             ExpressNo = "",
-        //                             HandlingType = r.HandlingType,
-        //                             Id = r.Id,
-        //                             LogisticsFee = r.LogisticsFee,
-        //                             LogisticsId = r.LogisticsId,
-        //                             ReturnsAmount = r.ReturnsAmount,
-        //                             ReturnsNo = r.ReturnsNo,
-        //                             ReturnsType = r.ReturnsType,
-        //                             SellerPunishFee = r.SellerPunishFee,
-        //                             Status = r.Status
-        //                         }).ToListAsync();
-        //    foreach(var refund in refunds)
-        //    {
-        //        var orders = await (from o in this._engine.Select<RefundTradeOrder>()
-        //                            where o.RefundTradeId == refund.Id 
-        //                            select new RefundOrderModel
-        //                            {
-        //                                RefundNum = o.Num,
-        //                                HandlingType = o.HandlingType,
-        //                                OrderId = o.TradeOrderId,
-        //                                SkuText = o.SkuText,
-        //                                Status = o.Status,
-        //                                Price = o.Price,
-        //                                Title = o.ProductName
-        //                            }).ToListAsync();
-        //        refund.Orders = orders;
-        //        var logs = await (from l in this._engine.Select<RefunTradeLog>()
-        //                          where l.RefundTradeId == refund.Id && l.IsParent==true
-        //                          orderby l.CreateTime descending
-        //                          select new RefundLogModel
-        //                          {
-        //                              CreateTime = l.CreateTime,
-        //                              LogisticsId = l.LogisticsId,
-        //                              Message = l.Message,
-        //                              Status = l.Status,
-        //                              Title = l.Title,
-        //                              Type = l.Type
-        //                          }).ToListAsync();
-
-        //        foreach(var log in logs)
-        //        {
-        //            var clogs = await (from l in this._engine.Select<RefunTradeLog>()
-        //                              where l.ParentId == log.Id
-        //                              orderby l.CreateTime descending
-        //                              select new RefundLogModel
-        //                              {
-        //                                  CreateTime = l.CreateTime,
-        //                                  LogisticsId = l.LogisticsId,
-        //                                  Message = l.Message,
-        //                                  Status = l.Status,
-        //                                  Title = l.Title,
-        //                                  Type = l.Type
-        //                              }).ToListAsync();
-        //            log.Children = clogs;
-        //        }
-        //        refund.Logs = logs;
-        //    }
-        //    model.RefundTrades = refunds;
-
-        //    return Result.Success(model);
-        //}
 
         public async Task<RefundTradeModel> FindRefundTradeInfo(string memberId, string tradeId)
         {
@@ -236,9 +140,141 @@ namespace ViazyNetCore.Modules.ShopMall
         /// 后台处理
         /// </summary>
         /// <returns></returns>
-        public Task HandleRefund()
+        /// <summary>
+        /// 流程处理
+        /// </summary>
+        /// <returns></returns>
+        public async Task HandleRefund(RefundParamsModel model)
         {
-            throw new NotImplementedException();
+            using (var context = this._engine.CreateUnitOfWork())
+            {
+                //当前流程
+                var NowStep = await this._engine.Select<RefundStepLog>().Where(t => t.Id == model.NowStepId).ToOneAsync();
+                if (NowStep == null)
+                    throw new ApiException("退款流程异常");
+
+                //验证流程是否已处理
+                if (NowStep.NextStepLogId.IsNotNull())
+                    throw new ApiException("退款流程异常");
+
+                //当前流程配置
+                var NowStepConfig = await _engine.Select<RefundStepConfig>().Where(t => t.Id == NowStep.StepId).ToOneAsync();
+                if (NowStepConfig == null)
+                    throw new ApiException("退款步骤异常");
+
+                //验证下一步是否符合配置
+                if (!NowStepConfig.NextStepIds.Contains(model.NextStepConfigId))
+                    throw new ApiException("退款步骤异常");
+
+                //下一步流程配置
+                var NextStepConfig = await _engine.Select<RefundStepConfig>().Where(t => t.Id == model.NextStepConfigId).ToOneAsync();
+                if (NextStepConfig == null)
+                    throw new ApiException("退款步骤异常");
+                if (NextStepConfig.SetRefundTradeStatus == RefundStatus.Cancel && NowStep.HandleUserType == RefundTradeLogType.Seller)
+                {
+                    if (model.Message.IsNull())
+                        throw new ApiException("退款步骤异常");
+                }
+
+                //流程对应退换单
+                var trade = await _engine.Select<RefundTrade>().Where(t => t.Id == NowStep.RefundTradeId).ToOneAsync();
+                if (trade == null)
+                    throw new ApiException("退款步骤异常");
+
+                //退换单数据填写根据流程下一步的配置确定
+                if (NextStepConfig.ShowFinance)//填写有关财务信息-
+                {
+                    trade.LogisticsFee = model.LogisticFee;
+                    trade.ReturnsAmount = model.ReturnsAmount;
+                    trade.SellerPunishFee = model.SellerPunishFee;
+                }
+                if (NextStepConfig.ShowLogistic)//填写有关的快递信息
+                {
+                    switch (NowStep.HandleUserType)//根据当前流程操作人判断应填写信息
+                    {
+                        case RefundTradeLogType.Seller:
+                            trade.ConsigneeExpressNo = model.LogisticId;
+                            trade.ConsigneeLogisticsName = model.LogisticName;
+                            break;
+                        case RefundTradeLogType.Buyer:
+                            trade.ReturnLogisticsName = model.LogisticName;
+                            trade.ReturnExpressNo = model.LogisticId;
+                            break;
+                    }
+                }
+                if (NextStepConfig.ShowRefund)//填写有关的回寄地址
+                {
+                    trade.ConsigneeAddress = model.RefundAddress;
+                    trade.ConsigneeMobile = model.RefundMobile;
+                    trade.ConsigneeName = model.RefundName;
+                    trade.ConsigneeZip = model.RefundPostal;
+                }
+
+                //进入下一步流程后的订单状态
+                trade.Status = NextStepConfig.SetRefundTradeStatus;
+
+                foreach (var orderParams in model.RefundOrderParams)
+                {
+                    await _engine.Update<RefundTradeOrder>().SetDto(new
+                    {
+                        Id = orderParams.RefundOrderId,
+                        trade.Status,
+                        HandlingTime = DateTime.Now,
+                        orderParams.HandlingType
+                    }).ExecuteAffrowsAsync();
+                }
+
+                //生成下一步
+                var NextStep = new RefundStepLog
+                {
+                    Id = Snowflake<RefundStepLog>.NextIdString(),
+                    CreateTime = DateTime.Now,
+                    HandleUserType = NextStepConfig.HandleUserType,
+                    Message = model.Message,//附加说明
+                    PreStepLogId = NowStep.Id,
+                    RefundTradeId = NowStep.RefundTradeId,
+                    Remind = NextStepConfig.Remind,
+                    StepId = NextStepConfig.Id,
+                    StepIndex = NowStep.StepIndex + 1,
+                    StepName = NextStepConfig.StepName
+                };
+
+                NowStep.HandleTime = DateTime.Now;
+                NowStep.HandleUserId = model.UserId;
+                NowStep.NextStepLogId = NextStep.Id;
+
+                trade.NewStepLogId = NextStep.Id;
+                await this._engine.Update<RefundTrade>().SetDto(new
+                {
+                    trade.Id,
+                    trade.Status,
+                    trade.NewStepLogId,
+                    trade.LogisticsFee,
+                    trade.ReturnsAmount,
+                    trade.SellerPunishFee,
+                    trade.ConsigneeExpressNo,
+                    trade.ConsigneeLogisticsName,
+                    trade.ReturnLogisticsName,
+                    trade.ReturnExpressNo,
+                    trade.ConsigneeAddress,
+                    trade.ConsigneeMobile,
+                    trade.ConsigneeName,
+                    trade.ConsigneeZip,
+                    UpdateTime = DateTime.Now
+                }).ExecuteAffrowsAsync();
+
+                await this._engine.Update<RefundStepLog>().SetDto(new
+                {
+                    NowStep.Id,
+                    NowStep.HandleTime,
+                    NowStep.HandleUserId,
+                    NowStep.NextStepLogId
+                }).ExecuteAffrowsAsync();
+
+                await this._engine.Insert<RefundStepLog>().AppendData(NextStep).ExecuteAffrowsAsync();
+
+                context.Commit();
+            }
         }
 
         /// <summary>

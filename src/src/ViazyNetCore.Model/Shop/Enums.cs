@@ -386,3 +386,53 @@ public enum PayContentType
     /// </summary>
     ScanImageUrl = 8,
 }
+
+public enum ComputeType
+{
+    /// <summary>
+    /// 独立价格
+    /// </summary>
+    Alone = 0,
+    /// <summary>
+    /// 与商品设置价格等价
+    /// </summary>
+    Equal = 1,
+    /// <summary>
+    /// 与商品等价但计算兑换手续费(固定)
+    /// </summary>
+    EqualFee = 2,
+    /// <summary>
+    /// 计算百分比手续费。
+    /// </summary>
+    EqualFeePercent = 3,
+    /// <summary>
+    /// 混合价格，即固定价格与现金价格都需要
+    /// </summary>
+    Hybrid = 4,
+    /// <summary>
+    /// 条件式，即不作为结算，但购买需要满足该条件才能购买。
+    /// </summary>
+    Requirement = 5,
+    /// <summary>
+    /// 赠品
+    /// </summary>
+    Gift = 6
+}
+
+public enum CreditType
+{
+    /// <summary>
+    /// 现金
+    /// </summary>
+    ReadyMoney = 1,
+    /// <summary>
+    /// 虚拟货币
+    /// </summary>
+    Virtual = 2
+}
+
+public enum RefundTradeLogType
+{
+    Seller = 0,
+    Buyer = 1
+}

@@ -2,6 +2,7 @@
 
 namespace ViazyNetCore.Modules.ShopMall
 {
+    [Injection]
     public class LogisticsService
     {
         private readonly IFreeSql _engine;
@@ -38,6 +39,11 @@ namespace ViazyNetCore.Modules.ShopMall
 
             };
             await this._engine.Insert<ProductLogistics>().AppendData(logistics).ExecuteAffrowsAsync();
+        }
+
+        public async Task<List<LogisticsCompany>> GetLogisticsCompanys()
+        {
+            return await this._engine.Select<LogisticsCompany>().ToListAsync();
         }
     }
 }

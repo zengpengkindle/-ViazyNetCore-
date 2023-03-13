@@ -30,6 +30,53 @@ function toString(message?: any) {
   return message;
 }
 
+Date.prototype.clearTime = function () {
+  this.setHours(0);
+  this.setMinutes(0);
+  this.setSeconds(0);
+  this.setMilliseconds(0);
+  return this;
+};
+
+Date.today = function () {
+  var now = new Date();
+  return now.clearTime();
+};
+
+var DAY_MS = 3600 * 1000 * 24;
+
+Date.prototype.lastWeek = function (weeks) {
+  return this.addDate((weeks || 1) * -7)
+};
+Date.prototype.lastMonth = function (months) {
+  return this.addDate((months || 1) * -30);
+};
+Date.prototype.lastYear = function (years) {
+  return this.addDate((years || 1) * -365);
+};
+Date.prototype.thisWeek = function (weeks) {
+  var start = this;
+  var weekDay = start.getDay();
+  if (weekDay == 0) weekDay = 7;
+  weekDay -= 1;
+  return this.addDate(-weekDay).addDate((weeks || 0) * 7);
+};
+Date.prototype.thisMonth = function (months) {
+  var start = this;
+  var monthDay = start.getDate();
+  monthDay -= 1;
+  start = this.addDate(-monthDay);
+  if (months) {
+      start.setMonth(start.getMonth() + months);
+  }
+  return start;
+};
+Date.prototype.addDate = function (days) {
+  var start = new Date(this.getTime());
+  if (days) start.setTime(start.getTime() + DAY_MS * (days || 0));
+  return start;
+};
+
 window.msg = {
   confirm(message?: any) {
     return new Promise(resolve => {
@@ -221,7 +268,72 @@ export default (): Plugin => {
       ) {
         return this.$refs[name] as TElement;
       };
-
+      app.config.globalProperties.$pickerOptions = {
+        shortcuts: [{
+          text: '今天',
+          value: () => {
+            var end = Date.today();
+            var start = Date.today();
+            return [start, end]
+          }
+        }, {
+          text: '昨天',
+          value: () => {
+            var end = Date.today().addDate(-1);
+            var start = Date.today().addDate(-1);
+            return [start, end]
+          }
+        }, {
+          text: '本周',
+          value: () => {
+            var end = Date.today();
+            var start = Date.today().thisWeek();
+            return [start, end]
+          }
+        }, {
+          text: '上周',
+          value: () => {
+            var start = Date.today().thisWeek(-1);
+            var end = start.addDate(6);
+            return [start, end]
+          }
+        }, {
+          text: '本月',
+          value: () => {
+            var end = Date.today();
+            var start = Date.today().thisMonth();
+            return [start, end]
+          }
+        }, {
+          text: '上月',
+          value: () => {
+            var start = Date.today().thisMonth(-1);
+            var end = start.thisMonth(1).addDate(-1);
+            return [start, end]
+          }
+        }, {
+          text: '最近一周',
+          value: () => {
+            var end = Date.today();
+            var start = Date.today().lastWeek();
+            return [start, end]
+          }
+        }, {
+          text: '最近一个月',
+          onClick: function (picker) {
+            var end = Date.today();
+            var start = Date.today().lastMonth();
+            return [start, end]
+          }
+        }, {
+          text: '最近三个月',
+          onClick: function (picker) {
+            var end = Date.today();
+            var start = Date.today().lastMonth(3);
+            return [start, end]
+          }
+        }]
+      };
       app.config.globalProperties.$validForm = function (
         this: ComponentPublicInstance,
         name: string,

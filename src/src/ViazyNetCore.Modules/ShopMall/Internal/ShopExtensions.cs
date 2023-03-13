@@ -15,15 +15,15 @@ namespace ViazyNetCore.Modules.ShopMall
             if (memberService == null)
                 services.AddScoped<IMemberService, DefaultMemberService>();
 
-            services.AddScoped<ProductService>()
-                .AddScoped<LogisticsService>()
-                .AddScoped<CartService>()
-                .AddScoped<AddressService>()
-                .AddScoped<TradeService>()
-                .AddScoped<RefundService>()
-                .AddScoped<ProductService>()
-                .AddScoped<StockService>()
-                .AddScoped<RefundService>();
+            //services.AddScoped<ProductService>()
+            //    .AddScoped<LogisticsService>()
+            //    .AddScoped<CartService>()
+            //    .AddScoped<AddressService>()
+            //    .AddScoped<TradeService>()
+            //    .AddScoped<RefundService>()
+            //    .AddScoped<ProductService>()
+            //    .AddScoped<StockService>()
+            //    .AddScoped<RefundService>();
             return services;
         }
     }

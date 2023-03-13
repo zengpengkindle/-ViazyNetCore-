@@ -20,20 +20,20 @@ namespace ViazyNetCore.ShopMall.AppApi
         }
 
         [HttpPost]
-        public async Task<ProductModel> GetProductSku([Required] string productId)
+        public async Task<ProductInfoModel> GetProductSku([Required] string productId, string outerType)
         {
-            if (productId.IsNull())
-                throw new ApiException("数据异常");
-
-            var productSkus = await this._productService.FindProductDetail(productId);
+            var productSkus = await this._productService.FindProductInfo(productId);
             if (productSkus == null)
             {
-                throw new ApiException("商品不存在");
+                throw new ApiException("未知商品");
             }
 
             productSkus.Image = _imgBaseUrl + productSkus.Image;
             productSkus.SubImage = productSkus.SubImage.Replace("/upload/", _imgBaseUrl + "/upload/");
             productSkus.Detail = productSkus.Detail.Replace("/upload/", _imgBaseUrl + "/upload/");
+
+            productSkus.Skus = await this._productService.GetProductSku(productId, outerType);
+
             if (productSkus.Skus.Tree.Count > 0)
             {
                 for (int i = 0; i < productSkus.Skus.Tree[0].V.Count; i++)
