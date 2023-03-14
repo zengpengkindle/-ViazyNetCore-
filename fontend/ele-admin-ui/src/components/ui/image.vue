@@ -1,20 +1,25 @@
 <template>
   <el-upload
     class="avatar-uploader"
-    action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
     :show-file-list="false"
     :on-success="handleAvatarSuccess"
     :before-upload="beforeAvatarUpload"
+    :on-preview="handlePictureCardPreview"
+    :on-remove="handleRemove"
   >
     <img v-if="props.modelValue" :src="props.modelValue" class="avatar" />
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
   </el-upload>
+  <el-dialog v-model="dialogVisible">
+    <img w-full :src="dialogImageUrl" alt="图片预览" />
+  </el-dialog>
 </template>
 <script lang="ts" setup>
 import { ElMessage } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 
 import type { UploadProps } from "element-plus";
+import { ref } from "vue";
 export interface ImageProps {
   modelValue: string | null;
   height?: string;
@@ -33,13 +38,23 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (
 
 const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
   if (rawFile.type !== "image/jpeg") {
-    ElMessage.error("Avatar picture must be JPG format!");
+    ElMessage.error("图像必须是 JPG/PNG 格式!");
     return false;
   } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error("Avatar picture size can not exceed 2MB!");
+    ElMessage.error("图像大小不能超过 2MB!");
     return false;
   }
   return true;
+};
+
+const handleRemove: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
+  console.log(uploadFile, uploadFiles);
+};
+const dialogImageUrl = ref("");
+const dialogVisible = ref(false);
+const handlePictureCardPreview: UploadProps["onPreview"] = uploadFile => {
+  dialogImageUrl.value = uploadFile.url!;
+  dialogVisible.value = true;
 };
 </script>
 

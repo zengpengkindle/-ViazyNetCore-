@@ -8,6 +8,7 @@
               <el-cascader
                 expand-trigger="hover"
                 :options="cats"
+                :props="catProps"
                 v-model="selectedOptions"
                 @change="handleChange"
               />
@@ -84,21 +85,17 @@
         <el-form-item label="描述" prop="description">
           <el-input type="textaere" v-model="item.description" />
         </el-form-item>
+
+        <el-form-item label="启用规格" prop="openSpec">
+          <el-switch
+            v-model="item.openSpec"
+            active-text="启用规格"
+            inactive-text="关闭规格"
+            :disabled="state == 1"
+          />
+        </el-form-item>
       </el-card>
-      <el-card class="mt-4" v-if="item">
-        <template #header>
-          <el-row>
-            <el-col :span="4">商品属性</el-col>
-            <el-col :span="6">
-              <el-switch
-                v-model="item.openSpec"
-                active-text="启用规格"
-                inactive-text="关闭规格"
-                :disabled="state == 1"
-              />
-            </el-col>
-          </el-row>
-        </template>
+      <el-card class="mt-3" v-show="item.openSpec">
         <template v-if="item.openSpec">
           <el-form-item label="规格" prop="keywords">
             <el-tag
@@ -303,7 +300,7 @@
           </el-row>
         </template>
       </el-card>
-      <el-card class="mt-4" v-if="item">
+      <el-card class="mt-3" v-if="item">
         <template #header>
           <span>商品图片</span>
         </template>
@@ -314,28 +311,28 @@
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="副图">
+            <el-form-item>
               <x-image v-model="subImage1" height="200px" width="200px" />
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="副图">
-              <x-image v-model="subImage2" />
+            <el-form-item>
+              <x-image v-model="subImage2" height="200px" width="200px" />
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="副图">
+            <el-form-item>
               <x-image v-model="subImage3" height="200px" width="200px" />
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="副图">
+            <el-form-item>
               <x-image v-model="subImage4" height="200px" width="200px" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-card>
-      <el-card v-if="item && item.skus.tree.length > 0" class="mt-4">
+      <el-card v-if="item && item.skus.tree.length > 0" class="mt-3">
         <template #header>
           <span>规格图片</span>
         </template>
@@ -346,17 +343,17 @@
         >
           <el-col :span="4">
             <el-form-item :label="sku1.name">
-              {{ sku1.imgUrl }}
+              <x-image v-model="sku1.imgUrl" height="200px" width="200px" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-card>
-      <el-card class="mt-4">
+      <el-card class="mt-3">
         <template #header>
           <span>商品详情</span>
         </template>
       </el-card>
-      <el-card class="mt-4">
+      <el-card class="mt-3">
         <el-form-item>
           <el-button type="primary" @click="submit(form)">提交</el-button>
           <!--<el-button @click="returnIndex">返回</el-button>-->
@@ -366,7 +363,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ElMessageBox, FormInstance, FormRules } from "element-plus";
+import { handleTree } from "@/utils/tree";
+import {
+  ElMessageBox,
+  FormInstance,
+  FormRules,
+  CascaderProps
+} from "element-plus";
 import { ref, onMounted, reactive, nextTick, Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ProductOuterSpecialCreditApi, {
@@ -375,6 +378,7 @@ import ProductOuterSpecialCreditApi, {
 import ProductApi, {
   ProductManageModel,
   ProductSkuManageModel,
+  ProductBrand,
   SkuTree
 } from "@/api/shopmall/product";
 import { message } from "@/utils/message";
@@ -387,6 +391,7 @@ onMounted(() => {
   outerType.value = route.query && (route.query.outerType as string);
   init();
 });
+const catProps: CascaderProps = reactive({ label: "name", value: "id" });
 
 const item: Ref<ProductManageModel> = ref({
   id: null,
@@ -438,10 +443,10 @@ const rules = reactive<FormRules>({
     { required: true, message: "请输入成本" },
     { type: "number", message: "请输入数字值" }
   ],
-  price: [
-    { required: true, message: "请输入售价" },
-    { type: "number", message: "请输入数字值" }
-  ],
+  // price: [
+  //   { required: true, message: "请输入售价" },
+  //   { type: "number", message: "请输入数字值" }
+  // ],
   image: [{ required: true, message: "请上传商品主图" }]
 });
 
@@ -473,11 +478,11 @@ const refundOptions = reactive([
 //     label: "是"
 //   }
 // ]);
-const selectedOptions = ref([]);
-const credits: Ref<Array<OuterKeySpecialCredit>> = ref();
+const selectedOptions = ref("");
+const credits: Ref<Array<OuterKeySpecialCredit>> = ref([]);
 const spec: Ref<Array<SkuTree>> = ref([]);
 const cats = ref([]);
-const brands = ref([]);
+const brands: Ref<Array<ProductBrand>> = ref([]);
 const newSpec = ref([]);
 const inputVisible = ref(false);
 const inputValue = ref("");
@@ -494,6 +499,11 @@ const init = async () => {
         outerType.value
       );
   }
+  const catlst = await ProductApi.getCats();
+  cats.value = handleTree(catlst);
+
+  const brandlst = await ProductApi.getBrands();
+  brands.value = brandlst;
   if (!route.query.id || route.query.id == "") {
     //item.skus = r.value.product.skus;
     newSkus.value = { tree: [], list: [] };
@@ -514,8 +524,6 @@ const init = async () => {
     );
     item.value = productModel.product;
 
-    cats.value = listToTree(productModel.cats, {});
-    brands.value = productModel.brands;
     if (!item.value.openSpec) {
       if (credits.value) {
         if (!item.value.specialPrices) {
@@ -804,16 +812,17 @@ function handleValueInputConfirm(s: any) {
   }
 }
 function handleChange(value: any) {
-  item.value.catId = value[value.length - 1]["id"];
-  item.value.catName = value[value.length - 1]["name"];
-  item.value.catPath = "";
-  value.forEach(function (value) {
-    item.value.catPath += value["name"] + "/";
-  });
-  item.value.catPath = item.value.catPath.substring(
-    0,
-    item.value.catPath.length - 1
-  );
+  console.log("handleChange", value);
+  item.value.catId = value[0];
+  // item.value.catName = value.name;
+  // item.value.catPath = "";
+  // value.forEach(function (value) {
+  //   item.value.catPath += value.name + "/";
+  // });
+  // item.value.catPath = item.value.catPath.substring(
+  //   0,
+  //   item.value.catPath.length - 1
+  // );
 }
 function handleChangePrice() {
   let price = item.value.skus.list[0].price;
@@ -848,7 +857,7 @@ function listToTree(data: any, options?: TreeOption): any[] {
   options = options || {};
   const ID_KEY = options.idKey || "id";
   const PARENT_KEY = options.parentKey || "parentId";
-  const CHILDREN_KEY = options.childrenKey || "items";
+  const CHILDREN_KEY = options.childrenKey || "children";
   const tree = [],
     childrenOf = {};
   let item, id, parentId;
@@ -868,7 +877,7 @@ function listToTree(data: any, options?: TreeOption): any[] {
       tree.push(item);
     }
   }
-
+  console.log(tree);
   return tree;
 }
 

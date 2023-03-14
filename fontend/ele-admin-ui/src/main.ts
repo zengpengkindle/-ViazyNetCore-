@@ -11,6 +11,7 @@ import { injectResponsiveStorage } from "@/utils/responsive";
 
 import Table from "@pureadmin/table";
 import Status from "@/components/ui/status.vue";
+import ImageUpload from "@/components/ui/image.vue";
 // import PureDescriptions from "@pureadmin/descriptions";
 
 // 引入重置样式
@@ -46,6 +47,7 @@ app.component("FontIcon", FontIcon);
 import { Auth } from "@/components/ReAuth";
 app.component("Auth", Auth);
 app.component("x-status", Status);
+app.component("x-image", ImageUpload);
 
 getServerConfig(app).then(async config => {
   app.use(router);

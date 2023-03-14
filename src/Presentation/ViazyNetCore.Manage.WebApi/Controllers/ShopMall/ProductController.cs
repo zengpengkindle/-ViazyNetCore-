@@ -41,19 +41,24 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
                 product = value ?? throw new ApiException("未找到商品");
             }
 
-            var brands = await this._productService.GetProductBrands();
-            var cats = await this._productService.GetProductCats();
+            //var brands = await this._productService.GetProductBrands();
+            //var cats = await this._productService.GetProductCats();
 
-            return new ProductModifyModel { Product = product, Brands = brands, Cats = cats };
+            return new ProductModifyModel { Product = product };
         }
 
-        public class ProductModifyModel
+        [HttpPost]
+        [Permission(PermissionIds.Stock, PermissionIds.Product)]
+        public Task<List<ProductBrand>> GetBrands()
         {
-            public ProductManageModel Product { get; set; }
+            return this._productService.GetProductBrands();
+        }
 
-            public List<ProductBrand> Brands { get; set; }
-
-            public List<ProductCat> Cats { get; set; }
+        [HttpPost]
+        [Permission(PermissionIds.Stock, PermissionIds.Product)]
+        public Task<List<ProductCat>> GetCats()
+        {
+            return this._productService.GetProductCats();
         }
 
         [HttpPost]
@@ -81,5 +86,14 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
                 throw new ApiException("请上传商品主图");
             await this._productService.ManageProduct(item, outerType);
         }
+    }
+
+    public class ProductModifyModel
+    {
+        public ProductManageModel Product { get; set; }
+
+        public List<ProductBrand> Brands { get; set; }
+
+        public List<ProductCat> Cats { get; set; }
     }
 }

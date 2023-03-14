@@ -269,5 +269,17 @@ export class ProductApi {
       params: { id, status }
     });
   }
+  public getCats(): Promise<Array<ProductCat>> {
+    return http.request({
+      url: "/api/Product/GetCats",
+      method: "post"
+    });
+  }
+  public getBrands(): Promise<Array<ProductBrand>> {
+    return http.request({
+      url: "/api/Product/GetBrands",
+      method: "post"
+    });
+  }
 }
 export default new ProductApi();
