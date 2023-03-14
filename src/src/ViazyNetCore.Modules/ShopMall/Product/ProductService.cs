@@ -411,7 +411,7 @@ namespace ViazyNetCore.Modules.ShopMall
                 throw new ApiException("商品不存在");
             if (status == ProductStatus.Delete && product.Status == ProductStatus.OnSale)
                 throw new ApiException("请先下架商品再删除");
-            await this._engine.Update<Product>().SetDto(new { product.Id, status }).ExecuteAffrowsAsync();
+            await this._engine.Update<Product>().Where(p => p.Id == product.Id).Set(p => p.Status == status).ExecuteAffrowsAsync();
             if (_editProductHanlders != null)
             {
                 foreach (var handler in _editProductHanlders)
