@@ -6,6 +6,7 @@
     :before-upload="beforeAvatarUpload"
     :on-preview="handlePictureCardPreview"
     :on-remove="handleRemove"
+    action="/api/common/upload/image"
   >
     <img v-if="props.modelValue" :src="props.modelValue" class="avatar" />
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -19,7 +20,8 @@ import { ElMessage } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 
 import type { UploadProps } from "element-plus";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+import { ApiResponse } from "@/api/model/apiResponseBase";
 export interface ImageProps {
   modelValue: string | null;
   height?: string;
@@ -32,12 +34,21 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (
   response,
   uploadFile
 ) => {
-  const imageUrl = URL.createObjectURL(uploadFile.raw!);
+  console.log(response);
+  const apiResponse = response as ApiResponse;
+  let imageUrl = "";
+  if (apiResponse.code == 200) {
+    if (apiResponse.data.success) {
+      imageUrl = apiResponse.data.result as string;
+    }
+  }
+  URL.createObjectURL(uploadFile.raw!);
   emits("update:modelValue", imageUrl);
 };
-
+const uploadTypes = reactive(["image/jpeg", "image/png"]);
 const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
-  if (rawFile.type !== "image/jpeg") {
+  console.log(rawFile.type);
+  if (!uploadTypes.includes(rawFile.type)) {
     ElMessage.error("图像必须是 JPG/PNG 格式!");
     return false;
   } else if (rawFile.size / 1024 / 1024 > 2) {

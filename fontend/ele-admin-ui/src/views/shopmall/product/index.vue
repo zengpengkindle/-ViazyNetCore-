@@ -63,6 +63,7 @@ const {
     <div>
       <el-form
         ref="formRef"
+        label-width="100px"
         :inline="true"
         :model="form"
         class="bg-bg_color w-[99/100] pl-8 pt-4"

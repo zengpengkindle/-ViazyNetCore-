@@ -1,25 +1,28 @@
 <template title="商品管理" props="{id:0}">
   <div>
-    <el-form ref="form" :model="item" :rules="rules" v-loading="loading">
+    <el-form
+      ref="form"
+      :model="item"
+      :rules="rules"
+      v-loading="loading"
+      label-width="120px"
+    >
       <el-card v-if="item">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="类目" prop="catId" v-if="!state">
+            <el-form-item label="类目" prop="catId">
               <el-cascader
                 expand-trigger="hover"
                 :options="cats"
                 :props="catProps"
-                v-model="selectedOptions"
+                v-model="item.catId"
                 @change="handleChange"
               />
             </el-form-item>
-            <el-form-item label="类目" v-if="state">
-              <el-input v-model="item.catPath" :disabled="true" />
-            </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="品牌" prop="brandId" v-if="!state">
-              <el-select v-model="item.brandId" placeholder="可空">
+            <el-form-item label="品牌" prop="brandId">
+              <el-select v-model="item.brandId" :disabled="state === 1">
                 <el-option
                   v-for="r in brands"
                   :key="r.id"
@@ -27,9 +30,6 @@
                   :value="r.id"
                 />
               </el-select>
-            </el-form-item>
-            <el-form-item label="品牌" v-if="state">
-              <el-input v-model="item.brandName" :disabled="true" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -95,7 +95,7 @@
           />
         </el-form-item>
       </el-card>
-      <el-card class="mt-3" v-show="item.openSpec">
+      <el-card class="mt-3">
         <template v-if="item.openSpec">
           <el-form-item label="规格" prop="keywords">
             <el-tag
@@ -218,11 +218,12 @@
               </el-table-column>
               <el-table-column label="售价" width="180">
                 <template #default="scope">
-                  <el-input
-                    type="number"
-                    v-model.number="scope.row.price"
-                    placeholder="请输入售价"
-                  />
+                  <el-form-item>
+                    <el-input
+                      type="number"
+                      v-model.number="scope.row.price"
+                      placeholder="请输入售价"
+                  /></el-form-item>
                 </template>
               </el-table-column>
               <el-table-column label="在库库存">
@@ -341,7 +342,7 @@
           v-for="sku1 in item.skus.tree[0].v"
           v-bind:key="sku1.id"
         >
-          <el-col :span="4">
+          <el-col :span="12">
             <el-form-item :label="sku1.name">
               <x-image v-model="sku1.imgUrl" height="200px" width="200px" />
             </el-form-item>
@@ -379,7 +380,9 @@ import ProductApi, {
   ProductManageModel,
   ProductSkuManageModel,
   ProductBrand,
-  SkuTree
+  SkuTree,
+  ProductStatus,
+  RefundType
 } from "@/api/shopmall/product";
 import { message } from "@/utils/message";
 const route = useRoute();
@@ -408,23 +411,23 @@ const item: Ref<ProductManageModel> = ref({
   description: null,
   cost: null,
   price: null,
-  isFreeFreight: null,
-  freight: null,
-  freightStep: null,
-  freightValue: null,
-  isHidden: null,
+  isFreeFreight: 0,
+  freight: 0,
+  freightStep: 0,
+  freightValue: 0,
+  isHidden: 0,
   statusChangeTime: null,
   image: null,
   subImage: null,
   openSpec: null,
   detail: null,
-  status: null,
-  refundType: null,
+  status: ProductStatus.OnSale,
+  refundType: RefundType.NoSupport,
   stock: { inStock: 0 },
   createTime: null,
   modifyTime: null,
   searchContent: null,
-  hasOuter: null,
+  hasOuter: false,
   outerType: null,
   exdata: null,
   propertyKeys: null,
@@ -491,7 +494,6 @@ const subImage2 = ref("");
 const subImage3 = ref("");
 const subImage4 = ref("");
 const newSkus: Ref<ProductSkuManageModel> = ref();
-
 const init = async () => {
   if (outerType.value) {
     credits.value =
@@ -848,39 +850,6 @@ function handleChangestockNum() {
 
   item.value.stock.inStock = stock;
 }
-interface TreeOption {
-  idKey?: string;
-  parentKey?: string;
-  childrenKey?: string;
-}
-function listToTree(data: any, options?: TreeOption): any[] {
-  options = options || {};
-  const ID_KEY = options.idKey || "id";
-  const PARENT_KEY = options.parentKey || "parentId";
-  const CHILDREN_KEY = options.childrenKey || "children";
-  const tree = [],
-    childrenOf = {};
-  let item, id, parentId;
-  for (let i = 0, length = data.length; i < length; i++) {
-    item = data[i];
-    item.idValue = { id: item.id, name: item.name };
-    id = item[ID_KEY];
-    parentId = item[PARENT_KEY] || 0;
-    if (item.isParent) {
-      childrenOf[id] = childrenOf[id] || [];
-      item[CHILDREN_KEY] = childrenOf[id];
-    }
-    if (parentId != 0) {
-      childrenOf[parentId] = childrenOf[parentId] || [];
-      childrenOf[parentId].push(item);
-    } else {
-      tree.push(item);
-    }
-  }
-  console.log(tree);
-  return tree;
-}
-
 const form = ref<FormInstance>();
 const router = useRouter();
 const submit = (formEl: FormInstance | undefined) =>
@@ -894,6 +863,7 @@ const submit = (formEl: FormInstance | undefined) =>
         });
         return;
       }
+      item.value.price = item.value.skus.list.sort(p => p.price)[0].price;
     }
 
     if (!item.value.image) {
@@ -916,7 +886,7 @@ const submit = (formEl: FormInstance | undefined) =>
 
     await ProductApi.submit(outerType.value, item.value);
     message("保存成功！");
-    router.push("/product/index");
+    router.push("/shopmall/product/index");
   });
 </script>
 <style>

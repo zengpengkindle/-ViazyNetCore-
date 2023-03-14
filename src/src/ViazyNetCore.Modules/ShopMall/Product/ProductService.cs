@@ -510,12 +510,12 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task ManageProduct(ProductManageModel item, string outerType)
+        public async Task ManageProduct(ProductManageModel item, string? outerType)
         {
             var outerCredits = new List<OuterKeySpecialCredit>();
             if (outerType.IsNotNull())
             {
-                outerCredits = await this._productOuterSpecialCreditService.GetSpecialCreditByOuterKey(outerType);
+                outerCredits = await this._productOuterSpecialCreditService.GetSpecialCreditByOuterKey(outerType!);
             }
 
             using (var context = this._engine.CreateUnitOfWork())
@@ -776,9 +776,8 @@ namespace ViazyNetCore.Modules.ShopMall
                             }
                         }
                     }
-                    await this._engine.Update<Product>().SetDto(new
+                    await this._engine.Update<Product>().Where(p => p.Id == product.Id).SetDto(new
                     {
-                        product.Id,
                         product.Title,
                         product.SubTitle,
                         product.Keywords,

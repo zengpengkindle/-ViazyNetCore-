@@ -76,7 +76,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task Submit(string outerType, ProductManageModel item)
+        public async Task Submit(string? outerType, ProductManageModel item)
         {
 
             item.ShopId = this._shopId;

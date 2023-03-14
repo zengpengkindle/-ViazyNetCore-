@@ -12,16 +12,16 @@
         /// <summary>
         /// 设置或获取一个值，表示主键。
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示商品编号。（与商品Sku编号二选一）
         /// </summary>
-        public string ProductId { get; set; }
+        public string? ProductId { get; set; }
 
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
-        public string ImgUrl { get; set; }
+        public string? ImgUrl { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示在库数量。
@@ -53,7 +53,7 @@
         /// </summary>
         public int Exchange { get; set; }
 
-        public List<StockSkuModel> Skus { get; set; } = new List<StockSkuModel>();
+        public List<StockSkuModel>? Skus { get; set; } = new List<StockSkuModel>();
 
     }
 

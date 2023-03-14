@@ -79,6 +79,11 @@ builder.Services.AddApiDescriptor(option =>
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
 
+builder.Services.AddLocalStoreProvider(options => {
+    //options.RequestPath
+    options.StoreRootPath = "./files";
+    options.RequestPath = "/upload";
+});
 builder.Services.AddSingleton(sp => LockProvider.Default);
 builder.Services.AddShopMall();
 builder.Services.AddSwagger(option =>
@@ -104,6 +109,7 @@ app.UseFreeSql();
 app.UseHttpsRedirection();
 //app.UseDynamicController();
 app.UseStaticFiles();
+app.UseStoreProvider();
 app.UseRouting();
 app.UseEventBusWithStore(ServiceAssemblies);
 // Configure the HTTP response wrapper.
@@ -130,6 +136,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerAndUI();
     app.UseSpa(spa =>
     {
+        // 前端文件目录
         spa.Options.SourcePath = "../../../fontend/ele-admin-ui";
         //spa.Options.PackageManagerCommand = "pnpm";
         spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions()
