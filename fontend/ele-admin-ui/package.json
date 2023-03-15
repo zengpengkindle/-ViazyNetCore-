@@ -34,6 +34,8 @@
     "@pureadmin/utils": "^1.8.5",
     "@vueuse/core": "^9.6.0",
     "@vueuse/motion": "2.0.0-beta.12",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "5.1.12",
     "animate.css": "^4.1.1",
     "axios": "^1.2.0",
     "dayjs": "^1.11.6",

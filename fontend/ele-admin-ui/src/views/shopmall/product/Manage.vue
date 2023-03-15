@@ -353,6 +353,21 @@
         <template #header>
           <span>商品详情</span>
         </template>
+        <div class="wangeditor">
+          <Toolbar
+            style="border-bottom: 1px solid #ccc"
+            :editor="editorRef"
+            :defaultConfig="toolbarConfig"
+            :mode="mode"
+          />
+          <Editor
+            style="height: 500px; overflow-y: hidden"
+            v-model="item.detail"
+            :defaultConfig="editorConfig"
+            :mode="mode"
+            @onCreated="handleCreated"
+          />
+        </div>
       </el-card>
       <el-card class="mt-3">
         <el-form-item>
@@ -364,14 +379,24 @@
   </div>
 </template>
 <script lang="ts" setup>
+import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { handleTree } from "@/utils/tree";
+import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import {
   ElMessageBox,
   FormInstance,
   FormRules,
   CascaderProps
 } from "element-plus";
-import { ref, onMounted, reactive, nextTick, Ref } from "vue";
+import {
+  ref,
+  onMounted,
+  reactive,
+  nextTick,
+  Ref,
+  shallowRef,
+  onBeforeUnmount
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ProductOuterSpecialCreditApi, {
   OuterKeySpecialCredit
@@ -385,6 +410,8 @@ import ProductApi, {
   RefundType
 } from "@/api/shopmall/product";
 import { message } from "@/utils/message";
+import { IDomEditor, IEditorConfig, IToolbarConfig } from "@wangeditor/editor";
+import { http } from "@/utils/http";
 const route = useRoute();
 const state = ref(0);
 const outerType = ref("");
@@ -420,7 +447,7 @@ const item: Ref<ProductManageModel> = ref({
   image: null,
   subImage: null,
   openSpec: null,
-  detail: null,
+  detail: "",
   status: ProductStatus.OnSale,
   refundType: RefundType.NoSupport,
   stock: { inStock: 0 },
@@ -471,17 +498,6 @@ const refundOptions = reactive([
     name: "不能退换货"
   }
 ]);
-// const isHiddenOptions = reactive([
-//   {
-//     value: false,
-//     label: "否"
-//   },
-//   {
-//     value: true,
-//     label: "是"
-//   }
-// ]);
-const selectedOptions = ref("");
 const credits: Ref<Array<OuterKeySpecialCredit>> = ref([]);
 const spec: Ref<Array<SkuTree>> = ref([]);
 const cats = ref([]);
@@ -582,20 +598,55 @@ const init = async () => {
   }
   loading.value = false;
 };
-// function contains(arr, obj) {
-//   let i = arr.length;
-//   while (i--) {
-//     if (arr[i] === obj) {
-//       return true;
-//     }
-//   }
-//   return false;
-// }
-function handleClose(tag, arr) {
+
+// 编辑器实例，必须用 shallowRef
+const editorRef = shallowRef();
+const toolbarConfig: Partial<IToolbarConfig> = {
+  excludeKeys: ["fullScreen"]
+};
+type InsertFnType = (url: string, alt?: string, href?: string) => void;
+const editorConfig: Partial<IEditorConfig> = {
+  placeholder: "请输入内容...",
+  MENU_CONF: {
+    uploadImage: {
+      server: "api/common/upload/image",
+      // 自定义插入图片
+      async customUpload(file: File, insertFn: InsertFnType) {
+        const param = new FormData(); // 创建form对象
+        //注意files是对应后台的参数名哦
+        param.append("file", file);
+        const res = await http.request({
+          url: "/api/common/upload/image",
+          method: "post",
+          headers: { "Content-Type": "multipart/form-data" },
+          data: param
+        });
+        insertFn(res as string);
+      }
+    }
+  }
+};
+
+const mode = "simple";
+// 组件销毁时，也及时销毁编辑器
+onBeforeUnmount(() => {
+  const editor = editorRef.value;
+  if (editor == null) return;
+  editor.destroy();
+});
+const handleCreated = (editor: IDomEditor) => {
+  editorRef.value = editor; // 记录 editor 实例，重要！
+};
+
+function handleClose(tag: any, arr: any[]) {
   arr.splice(arr.indexOf(tag), 1);
   handleSkus();
 }
-function createSkusArray(sales, saleIndex, lines) {
+function createSkusArray(
+  sales: string | any[],
+  saleIndex: number,
+  lines: string | any[]
+) {
   if (!sales.length) return [];
   let skusArray = [];
   const saleArray = sales[saleIndex].v;
@@ -656,7 +707,7 @@ function handleSkus() {
       price: "",
       stock_num: ""
     };
-    sku.forEach(function (v, vindex) {
+    sku.forEach(function (v: { id: any; key: any; name: any }, vindex: number) {
       a["s" + (vindex + 1)] = v.id;
       a["key" + (vindex + 1)] = v.key;
       a["name" + (vindex + 1)] = v.name;
@@ -735,7 +786,7 @@ function showInput() {
     // else $refs.saveTagInput[0].$refs.input.focus();
   });
 }
-function showValueInput(s) {
+function showValueInput(s: { inputVisible: boolean }) {
   s.inputVisible = true;
   // nextTick(_ => {
   //   if (!Array.isArray($refs.saveTagInput))
@@ -785,7 +836,7 @@ function handleValueInputConfirm(s: any) {
   const inputValue = s.inputValue;
   let flag = false;
   if (inputValue) {
-    s.v.forEach(function (value) {
+    s.v.forEach(function (value: { name: any }) {
       if (value.name == inputValue) flag = true;
     });
     if (flag) {
@@ -814,17 +865,7 @@ function handleValueInputConfirm(s: any) {
   }
 }
 function handleChange(value: any) {
-  console.log("handleChange", value);
   item.value.catId = value[0];
-  // item.value.catName = value.name;
-  // item.value.catPath = "";
-  // value.forEach(function (value) {
-  //   item.value.catPath += value.name + "/";
-  // });
-  // item.value.catPath = item.value.catPath.substring(
-  //   0,
-  //   item.value.catPath.length - 1
-  // );
 }
 function handleChangePrice() {
   let price = item.value.skus.list[0].price;
@@ -889,7 +930,7 @@ const submit = (formEl: FormInstance | undefined) =>
     router.push("/shopmall/product/index");
   });
 </script>
-<style>
+<style scoped>
 .el-tag + .el-tag {
   margin-left: 10px;
 }

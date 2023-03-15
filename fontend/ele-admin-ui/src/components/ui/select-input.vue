@@ -18,7 +18,7 @@
         :placeholder="placeholder"
         v-model="display"
         :readonly="label != null"
-        @dblclick.native="showDialog(true)"
+        @dblclick="showDialog(true)"
       >
         <template #append>
           <el-button @click="showDialog">

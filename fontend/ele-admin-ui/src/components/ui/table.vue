@@ -5,7 +5,7 @@
         ref="filter"
         :label-position="labelPosition"
         :inline="inline"
-        @submit.native.prevent
+        @submit.prevent
       >
         <slot name="form" />
         <el-form-item>
@@ -42,7 +42,7 @@
           <slot name="footer" />
         </template>
       </el-table>
-      <div style="height: 12px"></div>
+      <div style="height: 12px" />
       <el-pagination
         background
         ref="pagination"
@@ -53,8 +53,7 @@
         :page-sizes="pageSizes"
         :layout="pageLayout"
         :total="total"
-      >
-      </el-pagination>
+      />
     </div>
   </div>
 </template>
@@ -137,7 +136,7 @@ interface SortData {
 }
 let sortData: SortData = reactive({ prop: "id", order: "descending" });
 const filter = ref(null);
-const table: typeof ElTable = ref(null);
+const table: Ref<typeof ElTable> = ref();
 
 const autoSummaryColumns = computed(() => {
   if (!props.autoSummary) return [];
@@ -257,7 +256,7 @@ onActivated(() => {
 });
 
 function doLayout() {
-  if (table) table.value.doLayout();
+  table.value.doLayout();
 }
 
 function onRefresh(force) {

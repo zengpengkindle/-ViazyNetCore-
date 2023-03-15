@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NLog.Web;
 using ViazyNetCore;
+using ViazyNetCore.AttachmentProvider;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
@@ -83,6 +84,7 @@ builder.Services.AddLocalStoreProvider(options => {
     //options.RequestPath
     options.StoreRootPath = "./files";
     options.RequestPath = "/upload";
+    options.MediaTypes = new List<MediaType> { MediaType.Image };
 });
 builder.Services.AddSingleton(sp => LockProvider.Default);
 builder.Services.AddShopMall();

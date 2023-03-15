@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { message } from "@/utils/message";
-import CreditApi,{Pagination,Credits} from "@/api/shopmall/credit";
+import CreditApi, { Pagination, Credits } from "@/api/shopmall/credit";
 import { ElMessageBox } from "element-plus";
 import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted, type Ref } from "vue";
@@ -104,54 +104,12 @@ export function useCreditType() {
     show: false,
     editId: ""
   });
-  function onChange({ row, index }) {
-    ElMessageBox.confirm(
-      `确认要<strong>${
-        row.status === 0 ? "停用" : "启用"
-      }</strong><strong style='color:var(--el-color-primary)'>${
-        row.username
-      }</strong>吗?`,
-      "系统提示",
-      {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        dangerouslyUseHTMLString: true,
-        draggable: true
-      }
-    )
-      .then(() => {
-        switchLoadMap.value[index] = Object.assign(
-          {},
-          switchLoadMap.value[index],
-          {
-            loading: true
-          }
-        );
-        setTimeout(() => {
-          switchLoadMap.value[index] = Object.assign(
-            {},
-            switchLoadMap.value[index],
-            {
-              loading: false
-            }
-          );
-          message("已成功修改状态", {
-            type: "success"
-          });
-        }, 300);
-      })
-      .catch(() => {
-        row.status === 0 ? (row.status = 1) : (row.status = 0);
-      });
-  }
-
   function handleUpdate(row?: Credits) {
     (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
   async function handleDelete(row) {
     if (row?.id) {
-      await CreditApi.apiCreditModifyStatus(row.id,ComStatus.Deleted);
+      await CreditApi.apiCreditModifyStatus(row.id, ComStatus.Deleted);
       message(`删除成功`, { type: "success" });
       onSearch();
     }
