@@ -8,7 +8,7 @@ namespace ViazyNetCore.Modules.ShopMall
     /// <summary>
     /// 订单查询用
     /// </summary>
-    public class TradePageArgments
+    public class TradePageArgments : Pagination
     {
         public string MemberId { get; set; }
 
@@ -32,10 +32,6 @@ namespace ViazyNetCore.Modules.ShopMall
         public int TimeType { get; set; }
 
         public PayMode? PayMode { get; set; }
-
-        public int PageNumber { get; set; }
-
-        public int PageSize { get; set; }
     }
 
     public class TradeSetModel

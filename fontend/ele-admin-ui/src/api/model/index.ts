@@ -138,11 +138,10 @@ export interface UserManageDto {
   password: string;
 }
 /**
-* Pagination
-*/
+ * Pagination
+ */
 export interface Pagination {
-  
-  page: number | null
-  
-  limit: number | null
+  page: number | null;
+
+  limit: number | null;
 }

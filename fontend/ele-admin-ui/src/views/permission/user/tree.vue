@@ -69,7 +69,7 @@ onMounted(async () => {
     <el-card class="h-full min-h-[780px]" v-loading="loading">
       <template #header>
         <div class="flex items-center h-[34px]">
-          <div class="flex-1 font-bold text-base truncate">部门权限</div>
+          <div class="flex-1 font-bold text-base truncate">部门列表</div>
           <el-input
             style="flex: 2"
             size="small"

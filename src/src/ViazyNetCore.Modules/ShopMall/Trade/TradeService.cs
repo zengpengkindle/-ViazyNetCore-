@@ -429,7 +429,7 @@ namespace ViazyNetCore.Modules.ShopMall
                             LogisticsFee = t.LogisticsCost
                         });
 
-            var trades = await query.ToPageAsync(args.PageNumber, args.PageSize);
+            var trades = await query.ToPageAsync(args);
             for (int i = 0; i < trades.Rows.Count(); i++)
             {
                 var orders = await this._engine.Select<ProductTradeOrder>().Where(o => o.ProductTradeId == trades.Rows[i].Id).ToListAsync();

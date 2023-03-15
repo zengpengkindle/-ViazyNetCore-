@@ -1,4 +1,5 @@
 import { http } from "@/utils/http";
+import { Pagination } from "../model";
 
 export class TradeApi {
   public findWlList(): Promise<Array<SimpleLogisticsCompany>> {
@@ -55,7 +56,7 @@ export interface SimpleLogisticsCompany {
 /**
  * TradePageArgments
  */
-export interface TradePageArgments {
+export interface TradePageArgments extends Pagination {
   memberId: string | null;
   tradeId: string | null;
   nickNameLike: string | null;

@@ -58,28 +58,38 @@ export function useProduct() {
       hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
-      label: "活动编号",
+      label: "商品编号",
       prop: "id",
       minWidth: 180
     },
     {
       label: "标题",
+      width: 300,
       cellRenderer: ({ row }) => (
-        <el-row gutter={20}>
-          <el-col span={8}>
+        <div class="flex">
+          <div style="width:100px">
             <el-image
               style="width: 100px; height: 100px"
               src={row.image}
               fit="cover"
             />
-          </el-col>
-          <el-col span={16}>
-            <p class="product_title">{row.title}</p>
-            <p>
-              <span>{row.catPath}</span>
-            </p>
-          </el-col>
-        </el-row>
+          </div>
+          <div style="flex-1">
+            <div class="text-left text-ellipsis">
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content={row.title}
+                placement="top-start"
+              >
+                <p class="product_title text-ellipsis">{row.title}</p>
+              </el-tooltip>
+              <p>
+                <span>{row.catPath}</span>
+              </p>
+            </div>
+          </div>
+        </div>
       )
     },
     {
