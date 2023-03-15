@@ -6,6 +6,7 @@
     :before-upload="beforeAvatarUpload"
     :on-preview="handlePictureCardPreview"
     :on-remove="handleRemove"
+    :http-request="httpRequestHandler"
     action="/api/common/upload/image"
   >
     <img v-if="props.modelValue" :src="props.modelValue" class="avatar" />
@@ -16,12 +17,13 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { ElMessage } from "element-plus";
+import { ElMessage, UploadRequestOptions } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 
 import type { UploadProps } from "element-plus";
 import { reactive, ref } from "vue";
-import { ApiResponse } from "@/api/model/apiResponseBase";
+// import { ApiResponse } from "@/api/model/apiResponseBase";
+import { http } from "@/utils/http";
 export interface ImageProps {
   modelValue: string | null;
   height?: string;
@@ -34,16 +36,15 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (
   response,
   uploadFile
 ) => {
-  console.log(response);
-  const apiResponse = response as ApiResponse;
-  let imageUrl = "";
-  if (apiResponse.code == 200) {
-    if (apiResponse.data.success) {
-      imageUrl = apiResponse.data.result as string;
-    }
-  }
+  // const apiResponse = response as ApiResponse;
+  // let imageUrl = "";
+  // if (apiResponse.code == 200) {
+  //   if (apiResponse.data.success) {
+  //     imageUrl = apiResponse.data.result as string;
+  //   }
+  // }
   URL.createObjectURL(uploadFile.raw!);
-  emits("update:modelValue", imageUrl);
+  emits("update:modelValue", response);
 };
 const uploadTypes = reactive(["image/jpeg", "image/png"]);
 const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
@@ -66,6 +67,19 @@ const dialogVisible = ref(false);
 const handlePictureCardPreview: UploadProps["onPreview"] = uploadFile => {
   dialogImageUrl.value = uploadFile.url!;
   dialogVisible.value = true;
+};
+const httpRequestHandler = (
+  options: UploadRequestOptions
+): XMLHttpRequest | Promise<unknown> => {
+  const param = new FormData(); // 创建form对象
+  //注意files是对应后台的参数名哦
+  param.append(options.filename ?? "files", options.file);
+  return http.request({
+    url: options.action,
+    method: "post",
+    headers: { "Content-Type": "multipart/form-data" },
+    data: param
+  });
 };
 </script>
 

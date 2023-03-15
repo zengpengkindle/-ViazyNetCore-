@@ -28,10 +28,14 @@ namespace ViazyNetCore.Formatter.Response
             var httpMethodsWithRequestBody = new[] { "POST", "PUT", "PATCH" };
             var hasRequestBody = httpMethodsWithRequestBody.Any(x => x.Equals(request.Method.ToUpper()));
             string? requestBody = default;
-
-            if(hasRequestBody)
+            if (hasRequestBody)
             {
                 request.EnableBuffering();
+                if (request.HasFormContentType == true)
+                {
+                    if (request.Form.Files.Count > 0)
+                        return null;
+                }
 
                 using var memoryStream = new MemoryStream();
                 await request.Body.CopyToAsync(memoryStream);
@@ -66,22 +70,22 @@ namespace ViazyNetCore.Formatter.Response
             string? jsonString;
             if (exception is ApiException apiException)
             {
-                if(apiException.StatusCode == Status404NotFound)
+                if (apiException.StatusCode == Status404NotFound)
                 {
                     httpStatusCode = Status404NotFound;
                     jsonString = this.ConvertToNotFoundExceptionString();
                 }
-                else if(apiException.StatusCode == Status403Forbidden)
+                else if (apiException.StatusCode == Status403Forbidden)
                 {
                     httpStatusCode = Status403Forbidden;
                     jsonString = this.ConvertToForbiddenExceptionString();
                 }
-                else if(apiException.StatusCode == Status406NotAcceptable)
+                else if (apiException.StatusCode == Status406NotAcceptable)
                 {
                     httpStatusCode = Status406NotAcceptable;
                     jsonString = this.ConvertToNotAcceptableExceptionString();
                 }
-                else if(apiException.StatusCode == Status400BadRequest)
+                else if (apiException.StatusCode == Status400BadRequest)
                 {
                     httpStatusCode = Status400BadRequest;
                     jsonString = this.ConvertToFailJSONString(context, exception.Message, context.Request.Method);
@@ -92,12 +96,12 @@ namespace ViazyNetCore.Formatter.Response
                     jsonString = this.ConvertToFailJSONString(context, exception.Message, context.Request.Method, apiException.StatusCode);
                 }
             }
-            else if(exception is UnauthorizedAccessException)
+            else if (exception is UnauthorizedAccessException)
             {
                 httpStatusCode = Status401Unauthorized;
                 jsonString = this.ConvertToUnauthorizedAccessExceptionString();
             }
-            else if(exception is SingleSignOnException)
+            else if (exception is SingleSignOnException)
             {
                 httpStatusCode = Status409Conflict;
                 jsonString = this.ConvertToSingleSignOnExceptionString();
@@ -106,7 +110,7 @@ namespace ViazyNetCore.Formatter.Response
             {
                 httpStatusCode = Status500InternalServerError;
                 string? stackTrace = null;
-                if(_options.IsDebug)
+                if (_options.IsDebug)
                 {
                     exceptionMessage = $"{exceptionMessage} {exception.GetBaseException().Message}";
                     stackTrace = exception.StackTrace;
@@ -153,7 +157,7 @@ namespace ViazyNetCore.Formatter.Response
             Type? type = bodyContent?.GetType();
 
             string jsonString;
-            if(type == typeof(JObject))
+            if (type == typeof(JObject))
             {
                 jsonString = ConvertToSuccessJSONString(context, bodyContent, context.Request.Method);
             }
@@ -181,7 +185,7 @@ namespace ViazyNetCore.Formatter.Response
 
         public bool IsApi(HttpContext context)
         {
-            if(_options.IsApiOnly && !context.Request.Path.Value.Contains(".js") && !context.Request.Path.Value.Contains(".css"))
+            if (_options.IsApiOnly && !context.Request.Path.Value.Contains(".js") && !context.Request.Path.Value.Contains(".css"))
                 return true;
 
             return context.Request.Path.StartsWithSegments(new PathString(_options.WrapWhenApiPathStartsWith));
@@ -341,9 +345,9 @@ namespace ViazyNetCore.Formatter.Response
         private (bool, object) ValidateSingleValueType(object value)
         {
             var result = value.ToString();
-            if(result.IsWholeNumber()) { return (true, result.ToInt64()); }
-            if(result.IsDecimalNumber()) { return (true, result.ToDecimal()); }
-            if(result.IsBoolean()) { return (true, result.ToBoolean()); }
+            if (result.IsWholeNumber()) { return (true, result.ToInt64()); }
+            if (result.IsDecimalNumber()) { return (true, result.ToDecimal()); }
+            if (result.IsBoolean()) { return (true, result.ToBoolean()); }
 
             return (false, value);
         }
