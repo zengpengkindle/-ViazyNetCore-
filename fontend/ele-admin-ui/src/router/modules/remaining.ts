@@ -53,6 +53,14 @@ export default [
         meta: {
           title: "类别/活动管理"
         }
+      },
+      {
+        path: "/shopmall/Trade/Manage",
+        name: "productOuterSpecialCreditManage",
+        component: () => import("@/views/shopmall/Trade/Manage.vue"),
+        meta: {
+          title: "订单管理"
+        }
       }
     ]
   }

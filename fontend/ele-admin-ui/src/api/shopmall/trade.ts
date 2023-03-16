@@ -45,6 +45,15 @@ export class TradeApi {
       params: { tradeId }
     });
   }
+  public changeTradeAddressModel(
+    param1?: ChangeTradeAddressModel
+  ): Promise<void> {
+    return http.request({
+      url: "/api/Trade/ChangeTradeAddressModel",
+      method: "post",
+      data: param1
+    });
+  }
 }
 export default new TradeApi();
 export interface SimpleLogisticsCompany {
@@ -52,7 +61,15 @@ export interface SimpleLogisticsCompany {
   name: string;
   code: string;
 }
-
+export interface ChangeTradeAddressModel {
+  id: string | null;
+  receiverName: string | null;
+  receiverMobile: string | null;
+  receiverProvince: string | null;
+  receiverCity: string | null;
+  receiverDistrict: string | null;
+  receiverDetail: string | null;
+}
 /**
  * TradePageArgments
  */
@@ -85,6 +102,7 @@ export interface TradeDetailModelPageData {
  * TradeDetailModel
  */
 export interface TradeDetailModel {
+  totalFreight: number;
   id: string;
   shopId: string;
   shopName: string;

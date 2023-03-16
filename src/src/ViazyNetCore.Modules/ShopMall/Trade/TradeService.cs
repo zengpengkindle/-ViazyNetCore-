@@ -1002,10 +1002,9 @@ namespace ViazyNetCore.Modules.ShopMall
                 };
                 await this._logisticsService.Delivery(tradeId, deliveryModel);
 
-                await this._engine.Update<ProductTrade>().SetDto(
+                await this._engine.Update<ProductTrade>().Where(p=>p.Id==trade.Id).SetDto(
                        new
                        {
-                           trade.Id,
                            trade.ReceiverName,
                            trade.ReceiverMobile,
                            trade.ReceiverProvince,

@@ -10,6 +10,7 @@ namespace ViazyNetCore.Swagger
 {
     public class SwaggerConfig
     {
+
         /// <summary>
         /// 启用
         /// </summary>
@@ -18,11 +19,12 @@ namespace ViazyNetCore.Swagger
         /// 启用枚举架构过滤器
         /// </summary>
         public bool EnableEnumSchemaFilter { get; set; } = true;
-        private string _RoutePrefix = "swagger";
+
+        private string _routePrefix = "swagger";
         /// <summary>
         /// 访问地址
         /// </summary>
-        public string RoutePrefix { get => Regex.Replace(_RoutePrefix, "^\\/+|\\/+$", ""); set => _RoutePrefix = value; }
+        public string RoutePrefix { get => Regex.Replace(_routePrefix, "^\\/+|\\/+$", ""); set => _routePrefix = value; }
 
         /// <summary>
         /// 地址
@@ -53,7 +55,7 @@ namespace ViazyNetCore.Swagger
         public string Name { get; set; }
 
         /// <summary>
-        /// 编码
+        /// 编码,分组名
         /// </summary>
         public string Code { get; set; }
 

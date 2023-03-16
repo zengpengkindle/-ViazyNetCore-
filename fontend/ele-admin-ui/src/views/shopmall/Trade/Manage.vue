@@ -6,6 +6,13 @@
         <p>订单号:{{ item.id }}</p>
       </template>
       <div>
+        <el-descriptions
+          class="margin-top"
+          title="With border"
+          :column="3"
+          border
+        >
+        </el-descriptions>
         <el-row :gutter="12" style="margin-bottom: 15px">
           <el-col :span="16">
             <el-card>
@@ -340,209 +347,198 @@
     </el-card>
   </el-form>
 </template>
-<script lang="ts">
-import { trade } from "../../apis";
-export default {
-  data() {
-    return {
-      loading: true,
-      formLabelWidth: "120px",
-      item: {},
-      activeNames: ["1"],
-      dialogLogisticeFormVisible: false,
-      editLogisticeCodeFormVisible: false,
-      editTradeAddressFormVisible: false,
-      rules: {
-        logisticsCode: [
-          { required: true, message: "请输入物流单号" },
-          { min: 1, max: 200, message: "长度在 1 到 200 个字符" }
-        ],
-        logisticsCompany: [
-          { required: true, message: "请输入物流公司" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-        ],
-        logisticsFee: [
-          { required: true, message: "请输入物流花费" },
-          { type: "number", message: "物流花费必须为数字值" }
-        ]
-      },
-      rules2: {
-        receiverName: [
-          { required: true, message: "请输入收货人姓名" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-        ],
-        receiverMobile: [
-          { required: true, message: "请输入收货人电话" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-        ],
-        receiverProvince: [
-          { required: true, message: "请输入收货地址-省" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-        ],
-        receiverCity: [
-          { required: true, message: "请输入收货地址-市" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-        ],
-        receiverDistrict: [
-          { required: true, message: "请输入收货地址-区" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-        ],
-        receiverDetail: [
-          { required: true, message: "请输入收货地址-详细地址" },
-          { min: 1, max: 100, message: "长度在 1 到 100 个字符" }
-        ]
-      },
-      activities: []
-    };
-  },
-  created() {
-    trade.findTrade(this.$route.query.id).then(r => {
-      if (r.status) {
-        msg.error(r.message);
-      } else {
-        this.item = r.value;
-        this.activities.push({
-          content: "下单时间",
-          timestamp: this.item.createTime
-        });
-        if (this.item.payTime) {
-          this.activities.push({
-            content: "支付时间",
-            timestamp: this.item.payTime
-          });
-        }
-        if (this.item.consignTime) {
-          this.activities.push({
-            content: "发货时间",
-            timestamp: this.item.consignTime
-          });
-        }
-        if (this.item.completeTime) {
-          this.activities.push({
-            content: "完成时间",
-            timestamp: this.item.completeTime
-          });
-        }
-        if (this.item.statusChangedTime) {
-          this.activities.push({
-            content: "状态变更时间",
-            timestamp: this.item.statusChangedTime
-          });
-        }
-        this.loading = false;
-      }
+<script lang="ts" setup>
+import TradeApi, {
+  DeliveryModel,
+  TradeDetailModel
+} from "@/api/shopmall/trade";
+import { message } from "@/utils/message";
+import { ElMessageBox, FormRules } from "element-plus";
+import { onMounted, ref, Ref, reactive } from "vue";
+import { useRoute } from "vue-router";
+
+const loading = ref(true);
+const formLabelWidth = "120px";
+const item: Ref<TradeDetailModel> = ref();
+const dialogLogisticeFormVisible = ref(false);
+const editLogisticeCodeFormVisible = ref(false);
+const dialogFormVisible = ref(false);
+const editTradeAddressFormVisible = ref(false);
+const rules = reactive<FormRules>({
+  logisticsCode: [
+    { required: true, message: "请输入物流单号" },
+    { min: 1, max: 200, message: "长度在 1 到 200 个字符" }
+  ],
+  logisticsCompany: [
+    { required: true, message: "请输入物流公司" },
+    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+  ],
+  logisticsFee: [
+    { required: true, message: "请输入物流花费" },
+    { type: "number", message: "物流花费必须为数字值" }
+  ]
+});
+const rules2 = reactive<FormRules>({
+  receiverName: [
+    { required: true, message: "请输入收货人姓名" },
+    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+  ],
+  receiverMobile: [
+    { required: true, message: "请输入收货人电话" },
+    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+  ],
+  receiverProvince: [
+    { required: true, message: "请输入收货地址-省" },
+    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+  ],
+  receiverCity: [
+    { required: true, message: "请输入收货地址-市" },
+    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+  ],
+  receiverDistrict: [
+    { required: true, message: "请输入收货地址-区" },
+    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
+  ],
+  receiverDetail: [
+    { required: true, message: "请输入收货地址-详细地址" },
+    { min: 1, max: 100, message: "长度在 1 到 100 个字符" }
+  ]
+});
+const activities = reactive([]);
+const route = useRoute();
+onMounted(async () => {
+  const trade = await TradeApi.findTrade(route.query.id as string);
+  activities.push({
+    content: "下单时间",
+    timestamp: trade.createTime
+  });
+  if (trade.payTime) {
+    activities.push({
+      content: "支付时间",
+      timestamp: trade.payTime
     });
-  },
-  methods: {
-    submitlogistics() {
-      this.$confirm("此操作将变更订单状态为待收货, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          const deliveTrades = [this.item.id];
-          const deliveItem = {
-            logisticsId: this.item.logisticsId,
-            logisticsFee: this.item.logisticsFee,
-            logisticsCode: this.item.logisticsCode,
-            logisticsCompany: this.item.logisticsCompany
-          };
-          trade.deliverTrades(deliveTrades, deliveItem).then(r => {
-            if (r.value.Fail > 0) {
-              r.value.failIds.forEach(function (value) {
-                msg.error(value);
-                setTimeout(() => {}, 1000);
-              });
-            } else {
-              msg.success("发货成功");
-            }
-            this.dialogLogisticeFormVisible = false;
-          });
-        })
-        .catch(e => {
-          console.log(e.message);
-          this.dialogFormVisible = false;
-          this.$message({
-            type: "info",
-            message: "已取消通过"
-          });
-        });
-    },
-    changeLogistics() {
-      this.$confirm("是否修改订单的物流信息?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          const deliveItem = {
-            logisticsId: this.item.logisticsId,
-            logisticsFee: this.item.logisticsFee,
-            logisticsCode: this.item.logisticsCode,
-            logisticsCompany: this.item.logisticsCompany
-          };
-          trade.changeTradeDeliver(this.item.id, deliveItem).then(r => {
-            if (r.status) {
-              msg.error(r.message);
-            } else {
-              msg.success("修改成功");
-            }
-            this.editLogisticeCodeFormVisible = false;
-          });
-        })
-        .catch(e => {
-          console.log(e.message);
-          this.dialogFormVisible = false;
-          this.$message({
-            type: "info",
-            message: "已取消通过"
-          });
-        });
-    },
-    changeAddress() {
-      this.$confirm("是否修改订单的收货信息?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          //string name, string mobile, string province, string city, string district, string detail
-          trade
-            .chageTradeAddress(
-              this.item.id,
-              this.item.receiverName,
-              this.item.receiverMobile,
-              this.item.receiverProvince,
-              this.item.receiverCity,
-              this.item.receiverDistrict,
-              this.item.receiverDetail
-            )
-            .then(r => {
-              if (r.status) {
-                msg.error(r.message);
-              } else {
-                msg.success("修改成功");
-                item.address.address =
-                  this.item.receiverProvince +
-                  this.item.receiverCity +
-                  this.item.receiverDistrict +
-                  this.item.receiverDetail;
-              }
-              this.editTradeAddressFormVisible = false;
-            });
-        })
-        .catch(e => {
-          console.log(e.message);
-          this.dialogFormVisible = false;
-          this.$message({
-            type: "info",
-            message: "已取消通过"
-          });
-        });
-    }
   }
-};
+  if (trade.consignTime) {
+    activities.push({
+      content: "发货时间",
+      timestamp: trade.consignTime
+    });
+  }
+  if (trade.completeTime) {
+    activities.push({
+      content: "完成时间",
+      timestamp: trade.completeTime
+    });
+  }
+  if (trade.statusChangedTime) {
+    activities.push({
+      content: "状态变更时间",
+      timestamp: trade.statusChangedTime
+    });
+  }
+  item.value = trade;
+  loading.value = false;
+});
+function submitlogistics() {
+  ElMessageBox({
+    message: "此操作将变更订单状态为待收货, 是否继续?",
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  })
+    .then(() => {
+      const deliveTrades = [item.value.id];
+      const deliveItem: DeliveryModel = {
+        logisticsId: item.value.logisticsId,
+        logisticsFee: item.value.logisticsFee,
+        logisticsCode: item.value.logisticsCode,
+        logisticsCompany: item.value.logisticsCompany,
+        address: null
+      };
+      TradeApi.deliverTrades({
+        tradeIds: deliveTrades,
+        delivery: deliveItem
+      }).then(r => {
+        if (r.fail > 0) {
+          r.failIds.forEach(function (value) {
+            msg.error(value);
+            setTimeout(() => {}, 1000);
+          });
+        } else {
+          msg.success("发货成功");
+        }
+        dialogLogisticeFormVisible.value = false;
+      });
+    })
+    .catch(e => {
+      console.log(e.message);
+      dialogFormVisible.value = false;
+      message("已取消通过");
+    });
+}
+function changeLogistics() {
+  ElMessageBox({
+    message: "是否修改订单的物流信息?",
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  })
+    .then(() => {
+      const deliveItem: DeliveryModel = {
+        logisticsId: item.value.logisticsId,
+        logisticsFee: item.value.logisticsFee,
+        logisticsCode: item.value.logisticsCode,
+        logisticsCompany: item.value.logisticsCompany,
+        address: null
+      };
+      TradeApi.changeTradeDeliver(item.value.id, deliveItem).then(_ => {
+        message("修改成功", { type: "success" });
+        editLogisticeCodeFormVisible.value = false;
+      });
+    })
+    .catch(e => {
+      console.log(e.message);
+      dialogFormVisible.value = false;
+      message("已取消通过", {
+        type: "info"
+      });
+    });
+}
+function changeAddress() {
+  ElMessageBox({
+    message: "是否修改订单的收货信息?",
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  })
+    .then(() => {
+      //string name, string mobile, string province, string city, string district, string detail
+      TradeApi.changeTradeAddressModel({
+        receiverName: item.value.receiverName,
+        receiverMobile: item.value.receiverMobile,
+        receiverProvince: item.value.receiverProvince,
+        receiverCity: item.value.receiverCity,
+        receiverDistrict: item.value.receiverDistrict,
+        receiverDetail: item.value.receiverDetail,
+        id: item.value.id
+      }).then(() => {
+        message("修改成功");
+        item.value.address.address =
+          item.value.receiverProvince +
+          item.value.receiverCity +
+          item.value.receiverDistrict +
+          item.value.receiverDetail;
+        editTradeAddressFormVisible.value = false;
+      });
+    })
+    .catch(e => {
+      console.log(e.message);
+      dialogFormVisible.value = false;
+      message("已取消通过", {
+        type: "info"
+      });
+    });
+}
 </script>
 <style>
 .el-tag + .el-tag {

@@ -55,6 +55,7 @@ export function useTrade() {
     {
       label: "",
       type: "expand",
+      fixed: "left",
       cellRenderer: ({ row }) => {
         const goPath = pId => ({
           path: "/product/manage",
@@ -64,38 +65,52 @@ export function useTrade() {
           default: scope2 => {
             const row2 = scope2.row;
             return (
-              <el-row gutter="20">
-                <el-col span="8">
+              <div class="flex">
+                <div style="width:60px">
                   <el-image
-                    style="width: 80px; height: 80px"
+                    style="width: 60px; height: 60px"
                     src={row2.imgUrl}
                     zoom-rate={1.2}
                     preview-src-list={[row2.imgUrl]}
                     fit="cover"
                   />
-                </el-col>
-                <el-col span="16">
-                  <router-link
-                    class="product_title"
-                    target="_blank"
-                    to={goPath(row.pId)}
-                  >
-                    {row2.pn}
-                  </router-link>
-                  <p>
-                    <span>{row2.skuText}</span> <br />
-                    <span style="color: red; margin-left: 15px">
-                      <em>¥</em>
-                      {row2.price}×{row2.num}
-                    </span>
-                  </p>
-                </el-col>
-              </el-row>
+                </div>
+                <div class="flex-1 pl-2">
+                  <div>
+                    <router-link
+                      class="product_title"
+                      target="_blank"
+                      to={goPath(row.pId)}
+                    >
+                      {row2.pn}
+                    </router-link>
+                  </div>
+                  <div>
+                    <span>{row2.skuText}</span>
+                  </div>
+                </div>
+              </div>
             );
           }
         };
+        const headStyle = {
+          background: "var(--el-table-row-hover-bg-color)",
+          color: "var(--el-text-color-primary)"
+        };
+        const tableStyle = {
+          position: "sticky",
+          left: "60px",
+          width: "800px"
+        };
         return (
-          <el-table data={row.items} style="width: 100%">
+          <el-table
+            data={row.items}
+            table-layout="fixed"
+            size="small"
+            border
+            style={tableStyle}
+            header-cell-style={headStyle}
+          >
             <el-table-column
               prop="orderId"
               label="子订单编号"
@@ -105,10 +120,17 @@ export function useTrade() {
             <el-table-column
               label="商品"
               fixed
-              width="450"
+              header-align="center"
+              width="350"
               v-slots={tabelCloum}
             ></el-table-column>
-            <el-table-column prop="num" label="购买数" width="80" />
+            <el-table-column
+              prop="price"
+              label="单价"
+              align="center"
+              width="120"
+            />
+            <el-table-column prop="num" label="购买数" align="center" />
           </el-table>
         );
       }
@@ -140,26 +162,6 @@ export function useTrade() {
       prop: "shopName"
     },
     {
-      label: "状态",
-      minWidth: 90,
-      cellRenderer: ({ row }) => (
-        <el-tooltip placement="bottom" effect="light">
-          <template v-slot:content>
-            收货人：{row.receiverName}
-            <br />
-            收货地址：{row.address.address}
-            <br />
-            收货电话：{row.address.tel}
-            <br />
-            快递单号：{row.logisticsCode}
-            <br />
-            快递公司：{row.logisticsCompany}
-          </template>
-          <el-button>收货信息</el-button>
-        </el-tooltip>
-      )
-    },
-    {
       label: "商品总金额",
       prop: "productMoney"
     },
@@ -170,6 +172,32 @@ export function useTrade() {
     {
       label: "订单总金额",
       prop: "totalMoney"
+    },
+    {
+      label: "收货信息",
+      minWidth: 90,
+      cellRenderer: ({ row }) => {
+        const content = {
+          content: () => (
+            <div>
+              收货人：{row.receiverName}
+              <br />
+              收货地址：{row.address.address}
+              <br />
+              收货电话：{row.address.tel}
+              <br />
+              快递单号：{row.logisticsCode}
+              <br />
+              快递公司：{row.logisticsCompany}
+            </div>
+          )
+        };
+        return (
+          <el-tooltip placement="bottom" v-slots={content} effect="light">
+            <el-button>收货信息</el-button>
+          </el-tooltip>
+        );
+      }
     },
     {
       label: "用户留言",
@@ -183,7 +211,8 @@ export function useTrade() {
       label: "付款时间",
       minWidth: 120,
       prop: "payTime",
-      formatter: ({ payTime }) => dayjs(payTime).format("YYYY-MM-DD HH:mm:ss")
+      formatter: ({ payTime }) =>
+        payTime == null ? "" : dayjs(payTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
       label: "下单时间",
@@ -197,14 +226,18 @@ export function useTrade() {
       minWidth: 120,
       prop: "consignTime",
       formatter: ({ consignTime }) =>
-        dayjs(consignTime).format("YYYY-MM-DD HH:mm:ss")
+        consignTime == null
+          ? ""
+          : dayjs(consignTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
       label: "完成时间",
       minWidth: 120,
       prop: "completeTime",
       formatter: ({ completeTime }) =>
-        dayjs(completeTime).format("YYYY-MM-DD HH:mm:ss")
+        completeTime == null
+          ? ""
+          : dayjs(completeTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
       label: "状态变更时间",
@@ -216,6 +249,7 @@ export function useTrade() {
     {
       label: "订单状态",
       minWidth: 120,
+      fixed: "right",
       cellRenderer: ({ row }) => {
         let tradeStatus = "";
         if (row.tradeStatus == -1) {

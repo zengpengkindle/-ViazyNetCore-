@@ -7,374 +7,392 @@
       v-loading="loading"
       label-width="120px"
     >
-      <el-card v-if="item">
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="类目" prop="catId">
-              <el-cascader
-                expand-trigger="hover"
-                :options="cats"
-                :props="catProps"
-                v-model="item.catId"
-                @change="handleChange"
+      <el-card>
+        <el-tabs tab-position="left">
+          <el-tab-pane v-if="item" label="基础信息">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="类目" prop="catId">
+                  <el-cascader
+                    expand-trigger="hover"
+                    :options="cats"
+                    :props="catProps"
+                    v-model="item.catId"
+                    @change="handleChange"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="品牌" prop="brandId">
+                  <el-select v-model="item.brandId" :disabled="state === 1">
+                    <el-option
+                      v-for="r in brands"
+                      :key="r.id"
+                      :label="r.name"
+                      :value="r.id"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="商品名称" prop="title">
+                  <el-input v-model="item.title" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="副标题" prop="subTitle">
+                  <el-input v-model="item.subTitle" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="关键词" prop="keywords">
+                  <el-input v-model="item.keywords" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="商品编码" prop="outerId">
+                  <el-input v-model="item.outerType" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="退换货类型" prop="refundType">
+                  <el-select v-model="item.refundType">
+                    <el-option
+                      v-for="r in refundOptions"
+                      :key="r.id"
+                      :label="r.name"
+                      :value="r.id"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="前台隐藏" prop="isHidden">
+                  <el-switch
+                    v-model="item.isHidden"
+                    active-text="隐藏"
+                    inactive-text="不隐藏"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-form-item label="商品简介" prop="description">
+              <el-input
+                type="textarea"
+                :row="3"
+                v-model="item.description"
+                maxlength="250"
+                show-word-limit
               />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="品牌" prop="brandId">
-              <el-select v-model="item.brandId" :disabled="state === 1">
-                <el-option
-                  v-for="r in brands"
-                  :key="r.id"
-                  :label="r.name"
-                  :value="r.id"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="标题" prop="title">
-              <el-input v-model="item.title" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="副标题" prop="subTitle">
-              <el-input v-model="item.subTitle" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="关键词" prop="keywords">
-              <el-input v-model="item.keywords" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="货号" prop="outerId">
-              <el-input v-model="item.outerType" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="退换货类型" prop="refundType">
-              <el-select v-model="item.refundType">
-                <el-option
-                  v-for="r in refundOptions"
-                  :key="r.id"
-                  :label="r.name"
-                  :value="r.id"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="前台隐藏" prop="isHidden">
+          </el-tab-pane>
+          <el-tab-pane class="mt-3" label="SKU/货品设置">
+            <el-form-item label="启用规格" prop="openSpec">
               <el-switch
-                v-model="item.isHidden"
-                active-text="隐藏"
-                inactive-text="不隐藏"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item label="描述" prop="description">
-          <el-input type="textaere" v-model="item.description" />
-        </el-form-item>
-
-        <el-form-item label="启用规格" prop="openSpec">
-          <el-switch
-            v-model="item.openSpec"
-            active-text="启用规格"
-            inactive-text="关闭规格"
-            :disabled="state == 1"
-          />
-        </el-form-item>
-      </el-card>
-      <el-card class="mt-3">
-        <template v-if="item.openSpec">
-          <el-form-item label="规格" prop="keywords">
-            <el-tag
-              :key="tag.k_s"
-              v-for="tag in newSpec"
-              :closable="!state"
-              :disable-transitions="false"
-              @close="handleClose(tag, newSpec)"
-            >
-              {{ tag.k }}
-            </el-tag>
-            <el-input
-              class="input-new-tag"
-              v-if="inputVisible"
-              v-model="inputValue"
-              ref="saveTagInput"
-              size="small"
-              @blur="handleInputConfirm"
-              @keyup.enter="handleInputConfirm"
-            />
-            <el-button
-              v-else
-              class="button-new-tag"
-              size="small"
-              @click="showInput"
-              :disabled="state == 1"
-              >+ 规格</el-button
-            >
-          </el-form-item>
-          <el-form-item
-            v-bind:label="s.k"
-            prop="keywords"
-            v-for="s in newSpec"
-            v-bind:key="s"
-          >
-            <el-tag
-              :key="value.id"
-              v-for="value in s.v"
-              :closable="value.closable"
-              :disable-transitions="false"
-              @close="handleClose(value, s.v)"
-            >
-              {{ value.name }}
-            </el-tag>
-            <el-input
-              class="input-new-tag"
-              v-if="s.inputVisible"
-              v-model="s.inputValue"
-              ref="saveTagInput"
-              size="small"
-              @keyup.enter="handleValueInputConfirm(s)"
-              @blur="handleValueInputConfirm(s)"
-            />
-            <el-button
-              v-else
-              class="button-new-tag"
-              size="small"
-              @click="showValueInput(s)"
-              >+ {{ s.k }}</el-button
-            >
-          </el-form-item>
-          <el-form-item>
-            <el-button type="success" icon="el-icon-plus" @click="makeSkus"
-              >生成SKU</el-button
-            >
-          </el-form-item>
-          <el-form-item v-if="spec.length > 0">
-            <el-table :data="item.skus.list" class="sku" default-expand-all>
-              <el-table-column type="expand" v-if="credits.length > 0">
-                <template #default="scope">
-                  <el-row
-                    :gutter="20"
-                    v-for="credit in credits"
-                    v-bind:key="credit.key"
-                    class="sku-credit-row"
-                  >
-                    <el-col :span="6">{{ credit.name }}</el-col>
-                    <el-col :span="6" :offset="6"
-                      >货币：{{ credit.creditKey }}</el-col
-                    >
-                    <el-col :span="6">
-                      <input
-                        type="number"
-                        class="credit-input"
-                        v-model.number="scope.row.specialPrices[credit.key]"
-                        @change="handleChangePrice"
-                        placeholder="请输入售价"
-                      />
-                    </el-col>
-                  </el-row>
-                </template>
-              </el-table-column>
-              <el-table-column
-                v-bind:label="row.k"
-                width="180"
-                v-for="row in spec"
-                v-bind:key="row.k"
-              >
-                <template #default="scope">
-                  <span width="80" v-if="scope.row.key1 == row.k">{{
-                    scope.row.name1
-                  }}</span>
-                  <span width="80" v-if="scope.row.key2 == row.k">{{
-                    scope.row.name2
-                  }}</span>
-                  <span width="80" v-if="scope.row.key3 == row.k">{{
-                    scope.row.name3
-                  }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="stock_num" width="150" label="库存" />
-              <el-table-column label="成本" width="180">
-                <template #default="scope">
-                  <el-input
-                    type="number"
-                    v-model.number="scope.row.cost"
-                    placeholder="请输入成本"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column label="售价" width="180">
-                <template #default="scope">
-                  <el-form-item>
-                    <el-input
-                      type="number"
-                      v-model.number="scope.row.price"
-                      placeholder="请输入售价"
-                  /></el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column label="在库库存">
-                <template #default="scope">
-                  <el-input
-                    type="number"
-                    :disabled="scope.row.id.length > 0"
-                    v-model.number="scope.row.stock_num"
-                    @change="handleChangestockNum"
-                    placeholder="请输入初始在库库存"
-                  />
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-form-item>
-        </template>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-form-item label="成本" prop="cost">
-              <el-input type="number" v-model.number="item.cost" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="售价" prop="price" v-if="!item.openSpec">
-              <el-input type="number" v-model.number="item.price" />
-            </el-form-item>
-            <el-form-item label="售价" prop="price" v-if="item.openSpec">
-              <el-input
-                type="number"
-                v-model.number="item.price"
-                :disabled="true"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item
-              :label="state == 1 ? '在库库存' : '初始在库库存'"
-              v-if="!item.openSpec"
-            >
-              <el-input
-                type="number"
+                v-model="item.openSpec"
+                active-text="启用规格"
+                inactive-text="关闭规格"
                 :disabled="state == 1"
-                v-model.number="item.stock.inStock"
               />
             </el-form-item>
-            <el-form-item
-              :label="state == 1 ? '在库库存' : '初始在库库存'"
-              v-if="item.openSpec"
-            >
-              <el-input
-                type="number"
-                v-model.number="item.stock.inStock"
-                :disabled="true"
+            <template v-if="item.openSpec">
+              <el-form-item label="规格" prop="keywords">
+                <el-tag
+                  :key="tag.k_s"
+                  v-for="tag in newSpec"
+                  :closable="!state"
+                  :disable-transitions="false"
+                  @close="handleClose(tag, newSpec)"
+                >
+                  {{ tag.k }}
+                </el-tag>
+                <el-input
+                  class="input-new-tag"
+                  v-if="inputVisible"
+                  v-model="inputValue"
+                  ref="saveTagInput"
+                  size="small"
+                  @blur="handleInputConfirm"
+                  @keyup.enter="handleInputConfirm"
+                />
+                <el-button
+                  v-else
+                  class="button-new-tag"
+                  size="small"
+                  @click="showInput"
+                  :disabled="state == 1"
+                  >+ 规格</el-button
+                >
+              </el-form-item>
+              <el-form-item
+                v-bind:label="s.k"
+                prop="keywords"
+                v-for="s in newSpec"
+                v-bind:key="s"
+              >
+                <el-tag
+                  :key="value.id"
+                  v-for="value in s.v"
+                  :closable="value.closable"
+                  :disable-transitions="false"
+                  @close="handleClose(value, s.v)"
+                >
+                  {{ value.name }}
+                </el-tag>
+                <el-input
+                  class="input-new-tag"
+                  v-if="s.inputVisible"
+                  v-model="s.inputValue"
+                  ref="saveTagInput"
+                  size="small"
+                  @keyup.enter="handleValueInputConfirm(s)"
+                  @blur="handleValueInputConfirm(s)"
+                />
+                <el-button
+                  v-else
+                  class="button-new-tag"
+                  size="small"
+                  @click="showValueInput(s)"
+                  >+ {{ s.k }}</el-button
+                >
+              </el-form-item>
+              <el-form-item>
+                <el-button type="success" icon="el-icon-plus" @click="makeSkus"
+                  >生成SKU</el-button
+                >
+              </el-form-item>
+              <el-form-item v-if="spec.length > 0">
+                <el-table :data="item.skus.list" class="sku" default-expand-all>
+                  <el-table-column type="expand" v-if="credits.length > 0">
+                    <template #default="scope">
+                      <el-row
+                        :gutter="20"
+                        v-for="credit in credits"
+                        v-bind:key="credit.key"
+                        class="sku-credit-row"
+                      >
+                        <el-col :span="6">{{ credit.name }}</el-col>
+                        <el-col :span="6" :offset="6"
+                          >货币：{{ credit.creditKey }}</el-col
+                        >
+                        <el-col :span="6">
+                          <input
+                            type="number"
+                            class="credit-input"
+                            v-model.number="scope.row.specialPrices[credit.key]"
+                            @change="handleChangePrice"
+                            placeholder="请输入售价"
+                          />
+                        </el-col>
+                      </el-row>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-bind:label="row.k"
+                    width="180"
+                    v-for="row in spec"
+                    v-bind:key="row.k"
+                  >
+                    <template #default="scope">
+                      <span width="80" v-if="scope.row.key1 == row.k">{{
+                        scope.row.name1
+                      }}</span>
+                      <span width="80" v-if="scope.row.key2 == row.k">{{
+                        scope.row.name2
+                      }}</span>
+                      <span width="80" v-if="scope.row.key3 == row.k">{{
+                        scope.row.name3
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="stock_num" width="150" label="库存" />
+                  <el-table-column label="成本" width="180">
+                    <template #default="scope">
+                      <el-input
+                        type="number"
+                        v-model.number="scope.row.cost"
+                        placeholder="请输入成本"
+                      />
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="售价" width="180">
+                    <template #default="scope">
+                      <el-form-item>
+                        <el-input
+                          type="number"
+                          v-model.number="scope.row.price"
+                          placeholder="请输入售价"
+                      /></el-form-item>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="在库库存">
+                    <template #default="scope">
+                      <el-input
+                        type="number"
+                        :disabled="scope.row.id.length > 0"
+                        v-model.number="scope.row.stock_num"
+                        @change="handleChangestockNum"
+                        placeholder="请输入初始在库库存"
+                      />
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-form-item>
+            </template>
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <el-form-item label="成本" prop="cost">
+                  <el-input type="number" v-model.number="item.cost" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="售价" prop="price" v-if="!item.openSpec">
+                  <el-input type="number" v-model.number="item.price" />
+                </el-form-item>
+                <el-form-item label="售价" prop="price" v-if="item.openSpec">
+                  <el-input
+                    type="number"
+                    v-model.number="item.price"
+                    :disabled="true"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item
+                  :label="state == 1 ? '在库库存' : '初始在库库存'"
+                  v-if="!item.openSpec"
+                >
+                  <el-input
+                    type="number"
+                    :disabled="state == 1"
+                    v-model.number="item.stock.inStock"
+                  />
+                </el-form-item>
+                <el-form-item
+                  :label="state == 1 ? '在库库存' : '初始在库库存'"
+                  v-if="item.openSpec"
+                >
+                  <el-input
+                    type="number"
+                    v-model.number="item.stock.inStock"
+                    :disabled="true"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <template v-if="!item.openSpec && credits">
+              <el-row
+                :gutter="20"
+                v-for="credit in credits"
+                class="sku-credit-row"
+                v-bind:key="credit.key"
+              >
+                <el-col :span="6">{{ credit.name }}</el-col>
+                <el-col :span="6" :offset="6"
+                  >货币：{{ credit.creditKey }}</el-col
+                >
+                <el-col :span="6">
+                  <input
+                    type="number"
+                    class="credit-input"
+                    v-model.number="item.specialPrices[credit.key]"
+                    placeholder="请输入售价"
+                  />
+                </el-col>
+              </el-row>
+            </template>
+
+            <el-card v-if="item && item.skus.tree.length > 0" class="mt-3">
+              <template #header>
+                <span>规格图片</span>
+              </template>
+              <el-row
+                :gutter="20"
+                v-for="sku1 in item.skus.tree[0].v"
+                v-bind:key="sku1.id"
+              >
+                <el-col :span="12">
+                  <el-form-item :label="sku1.name">
+                    <x-image
+                      v-model="sku1.imgUrl"
+                      height="200px"
+                      width="200px"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-card>
+          </el-tab-pane>
+          <el-tab-pane class="mt-3" v-if="item" label="图片/图集">
+            <template #header>
+              <span>商品图片</span>
+            </template>
+            <el-row :gutter="20">
+              <el-col :span="6">
+                <el-form-item label="主图">
+                  <x-image v-model="item.image" height="240px" width="240px" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item>
+                  <x-image v-model="subImage1" height="200px" width="200px" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item>
+                  <x-image v-model="subImage2" height="200px" width="200px" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item>
+                  <x-image v-model="subImage3" height="200px" width="200px" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item>
+                  <x-image v-model="subImage4" height="200px" width="200px" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-tab-pane>
+          <el-tab-pane class="mt-3" label="商品详情">
+            <template #header>
+              <span>商品详情</span>
+            </template>
+            <div class="wangeditor">
+              <Toolbar
+                style="border-bottom: 1px solid #ccc"
+                :editor="editorRef"
+                :defaultConfig="toolbarConfig"
+                :mode="mode"
               />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <template v-if="!item.openSpec && credits">
-          <el-row
-            :gutter="20"
-            v-for="credit in credits"
-            class="sku-credit-row"
-            v-bind:key="credit.key"
-          >
-            <el-col :span="6">{{ credit.name }}</el-col>
-            <el-col :span="6" :offset="6">货币：{{ credit.creditKey }}</el-col>
-            <el-col :span="6">
-              <input
-                type="number"
-                class="credit-input"
-                v-model.number="item.specialPrices[credit.key]"
-                placeholder="请输入售价"
+              <Editor
+                style="height: 500px; overflow-y: hidden"
+                v-model="item.detail"
+                :defaultConfig="editorConfig"
+                :mode="mode"
+                @onCreated="handleCreated"
               />
-            </el-col>
-          </el-row>
-        </template>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
       </el-card>
-      <el-card class="mt-3" v-if="item">
-        <template #header>
-          <span>商品图片</span>
-        </template>
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-form-item label="主图">
-              <x-image v-model="item.image" height="240px" width="240px" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item>
-              <x-image v-model="subImage1" height="200px" width="200px" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item>
-              <x-image v-model="subImage2" height="200px" width="200px" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item>
-              <x-image v-model="subImage3" height="200px" width="200px" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item>
-              <x-image v-model="subImage4" height="200px" width="200px" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-card>
-      <el-card v-if="item && item.skus.tree.length > 0" class="mt-3">
-        <template #header>
-          <span>规格图片</span>
-        </template>
-        <el-row
-          :gutter="20"
-          v-for="sku1 in item.skus.tree[0].v"
-          v-bind:key="sku1.id"
-        >
-          <el-col :span="12">
-            <el-form-item :label="sku1.name">
-              <x-image v-model="sku1.imgUrl" height="200px" width="200px" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-card>
-      <el-card class="mt-3">
-        <template #header>
-          <span>商品详情</span>
-        </template>
-        <div class="wangeditor">
-          <Toolbar
-            style="border-bottom: 1px solid #ccc"
-            :editor="editorRef"
-            :defaultConfig="toolbarConfig"
-            :mode="mode"
-          />
-          <Editor
-            style="height: 500px; overflow-y: hidden"
-            v-model="item.detail"
-            :defaultConfig="editorConfig"
-            :mode="mode"
-            @onCreated="handleCreated"
-          />
-        </div>
-      </el-card>
-      <el-card class="mt-3">
-        <el-form-item>
-          <el-button type="primary" @click="submit(form)">提交</el-button>
-          <!--<el-button @click="returnIndex">返回</el-button>-->
-        </el-form-item>
-      </el-card>
+      <el-affix position="bottom">
+        <el-card class="mt-3">
+          <el-form-item>
+            <el-button type="primary" @click="submit(form)">提交</el-button>
+            <!--<el-button @click="returnIndex">返回</el-button>-->
+          </el-form-item>
+        </el-card>
+      </el-affix>
     </el-form>
   </div>
 </template>

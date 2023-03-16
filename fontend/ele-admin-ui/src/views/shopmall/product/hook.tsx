@@ -52,29 +52,26 @@ export function useProduct() {
       hide: ({ checkList }) => !checkList.includes("勾选列")
     },
     {
-      label: "序号",
-      type: "index",
-      width: 70,
+      label: "商品编号",
+      prop: "id",
+      width: 120,
+      align: "left",
       hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
-      label: "商品编号",
-      prop: "id",
-      minWidth: 180
-    },
-    {
-      label: "标题",
-      width: 300,
+      label: "商品",
+      width: 350,
+      fixed: "left",
       cellRenderer: ({ row }) => (
-        <div class="flex">
-          <div style="width:100px">
+        <div class="flex" style="width:350px">
+          <div style="width:60px;" class="">
             <el-image
-              style="width: 100px; height: 100px"
+              style="width: 60px; height: 60px"
               src={row.image}
               fit="cover"
             />
           </div>
-          <div style="flex-1">
+          <div class="pl-2" style="width:270px">
             <div class="text-left text-ellipsis">
               <el-tooltip
                 class="box-item"
@@ -82,15 +79,20 @@ export function useProduct() {
                 content={row.title}
                 placement="top-start"
               >
-                <p class="product_title text-ellipsis">{row.title}</p>
+                <span class="text-ellipsis">{row.title}</span>
               </el-tooltip>
-              <p>
-                <span>{row.catPath}</span>
-              </p>
+              <div>
+                <el-tag type="warning">{row.catName}</el-tag>
+              </div>
             </div>
           </div>
         </div>
       )
+    },
+    {
+      label: "类目",
+      prop: "catName",
+      minWidth: 90
     },
     {
       label: "成本",
@@ -103,10 +105,18 @@ export function useProduct() {
       minWidth: 90
     },
     {
+      label: "多规格",
+      prop: "openSpec",
+      minWidth: 90,
+      formatter: ({ openSpec }) =>
+        openSpec ? <el-tag>是</el-tag> : <el-tag type="info">否</el-tag>
+    },
+    {
       label: "前台隐藏",
       minWidth: 120,
       prop: "isHidden",
-      formatter: ({ isHidden }) => (isHidden ? "是" : "否")
+      formatter: ({ isHidden }) =>
+        isHidden ? <el-tag>是</el-tag> : <el-tag type="info">否</el-tag>
     },
     {
       label: "创建时间",

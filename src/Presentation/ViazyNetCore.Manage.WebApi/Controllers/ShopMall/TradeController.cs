@@ -86,9 +86,9 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         }
 
         [HttpPost]
-        public Task ChageTradeAddress(string tradeId, string name, string mobile, string province, string city, string district, string detail)
+        public Task ChangeTradeAddressModel(ChangeTradeAddressModel model)
         {
-            return this._tradeService.TradeAddressChangeAsync(tradeId, name, mobile, province, city, district, detail);
+            return this._tradeService.TradeAddressChangeAsync(model.Id, model.ReceiverName, model.ReceiverMobile, model.ReceiverProvince, model.ReceiverCity, model.ReceiverDistrict, model.ReceiverDetail);
         }
     }
 
@@ -109,5 +109,16 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
     {
         public string[] TradeIds { get; set; }
         public DeliveryModel Delivery { get; set; }
+    }
+
+    public class ChangeTradeAddressModel
+    {
+        public string Id { get; set; }
+        public string ReceiverName { get; set; }
+        public string ReceiverMobile { get; set; }
+        public string ReceiverProvince { get; set; }
+        public string ReceiverCity { get; set; }
+        public string ReceiverDistrict { get; set; }
+        public string ReceiverDetail { get; set; }
     }
 }
