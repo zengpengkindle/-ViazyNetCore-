@@ -25,10 +25,10 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             this._httpContextAccessor = httpContextAccessor;
         }
 
-        //public async Task<PageData<RefundListModel>> FindAll(RefundArgments args)
-        //{
-        //    return await this._refundService.FindRefundTrades(args);
-        //}
+        public async Task<PageData<RefundListModel>> FindAll(RefundArgments args)
+        {
+            return await this._refundService.FindRefundTrades(args);
+        }
 
         //public async Task<RefundStepModel> FindRefund(string memberId, string refundId)
         //{

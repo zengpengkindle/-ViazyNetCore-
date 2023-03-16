@@ -292,16 +292,16 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <summary>
         /// 用户编号
         /// </summary>
-        public string MemberId { get; set; }
+        public string? MemberId { get; set; }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
-        public string NickNameLike { get; set; }
+        public string? NickNameLike { get; set; }
 
-        public string ShopId { get; set; }
-        public string ShopName { get; set; }
+        public string? ShopId { get; set; }
+        public string? ShopName { get; set; }
 
         public RefundTradeLogType? HandleUserType { get; set; }
 

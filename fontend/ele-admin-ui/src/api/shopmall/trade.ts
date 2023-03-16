@@ -45,11 +45,9 @@ export class TradeApi {
       params: { tradeId }
     });
   }
-  public changeTradeAddressModel(
-    param1?: ChangeTradeAddressModel
-  ): Promise<void> {
+  public modifyTradeAddress(param1?: ChangeTradeAddressModel): Promise<void> {
     return http.request({
-      url: "/api/Trade/ChangeTradeAddressModel",
+      url: "/api/Trade/ModifyTradeAddress",
       method: "post",
       data: param1
     });

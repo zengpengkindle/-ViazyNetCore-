@@ -983,26 +983,28 @@ namespace ViazyNetCore.Modules.ShopMall
                 if (trade.LogisticsCost.HasValue)
                     fee = trade.LogisticsCost.Value;
 
-                var deliveryModel = new DeliveryModel()
+                if (trade.Status == TradeStatus.UnDeliver)
                 {
-                    LogisticsId = trade.LogisticsId,
-                    LogisticsCode = trade.LogisticsCode,
-                    LogisticsCompany = trade.LogisticsCompany,
-                    LogisticsFee = fee
-                };
+                    var deliveryModel = new DeliveryModel()
+                    {
+                        LogisticsId = trade.LogisticsId,
+                        LogisticsCode = trade.LogisticsCode,
+                        LogisticsCompany = trade.LogisticsCompany,
+                        LogisticsFee = fee
+                    };
 
-                deliveryModel.Address = new AddressModel()
-                {
-                    Province = trade.ReceiverProvince,
-                    City = trade.ReceiverCity,
-                    County = trade.ReceiverDistrict,
-                    Name = trade.ReceiverName,
-                    Tel = trade.ReceiverMobile,
-                    AddressDetail = trade.ReceiverDetail,
-                };
-                await this._logisticsService.Delivery(tradeId, deliveryModel);
-
-                await this._engine.Update<ProductTrade>().Where(p=>p.Id==trade.Id).SetDto(
+                    deliveryModel.Address = new AddressModel()
+                    {
+                        Province = trade.ReceiverProvince,
+                        City = trade.ReceiverCity,
+                        County = trade.ReceiverDistrict,
+                        Name = trade.ReceiverName,
+                        Tel = trade.ReceiverMobile,
+                        AddressDetail = trade.ReceiverDetail,
+                    };
+                    await this._logisticsService.Delivery(tradeId, deliveryModel);
+                }
+                await this._engine.Update<ProductTrade>().Where(p => p.Id == trade.Id).SetDto(
                        new
                        {
                            trade.ReceiverName,

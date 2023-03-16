@@ -36,8 +36,4 @@
     <ProjectReference Include="..\..\src\ViazyNetCore.Modules\ViazyNetCore.Modules.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
-
 </Project>

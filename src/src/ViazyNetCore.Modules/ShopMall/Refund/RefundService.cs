@@ -285,6 +285,36 @@ namespace ViazyNetCore.Modules.ShopMall
         {
             throw new NotImplementedException();
         }
+
+        public async Task<PageData<RefundListModel>> FindRefundTrades(RefundArgments args)
+        {
+            var fsql = this._engine.Select<RefundTrade>().From<ProductTrade>((rt, to) => rt.InnerJoin(r => r.TradeId == to.Id))
+            .WhereIf(args.Id.IsNotNull(), (rt, to) =>rt.Id==args.Id)
+            .WhereIf(args.MemberId.IsNotNull(), (rt, to) => to.MemberId == args.MemberId)
+            //.WhereIf(args.HandleUserType.HasValue, (rt, to) => rt.Id == args.Id)
+            .WhereIf(args.ShopId.IsNotNull(), (rt, to) => to.ShopId == args.ShopId)
+            .WhereIf(args.Status.HasValue, (rt, to) => rt.Status == args.Status)
+            //.WhereIf(args..IsNotNull(), (rt, to) => rt.Id == args.Id)
+            ;
+            var result = await fsql.WithTempQuery((p, to) => new RefundListModel
+            {
+                ApplyAmount = p.ReturnsAmount,
+                ReturnsAmount = p.ReturnsAmount,
+                CreateTime = p.CreateTime,
+                UpdateTime = p.UpdateTime,
+                Id = p.Id,
+                HandleUserType = RefundTradeLogType.Seller,
+                SellerPunishFee = p.SellerPunishFee,
+                ShopId = to.ShopId,
+                ShopName = to.ShopName,
+                MemberId = to.MemberId,
+                MemberName = to.MemberName,
+                Status = p.Status,
+                StepName = p.NewStepLogId
+
+            }).ToPageAsync(args);
+            return result;
+        }
     }
 
 

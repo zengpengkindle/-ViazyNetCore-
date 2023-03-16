@@ -1,29 +1,20 @@
 <template title="订单详情">
-  <el-form ref="form" v-if="!loading">
-    <el-card style="margin-bottom: 15px">
-      <template #header>
-        <span>订单详情</span><br />
-        <p>订单号:{{ item.id }}</p>
-      </template>
-      <div>
-        <el-descriptions
-          class="margin-top"
-          title="With border"
-          :column="3"
-          border
-        >
-        </el-descriptions>
-        <el-row :gutter="12" style="margin-bottom: 15px">
-          <el-col :span="16">
-            <el-card>
-              购买人：<span>{{ item.name }}</span>
-            </el-card>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12" style="margin-bottom: 15px">
-          <el-col :span="16">
-            <el-card>
-              订单状态：<span v-if="item.tradeStatus == -2">待提货</span>
+  <div class="main">
+    <div v-if="!loading">
+      <el-card style="margin-bottom: 15px">
+        <template #header>
+          <span>订单详情</span>
+        </template>
+        <div>
+          <el-descriptions class="margin-top" :column="3" border>
+            <el-descriptions-item label="订单号" :span="3">
+              {{ item.id }}
+            </el-descriptions-item>
+            <el-descriptions-item label="购买人" :span="2">
+              {{ item.name }}
+            </el-descriptions-item>
+            <el-descriptions-item label="订单状态">
+              <span v-if="item.tradeStatus == -2">待提货</span>
               <span v-else-if="item.tradeStatus == -1" style="color: red"
                 >未付款</span
               >
@@ -31,321 +22,254 @@
               <span v-else-if="item.tradeStatus == 1">待收货</span>
               <span v-else-if="item.tradeStatus == 2">已成功</span>
               <span v-else-if="item.tradeStatus == 4">已关闭</span>
-            </el-card>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12" style="margin-bottom: 15px">
-          <el-col :span="16">
-            <el-card>
-              <el-row style="margin-bottom: 15px">
-                <el-col :span="12">
-                  支付方式：<span v-if="item.payMode == -1">未付款</span>
-                  <span v-else-if="item.payMode == 0">微信</span>
-                  <span v-else-if="item.payMode == 1">支付宝</span>
-                  <span v-else-if="item.payMode == 2">余额</span>
-                  <span v-else-if="item.payMode == 3">银联</span>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-row :gutter="12">
-                    <el-col :span="8">
-                      商品总价：<span>{{ item.productMoney }}</span>
-                    </el-col>
+            </el-descriptions-item>
+            <el-descriptions-item label="支付方式" :span="3">
+              <span v-if="item.payMode == -1">未付款</span>
+              <span v-else-if="item.payMode == 0">微信</span>
+              <span v-else-if="item.payMode == 1">支付宝</span>
+              <span v-else-if="item.payMode == 2">余额</span>
+              <span v-else-if="item.payMode == 3">银联</span>
+            </el-descriptions-item>
+            <el-descriptions-item label="商品总价">
+              {{ item.productMoney }}
+            </el-descriptions-item>
+            <el-descriptions-item label="运费总价">
+              {{ item.totalFreight }}
+            </el-descriptions-item>
+            <el-descriptions-item label="订单总价" min-width="33%">
+              <span style="color: red">{{ item.totalMoney }}</span>
+            </el-descriptions-item>
+            <el-descriptions-item label="店铺编号">
+              {{ item.shopId }}
+            </el-descriptions-item>
+            <el-descriptions-item label="店铺名称" :span="2">
+              {{ item.shopName }}
+            </el-descriptions-item>
+            <el-descriptions-item label="购买人留言" :span="3">
+              {{ item.message }}
+            </el-descriptions-item>
+            <el-descriptions-item label="收货人姓名">
+              {{ item.receiverName }}
+            </el-descriptions-item>
+            <el-descriptions-item label="收货电话" :span="2">
+              {{ item.receiverMobile }}
+            </el-descriptions-item>
+            <el-descriptions-item label="收货地址" :span="3">
+              {{ item.address.address }}
+            </el-descriptions-item>
 
-                    <el-col :span="8">
-                      运费总价：<span>{{ item.totalFreight || 0 }}</span>
-                    </el-col>
-                    <el-col :span="8">
-                      订单总价：<span style="color: red">{{
-                        item.totalMoney
-                      }}</span>
-                    </el-col>
-                  </el-row>
-                </el-col>
-              </el-row>
-            </el-card>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12" style="margin-bottom: 15px">
-          <el-col :span="8">
-            <el-card>
-              店铺编号：<span>{{ item.shopId }}</span>
-            </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card>
-              店铺名称：<span>{{ item.shopName }}</span>
-            </el-card>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12" style="margin-bottom: 15px">
-          <el-col :span="16">
-            <el-card>
-              购买人留言：<span>{{ item.message }}</span>
-            </el-card>
-          </el-col>
-        </el-row>
-        <el-row
-          :gutter="12"
-          style="margin-bottom: 15px"
-          v-if="item.tradeStatus >= 0 && item.tradeStatus != 4"
-        >
-          <el-col :span="16">
-            <el-card>
-              收货人姓名：<span>{{ item.receiverName }}</span>
-              <br />
-              收货电话：<span>{{ item.receiverMobile }}</span>
-              <br />
-              收货地址：<span>{{ item.address.address }}</span>
-            </el-card>
-          </el-col>
-        </el-row>
-        <el-row
-          :gutter="12"
-          style="margin-bottom: 15px"
-          v-if="item.tradeStatus >= 1 && item.tradeStatus != 4"
-        >
-          <el-col :span="16">
-            <el-card>
-              快递单号：<span>{{ item.logisticsCode }}</span
-              ><br />
-              快递公司：<span>{{ item.logisticsCompany }}</span
-              ><br />
-
-              物流花费：<span>￥：{{ item.logisticsFee }}</span>
-            </el-card>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12" style="margin-bottom: 15px">
-          <el-col :span="16">
-            <el-card>
-              <el-timeline :reverse="true">
-                <el-timeline-item
-                  v-for="(activity, index) in activities"
-                  :key="index"
-                  :timestamp="activity.timestamp"
-                >
-                  {{ activity.content }}
-                </el-timeline-item>
-              </el-timeline>
-            </el-card>
-          </el-col>
-        </el-row>
-      </div>
-    </el-card>
-    <el-card style="margin-bottom: 15px">
-      <template #header>
-        <span>商品详情</span>
-      </template>
-      <el-card v-for="order in item.items" :key="order.orderId" shadow="hover">
-        <template #header>
-          子订单编号：<span>{{ order.orderId }}</span>
-        </template>
-        <el-row :gutter="12" style="margin-bottom: 15px">
-          <el-col :span="3">
-            <img :src="order.imgUrl" width="120" height="120" />
-          </el-col>
-          <el-col :span="8">
-            <router-link
-              class="product_title"
-              :to="{ path: '/product/manage', query: { id: order.pId } }"
-              target="_blank"
-              >{{ order.pn }}</router-link
-            >
-            <p>
-              <span>{{ order.skuText }}</span>
-            </p>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12" style="margin-bottom: 15px">
-          <el-col :span="12">
-            售价：<span>￥{{ order.price }}</span
-            ><span style="color: red">&nbsp; ×&nbsp; {{ order.num }}</span>
-          </el-col>
-        </el-row>
+            <el-descriptions-item label="快递单号">
+              {{ item.logisticsCode }}
+            </el-descriptions-item>
+            <el-descriptions-item label="快递公司">
+              {{ item.logisticsCompany }}
+            </el-descriptions-item>
+            <el-descriptions-item label="运费">
+              {{ item.logisticsFee }}
+            </el-descriptions-item>
+          </el-descriptions>
+        </div>
       </el-card>
+      <el-card class="mt-4">
+        <div>
+          <el-timeline :reverse="true">
+            <el-timeline-item
+              v-for="(activity, index) in activities"
+              :key="index"
+              :timestamp="activity.timestamp"
+            >
+              {{ activity.content }}
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-card>
+      <el-card class="mt-4">
+        <el-table :data="item.items" :gutter="12" style="margin-bottom: 15px">
+          <el-table-column :span="3" label="子订单编号">
+            <template #default="{ row }">
+              <el-image :src="row.imgUrl" style="width: 60px; height: 60px" />
+            </template>
+          </el-table-column>
+          <el-table-column property="pn" label="名称" width="120" />
+          <el-table-column property="skuText" label="规格" width="120" />
+          <el-table-column property="price" label="售价" width="120" />
+          <el-table-column property="num" label="数量" width="120" />
+        </el-table>
+      </el-card>
+    </div>
+    <el-card class="mt-4">
+      <el-form ref="form" v-if="!loading">
+        <el-form-item>
+          <el-button
+            @click="dialogLogisticeFormVisible = true"
+            v-if="item.tradeStatus == 0"
+            >发货</el-button
+          >
+          <el-button
+            @click="editTradeAddressFormVisible = true"
+            v-if="item.tradeStatus == 0 || item.tradeStatus == 1"
+            >修改订单收货信息</el-button
+          >
+          <el-button
+            @click="editLogisticeCodeFormVisible = true"
+            v-if="item.tradeStatus == 1"
+            >修改物流信息</el-button
+          >
+        </el-form-item>
+      </el-form>
     </el-card>
-    <el-card style="margin-bottom: 15px">
-      <el-form-item>
-        <el-button
-          @click="dialogLogisticeFormVisible = true"
-          v-if="item.tradeStatus == 0"
-          >发货</el-button
-        >
-        <el-button
-          @click="editTradeAddressFormVisible = true"
-          v-if="item.tradeStatus == 0 || item.tradeStatus == 1"
-          >修改订单收货信息</el-button
-        >
-        <el-button
-          @click="editLogisticeCodeFormVisible = true"
-          v-if="item.tradeStatus == 1"
-          >修改物流信息</el-button
-        >
-      </el-form-item>
 
-      <el-dialog title="商品发货" :visible="dialogLogisticeFormVisible">
-        <el-form :model="item" ref="dialog" :rules="rules">
-          <el-form-item
-            label="物流单号"
-            prop="logisticsCode"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.logisticsCode"
-              auto-complete="off"
-              placeholder="请输入物流单号"
-            />
-          </el-form-item>
-          <el-form-item
-            label="物流花费"
-            prop="logisticsCompany"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model.number="item.logisticsCompany"
-              auto-complete="off"
-              placeholder="请输入物流花费"
-            />
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <el-button @click="dialogLogisticeFormVisible = false"
-            >取 消</el-button
-          >
-          <el-button type="primary" @click="submitlogistics"
-            >确认发货</el-button
-          >
-        </template>
-      </el-dialog>
-      <el-dialog title="修改物流信息" :visible="editLogisticeCodeFormVisible">
-        <el-form :model="item" ref="dialog" :rules="rules">
-          <el-form-item
-            label="物流单号"
-            prop="logisticsCode"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.logisticsCode"
-              auto-complete="off"
-              placeholder="请输入物流单号"
-            />
-          </el-form-item>
-          <el-form-item
-            label="物流公司"
-            prop="logisticsCompany"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.logisticsCompany"
-              auto-complete="off"
-              placeholder="请输入物流公司"
-            />
-          </el-form-item>
-          <el-form-item
-            label="物流花费"
-            prop="logisticsFee"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model.number="item.logisticsFee"
-              type="number"
-              auto-complete="off"
-              placeholder="请输入物流花费"
-            />
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <el-button @click="editLogisticeCodeFormVisible = false"
-            >取 消</el-button
-          >
-          <el-button type="primary" @click="changeLogistics"
-            >确认修改</el-button
-          >
-        </template>
-      </el-dialog>
-      <el-dialog
-        title="修改订单收货信息"
-        :visible="editTradeAddressFormVisible"
-      >
-        <el-form :model="item" ref="dialog" :rules="rules2">
-          <el-form-item
-            label="收货人"
-            prop="receiverName"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.receiverName"
-              auto-complete="off"
-              placeholder="请输入收货人名字"
-            />
-          </el-form-item>
-          <el-form-item
-            label="收货人电话"
-            prop="receiverMobile"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.receiverMobile"
-              auto-complete="off"
-              placeholder="请输入收货人电话"
-            />
-          </el-form-item>
-          <el-form-item
-            label="收货地址-省"
-            prop="receiverProvince"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.receiverProvince"
-              auto-complete="off"
-              placeholder="请输入收货地址-省"
-            />
-          </el-form-item>
-          <el-form-item
-            label="收货地址-市"
-            prop="receiverCity"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.receiverCity"
-              auto-complete="off"
-              placeholder="请输入收货地址-市"
-            />
-          </el-form-item>
-          <el-form-item
-            label="收货地址-区"
-            prop="receiverDistrict"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.receiverDistrict"
-              auto-complete="off"
-              placeholder="请输入收货地址-区"
-            />
-          </el-form-item>
-          <el-form-item
-            label="收货地址-详细地址"
-            prop="receiverDetail"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="item.receiverDetail"
-              auto-complete="off"
-              placeholder="请输入收货地址-详细地址"
-            />
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <el-button @click="editTradeAddressFormVisible = false"
-            >取 消</el-button
-          >
-          <el-button type="primary" @click="changeAddress">确认修改</el-button>
-        </template>
-      </el-dialog>
-    </el-card>
-  </el-form>
+    <el-dialog title="商品发货" :visible="dialogLogisticeFormVisible">
+      <el-form :model="item" ref="dialog" :rules="rules">
+        <el-form-item
+          label="物流单号"
+          prop="logisticsCode"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.logisticsCode"
+            auto-complete="off"
+            placeholder="请输入物流单号"
+          />
+        </el-form-item>
+        <el-form-item
+          label="物流花费"
+          prop="logisticsCompany"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model.number="item.logisticsCompany"
+            auto-complete="off"
+            placeholder="请输入物流花费"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="dialogLogisticeFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitlogistics">确认发货</el-button>
+      </template>
+    </el-dialog>
+    <el-dialog title="修改物流信息" v-model="editLogisticeCodeFormVisible">
+      <el-form :model="item" ref="dialog" :rules="rules">
+        <el-form-item
+          label="物流单号"
+          prop="logisticsCode"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.logisticsCode"
+            auto-complete="off"
+            placeholder="请输入物流单号"
+          />
+        </el-form-item>
+        <el-form-item
+          label="物流公司"
+          prop="logisticsCompany"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.logisticsCompany"
+            auto-complete="off"
+            placeholder="请输入物流公司"
+          />
+        </el-form-item>
+        <el-form-item
+          label="物流花费"
+          prop="logisticsFee"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model.number="item.logisticsFee"
+            type="number"
+            auto-complete="off"
+            placeholder="请输入物流花费"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="editLogisticeCodeFormVisible = false">
+          取 消
+        </el-button>
+        <el-button type="primary" @click="changeLogistics">确认修改</el-button>
+      </template>
+    </el-dialog>
+    <el-dialog title="修改订单收货信息" v-model="editTradeAddressFormVisible">
+      <el-form :model="item" ref="dialog" :rules="rules2">
+        <el-form-item
+          label="收货人"
+          prop="receiverName"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.receiverName"
+            auto-complete="off"
+            placeholder="请输入收货人名字"
+          />
+        </el-form-item>
+        <el-form-item
+          label="收货人电话"
+          prop="receiverMobile"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.receiverMobile"
+            auto-complete="off"
+            placeholder="请输入收货人电话"
+          />
+        </el-form-item>
+        <el-form-item
+          label="收货地址-省"
+          prop="receiverProvince"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.receiverProvince"
+            auto-complete="off"
+            placeholder="请输入收货地址-省"
+          />
+        </el-form-item>
+        <el-form-item
+          label="收货地址-市"
+          prop="receiverCity"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.receiverCity"
+            auto-complete="off"
+            placeholder="请输入收货地址-市"
+          />
+        </el-form-item>
+        <el-form-item
+          label="收货地址-区"
+          prop="receiverDistrict"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.receiverDistrict"
+            auto-complete="off"
+            placeholder="请输入收货地址-区"
+          />
+        </el-form-item>
+        <el-form-item
+          label="收货地址-详细地址"
+          prop="receiverDetail"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="item.receiverDetail"
+            auto-complete="off"
+            placeholder="请输入收货地址-详细地址"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="editTradeAddressFormVisible = false"
+          >取 消</el-button
+        >
+        <el-button type="primary" @click="changeAddress">确认修改</el-button>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 <script lang="ts" setup>
 import TradeApi, {
@@ -513,7 +437,7 @@ function changeAddress() {
   })
     .then(() => {
       //string name, string mobile, string province, string city, string district, string detail
-      TradeApi.changeTradeAddressModel({
+      TradeApi.modifyTradeAddress({
         receiverName: item.value.receiverName,
         receiverMobile: item.value.receiverMobile,
         receiverProvince: item.value.receiverProvince,
@@ -522,7 +446,7 @@ function changeAddress() {
         receiverDetail: item.value.receiverDetail,
         id: item.value.id
       }).then(() => {
-        message("修改成功");
+        message("修改成功", { type: "success" });
         item.value.address.address =
           item.value.receiverProvince +
           item.value.receiverCity +
@@ -534,8 +458,8 @@ function changeAddress() {
     .catch(e => {
       console.log(e.message);
       dialogFormVisible.value = false;
-      message("已取消通过", {
-        type: "info"
+      message("修改失败", {
+        type: "error"
       });
     });
 }

@@ -80,45 +80,15 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         }
 
         [HttpPost]
-        public Task ChangeTradeDeliver(string tradeId, DeliveryModel deliveryModel)
+        public async Task ModifyTradeAddress(TradeAddressRequest model)
         {
-            return this._tradeService.TradeDeliveryChangeAsync(tradeId, deliveryModel);
+            await this._tradeService.TradeAddressChangeAsync(model.Id, model.ReceiverName, model.ReceiverMobile, model.ReceiverProvince, model.ReceiverCity, model.ReceiverDistrict, model.ReceiverDetail);
         }
 
         [HttpPost]
-        public Task ChangeTradeAddressModel(ChangeTradeAddressModel model)
+        public async Task ChangeTradeDeliver(string tradeId, DeliveryModel deliveryModel)
         {
-            return this._tradeService.TradeAddressChangeAsync(model.Id, model.ReceiverName, model.ReceiverMobile, model.ReceiverProvince, model.ReceiverCity, model.ReceiverDistrict, model.ReceiverDetail);
+            await this._tradeService.TradeDeliveryChangeAsync(tradeId, deliveryModel);
         }
-    }
-
-    public class SimpleLogisticsCompany
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
-    }
-
-    public class DeliverFail
-    {
-        public int Fail { get; set; }
-        public List<string> FailIds { get; set; }
-    }
-
-    public class BatchDeliveryModel
-    {
-        public string[] TradeIds { get; set; }
-        public DeliveryModel Delivery { get; set; }
-    }
-
-    public class ChangeTradeAddressModel
-    {
-        public string Id { get; set; }
-        public string ReceiverName { get; set; }
-        public string ReceiverMobile { get; set; }
-        public string ReceiverProvince { get; set; }
-        public string ReceiverCity { get; set; }
-        public string ReceiverDistrict { get; set; }
-        public string ReceiverDetail { get; set; }
     }
 }
