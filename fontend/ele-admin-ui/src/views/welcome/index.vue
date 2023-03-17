@@ -5,5 +5,5 @@ defineOptions({
 </script>
 
 <template>
-  <h1>Pure-Admin-Thin（非国际化版本）</h1>
+  <div class="main"><el-empty description="ViazyNetCore Admin" /></div>
 </template>

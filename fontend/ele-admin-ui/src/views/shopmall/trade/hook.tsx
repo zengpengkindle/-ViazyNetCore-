@@ -10,6 +10,8 @@ import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted, Ref } from "vue";
 import { nextTick } from "process";
 import { useRouter } from "vue-router";
+import Info from "@iconify-icons/ep/info-filled";
+import { IconifyIconOffline } from "@/components/ReIcon";
 
 export function useTrade() {
   const form: Ref<TradePageArgments> = ref({
@@ -71,6 +73,7 @@ export function useTrade() {
                     style="width: 60px; height: 60px"
                     src={row2.imgUrl}
                     zoom-rate={1.2}
+                    preview-teleported={true}
                     preview-src-list={[row2.imgUrl]}
                     fit="cover"
                   />
@@ -105,7 +108,6 @@ export function useTrade() {
         return (
           <el-table
             data={row.items}
-            table-layout="fixed"
             size="small"
             border
             style={tableStyle}
@@ -162,16 +164,19 @@ export function useTrade() {
       prop: "shopName"
     },
     {
+      label: "订单总金额",
+      prop: "totalMoney",
+      formatter: ({ totalMoney }) => (
+        <span style="color:var(--el-color-error)">{totalMoney}</span>
+      )
+    },
+    {
       label: "商品总金额",
       prop: "productMoney"
     },
     {
       label: "运费总金额",
       prop: "totalfeight"
-    },
-    {
-      label: "订单总金额",
-      prop: "totalMoney"
     },
     {
       label: "收货信息",
@@ -194,18 +199,19 @@ export function useTrade() {
         };
         return (
           <el-tooltip placement="bottom" v-slots={content} effect="light">
-            <el-button>收货信息</el-button>
+            <el-button size="small">收货信息</el-button>
           </el-tooltip>
         );
       }
     },
     {
       label: "用户留言",
-      cellRenderer: ({ row }) => (
-        <el-tooltip content={row.message} placement="bottom" effect="light">
-          <i class="el-icon-info" />
-        </el-tooltip>
-      )
+      cellRenderer: ({ row }) =>
+        row.message == null ? null : (
+          <el-tooltip content={row.message} placement="bottom" effect="light">
+            <IconifyIconOffline icon={Info} />
+          </el-tooltip>
+        )
     },
     {
       label: "付款时间",

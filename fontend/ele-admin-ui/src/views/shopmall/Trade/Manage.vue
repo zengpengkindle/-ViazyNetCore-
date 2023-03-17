@@ -87,7 +87,14 @@
         <el-table :data="item.items" :gutter="12" style="margin-bottom: 15px">
           <el-table-column :span="3" label="子订单编号">
             <template #default="{ row }">
-              <el-image :src="row.imgUrl" style="width: 60px; height: 60px" />
+              <el-image
+                style="width: 60px; height: 60px"
+                :src="row.imgUrl"
+                :zoom-rate="1.2"
+                preview-teleported
+                :preview-src-list="[row.imgUrl]"
+                fit="cover"
+              />
             </template>
           </el-table-column>
           <el-table-column property="pn" label="名称" width="120" />
@@ -274,6 +281,7 @@
 <script lang="ts" setup>
 import TradeApi, {
   DeliveryModel,
+  SimpleLogisticsCompany,
   TradeDetailModel
 } from "@/api/shopmall/trade";
 import { message } from "@/utils/message";
@@ -288,19 +296,14 @@ const dialogLogisticeFormVisible = ref(false);
 const editLogisticeCodeFormVisible = ref(false);
 const dialogFormVisible = ref(false);
 const editTradeAddressFormVisible = ref(false);
+const logisticsCompanys: Ref<Array<SimpleLogisticsCompany>> = ref([]);
 const rules = reactive<FormRules>({
   logisticsCode: [
     { required: true, message: "请输入物流单号" },
     { min: 1, max: 200, message: "长度在 1 到 200 个字符" }
   ],
-  logisticsCompany: [
-    { required: true, message: "请输入物流公司" },
-    { min: 1, max: 20, message: "长度在 1 到 20 个字符" }
-  ],
-  logisticsFee: [
-    { required: true, message: "请输入物流花费" },
-    { type: "number", message: "物流花费必须为数字值" }
-  ]
+  logisticsCompany: [{ min: 1, max: 20, message: "长度在 1 到 20 个字符" }],
+  logisticsFee: [{ type: "number", message: "物流花费必须为数字值" }]
 });
 const rules2 = reactive<FormRules>({
   receiverName: [
@@ -362,6 +365,7 @@ onMounted(async () => {
   }
   item.value = trade;
   loading.value = false;
+  logisticsCompanys.value = await TradeApi.findWlList();
 });
 function submitlogistics() {
   ElMessageBox({

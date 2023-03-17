@@ -12,8 +12,8 @@ namespace ViazyNetCore.Modules.ShopMall
         public string LogisticsId { get; set; }
 
         public decimal LogisticsFee { get; set; }
-        public string LogisticsCode { get; set; }
-        public string LogisticsCompany { get; set; }
+        public string? LogisticsCode { get; set; }
+        public string? LogisticsCompany { get; set; }
 
         public AddressModel Address { get;internal set; }
     }
