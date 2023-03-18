@@ -34,7 +34,7 @@ namespace ViazyNetCore.Formatter.Response
                 await this._next(context);
             else if (context.WebSockets.IsWebSocketRequest || context.Request.Path.StartsWithSegments("/messageHub", StringComparison.CurrentCultureIgnoreCase))
             {
-                await _next(context);
+                await this._next(context);
             }
             else
             {
@@ -48,7 +48,7 @@ namespace ViazyNetCore.Formatter.Response
                 try
                 {
                     context.Response.Body = memoryStream;
-                    await _next.Invoke(context);
+                    await this._next.Invoke(context);
                     if (context.Response.HasStarted) { LogResponseHasStartedError(); return; }
 
                     var endpoint = context.GetEndpoint();
