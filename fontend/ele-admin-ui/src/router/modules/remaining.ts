@@ -61,6 +61,15 @@ export default [
         meta: {
           title: "订单管理"
         }
+      },
+      {
+        path: "/shopmall/page/manage",
+        name: "shopPageManage",
+        component: () => import("@/views/shopmall/page/manage.vue"),
+        meta: {
+          title: "页面设计",
+          showLink: false,
+        }
       }
     ]
   }

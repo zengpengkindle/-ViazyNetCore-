@@ -436,3 +436,14 @@ public enum RefundTradeLogType
     Seller = 0,
     Buyer = 1
 }
+
+public enum PageLayout
+{
+    Mobile = 1,
+    Pc = 2
+}
+public enum PageType
+{
+    Mobile = 1,
+    Pc = 2
+}

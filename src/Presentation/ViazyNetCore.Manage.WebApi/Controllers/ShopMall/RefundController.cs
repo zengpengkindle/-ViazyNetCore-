@@ -25,6 +25,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             this._httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpPost]
         public async Task<PageData<RefundListModel>> FindAll(RefundArgments args)
         {
             return await this._refundService.FindRefundTrades(args);

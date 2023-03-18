@@ -34,7 +34,6 @@ export function useMenu() {
             <el-icon size={props.size}>
               <IconifyIconOffline icon={row.icon} />
             </el-icon>
-            {row.icon?.includes(":")}
           </span>
           <span v-show={row.icon?.includes(":")}>
             <el-icon size={props.size}>

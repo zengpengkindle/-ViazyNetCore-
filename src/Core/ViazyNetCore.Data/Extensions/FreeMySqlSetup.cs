@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
 #if DEBUG
               //监听SQL语句
               .UseMonitorCommand(cmd => Console.WriteLine($"[master][ThreadId:{Environment.CurrentManagedThreadId}]\r\nSql：{cmd.CommandText}"))
-              //.UseAutoSyncStructure(true) //自动同步实体结构到数据库，FreeSql不会扫描程序集，只有CRUD时才会生成表。
+              .UseAutoSyncStructure(false) //自动同步实体结构到数据库，FreeSql不会扫描程序集，只有CRUD时才会生成表。
 #endif
               .Build();
 
