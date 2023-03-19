@@ -9,6 +9,8 @@ namespace ViazyNetCore.Modules.ShopMall.Repositories
     [Injection]
     public interface IShopPageRepository : IBaseRepository<ShopPage, long>
     {
+        Task<ShopPage> GetByCode(string code);
+
         Task<PageData<ShopPage>> GetPageList(ShopPageQuery query);
     }
 }

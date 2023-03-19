@@ -13,6 +13,11 @@ namespace ViazyNetCore.Modules.ShopMall.Repositories
         {
         }
 
+        public Task<ShopPage> GetByCode(string code)
+        {
+            return this.Select.Where(p => p.Code == code).ToOneAsync();
+        }
+
         public Task<PageData<ShopPage>> GetPageList(ShopPageQuery query)
         {
             return this.Select.WhereIf(query.Layout.HasValue, p => p.Layout == query.Layout)

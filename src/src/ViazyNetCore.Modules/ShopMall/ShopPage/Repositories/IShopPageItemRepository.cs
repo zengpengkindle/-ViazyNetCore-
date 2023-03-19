@@ -9,6 +9,6 @@ namespace ViazyNetCore.Modules.ShopMall.Repositories
     [Injection]
     public interface IShopPageItemRepository : IBaseRepository<ShopPageItem, long>
     {
-
+        Task DeleteByCode(string code);
     }
 }

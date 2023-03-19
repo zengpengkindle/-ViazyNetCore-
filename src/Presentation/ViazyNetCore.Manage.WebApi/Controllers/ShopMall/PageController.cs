@@ -46,5 +46,30 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
             }
             await this._shopPageService.DeletePage(id);
         }
+
+        [HttpPost]
+        public async Task SavePageDesign(PageDesignEditRes editRes)
+        {
+            await this._shopPageService.UpdateDesginAsync(editRes.Code, editRes.Items);
+        }
+
+        [HttpPost]
+        public async Task<PageDesignEditRes> GetPageData(long id)
+        {
+            if (id == 0)
+                throw new ApiException("无效请求");
+            var page = await this._shopPageService.GetPageById(id);
+            if (page == null)
+                throw new ApiException("无效请求");
+            var pageItems = await this._shopPageService.GetPageItems(page.Code);
+
+            var result = new PageDesignEditRes
+            {
+                Code = page.Code,
+                Items = pageItems
+            };
+
+            return result;
+        }
     }
 }

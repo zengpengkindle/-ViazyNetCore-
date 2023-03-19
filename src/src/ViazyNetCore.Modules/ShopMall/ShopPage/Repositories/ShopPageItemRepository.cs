@@ -12,5 +12,10 @@ namespace ViazyNetCore.Modules.ShopMall.Repositories
         public ShopPageItemRepository(IFreeSql fsql) : base(fsql)
         {
         }
+
+        public async Task DeleteByCode(string code)
+        {
+            await this.DeleteAsync(p => p.PageCode == code);
+        }
     }
 }
