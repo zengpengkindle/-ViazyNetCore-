@@ -9,11 +9,14 @@ import ImangeThreeColumn from "@/assets/images/image-three-column.png";
 import IcCar from "@/assets/images/ic-car.png";
 import { useRenderIcon } from '@/components/ReIcon/src/hooks';
 import SelectLink from "./components/SelectLink.vue";
+import draggable from "vuedraggable";
+
 import {
   useTools
 } from "./components/toolhook";
 import {
   ComponentItem,
+  allWidget,
   useWidget
 } from "./components/widget";
 
@@ -49,6 +52,7 @@ const {
 } = useTools();
 
 const {
+  pageData,
   selectWg,
   selectWidget,
   setSelectWg,
@@ -64,7 +68,6 @@ const {
 } = useWidget();
 
 const props = defineProps<Props>();
-const pageData: Ref<Array<ComponentItem>> = ref([]);
 
 interface TabBarComponent {
   list: Array<GoodItem>;
@@ -100,31 +103,29 @@ interface ToolComponent {
 const tools: Array<ToolGroup> = [
   {
     name: "媒体组件",
-    tools: [
-      { name: "图片轮播", icon: "ep:add-location", type: "imgSlide" },
-      { name: "图片", icon: "ep:add-location", type: "imgSingle" },
-      { name: "图片分组", icon: "ep:add-location", type: "imgWindow" },
-      { name: "视频组", icon: "ep:add-location", type: "video" },
-      { name: "文章组", icon: "ep:add-location", type: "article" },
-      { name: "文章分类", icon: "ep:add-location", type: "articleClassify" }
-    ]
-  }, {
+    tools: allWidget.mediaComponents
+  },
+  {
     name: "商城组件",
-    tools: [
-      { name: "搜索框", icon: "ep:add-location", type: "search" },
-      { name: "公告组", icon: "ep:add-location", type: "notice" },
-      { name: "导航组", icon: "ep:add-location", type: "navBar" },
-      { name: "商品组", icon: "ep:add-location", type: "goods" },
-      { name: "商品选项卡", icon: "ep:add-location", type: "goodTabBar" }
-    ]
+    tools: allWidget.storeComponents
   }, {
     name: "工具组件",
-    tools: [
-      { name: "辅助空白", icon: "ep:add-location", type: "blank" },
-      { name: "文本域", icon: "ep:add-location", type: "textarea" }
-    ]
+    tools: allWidget.utilsComponents
   }
 ]
+// 组件拖拽
+//拖拽开始的事件
+const onStart = () => {
+  console.log("开始拖拽");
+};
+
+//拖拽结束的事件
+const onEnd = () => {
+  console.log("结束拖拽");
+};
+const widgetAdd = () => {
+
+}
 </script>
 <template>
   <div class="main">
@@ -136,18 +137,21 @@ const tools: Array<ToolGroup> = [
           </template>
           <template v-for="group in tools" v-bind:key="group.name">
             <el-divider content-position="left">{{ group.name }}</el-divider>
-            <el-row :gutter="10">
-              <el-col :span="6" v-for="item in group.tools">
-                <button class="component-item" @click=selectWidget(item.type)>
-                  <div class="p-1">
-                    <i class="component-icon">
-                      <component :is="useRenderIcon(item.icon, { width: 16 })" />
-                    </i>
-                  </div>
-                  <p class="text">{{ item.name }}</p>
-                </button>
-              </el-col>
-            </el-row>
+            <draggable class="el-row" :list="group.tools" :group="{ name: 'widget', pull: 'clone', put: false }"
+              :sort="false" ghost-class="ghost" :animation="150">
+              <template #item="{ element }">
+                <el-col :span="8">
+                  <button @click=selectWidget(element.type) class="component-item">
+                    <div class="p-1">
+                      <i class="component-icon">
+                        <component :is="useRenderIcon(element.icon, { width: 16 })" />
+                      </i>
+                    </div>
+                    <p class="text">{{ element.name }}</p>
+                  </button>
+                </el-col>
+              </template>
+            </draggable>
           </template>
           <el-divider />
           <el-button type="primary">保存页面</el-button>
@@ -158,36 +162,38 @@ const tools: Array<ToolGroup> = [
           <div class="model-title">
             <img :src="ModelTitle">
           </div>
-          <div>
-            <div v-for="(item, index) in pageData" v-bind:key="item.key">
-              <div class="layout-main" :key="item.key"
-                :class="{ active: selectWg.key === item.key, npr: item.type == 'record' }"
-                @click="handleSelectWidget(item)">
+          <draggable class="layout-list" :list="pageData" :group="{ name: 'widget' }" :sort="true" ghost-class="ghost"
+            :animation="150" drag-class="dragItem" filter=".lay-record" :scroll="true" :scrollSensitivity="100"
+            :scrollSpeed="1000" @change="handleWidgetAdd" @update="datadragEnd" @remove="handleDragRemove">
+            <template #item="{ element,index }">
+              <div class="layout-main" :key="element.type"
+                :class="{ active: selectWg.type === element.type, npr: element.type == 'record' }"
+                @click="handleSelectWidget(element)">
                 <!-- 搜索框 -->
-                <div v-if="item.type === 'search'" class="drag lay-item lay-search">
+                <div v-if="element.type === 'search'" class="drag lay-item lay-search">
                   <div class="lay-search-c">
-                    <input v-model="item.value.keywords" class="lay-search-input" :class="item.value.style" />
+                    <input v-model="element.value.keywords" class="lay-search-input" :class="element.value.style" />
                     <i class="iconfontCustom icon-sousuokuang"></i>
                   </div>
                 </div>
                 <!-- 购买记录 -->
-                <div v-if="item.type === 'record'" class="drag lay-record" :class="item.value.style.align"
-                  @click="handleSelectRecord(item)" :style="{ top: item.value.style.top + '%' }">
+                <div v-if="element.type === 'record'" class="drag lay-record" :class="element.value.style.align"
+                  @click="handleSelectRecord(element)" :style="{ top: element.value.style.top + '%' }">
                   <div class="record-item">
                     <i class="layui-icon layui-icon-user"></i>
                     <span class="text">xxx刚刚0.01元买到了xxx</span>
                   </div>
-                  <div @click.stop="handleWidgetDelete(item)" class="btn-delete" v-if="selectWg.key === item.key">删除
+                  <div @click.stop="handleWidgetDelete(index)" class="btn-delete" v-if="selectWg.key === element.key">删除
                   </div>
                 </div>
                 <!-- 商品组 -->
-                <div v-if="item.type === 'goods'" class="drag clearfix lay-goods" :class="item.value.display">
+                <div v-if="element.type === 'goods'" class="drag clearfix lay-goods" :class="element.value.display">
                   <div class="goods-head">
-                    <div>{{ item.value.title }}</div>
-                    <div v-if="item.value.lookMore">查看更多></div>
+                    <div>{{ element.value.title }}</div>
+                    <div v-if="element.value.lookMore">查看更多></div>
                   </div>
-                  <div class="goods-item" v-for="(goods, key) in item.value.list" :key="key"
-                    :class="'column' + item.value.column">
+                  <div class="goods-item" v-for="(goods, key) in element.value.list" :key="key"
+                    :class="'column' + element.value.column">
                     <div class="goods-image">
                       <img :src="goods.image_url || goods.image" alt="">
                     </div>
@@ -200,11 +206,11 @@ const tools: Array<ToolGroup> = [
                   </div>
                 </div>
                 <!-- 商品选项卡 -->
-                <div v-if="item.type === 'goodTabBar'" class="drag clearfix lay-goods list">
+                <div v-if="element.type === 'goodTabBar'" class="drag clearfix lay-goods list">
                   <div class="goods-tab-head">
-                    <div v-for="(goods, key) in item.value.list" :key="key">{{ goods.title }}</div>
+                    <div v-for="(goods, key) in element.value.list" :key="key">{{ goods.title }}</div>
                   </div>
-                  <div v-for="(goods, key) in item.value.list" :key="key" v-show="key == 0">
+                  <div v-for="(goods, key) in element.value.list" :key="key" v-show="key == 0">
                     <div class="goods-item" :class="'column' + goods.column" v-for="(goodsitem, itemkey) in goods.list"
                       :key="itemkey">
                       <div class="goods-image">
@@ -220,71 +226,71 @@ const tools: Array<ToolGroup> = [
                   </div>
                 </div>
                 <!-- 图片轮播 -->
-                <div v-if="item.type === 'imgSlide'" class="drag lay-item lay-imgSlide">
-                  <el-carousel :interval="item.value.duration" arrow="never" :autoplay="false">
-                    <el-carousel-item v-for="(list, key) in item.value.list" :key="key">
+                <div v-if="element.type === 'imgSlide'" class="drag lay-item lay-imgSlide">
+                  <el-carousel :interval="element.value.duration" arrow="never" height="175px" :autoplay="false">
+                    <el-carousel-item v-for="(list, key) in element.value.list" :key="key">
                       <img :src="list.image" alt="banner" style="width:100%;height:100%">
                     </el-carousel-item>
                   </el-carousel>
                 </div>
                 <!-- 置顶轮播 -->
                 <!--<div v-if="item.type==='topImgSlide'" class="drag lay-item lay-imgSlide">
-                                                                      <el-carousel :interval="item.value.duration" arrow="never" :autoplay="false">
-                                                                          <el-carousel-item v-for="(list,key) in item.value.list" :key="key">
-                                                                              <div style="width: 100%; height: 100%; position: relative">
-                                                                                  <img :src="list.image" alt="banner" style="max-width: 80%; max-height: 80%; bottom: 10%; position: absolute; left: 10%; z-index: 10; border: 1px solid salmon;">
-                                                                                  <img :src="list.bg" alt="bannerbg" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; border: 1px solid salmon;">
-                                                                              </div>
-                                                                          </el-carousel-item>
-                                                                      </el-carousel>
-                                                                  </div>-->
+                                  <el-carousel :interval="item.value.duration" arrow="never" :autoplay="false">
+                                      <el-carousel-item v-for="(list,key) in item.value.list" :key="key">
+                                          <div style="width: 100%; height: 100%; position: relative">
+                                              <img :src="list.image" alt="banner" style="max-width: 80%; max-height: 80%; bottom: 10%; position: absolute; left: 10%; z-index: 10; border: 1px solid salmon;">
+                                              <img :src="list.bg" alt="bannerbg" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; border: 1px solid salmon;">
+                                          </div>
+                                      </el-carousel-item>
+                                  </el-carousel>
+                              </div>-->
                 <!-- 单图组 -->
-                <div v-if="item.type === 'imgSingle'" class="drag lay-imgSingle">
-                  <div class="img-wrap" v-for="(img, key) in item.value.list" :key="key">
+                <div v-if="element.type === 'imgSingle'" class="drag lay-imgSingle">
+                  <div class="img-wrap" v-for="(img, key) in element.value.list" :key="key">
                     <img :src="img.image" alt="">
                     <div class="img-btn" :style="{ backgroundColor: img.buttonColor, color: img.textColor }"
                       v-show="img.buttonShow">{{ img.buttonText }}</div>
                   </div>
                 </div>
                 <!-- 图片橱窗 -->
-                <div v-if="item.type === 'imgWindow'" class="drag lay-imgWindow clearfix"
-                  :class="'row' + item.value.style" :style="{}">
-                  <template v-if="item.value.style == 0">
+                <div v-if="element.type === 'imgWindow'" class="drag lay-imgWindow clearfix"
+                  :class="'row' + element.value.style" :style="{}">
+                  <template v-if="element.value.style == 0">
                     <div class="display">
                       <div class="display-left">
-                        <img :src="item.value.list[0].image" alt="">
+                        <img :src="element.value.list[0].image" alt="">
                       </div>
                       <div class="display-right">
                         <div class="display-right1">
-                          <img :src="item.value.list[1].image" alt="">
+                          <img :src="element.value.list[1].image" alt="">
                         </div>
                         <div class="display-right2">
                           <div class="left">
-                            <img :src="item.value.list[2].image" alt="">
+                            <img :src="element.value.list[2].image" alt="">
                           </div>
                           <div class="right">
-                            <img :src="item.value.list[3].image" alt="">
+                            <img :src="element.value.list[3].image" alt="">
                           </div>
                         </div>
                       </div>
                     </div>
                   </template>
                   <template v-else>
-                    <div class="img-wrap" v-for="(img, key) in item.value.list" :key="key"
-                      :style="{ padding: item.value.margin + 'px' }">
+                    <div class="img-wrap" v-for="(img, key) in element.value.list" :key="key"
+                      :style="{ padding: element.value.margin + 'px' }">
                       <img :src="img.image" alt="">
                     </div>
                   </template>
                 </div>
                 <!-- 视频组 -->
-                <div v-if="item.type === 'video'" class="drag lay-item lay-video">
-                  <div class="video-wrap" v-for="(video, key) in item.value.list">
+                <div v-if="element.type === 'video'" class="drag lay-item lay-video">
+                  <div class="video-wrap" v-for="(video, key) in element.value.list">
                     <video :src="video.url" :poster="video.image" height="200px;"></video>
                   </div>
                 </div>
                 <!-- 文章组 -->
-                <div v-if="item.type === 'article'" class="drag lay-article">
-                  <div class="article-wrap clearfix" v-for="(article, key) in item.value.list">
+                <div v-if="element.type === 'article'" class="drag lay-article">
+                  <div class="article-wrap clearfix" v-for="(article, key) in element.value.list">
                     <div class="article-left">
                       <div class="article-left-title">
                         {{ article.title || '此处显示文章标题' }}
@@ -296,7 +302,7 @@ const tools: Array<ToolGroup> = [
                   </div>
                 </div>
                 <!-- 文章分类 -->
-                <div v-if="item.type === 'articleClassify'" class="drag lay-article">
+                <div v-if="element.type === 'articleClassify'" class="drag lay-article">
                   <div class="article-wrap clearfix">
                     <div class="article-left">
                       <div class="article-left-title">
@@ -319,14 +325,14 @@ const tools: Array<ToolGroup> = [
                   </div>
                 </div>
                 <!-- 公告组 -->
-                <div v-if="item.type === 'notice'" class="drag lay-item lay-notice">
+                <div v-if="element.type === 'notice'" class="drag lay-item lay-notice">
                   <i class="iconfontCustom icon-gonggao"></i>
                   <div class="notice-right">
-                    <div v-for="(notice, key) in item.value.list" class="notice-text">{{ notice.title }}</div>
+                    <div v-for="(notice, key) in element.value.list" class="notice-text">{{ notice.title }}</div>
                   </div>
                 </div>
                 <!-- 优惠券组 -->
-                <div v-if="item.type === 'coupon'" class="drag lay-item lay-coupon">
+                <div v-if="element.type === 'coupon'" class="drag lay-item lay-coupon">
                   <div class="coupon-item">
                     <div class="coupon-left">
                       <p>满300减30</p>
@@ -342,8 +348,9 @@ const tools: Array<ToolGroup> = [
                   </div>
                 </div>
                 <!-- 导航组 -->
-                <div v-if="item.type === 'navBar'" class="drag lay-navBar clearfix" :class="'row' + item.value.limit">
-                  <div class="item" v-for="(nav, key) in item.value.list" :key="key">
+                <div v-if="element.type === 'navBar'" class="drag lay-navBar clearfix"
+                  :class="'row' + element.value.limit">
+                  <div class="item" v-for="(nav, key) in element.value.list" :key="key">
                     <div class="item-image">
                       <img :src="nav.image" alt="">
                     </div>
@@ -351,20 +358,22 @@ const tools: Array<ToolGroup> = [
                   </div>
                 </div>
                 <!-- 辅助空白 -->
-                <div v-if="item.type === 'blank'" class="drag lay-item lay-blank"
-                  :style="{ height: item.value.height + 'px', backgroundColor: item.value.backgroundColor }">
+                <div v-if="element.type === 'blank'" class="drag lay-item lay-blank"
+                  :style="{ height: element.value.height + 'px', backgroundColor: element.value.backgroundColor }">
                 </div>
                 <!-- 文本域 -->
-                <div v-if="item.type === 'textarea'" class="drag lay-item lay-textarea">
+                <div v-if="element.type === 'textarea'" class="drag lay-item lay-textarea">
                   <div class="lay-search-c">
-                    <el-input type="textarea" autosize v-html="item.value" resize="none"></el-input>
+                    <el-input type="textarea" autosize v-html="element.value" resize="none"></el-input>
                   </div>
                 </div>
-                <div @click.stop="handleWidgetDelete(item)" class="btn-delete" v-if="selectWg.key === item.key">删除</div>
-                <div @click.stop="handleWidgetClone(index)" class="btn-clone" v-if="selectWg.key === item.key">复制</div>
+                <div @click.stop="handleWidgetDelete(element)" class="btn-delete" v-if="selectWg.key === element.key">删除
+                </div>
+                <div @click.stop="handleWidgetClone(element)" class="btn-clone" v-if="selectWg.key === element.key">复制
+                </div>
               </div>
-            </div>
-          </div>
+            </template>
+          </draggable>
         </div>
       </el-col>
       <el-col :span="12">
@@ -496,7 +505,7 @@ const tools: Array<ToolGroup> = [
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item label="商品组名称">
-                    <input type="text" v-model="selectWg.value.title" class="selectLinkVal">
+                    <el-input-number v-model="selectWg.value.title" class="selectLinkVal" />
                   </el-form-item>
                   <el-form-item label="是否查看更多">
                     <el-radio-group v-model="selectWg.value.lookMore">
@@ -707,14 +716,14 @@ const tools: Array<ToolGroup> = [
               </template>
               <!-- 单图组 -->
               <template v-if="selectWg.type == 'imgSingle'">
-                <el-option :value="item.key" v-for="(item, index) in selectWg.value.list" :key="index">
+                <div :value="item.key" v-for="(item, index) in selectWg.value.list" :key="index">
                   <div class="content">
                     <div class="content-item">
                       <span class="item-label">图片:</span>
                       <x-image v-model="item.url"></x-image>
                     </div>
-                    <select-link @choose-link="chooseLink(index, item.linkType)" :index="index" :type.sync="item.linkType"
-                      :id.sync="item.linkValue"></select-link>
+                    <select-link @choose-link="chooseLink(index, item.linkType)" :type="item.linkType"
+                      :id="item.linkValue"></select-link>
                     <div class="content-item">
                       <el-form-item label="添加按钮：">
                         <el-switch v-model="item.buttonShow" active-color="#13ce66">
@@ -737,7 +746,7 @@ const tools: Array<ToolGroup> = [
                       </el-form-item>
                     </div>
                   </div>
-                </el-option>
+                </div>
               </template>
               <!-- 图片橱窗 -->
               <template v-if="selectWg.type == 'imgWindow'">
@@ -800,13 +809,13 @@ const tools: Array<ToolGroup> = [
                 <div v-if="selectWg.value.type == 'choose'">
                   <div id="n15578855354_box" class="select_seller_notice_box">
                     <el-select id="n15578855354_list" class="sellect_seller_brands_list">
-                     
-                        <el-option :value="notice.key" v-for="(notice, key) in selectWg.value.list" :key="key">
-                          <span>
-                            <i class="layui-icon layui-icon-close" @click="handleDeleteNotice(key)"></i>
-                          </span>{{ notice.title }}
-                        </el-option>
-                      </el-select>
+
+                      <el-option :value="notice.key" v-for="(notice, key) in selectWg.value.list" :key="key">
+                        <span>
+                          <i class="layui-icon layui-icon-close" @click="handleDeleteNotice(key)"></i>
+                        </span>{{ notice.title }}
+                      </el-option>
+                    </el-select>
                   </div>
                   <div>
                     <a href="javascript:;" class="layui-btn layui-btn-xs" @click="selectNotice">
@@ -927,10 +936,159 @@ const tools: Array<ToolGroup> = [
   .layout-list {
     height: 710px;
     overflow-y: scroll;
+
+    .layout-main {
+      position: relative;
+
+      .lay-item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+      }
+
+      .drag {
+        position: relative;
+      }
+
+      &.active .drag:before,
+      &:hover .drag:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 2px dashed #ff7159;
+        cursor: move;
+        z-index: 1001;
+      }
+
+      .lay-imgSlide {
+        .el-carousel {
+          overflow: hidden !important;
+          width: 100%;
+          height: 175px !important;
+        }
+      }
+    }
   }
+
 
   .lay-imgWindow {
     min-height: 100px;
+
   }
+}
+
+
+.lay-goods {
+  background: #f6f6f6;
+}
+.lay-goods .goods-head {
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 0 10px;
+}
+.lay-goods .goods-tab-head {
+  min-height: 40px;
+  display: inline-block;
+  justify-content: flex-start;
+  align-items: center;
+  background: #fff;
+  padding: 0 10px;
+}
+.lay-goods .goods-tab-head div {
+  padding: 3px 10px;
+  background: #e9e9e9;
+  border-radius: 10px;
+  margin: 5px 5px;
+  float: left;
+}
+.lay-goods.list {
+  height: auto;
+}
+.lay-goods.list .goods-item {
+  float: left;
+}
+.lay-goods.slide {
+  overflow-x: hidden;
+  white-space: nowrap;
+  width: auto;
+}
+.lay-goods.slide .goods-item {
+  float: none;
+  display: inline-block;
+}
+.lay-goods .goods-item.column2 {
+  width: 50%;
+  padding: 3px;
+  float: left;
+}
+.lay-goods .goods-item.column1 {
+  width: 100%;
+  padding: 8px;
+  height: 140px;
+  display: flex;
+  background: #fff;
+  margin-bottom: 8px;
+}
+.lay-goods .goods-item.column1 .goods-price {
+  margin-top: 50px;
+}
+.lay-goods .goods-item.column1 .goods-image {
+  width: 120px;
+  height: 120px;
+  padding: 0;
+}
+.lay-goods .goods-item.column1 .goods-image img {
+  width: 120px;
+  height: 120px;
+  padding: 0;
+}
+.lay-goods .goods-item.column1 .goods-detail {
+  flex: 1;
+}
+.lay-goods .goods-item.column3 {
+  width: 33%;
+  padding: 3px;
+}
+.lay-goods .goods-item .goods-image {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+.lay-goods .goods-item .goods-image:after {
+  content: '';
+  display: block;
+  margin-top: 100%;
+}
+.lay-goods .goods-item .goods-image img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.lay-goods .goods-item .goods-detail {
+  padding: 4px;
+  background: #fff;
+  font-size: 13px;
+}
+.lay-goods .goods-item .goods-detail .goods-name {
+  height: 40px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+.lay-goods .goods-item .goods-detail .goods-price {
+  font-size: 15px;
+  color: red;
 }
 </style>

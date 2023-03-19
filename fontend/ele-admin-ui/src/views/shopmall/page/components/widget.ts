@@ -1,16 +1,24 @@
 import { nextTick, reactive, Ref, ref } from "vue";
+import ModelTitle from "@/assets/images/model-title.png";
+import EmptyBanner from "@/assets/images/empty-banner.png";
+import Empty from "@/assets/images/empty.png";
+import ImangeFourColumn from "@/assets/images/image-four-column.png";
+import ImangeOneColumn from "@/assets/images/image-one-column.png";
+import ImangeOneLeft from "@/assets/images/image-one-left.png";
+import ImangeThreeColumn from "@/assets/images/image-three-column.png";
+import IcCar from "@/assets/images/ic-car.png";
+import { ElMessageBox } from "element-plus";
 
 export interface ComponentItem {
     newIndex?: number;
     key: string;
-    type: 'search'|'record'|'coupon'|'blank'|'goods'|'choose'
-    |'goodTabBar'|'article'|'articleClassify'|'video'
-    |'imgSlide'|'imgSingle'|'imgWindow'|'notice'
-    |'navBar'|'textarea';
+    type: 'search' | 'record' | 'coupon' | 'blank' | 'goods' | 'choose'
+    | 'goodTabBar' | 'article' | 'articleClassify' | 'video'
+    | 'imgSlide' | 'imgSingle' | 'imgWindow' | 'notice'
+    | 'navBar' | 'textarea';
     value: any;
     placeholder?: string;
 }
-
 export const allWidget = {
     "mediaComponents": [{
         "type": "imgSlide",
@@ -18,25 +26,25 @@ export const allWidget = {
         "value": {
             "duration": 2500,
             "list": [{
-                "image": "/static/images/common/empty-banner.png",
+                "image": EmptyBanner,
                 "linkType": '',
                 "linkValue": ''
             },
             {
-                "image": "/static/images/common/empty-banner.png",
+                "image": EmptyBanner,
                 "linkType": '',
                 "linkValue": ''
             }
             ]
         },
-        "icon": "icon-lunbo"
+        "icon": "ep:add-location"
     },
     {
         "type": "imgSingle",
         "name": "图片",
         "value": {
             "list": [{
-                "image": "/static/images/common/empty-banner.png",
+                "image": EmptyBanner,
                 "linkType": '',
                 "linkValue": '',
                 "buttonShow": false,
@@ -44,8 +52,7 @@ export const allWidget = {
                 "buttonColor": "#FFFFFF",
                 "textColor": "#000000"
             }]
-        },
-        "icon": "icon-zhaopiantubiao"
+        }, "icon": "ep:add-location"
     },
     {
         "type": "imgWindow",
@@ -55,27 +62,26 @@ export const allWidget = {
             "margin": 0,
             "list": [
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "linkType": '',
                     "linkValue": ''
                 },
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "linkType": '',
                     "linkValue": ''
                 }, {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "linkType": '',
                     "linkValue": ''
                 },
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "linkType": '',
                     "linkValue": ''
                 }
             ]
-        },
-        "icon": "icon-zidongchuchuang50"
+        }, "icon": "ep:add-location"
     },
     {
         "type": "video",
@@ -83,13 +89,13 @@ export const allWidget = {
         "value": {
             "autoplay": "false",
             "list": [{
-                "image": "/static/images/common/empty-banner.png",
+                "image": EmptyBanner,
                 "url": "",
                 "linkType": '',
                 "linkValue": ''
             }]
         },
-        "icon": "icon-shipin"
+        "icon": "ep:add-location"
     },
     {
         "type": "article",
@@ -101,7 +107,7 @@ export const allWidget = {
                 }
             ]
         },
-        "icon": "icon-wenzhang1"
+        "icon": "ep:add-location"
     },
     {
         "type": "articleClassify",
@@ -110,7 +116,7 @@ export const allWidget = {
             "limit": 3,
             "articleClassifyId": ''
         },
-        "icon": "icon-wenzhangfenlei"
+        "icon": "ep:add-location"
     }
     ],
     "storeComponents": [{
@@ -120,7 +126,7 @@ export const allWidget = {
             "keywords": '请输入关键字搜索',
             "style": 'round' // round:圆弧 radius:圆角 square:方形
         },
-        "icon": "icon-sousuokuang"
+        "icon": "ep:add-location"
     },
     {
         "type": "notice",
@@ -135,7 +141,7 @@ export const allWidget = {
                 }
             ]
         },
-        "icon": "icon-gonggao"
+        "icon": "ep:add-location"
     },
     {
         "type": "navBar",
@@ -144,37 +150,37 @@ export const allWidget = {
             "limit": 4,
             "list": [
                 {
-                    "image": "/static/images/common/empty.png",
+                    "image": Empty,
                     "text": "按钮1",
                     "linkType": '',
                     "linkValue": ''
                 },
                 {
-                    "image": "/static/images/common/empty.png",
+                    "image": Empty,
                     "text": "按钮2",
                     "linkType": '',
                     "linkValue": ''
                 },
                 {
-                    "image": "/static/images/common/empty.png",
+                    "image": Empty,
                     "text": "按钮3",
                     "linkType": '',
                     "linkValue": ''
                 },
                 {
-                    "image": "/static/images/common/empty.png",
+                    "image": Empty,
                     "text": "按钮4",
                     "linkType": '',
                     "linkValue": ''
                 }
             ]
         },
-        "icon": "icon-daohangliebiao"
+        "icon": "ep:add-location"
     },
     {
         "type": "goods",
         "name": "商品组",
-        "icon": "icon-shangpin",
+        "icon": "ep:add-location",
         "value": {
             "title": '商品组名称',
             "lookMore": "true",
@@ -186,22 +192,22 @@ export const allWidget = {
             "column": 2, //分裂数量
             "list": [
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "name": '',
                     "price": ''
                 },
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "name": '',
                     "price": ''
                 },
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "name": '',
                     "price": ''
                 },
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "name": '',
                     "price": ''
                 }
@@ -211,7 +217,7 @@ export const allWidget = {
     {
         "type": "goodTabBar",
         "name": "商品选项卡",
-        "icon": "icon-shangpin",
+        "icon": "ep:add-location",
         "value": {
             "isFixedHead": "true",//是否固定头部
             "list": [
@@ -223,25 +229,25 @@ export const allWidget = {
                     "brandId": '', //所选品牌id
                     "limit": 10,
                     "column": 2, //分裂数量
-                    "isShow":true,
+                    "isShow": true,
                     "list": [
                         {
-                            "image": "/static/images/common/empty-banner.png",
+                            "image": EmptyBanner,
                             "name": '',
                             "price": ''
                         },
                         {
-                            "image": "/static/images/common/empty-banner.png",
+                            "image": EmptyBanner,
                             "name": '',
                             "price": ''
                         },
                         {
-                            "image": "/static/images/common/empty-banner.png",
+                            "image": EmptyBanner,
                             "name": '',
                             "price": ''
                         },
                         {
-                            "image": "/static/images/common/empty-banner.png",
+                            "image": EmptyBanner,
                             "name": '',
                             "price": ''
                         }
@@ -259,22 +265,22 @@ export const allWidget = {
                     "isShow": true,
                     "list": [
                         {
-                            "image": "/static/images/common/empty-banner.png",
+                            "image": EmptyBanner,
                             "name": '',
                             "price": ''
                         },
                         {
-                            "image": "/static/images/common/empty-banner.png",
+                            "image": EmptyBanner,
                             "name": '',
                             "price": ''
                         },
                         {
-                            "image": "/static/images/common/empty-banner.png",
+                            "image": EmptyBanner,
                             "name": '',
                             "price": ''
                         },
                         {
-                            "image": "/static/images/common/empty-banner.png",
+                            "image": EmptyBanner,
                             "name": '',
                             "price": ''
                         }
@@ -292,18 +298,18 @@ export const allWidget = {
             "limit": '10',
             "list": [
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "name": '',
                     "price": ''
                 },
                 {
-                    "image": "/static/images/common/empty-banner.png",
+                    "image": EmptyBanner,
                     "name": '',
                     "price": ''
                 },
             ]
         },
-        "icon": "icon-tuangou"
+        "icon": "ep:add-location"
     },
     {
         "type": "pinTuan",
@@ -313,18 +319,18 @@ export const allWidget = {
             "limit": '10',
             "list": [
                 {
-                    "goodsImage": "/static/images/common/empty-banner.png",
+                    "goodsImage": EmptyBanner,
                     "name": '',
                     "price": ''
                 },
                 {
-                    "goodsImage": "/static/images/common/empty-banner.png",
+                    "goodsImage": EmptyBanner,
                     "name": '',
                     "price": ''
                 },
             ]
         },
-        "icon": "icon-pinTuan"
+        "icon": "ep:add-location"
     },
     {
         "type": "coupon",
@@ -332,7 +338,7 @@ export const allWidget = {
         "value": {
             "limit": '2'
         },
-        "icon": "icon-tubiao-youhuiquan"
+        "icon": "ep:add-location"
     },
     {
         "type": "service",
@@ -342,18 +348,18 @@ export const allWidget = {
             "limit": '10',
             "list": [
                 {
-                    "thumbnail": "/static/images/common/empty-banner.png",
+                    "thumbnail": EmptyBanner,
                     "title": '',
                     "money": ''
                 },
                 {
-                    "thumbnail": "/static/images/common/empty-banner.png",
+                    "thumbnail": EmptyBanner,
                     "title": '',
                     "money": ''
                 },
             ]
         },
-        "icon": "icon-shangpinzu"
+        "icon": "ep:add-location"
     },
     {
         "type": "record",
@@ -364,14 +370,14 @@ export const allWidget = {
                 "left": 0
             }
         },
-        "icon": "icon-jilu"
+        "icon": "ep:add-location"
     }
     ],
     "utilsComponents": [
         {
             "type": "blank",
             "name": "辅助空白",
-            "icon": 'icon-kongbai',
+            "icon": "ep:add-location",
             "value": {
                 "height": 20,
                 "backgroundColor": "#FFFFFF"
@@ -381,7 +387,7 @@ export const allWidget = {
             "type": "textarea",
             "name": "文本域",
             "value": '',
-            "icon": 'icon-fuwenben',
+            "icon": "ep:add-location"
         }]
 };
 
@@ -399,51 +405,61 @@ var deepClone = function (obj) {
     return result
 }
 
-export function useWidget(){
-    const pageData=reactive([]);
-    const selectWg:Ref<ComponentItem>=ref()
-    function setSelectWg(data:ComponentItem) {
+export function useWidget() {
+    const pageData = ref([]);
+    const selectWg: Ref<ComponentItem> = ref()
+    function setSelectWg(data: ComponentItem) {
         selectWg.value = data;
-        console.log(selectWg.value.type)
     }
-    function handleWidgetAdd (evt:ComponentItem) {
-        var newIndex = evt.newIndex;
-        var elKey = Date.now() + '_' + Math.ceil(Math.random() * 1000000)
-        var newObj = deepClone(pageData[newIndex]) as any;
-        newObj.key = pageData[newIndex].type + '_' + elKey
-        pageData[newIndex]= newObj
-        setSelectWg(pageData[newIndex])
+    function handleWidgetAdd(evt) {
+        if (evt.added) {
+            const element=evt.added;
+            console.log("handleWidgetAdd", evt.added.element);
+            console.log("handleWidget pageData", pageData.value);
+            var newIndex = element.newIndex;
+            var elKey = Date.now() + '_' + Math.ceil(Math.random() * 1000000)
+            var newObj = deepClone(pageData.value[newIndex]) as any;
+            newObj.key = pageData.value[newIndex].type + '_' + elKey
+            pageData.value[newIndex] = newObj
+            setSelectWg(pageData.value[newIndex])
+        }
     }
-    function handleClickAdd  (obj:ComponentItem) {
+    function handleClickAdd(obj: ComponentItem) {
         var elKey = Date.now() + '_' + Math.ceil(Math.random() * 1000000)
         var newObj = deepClone(obj) as any;
         newObj.key = obj.type + '_' + elKey;
-        var newIndex = pageData.length || 0;
-        pageData[newIndex]= newObj
-        setSelectWg(pageData[newIndex])
+        var newIndex = pageData.value.length || 0;
+        pageData.value[newIndex] = newObj
+        setSelectWg(pageData.value[newIndex])
     }
-    function  handleSelectWidget(index) {
-        setSelectWg(pageData[index])
+    function handleSelectWidget(element) {
+        setSelectWg(element);
     }
     function handleSelectRecord(index) {
-        setSelectWg(pageData[index])
+        setSelectWg(pageData.value[index])
     }
-    function  deleteWidget(index) {
-        if (pageData.length - 1 === index) {
+    function deleteWidget(index) {
+        if (pageData.value.length - 1 === index) {
             if (index === 0) {
                 setSelectWg(null)
             } else {
-                setSelectWg(pageData[index - 1])
+                setSelectWg(pageData.value[index - 1])
             }
         } else {
-            setSelectWg(pageData[index + 1])
+            setSelectWg(pageData.value[index + 1])
         }
         nextTick(() => {
-            pageData.splice(index, 1)
+            pageData.value.splice(index, 1)
         })
     }
-    function  handleWidgetDelete(deleteIndex) {
-        var that = this;
+    function handleWidgetDelete(deleteIndex) {
+        ElMessageBox.confirm('确定要删除吗？','提示', {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }).then(()=>{
+            deleteWidget(deleteIndex);
+          })
         // layer.open({
         //     title: '提示',
         //     content: '确定要删除吗？',
@@ -458,17 +474,17 @@ export function useWidget(){
         // });
 
     }
-    function handleWidgetClone(index:number) {
-        let cloneData = deepClone(pageData[index]) as any;
+    function handleWidgetClone(index: number) {
+        let cloneData = deepClone(pageData.value[index]) as any;
         cloneData.key =
-            pageData[index].type +
+            pageData.value[index].type +
             '_' +
             Date.now() +
             '_' +
             Math.ceil(Math.random() * 1000000)
-        pageData.splice(index, 0, cloneData)
+        pageData.value.splice(index, 0, cloneData)
         nextTick(() => {
-            setSelectWg(pageData[index + 1])
+            setSelectWg(pageData.value[index + 1])
         })
     }
     function handleDragRemove(evt) {
@@ -488,6 +504,7 @@ export function useWidget(){
         }
     }
     return {
+        pageData,
         selectWg,
         selectWidget,
         setSelectWg,

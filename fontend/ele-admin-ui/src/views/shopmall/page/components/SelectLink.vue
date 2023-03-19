@@ -1,24 +1,37 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed } from '@vue/reactivity';
+import { onMounted, ref } from 'vue';
+export interface Props {
+    id?: number;
+    type: any;
+}
+const props = defineProps<Props>();
 
-const linkType: Array<any> = ([]);
+const emits = defineEmits(['update:type', 'update:id', 'choose-link']);
+const linkType = [' ', 'URL链接','商品','文章','文章分类' ];
 const articleTypeList: Array<any> = ([]);
 
 const selectType = ref(0);
-const id=ref(1);
-const linkUrl=ref('');
+const id = ref(1);
+const linkUrl = ref('');
 const updateLinkValue = () => {
-
+    emits("update:id", linkUrl.value)
 }
-const changeSelect=()=>{
-
+const changeSelect = () => {
+    emits('update:type', selectType)
+    emits("update:id", '')
 }
-const selectLink=()=>{
-
+const selectLink = () => {
+    emits('choose-link')
 }
-const updateSelect=()=>{
-
+const updateSelect = () => {
+    emits("update:id", id.value)
 }
+onMounted(() => {
+    if (!props.type) {
+        emits('update:type', Object.keys(linkType)[0])
+    }
+});
 </script>
 <template>
     <div>
@@ -53,4 +66,38 @@ const updateSelect=()=>{
                     placeholder="请选择">
             </div>
         </el-form-item>
-</div></template>
+    </div>
+</template>
+<style lang="scss">
+.layout-list .layout-main .btn-clone {
+    position: absolute;
+    height: 18px;
+    line-height: 18px;
+    right: 50px;
+    bottom: 2px;
+    z-index: 90;
+    width: 36px;
+    text-align: center;
+    font-size: 10px;
+    color: #fff;
+    background: #409eff;
+    cursor: pointer;
+    z-index: 1300;
+}
+
+.layout-list .layout-main .btn-delete {
+    position: absolute;
+    height: 18px;
+    line-height: 18px;
+    right: 2px;
+    bottom: 2px;
+    z-index: 90;
+    width: 36px;
+    text-align: center;
+    font-size: 10px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    z-index: 1300;
+}
+</style>
