@@ -1,0 +1,42 @@
+{
+  "root": true,
+  "extends": [
+    "plugin:vue/vue3-recommended",
+    "eslint:recommended",
+    "@vue/eslint-config-typescript/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "vue/multi-word-component-names": ["error", { "ignores": ["index"] }],
+    "vue/component-definition-name-casing": "off",
+    "vue/match-component-file-name": "off",
+    "vue/component-name-in-template-casing": ["warn", "kebab-case", { "registeredComponentsOnly": false }],
+    "block-spacing": ["warn", "always"],
+    "comma-dangle": ["warn", "always"],
+    "comma-spacing": ["warn", { "before": false, "after": true }],
+    "keyword-spacing": ["warn", { "before": true, "after": true }],
+    "semi-spacing": ["warn", { "before": false, "after": true }],
+    "arrow-spacing": ["warn", { "before": true, "after": true }],
+    "quotes": ["warn", "double"],
+    "space-infix-ops": "warn",
+    "no-multi-spaces": "warn",
+    "indent": ["warn", 2],
+    "eol-last": "warn",
+    "semi": ["warn", "always"],
+    "curly": ["warn", "all"],
+    "brace-style": ["warn", "1tbs"],
+    "no-multiple-empty-lines": "warn",
+    "no-trailing-spaces": "warn",
+    "space-before-blocks": "warn",
+    "object-curly-spacing": ["warn", "always"]
+  },
+  "globals": {
+    "uni": "readonly",
+    "uniCloud": "readonly",
+    "UniApp": "readonly",
+    "wx": "readonly",
+    "getCurrentPages": false,
+    "getApp": false
+  }
+}
