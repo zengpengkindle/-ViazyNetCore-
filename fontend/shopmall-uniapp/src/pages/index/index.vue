@@ -1,16 +1,11 @@
 <template>
   <view class="content">
-    <u-navbar back-text="返回" title="剑未配妥，出门已是江湖"></u-navbar>
+    <u-navbar back-text="返回" title="剑未配妥，出门已是江湖" />
     <image class="logo" src="/static/logo.png" />
     <view class="text-area">
       <text class="title">{{ title }}</text>
     </view>
-    <u-tabs
-      :list="list"
-      :is-scroll="true"
-      v-model="current"
-      @change="change"
-    ></u-tabs>
+    <u-tabs v-model="current" :list="list" :is-scroll="true" @change="change" />
   </view>
 </template>
 
@@ -24,12 +19,12 @@ interface Item {
 const list: Ref<Array<Item>> = ref([
   { name: "待收货" },
   {
-    name: "待付款",
+    name: "待付款"
   },
   {
     name: "待评价",
-    count: 5,
-  },
+    count: 5
+  }
 ]);
 const current: Ref<number> = ref(0);
 

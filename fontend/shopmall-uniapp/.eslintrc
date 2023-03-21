@@ -1,35 +1,71 @@
 {
   "root": true,
+  "env": {
+    "node": true
+  },
   "extends": [
     "plugin:vue/vue3-recommended",
     "eslint:recommended",
-    "@vue/eslint-config-typescript/recommended"
+    "@vue/eslint-config-typescript/recommended",
+    "@vue/typescript/recommended",
+    "@vue/prettier",
+    "@vue/eslint-config-typescript"
   ],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "jsxPragma": "React",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "exclude":["src/uni_modules/**"]
+  },
   "rules": {
+    "vue/no-v-html": "off",
+    "vue/require-default-prop": "off",
+    "vue/require-explicit-emits": "off",
+    "vue/multi-word-component-names": "off",
+    "@typescript-eslint/no-explicit-any": "off", // any
+    "no-debugger": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off", // setup()
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "vue/multi-word-component-names": ["error", { "ignores": ["index"] }],
-    "vue/component-definition-name-casing": "off",
-    "vue/match-component-file-name": "off",
-    "vue/component-name-in-template-casing": ["warn", "kebab-case", { "registeredComponentsOnly": false }],
-    "block-spacing": ["warn", "always"],
-    "comma-dangle": ["warn", "always"],
-    "comma-spacing": ["warn", { "before": false, "after": true }],
-    "keyword-spacing": ["warn", { "before": true, "after": true }],
-    "semi-spacing": ["warn", { "before": false, "after": true }],
-    "arrow-spacing": ["warn", { "before": true, "after": true }],
-    "quotes": ["warn", "double"],
-    "space-infix-ops": "warn",
-    "no-multi-spaces": "warn",
-    "indent": ["warn", 2],
-    "eol-last": "warn",
-    "semi": ["warn", "always"],
-    "curly": ["warn", "all"],
-    "brace-style": ["warn", "1tbs"],
-    "no-multiple-empty-lines": "warn",
-    "no-trailing-spaces": "warn",
-    "space-before-blocks": "warn",
-    "object-curly-spacing": ["warn", "always"]
+    "vue/html-self-closing": [
+      "error",
+      {
+        "html": {
+          "void": "always",
+          "normal": "always",
+          "component": "always"
+        },
+        "svg": "always",
+        "math": "always"
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
   },
   "globals": {
     "uni": "readonly",
@@ -37,6 +73,35 @@
     "UniApp": "readonly",
     "wx": "readonly",
     "getCurrentPages": false,
-    "getApp": false
-  }
+    "getApp": false,
+
+    // script setup
+    "defineProps": "readonly",
+    "defineEmits": "readonly",
+    "defineExpose": "readonly",
+    "withDefaults": "readonly"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.vue"],
+      "rules": {
+        "no-undef": "off"
+      }
+    },
+    {
+      "files": ["*.vue"],
+      "parser": "vue-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "extraFileExtensions": [".vue"],
+        "ecmaVersion": "latest",
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ]
 }

@@ -14,6 +14,6 @@
   </view>
 </template>
 <script lant="ts" setup>
-import { ref } from 'vue';
-const shopBeiAn=ref("备案");
+import { ref } from "vue";
+const shopBeiAn = ref("备案");
 </script>

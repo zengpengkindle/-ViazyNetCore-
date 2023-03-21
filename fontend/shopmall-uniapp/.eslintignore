@@ -1,0 +1,13 @@
+public
+dist
+*.d.ts
+/src/assets
+package.json
+.eslintrc
+.prettierrc.js
+commitlint.config.js
+postcss.config.js
+tsconfig.js
+stylelint.config.js
+/src/uni_modules
+/src/pages.json

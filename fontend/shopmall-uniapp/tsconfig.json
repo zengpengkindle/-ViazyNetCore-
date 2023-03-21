@@ -1,15 +1,23 @@
 {
-	"extends": "@vue/tsconfig/tsconfig.json",
-	"compilerOptions": {
-		"sourceMap": true,
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["./src/*"]
-		},
-		"lib": ["esnext", "dom"],
-		"types": ["@dcloudio/types"],
-		"allowJs": true,
-		"checkJs": true
-	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.vue"]
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "lib": ["esnext", "dom"],
+    "types": ["@dcloudio/types","node", "vite/client"],
+    "allowJs": true,
+    "checkJs": true,
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.vue",
+    "types/*.d.ts"
+  ],
+  "exclude": ["node_modules", "dist", "**/*.js"]
 }

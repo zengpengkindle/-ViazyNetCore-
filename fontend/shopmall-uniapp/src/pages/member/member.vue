@@ -1,9 +1,116 @@
+<script lang="ts" setup>
+import { ref, shallowRef, triggerRef, watch } from "vue";
+import { useToken } from "@/hooks";
+import { useUserStore } from "@/store/user";
+
+import type { MenuGroup } from "./memberconfig";
+import { onShow } from "@dcloudio/uni-app";
+
+const { token } = useToken();
+const user = useUserStore();
+
+const toLoginOrEditInfo = () => {
+  if (token.value) {
+    uni.navigateTo({ url: "/pages/accountSetting/index" });
+  } else {
+    uni.navigateTo({ url: "/pages/authorization/index" });
+  }
+};
+
+const sampleOrderStatusList = ref([
+  {
+    title: "待审核",
+    status: 0,
+    count: 0
+  },
+  {
+    title: "待发货",
+    status: 100,
+    count: 0
+  },
+  {
+    title: "运输中",
+    status: 200,
+    count: 0
+  },
+  {
+    title: "待交付",
+    status: 300,
+    count: 0
+  },
+  {
+    title: "已完成",
+    status: 400,
+    count: 0
+  }
+]);
+const toSampleList = (status: number) => {
+  uni.navigateTo({ url: `/pages/sampleOrder/index?status=${status}` });
+};
+
+const toSampleOrder = () => {
+  uni.navigateTo({ url: "/pages/sampleOrder/index" });
+};
+
+const menuList = shallowRef<MenuGroup[]>([
+  [
+    {
+      title: "我的钱包",
+      path: "/pages/myWallet/index",
+      icon: "wallet",
+      desc: "",
+      descColor: "#869198"
+    },
+    { title: "抖客收益", path: "/pages/cpsBenefit/index", icon: "folder" },
+    { title: "推送管理", path: "/pages/pushManage/index", icon: "userPush" },
+    { title: "赏金记录", path: "/pages/rewardRecord/index", icon: "record" }
+  ],
+  [
+    {
+      title: "我的关注",
+      path: "/pages/myCollection/index",
+      icon: "userCollect"
+    },
+    { title: "抖音号管理", path: "/pages/dyhManage/index", icon: "userDy" },
+    { title: "我的橱窗", path: "/pages/myShopwindow/index", icon: "userStore" },
+    { title: "货源管理", path: "/pages/channelManage/index", icon: "userTz" }
+  ],
+  [
+    {
+      title: "联系我们",
+      path: "/pages/contactUs/index",
+      icon: "userContact",
+      checkLogin: false
+    },
+    {
+      title: "常见问题",
+      path: "/pages/commonProblem/index",
+      icon: "question_circle",
+      checkLogin: false
+    }
+  ]
+]);
+
+onShow(() => {
+  if (token.value) {
+    user.getInfo(false);
+  }
+});
+
+watch(token, () => {
+  if (!token.value) {
+    menuList.value[0][0].desc = "";
+    triggerRef(menuList);
+  }
+});
+</script>
+
 <template>
   <view
     class="mine"
     :style="{
       backgroundSize: '100vw 520rpx',
-      backgroundRepeat: 'no-repeat',
+      backgroundRepeat: 'no-repeat'
     }"
   >
     <view class="user-wrapper">
@@ -64,127 +171,6 @@
     </view>
   </view>
 </template>
-
-<script lang="ts" setup>
-import { computed, ref, shallowRef, toRef, triggerRef, watch } from "vue";
-import { useToken } from "@/hooks";
-import { useUserStore } from "@/store/user";
-
-import AttentionOfficial from "@/components/AttentionOfficial.vue";
-import YttHeader from "@/libs/YttHeader.vue";
-
-import type { MenuGroup } from "./memberconfig";
-import { useBusinessStore } from "@/store/business";
-import { onShow } from "@dcloudio/uni-app";
-
-const { token } = useToken();
-const user = useUserStore();
-const business = useBusinessStore();
-
-const toLoginOrEditInfo = () => {
-  if (token.value) {
-    uni.navigateTo({ url: "/pages/accountSetting/index" });
-  } else {
-    uni.navigateTo({ url: "/pages/authorization/index" });
-  }
-};
-
-const pickStatus = toRef(business, "pickStatus");
-const sampleOrderStatusList = ref([
-  {
-    title: "待审核",
-    status: 0,
-    count: computed(() => pickStatus.value?.wait_review),
-  },
-  {
-    title: "待发货",
-    status: 100,
-    count: computed(() => pickStatus.value?.wait_ship),
-  },
-  {
-    title: "运输中",
-    status: 200,
-    count: computed(() => pickStatus.value?.transport),
-  },
-  {
-    title: "待交付",
-    status: 300,
-    count: computed(() => pickStatus.value?.wait_delivery),
-  },
-  {
-    title: "已完成",
-    status: 400,
-    count: computed(() => pickStatus.value?.finished),
-  },
-]);
-const toSampleList = (status: number) => {
-  uni.navigateTo({ url: `/pages/sampleOrder/index?status=${status}` });
-};
-
-const toSampleOrder = () => {
-  uni.navigateTo({ url: "/pages/sampleOrder/index" });
-};
-
-const menuList = shallowRef<MenuGroup[]>([
-  [
-    {
-      title: "我的钱包",
-      path: "/pages/myWallet/index",
-      icon: "wallet",
-      desc: "",
-      descColor: "#869198",
-    },
-    { title: "抖客收益", path: "/pages/cpsBenefit/index", icon: "folder" },
-    { title: "推送管理", path: "/pages/pushManage/index", icon: "userPush" },
-    { title: "赏金记录", path: "/pages/rewardRecord/index", icon: "record" },
-  ],
-  [
-    {
-      title: "我的关注",
-      path: "/pages/myCollection/index",
-      icon: "userCollect",
-    },
-    { title: "抖音号管理", path: "/pages/dyhManage/index", icon: "userDy" },
-    { title: "我的橱窗", path: "/pages/myShopwindow/index", icon: "userStore" },
-    { title: "货源管理", path: "/pages/channelManage/index", icon: "userTz" },
-  ],
-  [
-    {
-      title: "联系我们",
-      path: "/pages/contactUs/index",
-      icon: "userContact",
-      checkLogin: false,
-    },
-    {
-      title: "常见问题",
-      path: "/pages/commonProblem/index",
-      icon: "question_circle",
-      checkLogin: false,
-    },
-  ],
-]);
-
-onShow(() => {
-  if (token.value) {
-    business.getSampleOrderStatus();
-    user.getInfo(false);
-    user.getBalance().then(() => {
-      menuList.value[0][0].desc = user.balance.toFixed(2);
-      triggerRef(menuList);
-    });
-  }
-});
-
-watch(token, () => {
-  if (!token.value) {
-    business.clearSampleOrderStats();
-    user.clearBalance();
-    menuList.value[0][0].desc = "";
-    triggerRef(menuList);
-  }
-});
-</script>
-
 <style lang="scss" scoped>
 .mine {
   min-height: 100vh;
