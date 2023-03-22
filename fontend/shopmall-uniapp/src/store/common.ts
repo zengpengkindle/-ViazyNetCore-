@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import { useToken } from "@/hooks";
+import WechatApi from "@/apis/wechat";
 
 export type EnvVersion = "develop" | "trial" | "release";
 
@@ -13,6 +14,23 @@ export const useCommonStore = defineStore("common", () => {
   const getEnvVersion = () => {
     env.value = uni.getAccountInfoSync().miniProgram.envVersion;
   };
+  /**
+   * 微信唯一标识
+   */
+  const uid = ref("");
+  const getUid = () => {
+    return new Promise<void>(resolve => {
+      uni.login({
+        provider: "weixin",
+        async success(result) {
+          const response = await WechatApi.secUnionid({ code: result.code });
+          uid.value = response.secUnionId;
+          resolve();
+        }
+      });
+    });
+  };
+
   /**
    * 检查更新
    */
@@ -27,10 +45,10 @@ export const useCommonStore = defineStore("common", () => {
           if (res.confirm) {
             manager.applyUpdate();
           }
-        },
+        }
       });
     });
-    manager.onUpdateFailed((res) => {
+    manager.onUpdateFailed(res => {
       console.log("更新版本下载失败", res);
       const log = uni.getRealtimeLogManager();
       log.error([res]);
@@ -40,6 +58,7 @@ export const useCommonStore = defineStore("common", () => {
     env,
     token,
     getEnvVersion,
-    checkUpdate
+    checkUpdate,
+    getUid
   };
 });

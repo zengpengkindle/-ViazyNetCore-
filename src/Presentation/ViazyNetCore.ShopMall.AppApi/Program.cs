@@ -7,6 +7,7 @@ using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.DI;
+using ViazyNetCore.ShopMall.AppApi.Extensions;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
@@ -60,6 +61,7 @@ builder.Services.AddEventBus();
 //    options.Configuration = AppSettingsConstVars.RedisConfigConnectionString;
 //});
 builder.Services.AddRumtimeCacheService();
+builder.Services.AddSenparc(builder.Configuration);
 
 //- 添加自动依赖注入
 builder.Services.AddSingleton(sp => LockProvider.Default);
@@ -94,6 +96,7 @@ app.UseApiResponseWrapper(option =>
     option.IsDebug = app.Environment.IsDevelopment();
 });
 
+app.UseSenparc(app.Environment, builder.Configuration);
 app.UseAuthentication();
 app.UseAuthorization();
 

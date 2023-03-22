@@ -11,3 +11,4 @@ tsconfig.js
 stylelint.config.js
 /src/uni_modules
 /src/pages.json
+/unpackage

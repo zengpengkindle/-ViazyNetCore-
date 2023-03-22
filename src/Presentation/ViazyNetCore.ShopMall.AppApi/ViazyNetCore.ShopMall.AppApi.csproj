@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Senparc.CO2NET.AspNet" Version="1.1.4.8" />
+    <PackageReference Include="Senparc.Weixin.Cache.Redis" Version="2.15.5.6" />
+    <PackageReference Include="Senparc.Weixin.MP" Version="16.18.10.6" />
+    <PackageReference Include="Senparc.Weixin.WxOpen" Version="3.15.13" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
     <ProjectReference Include="..\..\Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Formatter.Response\ViazyNetCore.Formatter.Response.csproj" />

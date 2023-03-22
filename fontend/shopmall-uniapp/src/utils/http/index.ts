@@ -42,10 +42,10 @@ class RequestAbortSignal {
     this.eventHandlerList.get(type)!.delete(listener);
   }
   triggerEventListener(type: AbortSignalEventType) {
-    this.eventHandlerList.get(type)!.forEach((listener) =>
+    this.eventHandlerList.get(type)!.forEach(listener =>
       listener.call(this, {
         reason: this.reason,
-        timeStamp: Date.now(),
+        timeStamp: Date.now()
       })
     );
   }
@@ -134,7 +134,7 @@ function requestIntercept(config: RequestOptions): RequestOptions {
   config.header = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token.value}`,
-    ...config.header,
+    ...config.header
   };
 
   return config;
@@ -167,7 +167,7 @@ function responseIntercept<T>(
       uni.showToast({
         title: "登录过期，请重新登录~",
         icon: "none",
-        duration: 2000,
+        duration: 2000
       });
       reject(res);
     } else {
@@ -175,7 +175,7 @@ function responseIntercept<T>(
       if (!options.silent && r?.data?.message) {
         uni.showToast({
           title: r.data.message,
-          icon: "none",
+          icon: "none"
         });
       }
 
@@ -208,69 +208,71 @@ export interface WrappedRequestTask {
 
 const requestMap = new Map<string, WrappedRequestTask>();
 
-/**
- * 请求函数
- */
-export function request<R = any>(options: RequestOptions) {
-  return new Promise<R>((resolve, reject) => {
-    options = requestIntercept(options);
-    const uniqueKey = createUniqueKey(
-      options.method,
-      options.url,
-      options.data
-    );
+class ViazyHttp {
+  /**
+   * 请求函数
+   */
+  public request<R = any>(options: RequestOptions) {
+    return new Promise<R>((resolve, reject) => {
+      options = requestIntercept(options);
+      const uniqueKey = createUniqueKey(
+        options.method,
+        options.url,
+        options.data
+      );
 
-    if (options.controller) {
-      const prefixUrl = `${options.method}|${options.url}`;
-      for (const key of requestMap.keys()) {
-        if (key.startsWith(prefixUrl)) {
-          const val = requestMap.get(key)!;
-          options.controller({
-            params: val.params,
-            data: val.data,
-            req: val.task,
-          });
+      if (options.controller) {
+        const prefixUrl = `${options.method}|${options.url}`;
+        for (const key of requestMap.keys()) {
+          if (key.startsWith(prefixUrl)) {
+            const val = requestMap.get(key)!;
+            options.controller({
+              params: val.params,
+              data: val.data,
+              req: val.task
+            });
+          }
         }
       }
-    }
 
-    const req = uni.request({
-      url: options.baseUrl! + mergeUrl(options.url, options.params),
-      method: options.method as any,
-      header: options.header,
-      data: options.data,
-      timeout: options.timeout || 30000,
-      success(res) {
-        resolve(responseIntercept<R>(res, options));
-      },
-      fail(reason) {
-        reject(reason);
-      },
-      complete() {
-        requestMap.delete(uniqueKey);
-        if (options.signal) {
-          options.signal.removeEventListener("abort", abortHandler);
+      const req = uni.request({
+        url: options.baseUrl! + mergeUrl(options.url, options.params),
+        method: options.method as any,
+        header: options.header,
+        data: options.data,
+        timeout: options.timeout || 30000,
+        success(res) {
+          resolve(responseIntercept<R>(res, options));
+        },
+        fail(reason) {
+          reject(reason);
+        },
+        complete() {
+          requestMap.delete(uniqueKey);
+          if (options.signal) {
+            options.signal.removeEventListener("abort", abortHandler);
+          }
         }
-      },
-    });
+      });
 
-    requestMap.get(uniqueKey)?.task.abort();
-    requestMap.set(uniqueKey, {
-      data: options.data,
-      params: options.params,
-      task: req,
-    });
+      requestMap.get(uniqueKey)?.task.abort();
+      requestMap.set(uniqueKey, {
+        data: options.data,
+        params: options.params,
+        task: req
+      });
 
-    const abortHandler = () => {
-      req.abort();
-      if (options.abortCallback) {
-        options.abortCallback();
+      const abortHandler = () => {
+        req.abort();
+        if (options.abortCallback) {
+          options.abortCallback();
+        }
+      };
+
+      if (options.signal) {
+        options.signal.addEventListener("abort", abortHandler);
       }
-    };
-
-    if (options.signal) {
-      options.signal.addEventListener("abort", abortHandler);
-    }
-  });
+    });
+  }
 }
-export const http = request; // 兼容写法
+export const http = new ViazyHttp(); // 兼容写法

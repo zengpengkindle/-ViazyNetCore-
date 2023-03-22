@@ -1,23 +1,40 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.json",
+  "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "strict": false,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "strictFunctionTypes": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "lib": ["esnext", "dom"],
-    "types": ["@dcloudio/types","node", "vite/client"],
     "allowJs": true,
-    "checkJs": true,
+    "resolveJsonModule": true,
+    "lib": ["dom", "esnext"],
+    "incremental": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@build/*": ["build/*"]
+    },
+    "types": ["node", "vite/client", "@dcloudio/types"],
+    "typeRoots": ["./node_modules/@types/", "./types"],
+    "checkJs": true
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.js",
     "src/**/*.vue",
-    "types/*.d.ts"
+    "types/*.d.ts",
+    "vite.config.ts"
   ],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }

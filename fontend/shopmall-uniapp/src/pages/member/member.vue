@@ -19,7 +19,7 @@ const toLoginOrEditInfo = () => {
 
 const sampleOrderStatusList = ref([
   {
-    title: "待审核",
+    title: "待付款",
     status: 0,
     count: 0
   },
@@ -29,17 +29,17 @@ const sampleOrderStatusList = ref([
     count: 0
   },
   {
-    title: "运输中",
+    title: "待收货",
     status: 200,
     count: 0
   },
   {
-    title: "待交付",
+    title: "待评价",
     status: 300,
     count: 0
   },
   {
-    title: "已完成",
+    title: "退款/售后",
     status: 400,
     count: 0
   }
@@ -122,10 +122,10 @@ watch(token, () => {
       </view>
     </view>
 
-    <!-- 样品订单 -->
+    <!-- 我的订单 -->
     <view class="sample-block">
       <view class="block-header">
-        <view class="block-title"> 样品订单 </view>
+        <view class="block-title"> 我的订单 </view>
         <view class="more-btn" @click="toSampleOrder">
           <text class="text"> 查看更多 </text>
         </view>
@@ -172,135 +172,5 @@ watch(token, () => {
   </view>
 </template>
 <style lang="scss" scoped>
-.mine {
-  min-height: 100vh;
-  padding-bottom: 24rpx;
-  box-sizing: border-box;
-  background-color: #f7f8fc;
-  .user-wrapper {
-    padding: 0 24rpx;
-    margin-top: 36rpx;
-    display: flex;
-    align-items: center;
-    .avatar {
-      width: 128rpx;
-      height: 128rpx;
-      border-radius: 50%;
-      border: 2rpx solid #fff;
-      box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.08);
-      &.default {
-        border: none;
-      }
-    }
-    .nickname {
-      margin-left: 24rpx;
-      font-weight: 600;
-      font-size: 32rpx;
-      line-height: 48rpx;
-      color: #2f3437;
-      max-width: 240rpx;
-    }
-    .edit-info-btn {
-      margin-left: auto;
-      padding: 4rpx 24rpx;
-      border: 1px solid #de3f4f;
-      border-radius: 40rpx;
-      color: #de3f4f;
-      font-size: 24rpx;
-      line-height: 40rpx;
-    }
-  }
-  .sample-block {
-    margin: 40rpx 24rpx 24rpx 24rpx;
-    padding: 24rpx;
-    background: #ffffff;
-    border-radius: 16rpx;
-    .block-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .block-title {
-        margin-left: 16rpx;
-        font-weight: 600;
-        font-size: 28rpx;
-        line-height: 40rpx;
-      }
-      .more-btn {
-        display: flex;
-        align-items: center;
-        .text {
-          font-size: 24rpx;
-          line-height: 40rpx;
-          color: #869198;
-        }
-        .arrow_right {
-          margin-left: 8rpx;
-          width: 32rpx;
-          height: 32rpx;
-        }
-      }
-    }
-    .sample-status-wrapper {
-      margin-top: 24rpx;
-      padding: 0 12rpx;
-      display: flex;
-      align-items: center;
-      .status-item {
-        flex: 1;
-        padding: 2rpx 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .count {
-          font-weight: bold;
-          font-size: 36rpx;
-          line-height: 48rpx;
-          color: #2f3437;
-        }
-        .sample-status-title {
-          margin-top: 4rpx;
-          font-size: 24rpx;
-          line-height: 40rpx;
-          color: #869198;
-        }
-      }
-      .status-item + .status-item {
-        margin-left: 24rpx;
-      }
-    }
-  }
-  .menu-group {
-    background-color: #fff;
-    border-radius: 16rpx;
-    overflow: hidden;
-    margin: 24rpx 24rpx 0;
-    .menu-item {
-      padding: 32rpx;
-      display: flex;
-      align-items: center;
-      .icon {
-        width: 48rpx;
-        height: 48rpx;
-      }
-      .title {
-        margin-left: 24rpx;
-        margin-right: auto;
-        font-size: 28rpx;
-        line-height: 40rpx;
-        color: #2f3437;
-      }
-      .desc {
-        margin-left: auto;
-        font-size: 26rpx;
-      }
-      .arrow-icon {
-        width: 32rpx;
-        height: 32rpx;
-      }
-    }
-    .menu-item + .menu-item {
-      border-top: 1px solid #f2f3f5;
-    }
-  }
-}
+@import "./member.scss";
 </style>

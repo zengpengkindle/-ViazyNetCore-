@@ -10,7 +10,6 @@ module.exports = {
     $ref: "readonly",
     $shallowRef: "readonly",
     $computed: "readonly",
-
     // index.d.ts
     // global.d.ts
     Fn: "readonly",

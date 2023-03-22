@@ -4,9 +4,9 @@ import Axios, {
   CustomParamsSerializer
 } from "axios";
 import {
-  PureHttpError,
-  PureHttpResponse,
-  PureHttpRequestConfig
+  ViazyHttpError,
+  ViazyHttpResponse,
+  ViazyHttpRequestConfig
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
@@ -32,7 +32,7 @@ const defaultConfig: AxiosRequestConfig = {
 
 const whiteList = ["/refreshToken", "/login", "/acount/login"];
 
-class PureHttp {
+class ViazyHttp {
   constructor() {
     this.httpInterceptorsRequest();
     this.httpInterceptorsResponse();
@@ -45,9 +45,9 @@ class PureHttp {
   private static isRefreshing = false;
 
   /** 初始化配置对象 */
-  private static initConfig: PureHttpRequestConfig = {
+  private static initConfig: ViazyHttpRequestConfig = {
     headers: null,
-    beforeResponseCallback: (response: PureHttpResponse) => {
+    beforeResponseCallback: (response: ViazyHttpResponse) => {
       const apiResponse = response.data as ApiResponse;
       if (apiResponse.code == 200) {
         if (apiResponse.data.success) {
@@ -76,10 +76,10 @@ class PureHttp {
 
   /** 重连原始请求 */
   private static retryOriginalRequest(
-    config: PureHttpRequestConfig
-  ): Promise<PureHttpRequestConfig<any>> {
+    config: ViazyHttpRequestConfig
+  ): Promise<ViazyHttpRequestConfig<any>> {
     return new Promise(resolve => {
-      PureHttp.requests.push((token: string) => {
+      ViazyHttp.requests.push((token: string) => {
         config.headers["Authorization"] = formatToken(token);
         resolve(config);
       });
@@ -88,8 +88,8 @@ class PureHttp {
 
   /** 请求拦截 */
   private httpInterceptorsRequest(): void {
-    PureHttp.axiosInstance.interceptors.request.use(
-      async (config: PureHttpRequestConfig) => {
+    ViazyHttp.axiosInstance.interceptors.request.use(
+      async (config: ViazyHttpRequestConfig) => {
         // 开启进度条动画
         NProgress.start();
         // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
@@ -97,8 +97,8 @@ class PureHttp {
           config.beforeRequestCallback(config);
           return config;
         }
-        if (PureHttp.initConfig.beforeRequestCallback) {
-          PureHttp.initConfig.beforeRequestCallback(config);
+        if (ViazyHttp.initConfig.beforeRequestCallback) {
+          ViazyHttp.initConfig.beforeRequestCallback(config);
           return config;
         }
         /** 请求白名单，放置一些不需要token的接口（通过设置请求白名单，防止token过期后再请求造成的死循环问题） */
@@ -152,9 +152,9 @@ class PureHttp {
   };
   /** 响应拦截 */
   private httpInterceptorsResponse(): void {
-    const instance = PureHttp.axiosInstance;
+    const instance = ViazyHttp.axiosInstance;
     instance.interceptors.response.use(
-      (response: PureHttpResponse) => {
+      (response: ViazyHttpResponse) => {
         const $config = response.config;
         // 关闭进度条动画
         NProgress.done();
@@ -164,13 +164,13 @@ class PureHttp {
           return $config.beforeResponseCallback(response);
           // return response.data;
         }
-        if (PureHttp.initConfig.beforeResponseCallback) {
-          return PureHttp.initConfig.beforeResponseCallback(response);
+        if (ViazyHttp.initConfig.beforeResponseCallback) {
+          return ViazyHttp.initConfig.beforeResponseCallback(response);
           // response.data;
         }
         return response.data;
       },
-      (error: PureHttpError) => {
+      (error: ViazyHttpError) => {
         const $error = error;
         $error.isCancelRequest = Axios.isCancel($error);
         // 关闭进度条动画
@@ -227,17 +227,17 @@ class PureHttp {
   /** 通用请求工具函数 */
   public request<T>(
     param: AxiosRequestConfig,
-    axiosConfig?: PureHttpRequestConfig
+    axiosConfig?: ViazyHttpRequestConfig
   ): Promise<T> {
     const config = {
       ...param,
       ...axiosConfig
-    } as PureHttpRequestConfig;
+    } as ViazyHttpRequestConfig;
     const baseURL = param.baseURL || import.meta.env.VITE_APP_BASE_URL;
     config.baseURL = baseURL;
     // 单独处理自定义请求/响应回掉
     return new Promise((resolve, reject) => {
-      PureHttp.axiosInstance
+      ViazyHttp.axiosInstance
         .request(config)
         .then((response: undefined) => {
           resolve(response);
@@ -252,7 +252,7 @@ class PureHttp {
   public post<T, P>(
     url: string,
     params?: AxiosRequestConfig<T>,
-    config?: PureHttpRequestConfig
+    config?: ViazyHttpRequestConfig
   ): Promise<P> {
     return this.request<P>({ method: "post", url, ...params }, config);
   }
@@ -261,10 +261,10 @@ class PureHttp {
   public get<T, P>(
     url: string,
     params?: AxiosRequestConfig<T>,
-    config?: PureHttpRequestConfig
+    config?: ViazyHttpRequestConfig
   ): Promise<P> {
     return this.request<P>({ method: "get", url, ...params }, config);
   }
 }
 
-export const http = new PureHttp();
+export const http = new ViazyHttp();

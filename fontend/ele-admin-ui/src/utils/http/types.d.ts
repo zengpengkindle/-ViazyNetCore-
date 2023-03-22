@@ -15,35 +15,35 @@ export type RequestMethods = Extract<
   "get" | "post" | "put" | "delete" | "patch" | "option" | "head"
 >;
 
-export interface PureHttpError extends AxiosError {
+export interface ViazyHttpError extends AxiosError {
   isCancelRequest?: boolean;
 }
 
-export interface PureHttpResponse extends AxiosResponse {
-  config: PureHttpRequestConfig;
+export interface ViazyHttpResponse extends AxiosResponse {
+  config: ViazyHttpRequestConfig;
 }
 
-export interface PureHttpRequestConfig<D = any> extends InternalAxiosRequestConfig<D> {
-  beforeRequestCallback?: (request: PureHttpRequestConfig) => void;
-  beforeResponseCallback?: (response: PureHttpResponse) => any;
-  beforeResponseErrorCallback?:(error:PureHttpError)=>void;
+export interface ViazyHttpRequestConfig<D = any> extends InternalAxiosRequestConfig<D> {
+  beforeRequestCallback?: (request: ViazyHttpRequestConfig) => void;
+  beforeResponseCallback?: (response: ViazyHttpResponse) => any;
+  beforeResponseErrorCallback?:(error:ViazyHttpError)=>void;
 }
 
-export default class PureHttp {
+export default class ViazyHttp {
   request<T>(
     method: RequestMethods,
     url: string,
     param?: AxiosRequestConfig,
-    axiosConfig?: PureHttpRequestConfig
+    axiosConfig?: ViazyHttpRequestConfig
   ): Promise<T>;
   post<T, P>(
     url: string,
     params?: T,
-    config?: PureHttpRequestConfig
+    config?: ViazyHttpRequestConfig
   ): Promise<P>;
   get<T, P>(
     url: string,
     params?: T,
-    config?: PureHttpRequestConfig
+    config?: ViazyHttpRequestConfig
   ): Promise<P>;
 }
