@@ -1,5 +1,8 @@
 using System.Providers;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using NLog.Web;
 using ViazyNetCore;
@@ -84,6 +87,13 @@ app.UseFreeSql();
 app.UseHttpsRedirection();
 //app.UseDynamicController();
 app.UseStaticFiles();
+
+var filePath = app.Services.GetService<IWebHostEnvironment>()!.ContentRootFileProvider.GetDirectoryInfo("../files", true);
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = filePath,
+    RequestPath = "/upload"
+});
 app.UseRouting();
 app.UseEventBusWithStore(ServiceAssemblies);
 // Configure the HTTP response wrapper.
@@ -95,7 +105,6 @@ app.UseApiResponseWrapper(option =>
 
     option.IsDebug = app.Environment.IsDevelopment();
 });
-
 app.UseSenparc(app.Environment, builder.Configuration);
 app.UseAuthentication();
 app.UseAuthorization();

@@ -18,7 +18,10 @@
     {
       "path": "pages/cart/index",
       "style": {
-        "navigationBarTextStyle": "white",
+        "navigationBarTextStyle": "black",
+        // #ifdef H5
+        "titleNView": false,
+        // #endif
         "navigationBarTitleText": "购物车"
       }
     },

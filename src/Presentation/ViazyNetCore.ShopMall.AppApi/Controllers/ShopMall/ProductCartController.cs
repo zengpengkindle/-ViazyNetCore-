@@ -13,7 +13,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private string _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
-        private readonly string _imgBaseUrl = @"http://localhost:1799";
+        private string _imgBaseUrl => $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToString()}";
 
         public ProductCartController(CartService cartService, ILockProvider lockProvider, IHttpContextAccessor httpContextAccessor)
         {

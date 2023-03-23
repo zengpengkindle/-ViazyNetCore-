@@ -1,60 +1,123 @@
 <template>
-  <view class="content">
-    <u-navbar back-text="返回" title="剑未配妥，出门已是江湖" />
-    <image class="logo" src="/static/logo.png" />
-    <view class="text-area">
-      <text class="title">{{ title }}</text>
+  <view
+    class="content"
+    :style="{
+      backgroundSize: '100vw 520rpx',
+      backgroundRepeat: 'no-repeat'
+    }"
+  >
+    <view v-if="carts.num" class="cart-main trade-main">
+      <view class="container">
+        <view
+          v-for="shop in carts.packages"
+          :key="shop.shopId"
+          class="trade-card"
+        >
+          <view class="trade-card-header">
+            <view class="trade-card-radio">
+              <u-checkbox
+                v-model="shop.check"
+                shape="circle"
+                @change="checkShop(shop)"
+              />
+            </view>
+            <view class="trade-card-header-title">{{ shop.shopName }}</view>
+          </view>
+          <view class="trade-card-body">
+            <view
+              v-for="item in shop.items"
+              :key="item.id"
+              class="trade-card-items"
+            >
+              <view class="trade-card-radio">
+                <u-checkbox
+                  v-model="item.check"
+                  shape="circle"
+                  @change="checkItem(item, shop)"
+                />
+              </view>
+              <view class="trade-card-item">
+                <view class="trade-card-item_image">
+                  <u-image width="100%" height="100%" :src="item.imgUrl" />
+                </view>
+                <view class="trade-card-item_content">
+                  <view class="trade-card-title">
+                    {{ item.pn }}
+                  </view>
+                  <view class="trade-card-desc">
+                    {{ item.skuText }}
+                  </view>
+                  <view class="trade-card-bottom">
+                    <view class="trade-card-price">
+                      ￥<text>{{ item.price }}</text>
+                    </view>
+                    <u-number-box v-model="item.num" :min="1" integer />
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
-    <u-tabs v-model="current" :list="list" :is-scroll="true" @change="change" />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
-const title = ref("Hello");
-interface Item {
-  name: string;
-  count?: number;
-}
-const list: Ref<Array<Item>> = ref([
-  { name: "待收货" },
-  {
-    name: "待付款"
-  },
-  {
-    name: "待评价",
-    count: 5
-  }
-]);
-const current: Ref<number> = ref(0);
+import { ref, type Ref, onMounted } from "vue";
+import ShopCartApi, {
+  type ShoppingCart,
+  type ShoppingCartPackage,
+  type ShoppingCartProduct
+} from "@/apis/shopmall/productCart";
+onMounted(() => {
+  getCarts();
+});
+const getCarts = async () => {
+  carts.value = await ShopCartApi.findCart();
+};
+const carts: Ref<ShoppingCart> = ref({
+  num: 0,
+  propertyKeys: "",
+  propertyValues: "",
+  packages: []
+});
 
-function change() {}
+function checkShop(shop: ShoppingCartPackage) {
+  if (shop.check) {
+    shop.items.forEach(item => {
+      item.check = shop.check;
+    });
+  } else {
+    let check = true;
+    shop.items.forEach(item => {
+      if (!item.check) check = false;
+    });
+    if (check) {
+      shop.items.forEach(item => {
+        item.check = false;
+      });
+    }
+  }
+}
+
+function checkItem(item: ShoppingCartProduct, shop: ShoppingCartPackage) {
+  if (item.check) {
+    if (shop.items.length == 1) {
+      shop.check = true;
+    } else {
+      let check = true;
+      shop.items.forEach(item => {
+        if (!item.check) check = false;
+      });
+      shop.check = check;
+    }
+  } else {
+    shop.check = false;
+  }
+}
 </script>
 
 <style>
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin-top: 200rpx;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 50rpx;
-}
-
-.text-area {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  font-size: 36rpx;
-  color: #8f8f94;
-}
+@import "./cart.scss";
 </style>

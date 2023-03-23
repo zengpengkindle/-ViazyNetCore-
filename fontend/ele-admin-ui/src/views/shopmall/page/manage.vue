@@ -1365,7 +1365,7 @@ const tools: Array<ToolGroup> = [
         left: 0;
         right: 0;
         bottom: 0;
-        border: 2px;
+        border: 0px;
         border-style: solid;
         border-color: rgba(50, 108, 235, 0.6);
         box-shadow: rgba(50, 108, 235, 0.6) 0px 0px 12px 6px;

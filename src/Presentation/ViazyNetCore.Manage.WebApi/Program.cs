@@ -82,7 +82,7 @@ builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLif
 
 builder.Services.AddLocalStoreProvider(options => {
     //options.RequestPath
-    options.StoreRootPath = "./files";
+    options.StoreRootPath = "../files";
     options.RequestPath = "/upload";
     options.MediaTypes = new List<MediaType> { MediaType.Image };
 });
