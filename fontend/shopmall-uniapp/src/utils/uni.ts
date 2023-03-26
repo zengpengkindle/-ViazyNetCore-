@@ -7,7 +7,7 @@ export async function asyncLogin() {
       },
       fail() {
         reject();
-      },
+      }
     });
   });
 }
@@ -20,7 +20,7 @@ export async function asyncGetUserProfile() {
       },
       fail() {
         reject();
-      },
+      }
     });
   });
 }
@@ -40,7 +40,7 @@ class ConcurrentCtrl {
       this.concurrentList.push({
         fun,
         resolve,
-        reject,
+        reject
       });
       this.check();
     });
@@ -77,12 +77,12 @@ export async function asyncReadFile(path: string) {
       uni.getFileSystemManager().readFile({
         filePath: path,
         encoding: "base64",
-        success: (r) => {
+        success: r => {
           resolve(r);
         },
-        fail: (e) => {
+        fail: e => {
           reject(e);
-        },
+        }
       });
     }
   );
@@ -96,13 +96,13 @@ async function concurrentUploadImage(b64: string) {
 
 export async function downloadSaveFile(url: string) {
   const dres = (await uni.downloadFile({
-    url,
+    url
   })) as any;
   if (!/:ok$/.test(dres.errMsg)) {
     throw new Error(dres.errMsg);
   }
   const sres = (await uni.saveImageToPhotosAlbum({
-    filePath: dres.tempFilePath,
+    filePath: dres.tempFilePath
   })) as any;
   if (!/:ok$/.test(sres.errMsg)) {
     throw new Error(sres.errMsg);
@@ -127,7 +127,7 @@ export async function uploadFile(
     if (res.size > maxSize) {
       return {
         success: false,
-        msg: `文件大小超过${maxSize / 1024 / 1024}M`,
+        msg: `文件大小超过${maxSize / 1024 / 1024}M`
       };
     }
     b64 = res.data;
@@ -141,7 +141,7 @@ export async function uploadFile(
   const upRes = await concurrentUploadImage(b64.slice(index + 1));
   return {
     ...upRes,
-    success: true,
+    success: true
   };
 }
 
@@ -151,12 +151,12 @@ export async function readFile(path: string) {
       uni.getFileSystemManager().readFile({
         filePath: path,
         encoding: "base64",
-        success: (r) => {
+        success: r => {
           resolve(r);
         },
-        fail: (e) => {
+        fail: e => {
           reject(e);
-        },
+        }
       });
     }
   );

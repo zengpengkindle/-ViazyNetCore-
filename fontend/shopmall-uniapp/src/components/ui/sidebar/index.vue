@@ -1,72 +1,73 @@
 <template>
-    <view ref="root" class="van-sidebar custom-class">
-        <slot />
-    </view>
+  <view ref="root" class="van-sidebar custom-class">
+    <slot />
+  </view>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, getCurrentInstance, computed, provide } from 'vue';
-import { useOrderedChildren } from '../hooks/use-ordered-children'
-import { type SidebarItemContext, sidebarContextKey } from './constants';
+import { onMounted, ref, getCurrentInstance, provide, watch } from "vue";
+import { useOrderedChildren } from "../hooks/use-ordered-children";
+import { type SidebarItemContext, sidebarContextKey } from "./constants";
 
 export interface SidebarProps {
-    activeKey: number;
+  modelValue: number;
 }
-const props = withDefaults(defineProps<SidebarProps>(), {
-    activeKey: 0
-});
+const props = withDefaults(defineProps<SidebarProps>(), { modelValue: 0 });
 const currentActive = ref(-1);
 const {
-    children: items,
-    addChild: addItem,
-    removeChild: removeItem,
+  children: items,
+  addChild: addItem,
+  removeChild: removeItem
 } = useOrderedChildren<SidebarItemContext>(
-    getCurrentInstance()!,
-    'SidebarItem'
-)
+  getCurrentInstance()!,
+  "SidebarItem"
+);
 
 onMounted(() => {
-
-    const hasLabel = computed(() => {
-        return items.value.some((item) => item.props.label.toString().length > 0)
-    })
-    setActiveItem(props.activeKey);
-})
-
+  //   const hasLabel = computed(() => {
+  //     return items.value.some(item => item.props.label.toString().length > 0);
+  //   });
+  currentActive.value = props.modelValue;
+});
+const emits = defineEmits(["change", "update:modelValue"]);
 function setActiveItem(activeKey: number) {
+  if (!items.value.length) {
+    return;
+  }
 
-    if (!items.value.length) {
-        return Promise.resolve();
-    }
-
-    currentActive.value = activeKey;
-    console.log(currentActive.value);
-    //  const stack: Promise<unknown>[] = [];
-
-    // if (currentActive.value !== activeKey && items.value[currentActive.value]) {
-    //     stack.push(items.value[currentActive.value].setActiveItem(false));
-    // }
-
-    // if (items.value[activeKey]) {
-    //     stack.push(items.value[activeKey].setActiveItem(true));
-    // }
-
-    // return Promise.all(stack);
+  if (currentActive.value !== activeKey && items.value[currentActive.value]) {
+    items.value[currentActive.value].setActive(false);
+  }
+  if (items.value[activeKey]) {
+    items.value[activeKey].setActive(true);
+  }
+  currentActive.value = activeKey;
 }
-defineExpose({
-    setActiveItem
-})
+watch(
+  () => currentActive.value,
+  value => {
+    emits("change", value);
+    emits("update:modelValue", value);
+  }
+);
+watch(
+  () => items.value,
+  () => {
+    if (items.value.length > 0) setActiveItem(props.modelValue);
+  }
+);
+defineExpose({});
 const root = ref<HTMLElement>();
 provide(sidebarContextKey, {
-    root,
-    loop: false,
-    items,
-    addItem,
-    removeItem,
-    setActiveItem
-})
+  root,
+  items,
+  active: props.modelValue,
+  addItem,
+  removeItem,
+  setActiveItem
+});
 </script>
 <style scoped lang="scss">
 .van-sidebar {
-    width: var(--sidebar-width, $sidebar-width);
+  width: var(--sidebar-width, $sidebar-width);
 }
 </style>
