@@ -1,4 +1,4 @@
-<template title="商品管理" props="{id:0}">
+<template title="商品管理">
   <div>
     <el-form
       ref="form"
@@ -439,7 +439,7 @@ onMounted(() => {
   outerType.value = route.query && (route.query.outerType as string);
   init();
 });
-const catProps: CascaderProps = reactive({ label: "name", value: "id" });
+const catProps: CascaderProps = { label: "name", value: "id", emitPath: false };
 
 const item: Ref<ProductManageModel> = ref({
   id: null,
@@ -883,7 +883,7 @@ function handleValueInputConfirm(s: any) {
   }
 }
 function handleChange(value: any) {
-  item.value.catId = value[0];
+  // item.value.catId = value[0];
 }
 function handleChangePrice() {
   let price = item.value.skus.list[0].price;

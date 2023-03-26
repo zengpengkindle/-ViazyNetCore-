@@ -38,7 +38,7 @@
     {
       "path": "pages/category/index/index",
       "style": {
-        "navigationBarTextStyle": "white",
+        "navigationBarTextStyle": "black",
         "navigationBarTitleText": "分类"
       }
     }

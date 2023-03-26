@@ -779,6 +779,9 @@ namespace ViazyNetCore.Modules.ShopMall
                     await this._engine.Update<Product>().Where(p => p.Id == product.Id).SetDto(new
                     {
                         product.Title,
+                        product.CatId,
+                        product.CatName,
+                        product.CatPath,
                         product.SubTitle,
                         product.Keywords,
                         product.Description,
