@@ -1,13 +1,13 @@
 <template>
   <!-- 搜索组件宽度自适应于外层 -->
   <view
-    v-bind:class="prop.parameters.style"
+    :class="prop.parameters.style"
     class="u-padding-top-10 u-padding-bottom-10 u-padding-left-25 u-padding-right-25 u-margin-15 coreshop-bg-white"
   >
     <u-toast ref="uToast" />
     <u-search
-      :placeholder="prop.parameters.keywords"
       v-model="keyword"
+      :placeholder="prop.parameters.keywords"
       shape="square"
       :show-action="true"
       action-text="搜索"
