@@ -89,4 +89,9 @@ declare module "vue" {
     UWaterfall: import("src/uni_modules/vk-uview-ui/components/u-waterfall/u-waterfall.vue");
   }
 }
+declare module "vue" {
+  export interface GlobalComponents {
+    price: import("src/components/ui/price.vue");
+  }
+}
 export {};
