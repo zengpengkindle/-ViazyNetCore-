@@ -49,11 +49,17 @@
                   {{ item.name }}
                 </view>
                 <view class="good-price">
-                  {{ item.price }}元
-                  <span
-                    class="u-font-xs coreshop-text-through u-margin-left-15 coreshop-text-gray"
-                    >{{ item.mktprice }}元</span
-                  >
+                  <price
+                    :price="item.price || 100.01"
+                    symbol="¥"
+                    type="lighter"
+                  />
+                  <price
+                    :price="item.mktprice || 100.01"
+                    symbol="¥"
+                    type="del"
+                    decimal-smaller
+                  />
                 </view>
                 <view v-if="item.isRecommend" class="good-tag-recommend">
                   推荐
@@ -64,7 +70,7 @@
           </u-grid>
         </view>
         <view v-else-if="!count && !parameters.listAjax">
-          <u-grid col="3" :border="false" align="center">
+          <u-grid col="3" :border="false" :align="center">
             <u-grid-item
               v-for="item in 3"
               :key="item"
@@ -134,11 +140,13 @@
                       {{ item.name }}
                     </view>
                     <view class="good-price u-padding-10">
-                      {{ item.price }}元
-                      <span
-                        class="u-font-xs coreshop-text-through u-margin-left-15 coreshop-text-gray"
-                        >{{ item.mktprice }}元</span
-                      >
+                      <price :price="item.price" symbol="￥" />
+                      <price
+                        :price="item.mktprice"
+                        type="mini"
+                        symbol="￥"
+                        decimal-smaller
+                      />
                     </view>
                   </u-col>
                 </u-row>
@@ -146,7 +154,7 @@
             </u-grid-item>
           </u-grid>
         </view>
-        <view class="order-none" v-else>
+        <view v-else class="order-none">
           <image
             class="order-none-img"
             src="/static/images/order.png"
@@ -200,41 +208,47 @@
                   :border="false"
                   :align="center"
                 >
-                  <u-grid-item
-                    v-if="
-                      index >= parameters.column * no &&
-                      index <= parameters.column * (no + 1)
-                    "
-                    v-for="(item, index) in parameters.list"
-                    :key="index"
-                    bg-color="transparent"
-                    :custom-style="{ padding: '0rpx' }"
-                    @click="goGoodsDetail(item.id)"
-                  >
-                    <view class="good_box">
-                      <!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
-                      <u-lazy-load
-                        threshold="-150"
-                        border-radius="10"
-                        :image="item.image"
-                        :index="item.id"
-                      />
-                      <view class="good_title u-line-2">
-                        {{ item.name }}
-                      </view>
-                      <view class="good-price">
-                        {{ item.price }}元
-                        <span
-                          class="u-font-xs coreshop-text-through u-margin-left-15 coreshop-text-gray"
-                          >{{ item.mktprice }}元</span
+                  <template v-for="(item, index) in parameters.list">
+                    <u-grid-item
+                      v-if="
+                        index >= parameters.column * no &&
+                        index <= parameters.column * (no + 1)
+                      "
+                      :key="index"
+                      bg-color="transparent"
+                      :custom-style="{ padding: '0rpx' }"
+                      @click="goGoodsDetail(item.id)"
+                    >
+                      <view class="good_box">
+                        <!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
+                        <u-lazy-load
+                          threshold="-150"
+                          border-radius="10"
+                          :image="item.image"
+                          :index="item.id"
+                        />
+                        <view class="good_title u-line-2">
+                          {{ item.name }}
+                        </view>
+                        <view class="good-price">
+                          {{ item.price }}元
+                          <span
+                            class="u-font-xs coreshop-text-through u-margin-left-15 coreshop-text-gray"
+                            >{{ item.mktprice }}元</span
+                          >
+                        </view>
+                        <view
+                          class="good-tag-recommend"
+                          v-if="item.isRecommend"
                         >
+                          推荐
+                        </view>
+                        <view class="good-tag-hot" v-if="item.isHot">
+                          热门
+                        </view>
                       </view>
-                      <view class="good-tag-recommend" v-if="item.isRecommend">
-                        推荐
-                      </view>
-                      <view class="good-tag-hot" v-if="item.isHot"> 热门 </view>
-                    </view>
-                  </u-grid-item>
+                    </u-grid-item>
+                  </template>
                 </u-grid>
               </swiper-item>
             </swiper>
@@ -288,7 +302,7 @@ const count = computed(() => {
 const goGoodsDetail = (productId: string) => {
   console.log(productId);
 };
-const center = ref(true);
+const center = ref("center");
 const current = ref(0);
 const change = (e: any) => {
   current.value = e.detail.current;

@@ -1,12 +1,12 @@
 <template>
-  <view class="price {{type}} wr-class">
+  <view class="price wr-class" :class="type">
     <view
-      wx:if="{{type === 'delthrough'}}"
+      v-if="type === 'delthrough'"
       class="line"
       :style="{ height: addUnit(lineThroughWidth) }"
     />
-    <view class="symbol symbol-class">{{ symbol }}</view>
     <view class="pprice">
+      <view class="symbol symbol-class">{{ symbol }}</view>
       <view class="integer inline">{{ prices[0] }}</view>
       <view
         v-if="prices[1]"
@@ -19,18 +19,21 @@
 </template>
 <script lang="ts" setup>
 import type { HeightProperty } from "csstype";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 export interface PriceProps {
-  priceUnit: String;
-  price: String | number;
-  type: "main" | "lighter" | "mini" | "del" | "delthrough";
-  symbol: String;
+  priceUnit: string;
+  price: string | number;
+  type: "main" | "lighter" | "mini" | "del" | "delthrough" | string;
+  symbol: string;
   fill: boolean;
   decimalSmaller: boolean;
   lineThroughWidth: string;
 }
-const props = defineProps<PriceProps>();
+const props = withDefaults(defineProps<PriceProps>(), {
+  type: "main",
+  priceUnit: "yuan"
+});
 
 const REGEXP = /^\d+(\.\d+)?$/;
 const addUnit: (val: string) => HeightProperty<string | number> = (
@@ -42,6 +45,9 @@ const addUnit: (val: string) => HeightProperty<string | number> = (
   return REGEXP.test("" + value) ? value + "rpx" : value;
 };
 const prices = ref([]);
+onMounted(() => {
+  format(props.price);
+});
 watch(
   () => props.price,
   () => {
@@ -85,3 +91,71 @@ defineExpose({
   addUnit
 });
 </script>
+<style scoped>
+:host {
+  display: inline-block;
+  display: inline-block;
+  font-weight: inherit;
+}
+.inline {
+  display: inline;
+  white-space: nowrap;
+}
+.price {
+  display: inline;
+  color: inherit;
+  font-size: inherit;
+  text-decoration: inherit;
+}
+
+.lighter {
+  font-weight: 400;
+  font-size: 32rpx;
+}
+.mini {
+  font-size: 24rpx;
+  color: #5d5d5d;
+  font-weight: 400;
+}
+.del .pprice {
+  font-size: 24rpx;
+  color: #9b9b9b;
+  text-decoration: line-through;
+  font-weight: 400;
+}
+.delthrough {
+  position: relative;
+}
+.delthrough .line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  margin: 0;
+  background-color: currentColor;
+}
+
+.symbol {
+  display: inline;
+  color: inherit;
+  font-size: inherit;
+  font-size: 0.8em;
+}
+.pprice {
+  display: inline;
+  margin: 0 0 0 4rpx;
+}
+.integer {
+  color: inherit;
+  font-size: inherit;
+}
+.decimal {
+  color: inherit;
+  font-size: inherit;
+}
+.decimal.smaller {
+  font-size: 0.8em;
+  vertical-align: baseline;
+}
+</style>

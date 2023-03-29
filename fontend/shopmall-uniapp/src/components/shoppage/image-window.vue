@@ -57,7 +57,8 @@
           :image="parameters.list[1].image"
           threshold="-150"
           img-mode="widthFix"
-          style="width: 100%"
+          class="img-window-img-top"
+          style="width: 100%; box-sizing: border-box"
           @click="
             showSliderInfo(
               parameters.list[1].linkType,
@@ -119,9 +120,23 @@ export interface ImageWindowProps {
   parameters: ImageWindowParameter;
 }
 defineProps<ImageWindowProps>();
-const center = ref(true);
+const center = ref("center");
 const showSliderInfo = (type: any, val: any) => {
   console.log(type);
   console.log(val);
 };
 </script>
+<style lang="scss" scoped>
+.img-window-img-top {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 50%;
+  overflow: hidden;
+  :deep(.u-lazy-item) {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

@@ -232,7 +232,7 @@
 					'background-color': this.activeColor,
 					height: this.barHeight + 'rpx',
 					// 设置一个很大的值，它会自动取能用的最大值，不用高度的一半，是因为高度可能是单数，会有小数出现
-					'border-radius': `${this.barHeight / 2}px`
+					'border-radius': `${barHeight / 2}px`
 				};
 				Object.assign(style, this.barStyle);
 				return style;

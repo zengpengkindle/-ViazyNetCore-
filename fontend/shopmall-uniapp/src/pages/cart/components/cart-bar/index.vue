@@ -23,7 +23,7 @@
         <price
           :price="totalAmount"
           :fill="false"
-          decimalSmaller
+          decimal-smaller
           class="cart-bar__total--bold cart-bar__total--price"
         />
         <text class="cart-bar__total--normal">（不含运费）</text>
