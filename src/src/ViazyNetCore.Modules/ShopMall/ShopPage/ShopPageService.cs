@@ -69,7 +69,7 @@ namespace ViazyNetCore.Modules.ShopMall
                     PageCode = code,
                     PositionId = count,
                     Sort = count + 1,
-                    Parameters = p.Value.ToString()
+                    Parameters = p.Value?.ToString()
                 };
                 list.Add(model);
                 count++;

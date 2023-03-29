@@ -3,41 +3,44 @@
     :style="{
       background: bgColor
     }"
-    class="icon-tabs"
+    class="image-tabs"
   >
     <scroll-view
-      class="icon-tabs-view"
+      class="image-tabs-view"
       scroll-x="true"
       scroll-y="false"
-      style="height: 140rpx; flex: 1; white-space: nowrap"
+      style="flex: 1; white-space: nowrap"
     >
       <view
         :id="id"
-        class="icon-tabs-scroll-box"
-        :class="{ 'icon-tabs-scroll-flex': !isScroll }"
+        class="image-tabs-scroll-box"
+        :class="{ 'image-tabs-scroll-flex': !isScroll }"
       >
         <view
           v-for="(item, index) in list"
-          :id="'icon-tab-item-' + index"
+          :id="'image-tab-item-' + index"
           :key="index"
           :style="tabItemStyle(index)"
           :class="{ active: index == currentIndex }"
           @click="clickTab(index)"
         >
-          <u-icon
+          <x-icon
             :key="item.id"
-            class="icon-tab-item"
-            :name="item.image"
-            width="80"
-            height="80"
+            class="image-tab-item"
+            :url="item.image"
+            width="90"
+            height="90"
             :label="item.text"
-            :label-size="26"
+            :label-size="22"
             label-pos="bottom"
-            margin-top="10" /></view
-      ></view>
+            margin-top="10"
+          />
+        </view>
+      </view>
     </scroll-view>
-    <view class="icon-tabs-more" @click="showU"> 更多</view>
-    <u-popup v-model="show" mode="top">
+    <view class="image-tabs-more" @click="showU"> 更多</view>
+    <u-popup v-model="show" mode="top" closeable>
+      <view class="popup-header">全部分类</view>
       <view
         v-for="(item, index) in list"
         :id="'icon-tab-item-' + index"
@@ -45,21 +48,23 @@
         :style="tabItemStyle(index)"
         @click="clickTab(index)"
       >
-        <u-icon
+        <x-icon
           :key="item.id"
-          class="icon-tab-item"
-          :name="item.image"
-          width="80"
-          height="80"
+          class="image-tab-item"
+          :url="item.image"
+          width="90"
+          height="90"
           :label="item.text"
-          :label-size="26"
+          :label-size="22"
           label-pos="bottom"
           margin-top="10"
-      /></view>
+        />
+      </view>
     </u-popup>
   </view>
 </template>
 <script lang="ts" setup>
+import XIcon from "../icon/index.vue";
 import addUnit from "@/uni_modules/vk-uview-ui/libs/function/addUnit";
 import {
   ref,
@@ -93,16 +98,16 @@ const props = withDefaults(defineProps<IConTabsProps>(), {
   height: 130,
   fontSize: 30,
   duration: 0.5,
-  bgColor: "#ffffff"
+  bgColor: "#ffffff",
+  gutter: 12
 });
 // tab的样式
 const tabItemStyle: (i: number) => CSSProperties = (index: number) => {
   const style = {
-    height: props.height + "rpx",
     "line-height": props.height + "rpx",
     "font-size": props.fontSize + "rpx",
     "transition-duration": `${props.duration}s`,
-    padding: props.isScroll ? `0 ${props.gutter}rpx` : "",
+    padding: props.isScroll ? `${props.gutter}rpx` : "",
     flex: props.isScroll ? "auto" : "1",
     width: addUnit(props.itemWidth),
     display: "inline-block",
@@ -210,17 +215,20 @@ const showU = () => {
 };
 </script>
 <style lang="scss" scoped>
-.icon-tabs {
+.image-tabs {
   position: relative;
 }
-.icon-tabs-more {
-  width: 30px;
-  height: 100%;
-  overflow: hidden;
+.image-tabs-more {
   position: absolute;
-  background-color: #ffffff;
+  padding: 10rpx;
+  width: 50rpx;
+  height: 100%;
   top: 0;
   right: 0;
+  font-size: 26rpx;
+  text-align: center;
+  overflow: hidden;
+  background-color: #ffffff;
 }
 view,
 scroll-view {
@@ -239,8 +247,9 @@ scroll-view {
 }
 /* #endif */
 
-.icon-tabs-scroll-box {
+.image-tabs-scroll-box {
   position: relative;
+  background: linear-gradient(to bottom, #ffffff, #b6defa, #53aaf6);
   /* #ifdef MP-TOUTIAO */
   white-space: nowrap;
   /* #endif */
@@ -257,13 +266,13 @@ scroll-view ::v-deep ::-webkit-scrollbar {
 }
 /* #endif */
 
-.icon-tabs-view {
+.image-tabs-view {
   width: 100%;
   white-space: nowrap;
   position: relative;
 }
 
-.icon-tab-item {
+.image-tab-item {
   position: relative;
   /* #ifndef APP-NVUE */
   display: inline-block;
@@ -272,12 +281,12 @@ scroll-view ::v-deep ::-webkit-scrollbar {
   transition-property: background-color, color;
 }
 
-.icon-tab-bar {
+.image-tab-bar {
   position: absolute;
   bottom: 0;
 }
 
-.icon-tabs-scroll-flex {
+.image-tabs-scroll-flex {
   display: flex;
   justify-content: space-between;
 }
@@ -287,12 +296,16 @@ scroll-view ::v-deep ::-webkit-scrollbar {
   :deep(image) {
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid blue;
+    border: 1px solid var(--sidebar-active-color, $sidebar-active-color);
   }
   :deep(text) {
-    border-radius: 7px;
     color: #ffffff;
-    background-color: blue;
+    background-color: var(--sidebar-active-color, $sidebar-active-color);
   }
+}
+.popup-header {
+  padding: 10rpx 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
 }
 </style>

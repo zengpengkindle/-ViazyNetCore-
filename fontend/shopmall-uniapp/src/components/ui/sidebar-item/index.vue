@@ -5,7 +5,6 @@
       'sidebar-item--disabled': disabled
     }"
     class="sidebar-item"
-    hover-class="sidebar-item--hover"
     @click="handleItemClick"
   >
     <view class="sidebar-item__text">

@@ -1,9 +1,9 @@
 
 .sidebar-item {
   display: block;
+  position: relative;
   box-sizing: border-box;
   overflow: hidden;
-  border-left: 3px solid transparent;
   user-select: none;
   padding: var(--sidebar-padding, $sidebar-padding);
   font-size: var(--sidebar-font-size, $sidebar-font-size);
@@ -31,13 +31,26 @@
       --sidebar-selected-font-weight,
       $sidebar-selected-font-weight
     );
-    border-color: var(
-      --sidebar-selected-border-color,
-      $sidebar-selected-border-color
-    );
-
-    &::after {
-      border-right-width: 1px;
+    // border-color: var(
+    //   --sidebar-selected-border-color,
+    //   $sidebar-selected-border-color
+    // );
+    &::after{
+      display: block;
+      position: absolute;
+      top:0;
+      left: 0;
+      transform:translateY(50%) ;
+      content: "";
+      height: 50%;
+      width: 6rpx;
+      // border-left: 3px solid transparent;
+      background-color: var(
+        --sidebar-selected-border-color,
+        $sidebar-selected-border-color
+      );
+      border-radius: 3rpx;
+      overflow: hidden;
     }
   }
 

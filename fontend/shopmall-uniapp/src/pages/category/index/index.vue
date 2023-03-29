@@ -1,11 +1,17 @@
 <template>
   <view class="content">
-    <icon-tabs v-model="catId" :list="catLists" item-width="120" />
+    <image-tabs
+      v-model="catId"
+      :list="catLists"
+      item-width="150"
+      :gutter="18"
+    />
     <view class="sidebar-content">
       <scroll-view
         class="left"
         scroll-x="false"
-        scroll-y="false"
+        scroll-y="true"
+        style="height: calc(100vh - 92px)"
         upper-threshold="50"
         lower-threshold="50"
         scroll-top="0"
@@ -19,18 +25,39 @@
       >
         <sidebar v-model="current" @change="change">
           <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" disabled />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
+          <sidebar-item title="标签名" />
           <sidebar-item title="标签名" />
         </sidebar>
       </scroll-view>
-      <view clsss="sub-cat"> ccccc {{ current }}</view>
+      <view clsss="sub-cat"> ccccc {{ catId }} - {{ current }}</view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import Sidebar from "@/components/ui/sidebar/index.vue";
-import IconTabs from "@/components/ui/icon-tabs/index.vue";
+import ImageTabs from "@/components/ui/image-tabs/index.vue";
 import SidebarItem from "@/components/ui/sidebar-item/index.vue";
 import { ref, type Ref } from "vue";
 const catId = ref(0);
