@@ -43,6 +43,13 @@ function setActiveItem(activeKey: number) {
   currentActive.value = activeKey;
 }
 watch(
+  () => props.modelValue,
+  value => {
+    currentActive.value = value;
+    setActiveItem(value);
+  }
+);
+watch(
   () => currentActive.value,
   value => {
     emits("change", value);
@@ -53,6 +60,7 @@ watch(
   () => items.value,
   () => {
     if (items.value.length > 0) setActiveItem(props.modelValue);
+    else currentActive.value = -1;
   }
 );
 defineExpose({});

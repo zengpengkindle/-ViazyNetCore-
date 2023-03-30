@@ -4,6 +4,8 @@
     <block v-if="currAuthStep === AuthStepType.ONE">
       <view class="user-center-card__header" @click="gotoUserEditPage">
         <u-avatar
+          :size="100"
+          sex-icon="man"
           :src="userInfo.avatarUrl || defaultAvatarUrl"
           class="user-center-card__header__avatar"
         />
@@ -77,7 +79,7 @@ const gotoUserEditPage = () => {};
   left: 0;
   width: 100%;
   height: 480rpx;
-  background-image: url("https://cdn-we-retail.ym.tencent.com/miniapp/template/user-center-bg-v1.png");
+  background-image: url("/static/images/bg/user-center-bg.svg");
   background-size: cover;
   background-repeat: no-repeat;
   padding: 0 24rpx;
@@ -94,10 +96,6 @@ const gotoUserEditPage = () => {};
   position: relative;
 }
 .user-center-card__header__avatar {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 48rpx;
-  overflow: hidden;
 }
 
 .user-center-card__header__name {

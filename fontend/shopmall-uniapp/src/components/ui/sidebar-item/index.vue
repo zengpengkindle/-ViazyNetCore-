@@ -14,14 +14,7 @@
   </view>
 </template>
 <script lang="ts" setup>
-import {
-  getCurrentInstance,
-  onMounted,
-  inject,
-  ref,
-  computed,
-  unref
-} from "vue"; // 父组件
+import { getCurrentInstance, onMounted, inject, ref, onUnmounted } from "vue"; // 父组件
 import { sidebarContextKey } from "../sidebar/constants";
 
 export interface SidebarItemProps {
@@ -34,6 +27,7 @@ const props = withDefaults(defineProps<SidebarItemProps>(), {});
 
 const instance = getCurrentInstance();
 const sidebarContext = inject(sidebarContextKey);
+const cindex = ref(0);
 onMounted(() => {
   sidebarContext.items.value.push({
     props,
@@ -44,7 +38,14 @@ onMounted(() => {
   const index = sidebarContext.items.value.findIndex(
     ({ uid }) => uid === instance.uid
   );
+  cindex.value = index;
   selected.value = sidebarContext.active == index;
+});
+onUnmounted(() => {
+  const index = sidebarContext.items.value.findIndex(
+    ({ uid }) => uid === instance.uid
+  );
+  sidebarContext.items.value.splice(index, 1);
 });
 
 const translateItem = (index: number, activeIndex: number) => {

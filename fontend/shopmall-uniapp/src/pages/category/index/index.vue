@@ -24,7 +24,7 @@
         bindscrolltolower=""
         bindscroll=""
       >
-        <sidebar v-model="current" @change="change">
+        <sidebar v-model="subCatActive" @change="change">
           <sidebar-item
             v-for="item in subItems"
             :key="item.id"
@@ -33,7 +33,7 @@
         </sidebar>
       </scroll-view>
       <view class="sub-main">
-        <view>ccccc {{ catId }} - {{ current }}</view>
+        <view>ccccc {{ catId }} - {{ subCatActive }}</view>
         <view class="good_box">
           <u-row gutter="5">
             <u-col span="4">
@@ -78,7 +78,7 @@ import SidebarItem from "@/components/ui/sidebar-item/index.vue";
 import ProductCatApi, { type ProductCat } from "@/apis/shopmall/productCat";
 import { onMounted, ref, type Ref } from "vue";
 const catId = ref(5);
-const current: Ref<number> = ref(0);
+const subCatActive: Ref<number> = ref(0);
 interface CatItem {
   id: string;
   image: string;
@@ -105,23 +105,18 @@ const productItem: Ref<ProductItem> = ref({
 const catLists: Ref<Array<CatItem>> = ref([
   { id: "1", image: "/static/images/cat/img-1.webp", text: "男服饰" },
   { id: "2", image: "/static/images/cat/img-9.webp", text: "女装" },
-  { id: "3", image: "/static/images/cat/muy-3b.webp", text: "儿童磨绒" },
-  { id: "4", image: "/static/images/cat/img-1.webp", text: "服饰" },
-  { id: "5", image: "/static/images/cat/img-9.webp", text: "服饰" },
-  { id: "6", image: "/static/images/cat/muy-3b.webp", text: "服饰" },
-  { id: "6", image: "/static/images/cat/img-1.webp", text: "服饰" },
-  { id: "7", image: "/static/images/cat/img-9.webp", text: "服饰" },
-  { id: "8", image: "/static/images/cat/muy-3b.webp", text: "服饰" },
-  { id: "8", image: "/static/images/cat/muy-3b.webp", text: "服饰" }
+  { id: "3", image: "/static/images/cat/muy-3b.webp", text: "儿童磨绒" }
 ]);
 function change(index: number) {
   // current.value = index;
   console.log(index);
 }
 const subItems: Ref<Array<CatItem>> = ref([]);
-function mainTabChange() {
-  const selected = catLists.value[catId.value];
+function mainTabChange(value: { index: number; item: CatItem }) {
+  const selected = catLists.value[value.index];
+  console.log("item", value.item);
   subItems.value = [];
+  subCatActive.value = -1;
   cats.value.forEach(cat => {
     if (cat.parentId == selected.id) {
       subItems.value.push({
@@ -131,6 +126,7 @@ function mainTabChange() {
       });
     }
   });
+  if (subItems.value.length > 0) subCatActive.value = 0;
 }
 const cats: Ref<Array<ProductCat>> = ref();
 onMounted(async () => {
@@ -145,7 +141,7 @@ onMounted(async () => {
       });
     }
   });
-  mainTabChange();
+  mainTabChange({ index: 0, item: catLists.value[0] });
 });
 </script>
 
