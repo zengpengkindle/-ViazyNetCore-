@@ -34,13 +34,10 @@
       }
     },
     {
-      "path": "pages/member/member",
+      "path": "pages/member/member",//会员中心
       "style": {
-        "navigationBarTextStyle": "black",
-        // #ifdef H5
-        "titleNView": false,
-        // #endif
-        "navigationBarTitleText": "会员中心"
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "white"
       }
     }
   ],

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import UserCenterCard from "./components/user-center-card/index.vue";
 import { ref, shallowRef, triggerRef, watch } from "vue";
 import { useToken } from "@/hooks";
 import { useUserStore } from "@/store/user";
@@ -54,26 +55,12 @@ const toSampleOrder = () => {
 
 const menuList = shallowRef<MenuGroup[]>([
   [
+    { title: "收货地址", path: "/pages/myShopwindow/index", icon: "userStore" },
     {
-      title: "我的钱包",
-      path: "/pages/myWallet/index",
-      icon: "wallet",
-      desc: "",
-      descColor: "#869198"
-    },
-    { title: "抖客收益", path: "/pages/cpsBenefit/index", icon: "folder" },
-    { title: "推送管理", path: "/pages/pushManage/index", icon: "userPush" },
-    { title: "赏金记录", path: "/pages/rewardRecord/index", icon: "record" }
-  ],
-  [
-    {
-      title: "我的关注",
+      title: "我的收藏",
       path: "/pages/myCollection/index",
       icon: "userCollect"
-    },
-    { title: "抖音号管理", path: "/pages/dyhManage/index", icon: "userDy" },
-    { title: "我的橱窗", path: "/pages/myShopwindow/index", icon: "userStore" },
-    { title: "货源管理", path: "/pages/channelManage/index", icon: "userTz" }
+    }
   ],
   [
     {
@@ -106,24 +93,11 @@ watch(token, () => {
 </script>
 
 <template>
-  <view
-    class="mine"
-    :style="{
-      backgroundSize: '100vw 520rpx',
-      backgroundRepeat: 'no-repeat'
-    }"
-  >
-    <view class="user-wrapper">
-      <text class="nickname ellipsis">
-        {{ token ? user.info?.nick_name : "未登录" }}
-      </text>
-      <view class="edit-info-btn" @click="toLoginOrEditInfo">
-        {{ token ? "编辑资料" : "立即登录" }}
-      </view>
-    </view>
+  <view class="mine">
+    <UserCenterCard />
 
     <!-- 我的订单 -->
-    <view class="sample-block">
+    <view class="order-section">
       <view class="block-header">
         <view class="block-title"> 我的订单 </view>
         <view class="more-btn" @click="toSampleOrder">
