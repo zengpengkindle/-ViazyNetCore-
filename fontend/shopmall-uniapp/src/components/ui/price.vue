@@ -3,9 +3,16 @@
     <view
       v-if="type === 'delthrough'"
       class="line"
-      :style="{ height: addUnit(lineThroughWidth) }"
+      :style="{
+        height: addUnit(lineThroughWidth)
+      }"
     />
-    <view class="pprice">
+    <view
+      class="pprice"
+      :style="{
+        fontWeight: bold ? 600 : 500
+      }"
+    >
       <view class="symbol symbol-class">{{ symbol }}</view>
       <view class="integer inline">{{ prices[0] }}</view>
       <view
@@ -24,6 +31,7 @@ import { onMounted, ref, watch } from "vue";
 export interface PriceProps {
   priceUnit: string;
   price: string | number;
+  bold: boolean;
   type: "main" | "lighter" | "mini" | "del" | "delthrough" | string;
   symbol: string;
   fill: boolean;
@@ -32,7 +40,8 @@ export interface PriceProps {
 }
 const props = withDefaults(defineProps<PriceProps>(), {
   type: "main",
-  priceUnit: "yuan"
+  priceUnit: "yuan",
+  bold: false
 });
 
 const REGEXP = /^\d+(\.\d+)?$/;

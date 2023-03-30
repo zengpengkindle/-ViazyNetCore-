@@ -10,6 +10,8 @@
       scroll-x="true"
       scroll-y="false"
       style="flex: 1; white-space: nowrap"
+      :scroll-left="scrollLeft"
+      scroll-with-animation
     >
       <view
         :id="id"
@@ -26,6 +28,7 @@
         >
           <x-icon
             :key="item.id"
+            :active="index == currentIndex"
             class="image-tab-item"
             :url="item.image"
             width="90"
@@ -38,12 +41,16 @@
         </view>
       </view>
     </scroll-view>
-    <view class="image-tabs-more" @click="showU"> 更多</view>
-    <u-popup v-model="show" mode="top" closeable>
-      <view class="popup-header">全部分类</view>
+    <view class="image-tabs-more" @click="showU">
+      <view class="image-tabs-more-content">
+        更多<u-icon name="list-dot" />
+      </view>
+    </view>
+    <u-popup v-model="show" mode="top" closeable :border-radius="18">
+      <view class="image-tabs-popup-header">全部分类</view>
       <view
         v-for="(item, index) in list"
-        :id="'icon-tab-item-' + index"
+        :id="'image-tab-item-' + index"
         :key="index"
         :style="tabItemStyle(index)"
         @click="clickTab(index)"
@@ -51,6 +58,7 @@
         <x-icon
           :key="item.id"
           class="image-tab-item"
+          :active="index == currentIndex"
           :url="item.image"
           width="90"
           height="90"
@@ -73,7 +81,8 @@ import {
   getCurrentInstance,
   type Ref,
   type CSSProperties,
-  onMounted
+  onMounted,
+  onBeforeMount
 } from "vue";
 import guid from "../utils/guid";
 
@@ -98,12 +107,11 @@ const props = withDefaults(defineProps<IConTabsProps>(), {
   height: 130,
   fontSize: 30,
   duration: 0.5,
-  bgColor: "#ffffff",
   gutter: 12
 });
 // tab的样式
 const tabItemStyle: (i: number) => CSSProperties = (index: number) => {
-  const style = {
+  const style: CSSProperties = {
     "line-height": props.height + "rpx",
     "font-size": props.fontSize + "rpx",
     "transition-duration": `${props.duration}s`,
@@ -131,6 +139,7 @@ watch(
 watch(
   () => props.modelValue,
   nval => {
+    console.log("modelValue");
     currentIndex.value = nval;
     scrollByIndex();
   }
@@ -151,8 +160,9 @@ const scrollLeft = ref(0);
 const scrollBarLeft = ref(0);
 const barFirstTimeMove = ref(true);
 function scrollByIndex() {
+  console.log("tabQueryInfo", tabQueryInfo.value);
   // 当前活动tab的布局信息，有tab菜单的width和left(为元素左边界到父元素左边界的距离)等信息
-  const tabInfo = tabQueryInfo[currentIndex.value];
+  const tabInfo = tabQueryInfo.value[currentIndex.value];
   if (!tabInfo) return;
   // 活动tab的宽度
   const tabWidth = tabInfo.width;
@@ -161,6 +171,7 @@ function scrollByIndex() {
   // 将活动的tabs-item移动到屏幕正中间，实际上是对scroll-view的移动
   const m_scrollLeft = offsetLeft - (componentWidth.value - tabWidth) / 2;
   scrollLeft.value = m_scrollLeft < 0 ? 0 : m_scrollLeft;
+  console.log("scrollLeft", scrollLeft.value);
   // 当前活动item的中点点到左边的距离减去滑块宽度的一半，即可得到滑块所需的移动距离
   const left = tabInfo.left + tabInfo.width / 2 - parentLeft.value;
   // 计算当前活跃item到组件左边的距离
@@ -173,23 +184,40 @@ function scrollByIndex() {
     }, 100);
   }
 }
+
 const id = ref("");
 const init = async () => {
-  const tabRect = await instance.appContext.config.globalProperties.$u.getRect(
-    "#" + id.value
-  );
+  const tabRect = await GetRect("#" + id.value);
+  console.log("tabRect", tabRect);
   parentLeft.value = tabRect.left;
   componentWidth.value = tabRect.width;
   getTabRect();
 };
 const instance = getCurrentInstance();
+function GetRect(selector, all = null): any {
+  return new Promise(resolve => {
+    uni
+      .createSelectorQuery()
+      .in(instance)
+      [all ? "selectAll" : "select"](selector)
+      .boundingClientRect(rect => {
+        if (all && Array.isArray(rect) && rect.length) {
+          resolve(rect);
+        }
+        if (!all && rect) {
+          resolve(rect);
+        }
+      })
+      .exec();
+  });
+}
 function getTabRect() {
   // 创建节点查询
   const query = uni.createSelectorQuery().in(instance);
   // 历遍所有tab，这里是执行了查询，最终使用exec()会一次性返回查询的数组结果
   for (let i = 0; i < props.list.length; i++) {
     // 只要size和rect两个参数
-    query.select(`#u-tab-item-${i}`).fields(
+    query.select(`#image-tab-item-${i}`).fields(
       {
         size: true,
         rect: true
@@ -201,13 +229,18 @@ function getTabRect() {
   query.exec(
     function (res) {
       tabQueryInfo.value = res;
+      console.log("query", res);
       // 初始化滚动条和移动bar的位置
       scrollByIndex();
     }.bind(instance)
   );
 }
-onMounted(() => {
+onBeforeMount(() => {
   id.value = guid();
+});
+onMounted(() => {
+  currentIndex.value = props.modelValue;
+  nextTick(() => init());
 });
 const show = ref(false);
 const showU = () => {
@@ -218,18 +251,30 @@ const showU = () => {
 .image-tabs {
   position: relative;
 }
+.image-tabs {
+  background: linear-gradient(to bottom, #f8f8f8, #d5e2fd, #71bdff);
+}
+.image-tabs-more {
+  background: linear-gradient(to bottom, #f8f8f8, #c2d5fd, #71bdff);
+}
 .image-tabs-more {
   position: absolute;
-  padding: 10rpx;
-  width: 50rpx;
+  width: 70rpx;
   height: 100%;
   top: 0;
   right: 0;
   font-size: 26rpx;
   text-align: center;
   overflow: hidden;
-  background-color: #ffffff;
+  .image-tabs-more-content {
+    position: absolute;
+    width: 100%;
+    padding: 10rpx 15rpx;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
+
 view,
 scroll-view {
   box-sizing: border-box;
@@ -249,7 +294,6 @@ scroll-view {
 
 .image-tabs-scroll-box {
   position: relative;
-  background: linear-gradient(to bottom, #ffffff, #b6defa, #53aaf6);
   /* #ifdef MP-TOUTIAO */
   white-space: nowrap;
   /* #endif */
@@ -268,6 +312,7 @@ scroll-view ::v-deep ::-webkit-scrollbar {
 
 .image-tabs-view {
   width: 100%;
+  padding-right: 70rpx;
   white-space: nowrap;
   position: relative;
 }
@@ -290,22 +335,15 @@ scroll-view ::v-deep ::-webkit-scrollbar {
   display: flex;
   justify-content: space-between;
 }
-.active {
-  color: #ffffff;
 
-  :deep(image) {
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid var(--sidebar-active-color, $sidebar-active-color);
-  }
-  :deep(text) {
-    color: #ffffff;
-    background-color: var(--sidebar-active-color, $sidebar-active-color);
-  }
-}
-.popup-header {
-  padding: 10rpx 24rpx;
+.image-tabs-popup-header {
+  padding: 24rpx 36rpx;
   font-size: 28rpx;
   font-weight: 600;
+}
+:deep(.u-drawer-content) {
+  border-bottom-left-radius: 24rpx;
+  border-bottom-right-radius: 24rpx;
+  overflow: hidden;
 }
 </style>

@@ -18,6 +18,7 @@
     <Folder Include="EventDatas\Logs\" />
     <Folder Include="EventHandler\" />
     <Folder Include="ShopMall\Extensions\" />
+    <Folder Include="Mapper\" />
   </ItemGroup>
 
 </Project>

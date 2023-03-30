@@ -13,7 +13,6 @@ namespace ViazyNetCore.ShopMall.AppApi
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private string _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
-        private string _imgBaseUrl => $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToString()}";
 
         public ProductCartController(CartService cartService, ILockProvider lockProvider, IHttpContextAccessor httpContextAccessor)
         {
@@ -31,7 +30,7 @@ namespace ViazyNetCore.ShopMall.AppApi
             {
                 for (int j = 0; j < result.Packages[i].Items.Count; j++)
                 {
-                    result.Packages[i].Items[j].ImgUrl = result.Packages[i].Items[j].ImgUrl.Replace("/upload/", _imgBaseUrl + "/upload/");
+                    result.Packages[i].Items[j].ImgUrl = result.Packages[i].Items[j].ImgUrl.ToCdnUrl();
                 }
             }
             return result;

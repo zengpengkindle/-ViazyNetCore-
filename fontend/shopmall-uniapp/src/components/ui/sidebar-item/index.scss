@@ -2,6 +2,7 @@
 .sidebar-item {
   display: block;
   position: relative;
+  text-align: center;
   box-sizing: border-box;
   overflow: hidden;
   user-select: none;
@@ -14,6 +15,7 @@
   &__text {
     position: relative;
     display: inline-block;
+    text-align: center;
     word-break: break-all;
   }
 
@@ -40,9 +42,9 @@
       position: absolute;
       top:0;
       left: 0;
-      transform:translateY(50%) ;
+      transform:translateY(40%) ;
       content: "";
-      height: 50%;
+      height: 60%;
       width: 6rpx;
       // border-left: 3px solid transparent;
       background-color: var(

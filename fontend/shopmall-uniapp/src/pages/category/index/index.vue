@@ -4,7 +4,8 @@
       v-model="catId"
       :list="catLists"
       item-width="150"
-      :gutter="18"
+      :gutter="12"
+      @change="mainTabChange"
     />
     <view class="sidebar-content">
       <scroll-view
@@ -24,33 +25,48 @@
         bindscroll=""
       >
         <sidebar v-model="current" @change="change">
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
-          <sidebar-item title="标签名" />
+          <sidebar-item
+            v-for="item in subItems"
+            :key="item.id"
+            :title="item.text"
+          />
         </sidebar>
       </scroll-view>
-      <view clsss="sub-cat"> ccccc {{ catId }} - {{ current }}</view>
+      <view class="sub-main">
+        <view>ccccc {{ catId }} - {{ current }}</view>
+        <view class="good_box">
+          <u-row gutter="5">
+            <u-col span="4">
+              <!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
+              <u-lazy-load
+                threshold="-150"
+                border-radius="10"
+                :image="productItem.image"
+                :index="productItem.id"
+              />
+              <view v-if="productItem.isRecommend" class="good-tag-recommend2">
+                推荐
+              </view>
+              <view v-if="productItem.isHot" class="good-tag-hot"> 热门 </view>
+            </u-col>
+            <u-col span="8">
+              <view class="good_title-xl u-line-3 u-padding-10">
+                {{ productItem.name }}
+              </view>
+              <view class="good-price u-padding-10">
+                <price
+                  :price="productItem.price"
+                  symbol="¥"
+                  :bold="true"
+                  decimal-smaller
+                  type="lighter"
+                />
+                <price :price="productItem.mktprice" symbol="¥" type="del" />
+              </view>
+            </u-col>
+          </u-row>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -59,15 +75,34 @@
 import Sidebar from "@/components/ui/sidebar/index.vue";
 import ImageTabs from "@/components/ui/image-tabs/index.vue";
 import SidebarItem from "@/components/ui/sidebar-item/index.vue";
-import { ref, type Ref } from "vue";
-const catId = ref(0);
+import ProductCatApi, { type ProductCat } from "@/apis/shopmall/productCat";
+import { onMounted, ref, type Ref } from "vue";
+const catId = ref(5);
 const current: Ref<number> = ref(0);
 interface CatItem {
   id: string;
   image: string;
   text: string;
 }
-const catLists: Array<CatItem> = [
+interface ProductItem {
+  id: string;
+  image: string;
+  name: string;
+  isRecommend: boolean;
+  isHot: boolean;
+  price: number;
+  mktprice: number;
+}
+const productItem: Ref<ProductItem> = ref({
+  id: "pid_1",
+  image: "/static/images/cat/img-1.webp",
+  name: "商品名称[商品名称]",
+  isRecommend: false,
+  isHot: true,
+  price: 15.99,
+  mktprice: 29.99
+});
+const catLists: Ref<Array<CatItem>> = ref([
   { id: "1", image: "/static/images/cat/img-1.webp", text: "男服饰" },
   { id: "2", image: "/static/images/cat/img-9.webp", text: "女装" },
   { id: "3", image: "/static/images/cat/muy-3b.webp", text: "儿童磨绒" },
@@ -76,12 +111,42 @@ const catLists: Array<CatItem> = [
   { id: "6", image: "/static/images/cat/muy-3b.webp", text: "服饰" },
   { id: "6", image: "/static/images/cat/img-1.webp", text: "服饰" },
   { id: "7", image: "/static/images/cat/img-9.webp", text: "服饰" },
+  { id: "8", image: "/static/images/cat/muy-3b.webp", text: "服饰" },
   { id: "8", image: "/static/images/cat/muy-3b.webp", text: "服饰" }
-];
+]);
 function change(index: number) {
   // current.value = index;
   console.log(index);
 }
+const subItems: Ref<Array<CatItem>> = ref([]);
+function mainTabChange() {
+  const selected = catLists.value[catId.value];
+  subItems.value = [];
+  cats.value.forEach(cat => {
+    if (cat.parentId == selected.id) {
+      subItems.value.push({
+        id: cat.id,
+        image: cat.image || "/static/images/cat/img-1.webp",
+        text: cat.name
+      });
+    }
+  });
+}
+const cats: Ref<Array<ProductCat>> = ref();
+onMounted(async () => {
+  cats.value = await ProductCatApi.getCats();
+  catLists.value = [];
+  cats.value.forEach(cat => {
+    if (cat.isParent) {
+      catLists.value.push({
+        id: cat.id,
+        image: cat.image || "/static/images/cat/img-1.webp",
+        text: cat.name
+      });
+    }
+  });
+  mainTabChange();
+});
 </script>
 
 <style lang="scss">
@@ -98,8 +163,81 @@ function change(index: number) {
     flex: 0;
   }
 
-  .sub-cat {
+  .sub-main {
     flex: 1;
+  }
+}
+</style>
+<style lang="scss" scoped>
+.good_box {
+  border-radius: 8px;
+  margin: 3px;
+  background-color: #ffffff;
+  padding: 5px;
+  position: relative;
+  width: calc(100% - 6px);
+  .good_title {
+    font-size: 26rpx;
+    margin-top: 5px;
+    color: $u-main-color;
+  }
+  .good_title-xl {
+    font-size: 28rpx;
+    margin-top: 5px;
+    color: $u-main-color;
+  }
+  .good-tag-hot {
+    display: flex;
+    margin-top: 5px;
+    position: absolute;
+    top: 15rpx;
+    left: 15rpx;
+    background-color: $u-type-error;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 4rpx 14rpx;
+    border-radius: 50rpx;
+    font-size: 20rpx;
+    line-height: 1;
+  }
+  .good-tag-recommend {
+    display: flex;
+    margin-top: 5px;
+    position: absolute;
+    top: 15rpx;
+    right: 15rpx;
+    background-color: $u-type-primary;
+    color: #ffffff;
+    margin-left: 10px;
+    border-radius: 50rpx;
+    line-height: 1;
+    padding: 4rpx 14rpx;
+    display: flex;
+    align-items: center;
+    border-radius: 50rpx;
+    font-size: 20rpx;
+  }
+  .good-tag-recommend2 {
+    display: flex;
+    margin-top: 5px;
+    position: absolute;
+    bottom: 15rpx;
+    left: 15rpx;
+    background-color: $u-type-primary;
+    color: #ffffff;
+    border-radius: 50rpx;
+    line-height: 1;
+    padding: 4rpx 14rpx;
+    display: flex;
+    align-items: center;
+    border-radius: 50rpx;
+    font-size: 20rpx;
+  }
+  .good-price {
+    font-size: 30rpx;
+    color: $u-type-error;
+    margin-top: 5px;
   }
 }
 </style>

@@ -31,7 +31,10 @@ var ServiceAssemblies = new Assembly?[]
 {
     RuntimeHelper.GetAssembly("ViazyNetCore.Modules")
 };
-
+var autoMapperIoc = new Assembly?[] {
+        RuntimeHelper.GetAssembly("ViazyNetCore.Modules"),
+        RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.AppApi")
+    };
 builder.Services.AddJwtAuthentication(option =>
 {
     var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
@@ -41,7 +44,10 @@ builder.Services.AddJwtAuthentication(option =>
     option.AppName = optionJson.AppName;
     option.UseDistributedCache = true;
 });
-
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AllowNullCollections = true;
+}, autoMapperIoc);
 builder.Services.AddSingleton(new AppSettingsHelper());
 
 builder.Services.AddControllers(options =>

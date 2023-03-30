@@ -36,6 +36,8 @@ namespace ViazyNetCore.Modules.ShopMall
 
             if (args.TitleLike.IsNotNull())
                 table = table.Where(t => t.Title.Contains(args.TitleLike));
+            if (args.CatId.IsNotNull())
+                table = table.Where(t => t.CatId == args.CatId);
 
             if (args.CatName.IsNotNull())
                 table = table.Where(t => t.CatName == args.CatName);

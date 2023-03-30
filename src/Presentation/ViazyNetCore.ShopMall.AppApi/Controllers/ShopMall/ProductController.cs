@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Providers;
 using Microsoft.AspNetCore.Mvc;
+using ViazyNetCore.Modules.ShopMall;
 
 namespace ViazyNetCore.ShopMall.AppApi
 {

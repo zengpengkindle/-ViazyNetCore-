@@ -1,14 +1,18 @@
 <template>
-  <view :style="customStyle" class="u-icon" :class="['u-icon--' + labelPos]">
+  <view
+    :style="customStyle"
+    class="u-icon"
+    :class="['u-icon--' + labelPos, active ? 'active' : '']"
+  >
     <image class="u-icon__img" :src="url" :mode="imgMode" :style="imgStyle" />
-    <text
+    <view
       v-if="label !== '' && label !== null"
       :style="decimalIconStyle"
       :class="decimalIconClass"
       :hover-class="hoverClass"
       class="u-icon__label"
       >{{ label }}
-    </text>
+    </view>
   </view>
 </template>
 <script lang="ts" setup>
@@ -20,6 +24,8 @@ export interface IconProps {
   size?: number | string;
   bold?: boolean;
   hoverClass?: string;
+  active: boolean;
+  activeLableStyle?: CSSProperties;
   label?: string | number;
   labelPos?: "right" | "top" | "bottom";
   labelSize?: number | string;
@@ -40,7 +46,8 @@ const props = withDefaults(defineProps<IconProps>(), {
   marginTop: 6,
   imgMode: "widthFix",
   width: "auto",
-  percent: 50
+  percent: 50,
+  active: false
 });
 defineComponent({
   name: "Icon"
@@ -48,12 +55,14 @@ defineComponent({
 const decimalIconStyle = computed(() => {
   let style: CSSProperties = {};
   style = {
+    overflow: "hidden",
     fontSize:
       props.labelSize == "inherit" ? "inherit" : addUnit(props.labelSize),
     fontWeight: props.bold ? "bold" : "normal",
     // 某些特殊情况需要设置一个到顶部的距离，才能更好的垂直居中
     top: addUnit(props.top)
   };
+  style.width = props.width ? addUnit(110) : addUnit(110);
   // 非主题色值时，才当作颜色值
   style.color = props.color;
   return style;
@@ -115,14 +124,30 @@ const imgStyle = computed(() => {
   }
 
   &__label {
-    display: inline-block;
+    display: block;
+    overflow: hidden;
+    width: 90rpx;
     margin-top: 10rpx;
-    padding: 3rpx;
-    border-radius: 7px;
+    padding: 4rpx 8rpx;
+    border-radius: 6px;
     text-align: center;
     line-height: 1;
   }
 }
+.active {
+  color: #ffffff;
+
+  .u-icon__img {
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--sidebar-active-color, $sidebar-active-color);
+  }
+  .u-icon__label {
+    color: #ffffff;
+    background-color: var(--sidebar-active-color, $sidebar-active-color);
+  }
+}
+
 .active .u-icon__label {
   border-radius: 7px;
   color: #ffffff;

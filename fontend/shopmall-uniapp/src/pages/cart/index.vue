@@ -30,11 +30,7 @@
               class="trade-card-items"
             >
               <view class="trade-card-radio">
-                <u-checkbox
-                  v-model="item.check"
-                  shape="circle"
-                  @change="checkItem(item, shop)"
-                />
+                <u-checkbox v-model="item.check" shape="circle" />
               </view>
               <view class="trade-card-item">
                 <view class="trade-card-item_image">
@@ -49,7 +45,14 @@
                   </view>
                   <view class="trade-card-bottom">
                     <view class="trade-card-price">
-                      ￥<text>{{ item.price }}</text>
+                      <price
+                        :price="item.price"
+                        symbol="¥"
+                        :bold="true"
+                        decimal-smaller
+                        type="lighter"
+                      />
+                      <!-- <price :price="item.mktprice" symbol="¥" type="del" /> -->
                     </view>
                     <u-number-box v-model="item.num" :min="1" integer />
                   </view>
@@ -60,16 +63,24 @@
         </view>
       </view>
     </view>
+    <cart-bar
+      v-model="allcheck"
+      :total-discount-amount="0"
+      :total-goods-num="totalCount"
+      :fixed="true"
+      :total-amount="totalAmount"
+      @handle-select-all="checkAll"
+    />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, onMounted } from "vue";
+import { ref, type Ref, onMounted, computed, nextTick, watch } from "vue";
 import ShopCartApi, {
   type ShoppingCart,
-  type ShoppingCartPackage,
-  type ShoppingCartProduct
+  type ShoppingCartPackage
 } from "@/apis/shopmall/productCart";
+import CartBar from "./components/cart-bar/index.vue";
 onMounted(() => {
   getCarts();
 });
@@ -82,39 +93,76 @@ const carts: Ref<ShoppingCart> = ref({
   propertyValues: "",
   packages: []
 });
-
-function checkShop(shop: ShoppingCartPackage) {
-  if (shop.check) {
-    shop.items.forEach(item => {
-      item.check = shop.check;
+const totalCount = computed(() => {
+  let count = 0;
+  carts.value.packages.forEach(pack => {
+    pack.items.forEach(item => {
+      if (item.check) {
+        count += item.num;
+      }
     });
-  } else {
+  });
+  return count;
+});
+const totalAmount = computed(() => {
+  let amount = 0;
+  carts.value.packages.forEach(pack => {
+    pack.items.forEach(item => {
+      if (item.check) {
+        amount += item.price * item.num;
+      }
+    });
+  });
+  return amount;
+});
+watch(
+  () => carts.value,
+  new_carts => {
     let check = true;
-    shop.items.forEach(item => {
-      if (!item.check) check = false;
-    });
-    if (check) {
-      shop.items.forEach(item => {
-        item.check = false;
+    new_carts.packages.forEach(pack => {
+      let shopcheck = true;
+      pack.items.forEach(item => {
+        check &&= item.check;
+        shopcheck &&= item.check;
       });
-    }
+      pack.check = shopcheck;
+      allcheck.value = check;
+    });
+  },
+  { deep: true }
+);
+const allcheck = ref(false);
+watch(
+  () => allcheck.value,
+  () => {
+    checkAll();
   }
+);
+function checkAll() {
+  carts.value.packages.forEach(pack => {
+    pack.check = allcheck.value;
+    checkShop(pack);
+  });
 }
 
-function checkItem(item: ShoppingCartProduct, shop: ShoppingCartPackage) {
-  if (item.check) {
-    if (shop.items.length == 1) {
-      shop.check = true;
+function checkShop(shop: ShoppingCartPackage) {
+  nextTick(() => {
+    if (shop.check) {
+      shop.items.forEach(item => {
+        item.check = shop.check;
+      });
     } else {
       let check = true;
       shop.items.forEach(item => {
         if (!item.check) check = false;
       });
-      shop.check = check;
+      if (check) {
+        shop.items.forEach(item => {
+          item.check = false;
+        });
+      }
     }
-  } else {
-    shop.check = false;
-  }
+  });
 }
 </script>
 

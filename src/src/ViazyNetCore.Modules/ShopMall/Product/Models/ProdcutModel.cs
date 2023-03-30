@@ -399,5 +399,6 @@ namespace ViazyNetCore.Modules.ShopMall
         public ProductStatus? Status { get; set; }
 
         public DateTime[] CreateTimes { get; set; }
+        public string CatId { get; set; }
     }
 }

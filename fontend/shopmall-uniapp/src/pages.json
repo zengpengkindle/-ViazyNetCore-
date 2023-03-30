@@ -12,6 +12,7 @@
       "path": "pages/category/index/index",
       "style": {
         "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#F8F8F8",
         "navigationBarTitleText": "分类"
       }
     },
