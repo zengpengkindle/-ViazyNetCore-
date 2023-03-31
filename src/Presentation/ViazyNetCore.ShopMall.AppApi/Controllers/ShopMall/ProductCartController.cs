@@ -31,6 +31,7 @@ namespace ViazyNetCore.ShopMall.AppApi
                 for (int j = 0; j < result.Packages[i].Items.Count; j++)
                 {
                     result.Packages[i].Items[j].ImgUrl = result.Packages[i].Items[j].ImgUrl.ToCdnUrl();
+                    result.Packages[i].Items[j].Num = 1;
                 }
             }
             return result;

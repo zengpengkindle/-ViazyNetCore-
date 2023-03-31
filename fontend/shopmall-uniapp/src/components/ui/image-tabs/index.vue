@@ -279,7 +279,11 @@ view,
 scroll-view {
   box-sizing: border-box;
 }
-
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
 /* #ifndef APP-NVUE */
 ::-webkit-scrollbar,
 ::-webkit-scrollbar,

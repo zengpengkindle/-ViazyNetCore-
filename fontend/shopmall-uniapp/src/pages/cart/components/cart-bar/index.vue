@@ -71,7 +71,7 @@ const emits = defineEmits([
 ]);
 const handleSelectAll = () => {
   nextTick(() => {
-    emits("update:modelValue", !props.modelValue);
+    emits("update:modelValue", allcheck.value);
     emits("handleSelectAll");
   });
 };

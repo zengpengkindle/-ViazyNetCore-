@@ -154,7 +154,11 @@ onMounted(async () => {
 }
 .sidebar-content {
   display: flex;
-
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
+  }
   .left {
     flex: 0;
   }

@@ -11,8 +11,19 @@ import {
 import props from "./props";
 import Renderer from "../renderer";
 import { isFunction, useDark } from "@pureadmin/utils";
-import { PureTableProps, TableColumnScope } from "../../types";
-import { ElTable, ElTableColumn, ElPagination } from "element-plus";
+import {
+  XTableProps,
+  TableColumnScope,
+  TableColumnRenderer
+} from "../../types";
+import DecimalColumn from "../column/decimals";
+import {
+  ElTable,
+  ElTableColumn,
+  ElPagination,
+  dayjs,
+  TableColumnCtx
+} from "element-plus";
 
 export default defineComponent({
   name: "PureTable",
@@ -49,7 +60,7 @@ export default defineComponent({
       headerAlign,
       showOverflowTooltip,
       pagination
-    } = toRefs(props) as unknown as PureTableProps;
+    } = toRefs(props) as unknown as XTableProps;
 
     const convertLoadingConfig = computed(() => {
       if (!unref(loadingConfig)) return;
@@ -106,14 +117,16 @@ export default defineComponent({
 
     const renderColumns = (columns: Record<string, any>, index: number) => {
       const {
-        cellRenderer,
         slot,
         headerRenderer,
         hide,
+        formatter,
+        valueType,
         children,
         prop,
         ...args
       } = columns;
+      let { cellRenderer } = columns;
 
       const defaultSlots = {
         default: (scope: TableColumnScope) => {
@@ -128,6 +141,24 @@ export default defineComponent({
                 })}
               ></Renderer>
             );
+          } else if (valueType && formatter === null) {
+            if (valueType === "amount") {
+              cellRenderer = ({ row, column }: TableColumnRenderer) => (
+                <DecimalColumn value={row[column.prop as string]} />
+              );
+              return (
+                <Renderer
+                  render={cellRenderer}
+                  params={Object.assign(scope, {
+                    index: scope.$index,
+                    props,
+                    attrs
+                  })}
+                ></Renderer>
+              );
+            } else if (valueType === "short") {
+              return "";
+            }
           } else if (slot) {
             return slots?.[slot]?.(
               Object.assign(scope, {

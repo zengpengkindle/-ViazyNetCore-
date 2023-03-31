@@ -9,7 +9,7 @@ import {
   TableColumns,
   TableColumn
 } from "./table-column";
-import { TableProps, PureTableProps } from "./table-props";
+import { TableProps, XTableProps } from "./table-props";
 import { LoadingConfig } from "./loading-config";
 import { PaginationProps } from "./pagination";
 
@@ -27,7 +27,7 @@ export type {
   TableColumnFixed,
   TableColumnType,
   PaginationProps,
-  PureTableProps,
+  XTableProps,
   LoadingConfig,
   TableColumns,
   TableColumn,

@@ -57,8 +57,6 @@ namespace ViazyNetCore.Modules.ShopMall
 
                 if (product.Status != ProductStatus.OnSale) value.Status = ComStatus.Disabled;
 
-
-
                 if (item.SkuId.IsNull())
                 {
                     var sku = await this._engine.Select<ProductSku>().Where(t => t.Id == item.SkuId && t.ProductId == item.ProductId).FirstAsync();
@@ -71,7 +69,6 @@ namespace ViazyNetCore.Modules.ShopMall
                         value.Price = sku.Price;
 
                 }
-
 
                 if (cart.Packages.Any(t => t.ShopId == item.ShopId))
                 {
@@ -91,7 +88,6 @@ namespace ViazyNetCore.Modules.ShopMall
 
                     cart.Packages.Add(pack);
                 }
-
             }
             if (_getCartHanlder != null)
             {

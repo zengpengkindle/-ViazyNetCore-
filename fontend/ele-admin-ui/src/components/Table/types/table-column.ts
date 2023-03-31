@@ -1,5 +1,5 @@
 import type { TableColumnCtx } from "element-plus";
-import { PureTableProps, Align } from "./index";
+import { XTableProps, Align } from "./index";
 import type { VNode } from "vue";
 
 export type TableColumnSortOrders = "ascending" | "descending" | null;
@@ -32,7 +32,7 @@ export interface TableColumnScope {
 
 export interface TableColumnRenderer extends TableColumnScope {
   index: number;
-  props: PureTableProps;
+  props: XTableProps;
   attrs: any;
 }
 
@@ -111,6 +111,8 @@ export interface TableColumns extends TableColumn {
   hide?: CallableFunction;
   /** 自定义插槽 */
   slot?: string;
+  /** 扩展字段类型 `time`, `short`, `amount` */
+  valueType?: "time" | "short" | "amount" | null;
   /** 多级表头，内部实现原理：嵌套 `el-table-column` */
   children?: Array<TableColumns>;
   /** 自定义单元格渲染器 */

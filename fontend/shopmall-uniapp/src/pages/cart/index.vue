@@ -69,7 +69,6 @@
       :total-goods-num="totalCount"
       :fixed="true"
       :total-amount="totalAmount"
-      @handle-select-all="checkAll"
     />
   </view>
 </template>
@@ -125,22 +124,32 @@ watch(
         check &&= item.check;
         shopcheck &&= item.check;
       });
-      pack.check = shopcheck;
-      allcheck.value = check;
+      if (!updateCheck.value) {
+        pack.check = shopcheck;
+        allcheck.value = check;
+      }
     });
   },
   { deep: true }
 );
 const allcheck = ref(false);
+const updateCheck = ref(false);
 watch(
   () => allcheck.value,
-  () => {
-    checkAll();
+  nval => {
+    if (updateCheck.value) return;
+    updateCheck.value = true;
+    nextTick(() => {
+      checkAll(nval);
+      nextTick(() => {
+        updateCheck.value = false;
+      });
+    });
   }
 );
-function checkAll() {
+function checkAll(val: boolean) {
   carts.value.packages.forEach(pack => {
-    pack.check = allcheck.value;
+    pack.check = val;
     checkShop(pack);
   });
 }

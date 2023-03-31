@@ -90,7 +90,7 @@ builder.Services.AddSwagger(option =>
 
 var app = builder.Build();
 app.UseFreeSql();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 //app.UseDynamicController();
 app.UseStaticFiles();
 
