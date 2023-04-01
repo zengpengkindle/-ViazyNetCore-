@@ -9,6 +9,6 @@ namespace ViazyNetCore.Modules.ShopMall.Repositories
     [Injection]
     public interface IProductCatRepository : IBaseRepository<ProductCat, string>
     {
-
+        Task<(long total, List<ProductCat>)> FindAllAsync(Pagination args);
     }
 }

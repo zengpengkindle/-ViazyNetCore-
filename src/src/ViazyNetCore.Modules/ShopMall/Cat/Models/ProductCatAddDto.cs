@@ -1,10 +1,12 @@
-namespace ViazyNetCore.Model
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ViazyNetCore.Modules.ShopMall.Models
 {
-    /// <summary>
-    /// 表示一个商品分类。
-    /// </summary>
-    [Table(Name = "ShopMall.ProductCat")]
-    public partial class ProductCat : EntityBase<string>
+    public class ProductCatAddDto
     {
         /// <summary>
         /// 设置或获取一个值，表示是否在前台隐藏。
@@ -50,8 +52,5 @@ namespace ViazyNetCore.Model
         /// 设置或获取一个值，表示扩展数据。
         /// </summary>
         public string Exdata { get; set; }
-
-        [Column(CanUpdate = false)]
-        public DateTime CreateTime { get; set; }
     }
 }

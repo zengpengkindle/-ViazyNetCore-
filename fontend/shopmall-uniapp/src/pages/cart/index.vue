@@ -6,6 +6,9 @@
       backgroundRepeat: 'no-repeat'
     }"
   >
+  <u-empty :show="carts.num==0"
+        mode="car"
+        icon="http://cdn.uviewui.com/uview/empty/car.png"/>
     <view v-if="carts.num" class="cart-main trade-main">
       <view class="container">
         <view

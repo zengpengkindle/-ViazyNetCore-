@@ -40,13 +40,13 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<List<SimpleLogisticsCompany>> FindWlList()
+        public async Task<List<SimpleLogisticsCompanyRes>> FindWlList()
         {
             var table = await this._logisticsService.GetLogisticsCompanys();
 
             var query = from r in table
                         orderby r.Name
-                        select new SimpleLogisticsCompany
+                        select new SimpleLogisticsCompanyRes
                         {
                             Id = r.Id,
                             Name = r.Name,
@@ -56,7 +56,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<DeliverFail> DeliverTrades(BatchDeliveryModel model)
+        public async Task<DeliverFailRes> DeliverTrades(BatchDeliveryRes model)
         {
             int Fail = 0;
             var FailIds = new List<string>();
@@ -76,11 +76,11 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
                     FailIds.Add($"订单{model.TradeIds[i]}:" + ex.Message);
                 }
             }
-            return new DeliverFail { Fail = Fail, FailIds = FailIds };
+            return new DeliverFailRes { Fail = Fail, FailIds = FailIds };
         }
 
         [HttpPost]
-        public async Task ModifyTradeAddress(TradeAddressRequest model)
+        public async Task ModifyTradeAddress(TradeAddressReq model)
         {
             await this._tradeService.TradeAddressChangeAsync(model.Id, model.ReceiverName, model.ReceiverMobile, model.ReceiverProvince, model.ReceiverCity, model.ReceiverDistrict, model.ReceiverDetail);
         }

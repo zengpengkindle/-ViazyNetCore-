@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Manage.WebApi.ViewModel
 {
-    public class DeliverFail
+    public class CatRes : CatEditReq
     {
-        public int Fail { get; set; }
-        public List<string> FailIds { get; set; }
     }
 }

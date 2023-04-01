@@ -101,7 +101,7 @@ namespace ViazyNetCore
         /// <summary>
         /// 0降序 1升序
         /// </summary>
-        public int Sort { get; set; }
+        public int Sort { get; set; } = 0;
 
         /// <summary>
         /// 排序字段

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Manage.WebApi.Controllers
 {
-    public class SimpleLogisticsCompany
+    public class SimpleLogisticsCompanyRes
     {
         public string Id { get; set; }
         public string Name { get; set; }

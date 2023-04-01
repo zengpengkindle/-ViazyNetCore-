@@ -354,9 +354,8 @@ namespace ViazyNetCore.Modules.ShopMall
                             }
                             else
                             {
-                                await _engine.Update<ProductSku>().SetDto(new
+                                await _engine.Update<ProductSku>().Where(p => p.Id == skuItem.Id).SetDto(new
                                 {
-                                    skuItem.Id,
                                     skuItem.Cost,
                                     skuItem.Price
                                 }).ExecuteAffrowsAsync();
@@ -364,27 +363,28 @@ namespace ViazyNetCore.Modules.ShopMall
                             product.Price = max;
                         }
                     }
-                    await _engine.Update<Product>().SetDto(new
-                    {
-                        product.Id,
-                        product.Title,
-                        product.SubTitle,
-                        product.Keywords,
-                        product.Description,
-                        product.Cost,
-                        product.Price,
-                        product.Freight,
-                        product.FreightStep,
-                        product.FreightValue,
-                        product.RefundType,
-                        product.Image,
-                        product.SkuTree,
-                        product.SubImage,
-                        product.Detail,
-                        product.ModifyTime,
-                        product.SearchContent,
-                        product.IsHidden
-                    }).ExecuteAffrowsAsync();
+                    await _engine.Update<Product>()
+                        .Where(p => p.Id == product.Id)
+                        .SetDto(new
+                        {
+                            product.Title,
+                            product.SubTitle,
+                            product.Keywords,
+                            product.Description,
+                            product.Cost,
+                            product.Price,
+                            product.Freight,
+                            product.FreightStep,
+                            product.FreightValue,
+                            product.RefundType,
+                            product.Image,
+                            product.SkuTree,
+                            product.SubImage,
+                            product.Detail,
+                            product.ModifyTime,
+                            product.SearchContent,
+                            product.IsHidden
+                        }).ExecuteAffrowsAsync();
                     if (this._editProductHanlders != null)
                     {
                         foreach (var handler in this._editProductHanlders)
@@ -429,13 +429,6 @@ namespace ViazyNetCore.Modules.ShopMall
             return this._engine.Select<ProductBrand>().ToListAsync();
         }
 
-        public Task<List<ProductCat>> GetProductCats()
-        {
-            return this._engine.Select<ProductCat>().Where(t => t.Status == ComStatus.Enabled).ToListAsync();
-        }
-
-
-
         #region 商品管理
         /// <summary>
         /// 获取可编辑的商品数据
@@ -455,17 +448,13 @@ namespace ViazyNetCore.Modules.ShopMall
             }
             var result = product.CopyTo<ProductManageModel>();
 
-
             var stock = await _stockService.FindProductStock(id);
-
             result.Stock = stock;
-
             result.Skus = new ProductSkuManageModel();
 
             if (product.OpenSpec)
             {
                 result.Skus.Tree = JSON.Parse<List<SkuTree>>(product.SkuTree);
-
                 result.Skus.List = await this._engine.Select<ProductSku>().Where(s => s.ProductId == id)
                                           .WithTempQuery(s => new SkuModel
                                           {

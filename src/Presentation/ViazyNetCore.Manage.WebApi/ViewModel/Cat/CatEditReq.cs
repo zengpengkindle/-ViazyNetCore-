@@ -1,11 +1,15 @@
-namespace ViazyNetCore.Model
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ViazyNetCore.Manage.WebApi.ViewModel
 {
-    /// <summary>
-    /// 表示一个商品分类。
-    /// </summary>
-    [Table(Name = "ShopMall.ProductCat")]
-    public partial class ProductCat : EntityBase<string>
+    public class CatEditReq
     {
+        public string Id { get; set; }
+
         /// <summary>
         /// 设置或获取一个值，表示是否在前台隐藏。
         /// </summary>
@@ -50,8 +54,5 @@ namespace ViazyNetCore.Model
         /// 设置或获取一个值，表示扩展数据。
         /// </summary>
         public string Exdata { get; set; }
-
-        [Column(CanUpdate = false)]
-        public DateTime CreateTime { get; set; }
     }
 }

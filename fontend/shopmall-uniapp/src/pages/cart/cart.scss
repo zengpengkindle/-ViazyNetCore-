@@ -1,5 +1,5 @@
 .content {
-  height: 100vh;
+  min-height: calc(100vh-50px);
   box-sizing: content-box;
   padding: 20rpx;
   background: #eee;
@@ -10,9 +10,11 @@
   position: relative;
   box-sizing: border-box;
 }
+
 .trade-card-body {
   padding: 12rpx;
 }
+
 .trade-card {
   background: #fff;
   border-radius: 20rpx;
@@ -70,15 +72,18 @@
   border-radius: 12rpx;
   overflow: hidden;
 }
+
 .trade-card-item_content {
   padding: 0 20rpx;
   flex: 1;
 }
+
 .trade-card-head-title {
   font-weight: 500;
   line-height: 1.6;
   font-size: 32rpx;
 }
+
 .trade-card-title {
   max-height: 60rpx;
   font-weight: 500;
@@ -97,6 +102,7 @@
   position: relative;
   min-height: 25px;
 }
+
 .trade-card-bottom .u-numberbox {
   display: block;
   position: absolute;

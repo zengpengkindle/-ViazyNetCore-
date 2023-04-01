@@ -7,7 +7,7 @@ using ViazyNetCore.Modules.ShopMall;
 
 namespace ViazyNetCore.Manage.WebApi.ViewModel
 {
-    public class BatchDeliveryModel
+    public class BatchDeliveryRes
     {
         public string[] TradeIds { get; set; }
         public DeliveryModel Delivery { get; set; }

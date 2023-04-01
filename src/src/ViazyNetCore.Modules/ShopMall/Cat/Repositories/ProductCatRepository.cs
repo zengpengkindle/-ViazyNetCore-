@@ -12,5 +12,11 @@ namespace ViazyNetCore.Modules.ShopMall.Repositories
         public ProductCatRepository(IFreeSql fsql) : base(fsql)
         {
         }
+
+        public async Task<(long total, List<ProductCat>)> FindAllAsync(Pagination args)
+        {
+            var result = await this.Select.OrderByDescending(p => p.CreateTime).ToPageAsync(args);
+            return (result.Total, result.Rows);
+        }
     }
 }

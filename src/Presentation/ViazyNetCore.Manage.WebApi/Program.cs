@@ -32,7 +32,11 @@ var ServiceAssemblies = new Assembly?[]
     RuntimeHelper.GetAssembly("ViazyNetCore.Modules"),
     RuntimeHelper.GetAssembly("ViazyNetCore.Authorization")
 };
-
+var autoMapperIoc = new Assembly?[]
+{
+    RuntimeHelper.GetAssembly("ViazyNetCore.Modules"),
+    RuntimeHelper.GetAssembly("ViazyNetCore.Manage.WebApi")
+};
 builder.Services.AddJwtAuthentication(option =>
 {
     var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
@@ -42,7 +46,10 @@ builder.Services.AddJwtAuthentication(option =>
     option.AppName = optionJson.AppName;
     option.UseDistributedCache = true;
 });
-
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AllowNullCollections = true;
+}, autoMapperIoc);
 builder.Services.AddSingleton(new AppSettingsHelper());
 
 builder.Services.AddControllers(options =>
@@ -80,7 +87,8 @@ builder.Services.AddApiDescriptor(option =>
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
 
-builder.Services.AddLocalStoreProvider(options => {
+builder.Services.AddLocalStoreProvider(options =>
+{
     //options.RequestPath
     options.StoreRootPath = "../files";
     options.RequestPath = "/upload";

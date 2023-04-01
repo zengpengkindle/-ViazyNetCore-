@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Manage.WebApi.ViewModel
 {
-    public class TradeAddressRequest
+    public class TradeAddressReq
     {
         public string Id { get; set; }
         public string ReceiverName { get; set; }
