@@ -9,9 +9,10 @@ namespace ViazyNetCore.ShopMall.AppApi
     public static class ImageCdnExtensions
     {
         private const string IMG_BASEURL = "https://localhost:7277";
-        public static string ToCdnUrl(this string imageUrl)
+        public static string? ToCdnUrl(this string? imageUrl)
         {
-            return imageUrl.Replace("/upload/", IMG_BASEURL + "/upload/");
+            if (imageUrl.IsNull()) return null;
+            return imageUrl!.Replace("/upload/", IMG_BASEURL + "/upload/");
         }
     }
 }

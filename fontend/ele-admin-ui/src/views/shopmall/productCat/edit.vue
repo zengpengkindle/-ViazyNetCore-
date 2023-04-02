@@ -7,6 +7,7 @@ import { message } from "@/utils/message";
 export interface Props {
   modelValue: boolean;
   readonly id: string | null;
+  readonly treeData?: any[];
 }
 
 const props = defineProps<Props>();
@@ -88,11 +89,31 @@ const closeForm = () => {
       <el-form-item label="类目" prop="name">
         <el-input v-model="item.name" />
       </el-form-item>
+      <el-form-item label="父级">
+        <el-tree-select
+          :data="treeData"
+          v-model="item.parentId"
+          default-expand-all
+          check-strictly
+          :props="{
+            value: 'id',
+            label: 'name',
+            emitPath: false
+          }"
+          clearable
+        />
+      </el-form-item>
       <el-form-item label="图片" prop="image">
         <x-image v-model="item.image" />
       </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <x-status v-model="item.status" />
+      </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input-number v-model="item.sort" />
+      </el-form-item>
+      <el-form-item label="前台隐藏" prop="isHidden">
+        <el-switch v-model="item.isHidden" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit(formRef)">提交</el-button>

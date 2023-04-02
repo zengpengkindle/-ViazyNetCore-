@@ -7,6 +7,8 @@ import Delete from "@iconify-icons/ep/delete";
 import EditPen from "@iconify-icons/ep/edit-pen";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 import edit from "./edit.vue";
+import { ref } from "vue";
+const tableRef = ref();
 
 defineOptions({
   name: "productOuter"
@@ -16,7 +18,6 @@ const {
   loading,
   columns,
   dataList,
-  pagination,
   editDrawer,
   onSearch,
   handleUpdate,
@@ -30,7 +31,11 @@ const {
 <template>
   <div class="main">
     <div>
-      <PureTableBar title="商品类目管理" @refresh="onSearch">
+      <PureTableBar
+        title="商品类目管理"
+        :tableRef="tableRef?.getTableRef()"
+        @refresh="onSearch"
+      >
         <template #buttons>
           <el-button
             type="primary"
@@ -42,6 +47,9 @@ const {
         </template>
         <template v-slot="{ size, checkList }">
           <pure-table
+            ref="tableRef"
+            row-key="id"
+            showOverflowTooltip
             align-whole="center"
             table-layout="auto"
             :loading="loading"
@@ -49,8 +57,6 @@ const {
             :data="dataList"
             :columns="columns"
             :checkList="checkList"
-            :pagination="pagination"
-            :paginationSmall="size === 'small' ? true : false"
             :header-cell-style="{
               background: 'var(--el-table-row-hover-bg-color)',
               color: 'var(--el-text-color-primary)'
@@ -92,6 +98,7 @@ const {
       v-model="editDrawer.show"
       :id="editDrawer.editId"
       @refresh="onSearch"
+      :tree-data="dataList"
     />
   </div>
 </template>

@@ -37,6 +37,7 @@ namespace ViazyNetCore.AttachmentProvider
                 {"bmp","image/bmp"},
                 {"jpg","image/jpeg"},
                 {"jpeg","image/jpeg"},
+                {"webp","image/webp"},
                 {"png","image/png"},
                 {"swf","application/x-shockwave-flash"},
                 {"mp3","audio/mpeg"},
@@ -68,10 +69,10 @@ namespace ViazyNetCore.AttachmentProvider
         public static string GetMimeType(string fileName)
         {
             int index = fileName.LastIndexOf('.');
-            if(index > 0 && index > fileName.LastIndexOf('\\'))
+            if (index > 0 && index > fileName.LastIndexOf('\\'))
             {
                 string extension = fileName.Substring(index + 1).ToLower(System.Globalization.CultureInfo.InvariantCulture);
-                if(MimeTypes != null && MimeTypes.ContainsKey(extension))
+                if (MimeTypes != null && MimeTypes.ContainsKey(extension))
                     return MimeTypes[extension];
             }
             return "application/octet-stream";
@@ -82,13 +83,13 @@ namespace ViazyNetCore.AttachmentProvider
         /// </summary>
         public static string GetExtension(string mimeType)
         {
-            if(MimeTypes != null)
+            if (MimeTypes != null)
             {
                 mimeType = mimeType.ToLower();
 
-                foreach(string extension in MimeTypes.Keys)
+                foreach (string extension in MimeTypes.Keys)
                 {
-                    if(MimeTypes[extension].ToLower() == mimeType)
+                    if (MimeTypes[extension].ToLower() == mimeType)
                         return extension;
                 }
             }
@@ -103,7 +104,7 @@ namespace ViazyNetCore.AttachmentProvider
         /// </summary>
         public static IList<string> GetImageExtensions()
         {
-            if(imageExtensions is null)
+            if (imageExtensions is null)
             {
                 imageExtensions = MimeTypes.Where(n => n.Value.IndexOf("image") > -1).Select(n => n.Key).ToList();
             }
@@ -119,7 +120,7 @@ namespace ViazyNetCore.AttachmentProvider
         {
             get
             {
-                if(extensions is null)
+                if (extensions is null)
                 {
                     extensions = MimeTypes.Select(n => n.Key).ToList();
                 }

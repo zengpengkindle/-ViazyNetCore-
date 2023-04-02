@@ -66,6 +66,13 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.ShopMall
         }
 
         [HttpPost]
+        public async Task<List<CatRes>> GetAllList()
+        {
+            var result = await this._productCatService.GetProductCats(null);
+            return this._mapper.Map<List<ProductCatDto>, List<CatRes>>(result);
+        }
+
+        [HttpPost]
         public async Task<CatRes> Get(string id)
         {
             var result = await this._productCatService.Get(id);

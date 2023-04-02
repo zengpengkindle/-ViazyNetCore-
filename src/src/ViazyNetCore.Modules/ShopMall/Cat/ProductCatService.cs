@@ -20,9 +20,10 @@ namespace ViazyNetCore.Modules.ShopMall
             this._mapper = mapper;
         }
 
-        public Task<List<ProductCat>> GetProductCats()
+        public async Task<List<ProductCatDto>> GetProductCats(ComStatus? status = ComStatus.Enabled)
         {
-            return this._productCatRepository.Where(t => t.Status == ComStatus.Enabled).ToListAsync();
+            var list = await this._productCatRepository.WhereIf(status.HasValue, t => t.Status == status).ToListAsync();
+            return this._mapper.Map<List<ProductCat>, List<ProductCatDto>>(list);
         }
 
         public async Task<PageData<ProductCatDto>> FindAll(Pagination args)
@@ -39,6 +40,7 @@ namespace ViazyNetCore.Modules.ShopMall
         {
             var enity = this._mapper.Map<ProductCatAddDto, ProductCat>(addDto);
             enity.CreateTime = DateTime.Now;
+            enity.Id = Snowflake<ProductCat>.NextIdString();
             await this._productCatRepository.InsertAsync(enity);
         }
 

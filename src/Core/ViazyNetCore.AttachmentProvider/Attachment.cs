@@ -157,6 +157,9 @@ namespace ViazyNetCore.AttachmentProvider
                     case "image/png":
                         this.FileName = postedFile.FileName + ".png";
                         break;
+                    case "image/webp":
+                        this.FileName = postedFile.FileName + ".webp";
+                        break;
                     default:
                         break;
                 }
@@ -244,6 +247,7 @@ namespace ViazyNetCore.AttachmentProvider
                 case "png":
                 case "bmp":
                 case "gif":
+                case "webp":
                     return MediaType.Image;
 
                 case "flv":

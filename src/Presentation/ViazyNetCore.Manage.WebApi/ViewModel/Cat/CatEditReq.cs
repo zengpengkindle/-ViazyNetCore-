@@ -23,22 +23,12 @@ namespace ViazyNetCore.Manage.WebApi.ViewModel
         /// <summary>
         /// 设置或获取一个值，表示上级编号。
         /// </summary>
-        public string ParentId { get; set; }
-
-        /// <summary>
-        /// 设置或获取一个值，表示是否父级。
-        /// </summary>
-        public bool IsParent { get; set; }
-
-        /// <summary>
-        /// 设置或获取一个值，表示类目路径。
-        /// </summary>
-        public string Path { get; set; }
+        public string? ParentId { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示图片。
         /// </summary>
-        public string Image { get; set; }
+        public string? Image { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示排序。
@@ -53,6 +43,6 @@ namespace ViazyNetCore.Manage.WebApi.ViewModel
         /// <summary>
         /// 设置或获取一个值，表示扩展数据。
         /// </summary>
-        public string Exdata { get; set; }
+        public string? Exdata { get; set; }
     }
 }

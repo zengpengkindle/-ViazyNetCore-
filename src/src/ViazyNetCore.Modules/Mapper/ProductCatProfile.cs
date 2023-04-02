@@ -14,7 +14,7 @@ namespace ViazyNetCore.Modules.Mapper
             CreateMap<ProductCat, ProductCatDto>();
             CreateMap<ProductCatAddDto, ProductCat>();
             CreateMap<ProductCat, ProductCatDto>();
-
+            CreateMap<ProductCatUpdateDto, ProductCat>();
         }
     }
 }

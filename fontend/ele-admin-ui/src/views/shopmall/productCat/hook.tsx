@@ -1,19 +1,19 @@
 import dayjs from "dayjs";
-import { message } from "@/utils/message";
 import { Pagination } from "@/api/model";
 import ProductCatApi, { CatRes } from "@/api/shopmall/productCat";
 import { type PaginationProps } from "@pureadmin/table";
-import { reactive, ref, computed, onMounted, type Ref } from "vue";
+import { reactive, ref, computed, onMounted } from "vue";
 import { nextTick } from "process";
+import { handleTree } from "@/utils/tree";
 
 export function useProductOuter() {
+  const dataList = ref([]);
   const form: Pagination = reactive({
     sort: 0,
     sortField: null,
     page: 1,
     limit: 10
   });
-  const dataList: Ref<Array<CatRes>> = ref([]);
   const loading = ref(true);
   const pagination = reactive<PaginationProps>({
     total: 0,
@@ -120,14 +120,8 @@ export function useProductOuter() {
   async function onSearch() {
     loading.value = true;
 
-    const data = await ProductCatApi.findPageList(
-      0,
-      "",
-      pagination.currentPage,
-      pagination.pageSize
-    );
-    dataList.value = data.rows;
-    pagination.total = data.total;
+    const data = await ProductCatApi.getAllList();
+    dataList.value = handleTree(data);
     nextTick(() => {
       loading.value = false;
     });

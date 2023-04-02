@@ -46,7 +46,7 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (
   URL.createObjectURL(uploadFile.raw!);
   emits("update:modelValue", response);
 };
-const uploadTypes = reactive(["image/jpeg", "image/png"]);
+const uploadTypes = reactive(["image/jpeg", "image/png", "image/webp"]);
 const beforeAvatarUpload: UploadProps["beforeUpload"] = rawFile => {
   console.log(rawFile.type);
   if (!uploadTypes.includes(rawFile.type)) {

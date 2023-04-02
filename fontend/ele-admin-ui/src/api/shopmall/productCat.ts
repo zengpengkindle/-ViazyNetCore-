@@ -36,6 +36,15 @@ export class ProductCatApi {
       params: { Sort: sort, SortField: sortField, Page: page, Limit: limit }
     });
   }
+  /**
+   * 获取所有分类
+   */
+  public getAllList(): Promise<Array<CatRes>> {
+    return http.request({
+      url: "/api/ProductCat/GetAllList",
+      method: "post"
+    });
+  }
 }
 export default new ProductCatApi();
 

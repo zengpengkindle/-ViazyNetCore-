@@ -8,11 +8,11 @@ namespace ViazyNetCore.Modules.ShopMall.Models
 {
     public class ProductCatDto : ProductCatAddDto
     {
-        public string Id { get; set; }
-
+        public string? Id { get; set; }
     }
 
-    public class ProductCatUpdateDto : ProductCatDto
+    public class ProductCatUpdateDto : ProductCatAddDto
     {
+        public string Id { get; set; }
     }
 }

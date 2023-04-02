@@ -56,7 +56,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
 
         [HttpPost]
         [Permission(PermissionIds.Stock, PermissionIds.Product)]
-        public Task<List<ProductCat>> GetCats([FromServices] ProductCatService productCatService)
+        public Task<List<ProductCatDto>> GetCats([FromServices] ProductCatService productCatService)
         {
             return productCatService.GetProductCats();
         }

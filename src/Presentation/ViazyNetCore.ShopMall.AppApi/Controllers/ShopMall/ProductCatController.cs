@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Model;
+using ViazyNetCore.Modules.ShopMall.Models;
 
 namespace ViazyNetCore.ShopMall.AppApi
 {
@@ -20,9 +21,19 @@ namespace ViazyNetCore.ShopMall.AppApi
         }
 
         [HttpPost]
-        public Task<List<ProductCat>> GetCats()
+        public async Task<List<CatRes>> GetCats()
         {
-            return this._productCatService.GetProductCats();
+            var list = await this._productCatService.GetProductCats();
+            return list.Select(p => new CatRes
+            {
+                Id = p.Id,
+                Image = p.Image.ToCdnUrl(),
+                IsParent = p.ParentId.IsNull(),
+                Name = p.Name,
+                ParentId = p.ParentId,
+                Path = p.Path,
+                Sort = p.Sort,
+            }).ToList();
         }
     }
 }
