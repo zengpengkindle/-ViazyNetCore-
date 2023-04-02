@@ -11,9 +11,10 @@
     {
       "path": "pages/category/index/index",
       "style": {
+        "navigationStyle": "custom",
         "navigationBarTextStyle": "black",
-        "navigationBarBackgroundColor": "#F8F8F8",
-        "navigationBarTitleText": "分类"
+        "navigationBarBackgroundColor": "#F8F8F8"
+        //"navigationBarTitleText": "分类"
       }
     },
     {
@@ -34,7 +35,7 @@
       }
     },
     {
-      "path": "pages/member/member",//会员中心
+      "path": "pages/member/member", //会员中心
       "style": {
         "navigationStyle": "custom",
         "navigationBarTextStyle": "white"

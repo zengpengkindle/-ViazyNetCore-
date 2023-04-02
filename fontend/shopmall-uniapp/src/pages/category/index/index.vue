@@ -1,12 +1,18 @@
 <template>
   <view class="content">
-    <image-tabs
-      v-model="catId"
-      :list="catLists"
-      item-width="150"
-      :gutter="12"
-      @change="mainTabChange"
-    />
+    <view class="header-content">
+      <x-header bounding-rect :header-style="headerStyle">
+        <view class="search-wrapper" @click="handleSearch">
+          <view class="placeholder-container" />
+        </view>
+      </x-header>
+      <image-tabs
+        v-model="catId"
+        :list="catLists"
+        item-width="150"
+        :gutter="12"
+        @change="mainTabChange"
+    /></view>
     <view class="sidebar-content">
       <scroll-view
         class="left"
@@ -75,8 +81,10 @@
 import Sidebar from "@/components/ui/sidebar/index.vue";
 import ImageTabs from "@/components/ui/image-tabs/index.vue";
 import SidebarItem from "@/components/ui/sidebar-item/index.vue";
+import XHeader from "@/components/ui/header/index.vue";
 import ProductCatApi, { type ProductCat } from "@/apis/shopmall/productCat";
-import { onMounted, ref, type Ref } from "vue";
+import { onMounted, ref, type CSSProperties, type Ref } from "vue";
+import { useHeader } from "@/components/ui/hooks/user-head";
 const catId = ref(5);
 const subCatActive: Ref<number> = ref(0);
 interface CatItem {
@@ -93,6 +101,14 @@ interface ProductItem {
   price: number;
   mktprice: number;
 }
+const headerStyle: CSSProperties = {
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "100vw 320rpx"
+};
+
+const { boundingRect } = useHeader();
+function handleSearch() {}
+
 const productItem: Ref<ProductItem> = ref({
   id: "pid_1",
   image: "/static/images/cat/img-1.webp",
@@ -103,9 +119,7 @@ const productItem: Ref<ProductItem> = ref({
   mktprice: 29.99
 });
 const catLists: Ref<Array<CatItem>> = ref([
-  { id: "1", image: "/static/images/cat/img-1.webp", text: "男服饰" },
-  { id: "2", image: "/static/images/cat/img-9.webp", text: "女装" },
-  { id: "3", image: "/static/images/cat/muy-3b.webp", text: "儿童磨绒" }
+  { id: "1", image: "/static/images/cat/img-1.webp", text: "分类" },
 ]);
 function change(index: number) {
   // current.value = index;
@@ -169,6 +183,32 @@ onMounted(async () => {
 }
 </style>
 <style lang="scss" scoped>
+.header-content {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-image: url("/static/images/bg/user-center-bg.svg");
+  background-size: 100% auto;
+  background-color: #ffffff;
+  background-position: center top;
+}
+.search-wrapper {
+  margin-left: 12px;
+  width: 520rpx;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  border-radius: 100rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  .placeholder-container {
+    overflow: hidden;
+    height: 20px;
+    position: relative;
+  }
+}
 .good_box {
   border-radius: 8px;
   margin: 3px;

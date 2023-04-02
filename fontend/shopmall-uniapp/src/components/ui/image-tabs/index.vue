@@ -41,7 +41,13 @@
         </view>
       </view>
     </scroll-view>
-    <view class="image-tabs-more" @click="showU">
+    <view
+      class="image-tabs-more"
+      :style="{
+        boxSizing: 'content-box'
+      }"
+      @click="showU"
+    >
       <view class="image-tabs-more-content">
         更多<u-icon name="list-dot" />
       </view>
@@ -101,6 +107,10 @@ export interface IConTabsProps {
   gutter?: number;
   barWidth?: number;
 }
+
+const systemInfo = uni.getSystemInfoSync();
+const statusBarHeight = ref(systemInfo.statusBarHeight);
+
 const props = withDefaults(defineProps<IConTabsProps>(), {
   modelValue: 0,
   isScroll: true,
@@ -252,17 +262,17 @@ const showU = () => {
   position: relative;
 }
 .image-tabs {
-  background: linear-gradient(to bottom, #f8f8f8, #d5e2fd, #71bdff);
+  // background: linear-gradient(to bottom, #f8f8f8, #d5e2fd, #71bdff);
 }
 .image-tabs-more {
-  background: linear-gradient(to bottom, #f8f8f8, #c2d5fd, #71bdff);
+  // background: linear-gradient(to bottom, #f8f8f8, #c2d5fd, #71bdff);
 }
 .image-tabs-more {
   position: absolute;
   width: 70rpx;
-  height: 100%;
   top: 0;
   right: 0;
+  bottom: 0;
   font-size: 26rpx;
   text-align: center;
   overflow: hidden;
