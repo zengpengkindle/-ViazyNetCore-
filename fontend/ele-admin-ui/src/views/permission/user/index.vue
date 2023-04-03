@@ -30,6 +30,7 @@ const {
   buttonClass,
   editDrawer,
   editRoleDrawer,
+  orgTree,
   onSearch,
   resetForm,
   handleUpdate,
@@ -179,6 +180,7 @@ const {
         v-model="editDrawer.show"
         :id="editDrawer.editId"
         @refresh="onSearch"
+        :org-tree="orgTree"
       />
       <roledrawer v-model="editRoleDrawer.show" :id="editRoleDrawer.editId" />
     </div>

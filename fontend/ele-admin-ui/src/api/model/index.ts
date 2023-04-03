@@ -108,6 +108,9 @@ export interface UserFindModel {
   status: ComStatus;
 
   roleId?: number;
+
+  orgId?: number;
+  orgIds?: number[];
 }
 
 /**

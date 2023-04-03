@@ -8,6 +8,7 @@ import { ref, watch, Ref, reactive } from "vue";
 export interface Props {
   modelValue: boolean;
   readonly id: string | null;
+  orgTree: any[];
 }
 const props = defineProps<Props>();
 const visible = ref(false);
@@ -72,6 +73,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
 const closeForm = () => {
   handleClose(() => {});
 };
+
+const orgData = ref([]);
+const filterMethod = () => {
+  orgData.value = [...props.orgTree].filter(item =>
+    userInfo.value.orgIds.includes(item.id)
+  );
+};
 </script>
 <template>
   <el-drawer
@@ -92,6 +100,38 @@ const closeForm = () => {
           v-model="userInfo.username"
           type="text"
           :disabled="id ? true : false"
+        />
+      </el-form-item>
+      <el-form-item label="部门" prop="nickname">
+        <el-tree-select
+          :data="orgTree"
+          v-model="userInfo.orgIds"
+          check-strictly
+          multiple
+          :render-after-expand="false"
+          default-expand-all
+          show-checkbox
+          :props="{
+            value: 'id',
+            label: 'name',
+            emitPath: false
+          }"
+          clearable
+        />
+      </el-form-item>
+      <el-form-item label="父节点">
+        <el-tree-select
+          :data="orgData"
+          v-model="userInfo.orgId"
+          default-expand-all
+          :filter-method="filterMethod"
+          check-strictly
+          :props="{
+            value: 'id',
+            label: 'name',
+            emitPath: false
+          }"
+          clearable
         />
       </el-form-item>
       <el-form-item label="昵称" prop="nickname">

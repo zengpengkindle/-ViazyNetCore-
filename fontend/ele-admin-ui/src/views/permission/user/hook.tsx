@@ -1,13 +1,20 @@
 import dayjs from "dayjs";
 import { message } from "@/utils/message";
 import UserApi from "@/api/user";
+import OrgApi from "@/api/org";
 import { UserFindAllArgs, UserFindAllModel } from "@/api/model";
 import { ElMessageBox } from "element-plus";
 import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted, type Ref } from "vue";
 import { nextTick } from "process";
+import { handleTree } from "@/utils/tree";
 
 export function useUser() {
+  const orgTree = ref([]);
+  onMounted(async () => {
+    const data = await OrgApi.apiOrgGetList();
+    orgTree.value = handleTree(data);
+  });
   const form: UserFindAllArgs = reactive({
     usernameLike: "",
     mobile: "",
@@ -242,6 +249,7 @@ export function useUser() {
     buttonClass,
     editDrawer,
     editRoleDrawer,
+    orgTree,
     onSearch,
     resetForm,
     handleUpdate,

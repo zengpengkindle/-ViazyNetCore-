@@ -4,6 +4,7 @@ using ViazyNetCore.Caching;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Auth;
 using Microsoft.Extensions.Options;
+using ViazyNetCore.Authorization.Repositories;
 
 namespace ViazyNetCore.Modules
 {
@@ -18,12 +19,15 @@ namespace ViazyNetCore.Modules
         private readonly IUserRepository _userRepository;
         private readonly IEventBus _eventBus;
         private readonly ICacheService _cacheService;
+        private readonly IUserOrgRepository _userOrgRepository;
         private readonly UserOption _userOption;
 
         public UserService(IUserRepository userRepository
-            , IEventBus eventBus, ICacheService cacheService, IOptions<UserOption> options)
+            , IEventBus eventBus, ICacheService cacheService, IOptions<UserOption> options
+            , IUserOrgRepository userOrgRepository)
         {
             this._cacheService = cacheService;
+            this._userOrgRepository = userOrgRepository;
             this._eventBus = eventBus;
             this._userRepository = userRepository;
             this._userOption = options.Value;
@@ -60,6 +64,21 @@ namespace ViazyNetCore.Modules
             else
             {
                 await _userRepository.ModifyByUserModelAsync(model);
+                await this._userOrgRepository.DeleteAsync(a => a.UserId == model.Id);
+
+            }
+
+            if (model.OrgIds != null && model.OrgIds.Any())
+            {
+                var orgs = model.OrgIds.Select(orgId => new BmsUserOrg
+                {
+                    UserId = model.Id,
+                    OrgId = orgId,
+                    IsManager = orgId == model.OrgId,
+                    CreateTime = DateTime.Now,
+                    ModifyTime = DateTime.Now,
+                }).ToList();
+                await _userOrgRepository.InsertAsync(orgs);
             }
             return model.Id;
         }
@@ -79,9 +98,15 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>模型。</returns>
-        public Task<UserFindModel> FindAsync(string id)
+        public async Task<UserFindModel> FindAsync(string id)
         {
-            return _userRepository.FindByIdAsync(id);
+            var result = await _userRepository.FindByIdAsync(id);
+
+            var userOrgs = await _userOrgRepository.Where(p => p.UserId == id).ToListAsync();
+            result.OrgIds = userOrgs.Select(p => p.OrgId).ToList();
+            result.OrgId = userOrgs.Where(p => p.IsManager).Select(p => p.OrgId).FirstOrDefault();
+
+            return result;
         }
 
         /// <summary>
