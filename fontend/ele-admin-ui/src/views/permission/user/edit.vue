@@ -3,17 +3,19 @@ import { UserFindModel, ComStatus } from "@/api/model";
 import UserApi from "@/api/user";
 import { message } from "@/utils/message";
 import { FormInstance, FormRules } from "element-plus";
-import { ref, watch, Ref, reactive } from "vue";
+import { ref, watch, Ref, reactive, computed } from "vue";
+import { handleTree } from "@/utils/tree";
 
 export interface Props {
   modelValue: boolean;
   readonly id: string | null;
-  orgTree: any[];
+  orgData: any[];
 }
 const props = defineProps<Props>();
 const visible = ref(false);
 const isEdit = ref(false);
 const emit = defineEmits(["update:modelValue", "refresh"]);
+const orgTree = ref([]);
 function init() {
   getUserInfo();
 }
@@ -21,6 +23,7 @@ watch(
   () => props.modelValue,
   value => {
     visible.value = value;
+    orgTree.value = handleTree(props.orgData);
     if (value) {
       isEdit.value = false;
       init();
@@ -74,12 +77,11 @@ const closeForm = () => {
   handleClose(() => {});
 };
 
-const orgData = ref([]);
-const filterMethod = () => {
-  orgData.value = [...props.orgTree].filter(item =>
+const orgData = computed(() => {
+  return [...props.orgData].filter(item =>
     userInfo.value.orgIds.includes(item.id)
   );
-};
+});
 </script>
 <template>
   <el-drawer
@@ -108,7 +110,7 @@ const filterMethod = () => {
           v-model="userInfo.orgIds"
           check-strictly
           multiple
-          :render-after-expand="false"
+          value-key="id"
           default-expand-all
           show-checkbox
           :props="{
@@ -119,20 +121,15 @@ const filterMethod = () => {
           clearable
         />
       </el-form-item>
-      <el-form-item label="父节点">
-        <el-tree-select
-          :data="orgData"
-          v-model="userInfo.orgId"
-          default-expand-all
-          :filter-method="filterMethod"
-          check-strictly
-          :props="{
-            value: 'id',
-            label: 'name',
-            emitPath: false
-          }"
-          clearable
-        />
+      <el-form-item label="主部门">
+        <el-select filterable v-model="userInfo.orgId" clearable>
+          <el-option
+            v-for="item in orgData"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="昵称" prop="nickname">
         <el-input v-model="userInfo.nickname" type="text" autocomplete="off" />
