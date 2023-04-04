@@ -3,7 +3,7 @@
     <slot name="input" v-bind:show="showDialog">
       <x-input-tag
         v-if="multiple"
-        v-model="modelValue"
+        v-model="selectValue"
         :id="id"
         :label="currentLabel"
         :placeholder="placeholder"
@@ -67,7 +67,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, Ref, watch } from "vue";
+import XTable from "./table.vue";
 
 export interface SelectInputProps {
   readonly url: string | Function;
@@ -85,15 +86,22 @@ export interface SelectInputProps {
   readonly defaultLabel: string;
   readonly rowHandle: Function;
   readonly id: string;
-  modelValue: string | Array<any> | Object;
+  modelValue: string | Array<any> | Object | null;
 }
 const props = withDefaults(defineProps<SelectInputProps>(), {
   placeholder: "请选择",
   dialogWidth: "50%",
   selectText: "请选择",
   title: "请选择",
-  id: "id"
+  id: "id",
+  modelValue: null
 });
+
+const selectValue: Ref<string | Array<any> | Object | null> = ref();
+watch(
+  () => props.modelValue,
+  nval => (selectValue.value = nval)
+);
 
 const dialogVisible = ref(false);
 // const loading = ref(false);
@@ -123,16 +131,15 @@ function hasValue(row: Object): boolean {
 }
 
 const emits = defineEmits(["select", "update:modelValue"]);
-
 function setValue(row: Object): void {
-  if (row && this.rowHandle) {
-    row = this.rowHandle(row);
+  if (row && props.rowHandle) {
+    row = props.rowHandle(row);
   }
-  if (this.multiple) {
+  if (props.multiple) {
     emits("update:modelValue", (props.modelValue as any[]).push(row));
   } else {
-    display.value = row == null ? "" : row[this.currentLabel];
-    emits("update:modelValue", row == null ? null : row[this.id]);
+    display.value = row == null ? "" : row[currentLabel.value];
+    emits("update:modelValue", row == null ? null : row[props.id]);
   }
 }
 

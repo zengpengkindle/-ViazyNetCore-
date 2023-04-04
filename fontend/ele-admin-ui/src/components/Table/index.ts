@@ -7,7 +7,7 @@ export type {
   TableColumnFixed,
   TableColumnType,
   PaginationProps,
-  PureTableProps,
+  XTableProps,
   LoadingConfig,
   TableColumns,
   TableColumn,

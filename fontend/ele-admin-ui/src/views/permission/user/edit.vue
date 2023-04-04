@@ -122,7 +122,13 @@ const orgData = computed(() => {
         />
       </el-form-item>
       <el-form-item label="主部门">
-        <el-select filterable v-model="userInfo.orgId" clearable>
+        <el-select
+          filterable
+          v-model="userInfo.orgId"
+          placeholder="请选择"
+          clearable
+        >
+          <el-option :key="0" label="请选择" :value="0" />
           <el-option
             v-for="item in orgData"
             :key="item.id"
