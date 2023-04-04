@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view class="header-main">
     <view
       class="haeder-status-bar"
       :style="{ height: statusBarHeight + 'px' }"
@@ -77,7 +77,7 @@ onMounted(() => {
     uni
       .createSelectorQuery()
       .in(getCurrentInstance())
-      .select(".x-header")
+      .select(".header-main")
       .boundingClientRect(res => {
         boundingRect.value.width = (res as UniApp.NodeInfo).width || 0;
         boundingRect.value.height = (res as UniApp.NodeInfo).height || 0;
@@ -92,10 +92,12 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.header-main {
+  z-index: 90074;
+}
 .x-header {
   width: 100vw;
   position: relative;
-  z-index: 100;
   padding-bottom: 6px;
   display: flex;
   align-items: center;

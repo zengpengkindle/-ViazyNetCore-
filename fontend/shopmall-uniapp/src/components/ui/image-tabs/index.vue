@@ -53,6 +53,7 @@
       </view>
     </view>
     <u-popup v-model="show" mode="top" closeable :border-radius="18">
+      <view :style="{ width: '100%', height: statusBarHeight + 'px' }" />
       <view class="image-tabs-popup-header">全部分类</view>
       <view
         v-for="(item, index) in list"

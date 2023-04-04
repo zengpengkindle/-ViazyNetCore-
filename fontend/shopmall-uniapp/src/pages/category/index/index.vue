@@ -18,7 +18,7 @@
         class="left"
         scroll-x="false"
         scroll-y="true"
-        style="height: calc(100vh - 92px)"
+        :style="{ height: 'calc(100vh -' + boundingRect.height + 'px)' }"
         upper-threshold="50"
         lower-threshold="50"
         scroll-top="0"
@@ -83,7 +83,13 @@ import ImageTabs from "@/components/ui/image-tabs/index.vue";
 import SidebarItem from "@/components/ui/sidebar-item/index.vue";
 import XHeader from "@/components/ui/header/index.vue";
 import ProductCatApi, { type ProductCat } from "@/apis/shopmall/productCat";
-import { onMounted, ref, type CSSProperties, type Ref } from "vue";
+import {
+  onMounted,
+  getCurrentInstance,
+  ref,
+  type CSSProperties,
+  type Ref
+} from "vue";
 import { useHeader } from "@/components/ui/hooks/user-head";
 const catId = ref(5);
 const subCatActive: Ref<number> = ref(0);
@@ -119,7 +125,7 @@ const productItem: Ref<ProductItem> = ref({
   mktprice: 29.99
 });
 const catLists: Ref<Array<CatItem>> = ref([
-  { id: "1", image: "/static/images/cat/img-1.webp", text: "分类" },
+  { id: "1", image: "/static/images/cat/img-1.webp", text: "分类" }
 ]);
 function change(index: number) {
   // current.value = index;
@@ -156,6 +162,19 @@ onMounted(async () => {
     }
   });
   mainTabChange({ index: 0, item: catLists.value[0] });
+  uni
+    .createSelectorQuery()
+    .in(getCurrentInstance())
+    .select(".header-main")
+    .boundingClientRect(res => {
+      boundingRect.value.width = (res as UniApp.NodeInfo).width || 0;
+      boundingRect.value.height = (res as UniApp.NodeInfo).height || 0;
+      boundingRect.value.left = (res as UniApp.NodeInfo).left || 0;
+      boundingRect.value.right = (res as UniApp.NodeInfo).right || 0;
+      boundingRect.value.top = (res as UniApp.NodeInfo).top || 0;
+      boundingRect.value.bottom = (res as UniApp.NodeInfo).bottom || 0;
+    })
+    .exec();
 });
 </script>
 
@@ -189,7 +208,7 @@ onMounted(async () => {
   top: 0;
   left: 0;
   right: 0;
-  background-image: url("/static/images/bg/user-center-bg.svg");
+  background-image: url("/static/images/bg/category-bg.svg");
   background-size: 100% auto;
   background-color: #ffffff;
   background-position: center top;
