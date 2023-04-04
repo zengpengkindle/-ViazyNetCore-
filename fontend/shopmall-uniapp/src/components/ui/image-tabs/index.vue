@@ -121,7 +121,7 @@ const props = withDefaults(defineProps<IConTabsProps>(), {
   gutter: 12
 });
 // tab的样式
-const tabItemStyle: (i: number) => CSSProperties = (index: number) => {
+const tabItemStyle: (i: number) => CSSProperties = () => {
   const style: CSSProperties = {
     "line-height": props.height + "rpx",
     "font-size": props.fontSize + "rpx",
@@ -132,9 +132,6 @@ const tabItemStyle: (i: number) => CSSProperties = (index: number) => {
     display: "inline-block",
     "text-align": "center"
   };
-  if (index == currentIndex.value) {
-    console.log(index);
-  }
   return style;
 };
 const currentIndex: Ref<number> = ref(0);
@@ -150,7 +147,6 @@ watch(
 watch(
   () => props.modelValue,
   nval => {
-    console.log("modelValue");
     currentIndex.value = nval;
     scrollByIndex();
   }
@@ -171,7 +167,6 @@ const scrollLeft = ref(0);
 const scrollBarLeft = ref(0);
 const barFirstTimeMove = ref(true);
 function scrollByIndex() {
-  console.log("tabQueryInfo", tabQueryInfo.value);
   // 当前活动tab的布局信息，有tab菜单的width和left(为元素左边界到父元素左边界的距离)等信息
   const tabInfo = tabQueryInfo.value[currentIndex.value];
   if (!tabInfo) return;
@@ -182,7 +177,6 @@ function scrollByIndex() {
   // 将活动的tabs-item移动到屏幕正中间，实际上是对scroll-view的移动
   const m_scrollLeft = offsetLeft - (componentWidth.value - tabWidth) / 2;
   scrollLeft.value = m_scrollLeft < 0 ? 0 : m_scrollLeft;
-  console.log("scrollLeft", scrollLeft.value);
   // 当前活动item的中点点到左边的距离减去滑块宽度的一半，即可得到滑块所需的移动距离
   const left = tabInfo.left + tabInfo.width / 2 - parentLeft.value;
   // 计算当前活跃item到组件左边的距离
@@ -199,7 +193,6 @@ function scrollByIndex() {
 const id = ref("");
 const init = async () => {
   const tabRect = await GetRect("#" + id.value);
-  console.log("tabRect", tabRect);
   parentLeft.value = tabRect.left;
   componentWidth.value = tabRect.width;
   getTabRect();
@@ -261,12 +254,6 @@ const showU = () => {
 <style lang="scss" scoped>
 .image-tabs {
   position: relative;
-}
-.image-tabs {
-  // background: linear-gradient(to bottom, #f8f8f8, #d5e2fd, #71bdff);
-}
-.image-tabs-more {
-  // background: linear-gradient(to bottom, #f8f8f8, #c2d5fd, #71bdff);
 }
 .image-tabs-more {
   position: absolute;

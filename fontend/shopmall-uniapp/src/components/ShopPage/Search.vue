@@ -1,15 +1,12 @@
 <template>
-  <u-sticky :h5-nav-height="0" :offset-top="top">
-    <view
-      :class="prop.parameters.style"
-      class="u-padding-top-10 u-padding-bottom-10 u-padding-left-25 u-padding-right-25 u-margin-15"
-    >
+  <u-sticky :h5-nav-height="0" :offset-top="boundingRect.height * 2">
+    <view :class="prop.parameters.style" class="page-search">
       <!-- 搜索组件宽度自适应于外层 -->
       <u-toast ref="uToast" />
       <u-search
         v-model="keyword"
         :placeholder="prop.parameters.keywords"
-        shape="square"
+        shape="round"
         :show-action="true"
         action-text="搜索"
         @custom="goSearch"
@@ -19,7 +16,8 @@
   </u-sticky>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, ref, type CSSProperties } from "vue";
+import { onMounted, ref, type CSSProperties } from "vue";
+import { useHeader } from "@/components/ui/hooks/user-head";
 
 export interface SearchParameter {
   keywords: number;
@@ -30,16 +28,14 @@ export interface SearchProps {
 }
 const prop = defineProps<SearchProps>();
 const keyword = ref("");
-const top = ref(0);
-onMounted(() => {
-  uni
-    .createSelectorQuery()
-    .in(getCurrentInstance())
-    .select(".u-navbar")
-    .boundingClientRect(res => {
-      top.value = (res as UniApp.NodeInfo).height;
-    })
-    .exec();
-});
+const { boundingRect } = useHeader();
+onMounted(() => {});
 function goSearch() {}
 </script>
+<style lang="scss" scoped>
+.page-search {
+  z-index: 17000;
+  background: #ffffff;
+  padding: 15rpx 25rpx;
+}
+</style>
