@@ -6,11 +6,13 @@ export class SelectionApi {
    */
   public feed(
     page?: number,
-    limit?: number
+    limit?: number,
+    param1?: SelectionFeedQueryReq
   ): Promise<SelectionFeedListDtoMorePageData> {
     return http.request({
       url: "/api/Selection/Feed",
       method: "post",
+      data: param1,
       params: { Page: page, Limit: limit }
     });
   }
@@ -23,7 +25,9 @@ export interface SelectionFeedListDtoMorePageData {
   rows: Array<SelectionFeedListDto>;
   hasMore: boolean;
 }
-
+export interface SelectionFeedQueryReq {
+  catId: string | null;
+}
 /**
  * SelectionFeedListDto
  */

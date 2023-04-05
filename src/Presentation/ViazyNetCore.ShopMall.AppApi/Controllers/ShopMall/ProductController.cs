@@ -21,7 +21,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         }
 
         [HttpPost]
-        public async Task<ProductInfoModel> GetProductSku([Required] string productId, string outerType)
+        public async Task<ProductInfoModel> GetProductSku([Required] string productId, string? outerType)
         {
             var productSkus = await this._productService.FindProductInfo(productId);
             if (productSkus == null)
@@ -29,9 +29,9 @@ namespace ViazyNetCore.ShopMall.AppApi
                 throw new ApiException("未知商品");
             }
 
-            productSkus.Image = _imgBaseUrl + productSkus.Image;
-            productSkus.SubImage = productSkus.SubImage.Replace("/upload/", _imgBaseUrl + "/upload/");
-            productSkus.Detail = productSkus.Detail.Replace("/upload/", _imgBaseUrl + "/upload/");
+            productSkus.Image =productSkus.Image.ToCdnUrl();
+            productSkus.SubImage = productSkus.SubImage.ToCdnUrl();
+            productSkus.Detail = productSkus.Detail.ToCdnUrl();
 
             productSkus.Skus = await this._productService.GetProductSku(productId, outerType);
 
@@ -39,7 +39,7 @@ namespace ViazyNetCore.ShopMall.AppApi
             {
                 for (int i = 0; i < productSkus.Skus.Tree[0].V.Count; i++)
                 {
-                    productSkus.Skus.Tree[0].V[i].ImgUrl = productSkus.Skus.Tree[0].V[i].ImgUrl.Replace("/upload/", _imgBaseUrl + "/upload/");
+                    productSkus.Skus.Tree[0].V[i].ImgUrl = productSkus.Skus.Tree[0].V[i].ImgUrl.ToCdnUrl();
                 }
             }
             //因为前端sku价格单位为分 需乘以100

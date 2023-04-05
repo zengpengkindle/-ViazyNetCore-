@@ -42,8 +42,7 @@
     </view>
 
     <view v-if="!productList.length && !loading" class="empty-wrapper">
-      <u-empty />
-      <text class="message"> 暂无数据 </text>
+      <u-empty mode="search" />
     </view>
 
     <view v-else-if="loading" class="loading-wrapper"> 加载中... </view>

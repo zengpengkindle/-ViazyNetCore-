@@ -119,10 +119,8 @@ defineExpose({
 
 .lighter {
   font-weight: 400;
-  font-size: 32rpx;
 }
 .mini {
-  font-size: 24rpx;
   color: #5d5d5d;
   font-weight: 400;
 }

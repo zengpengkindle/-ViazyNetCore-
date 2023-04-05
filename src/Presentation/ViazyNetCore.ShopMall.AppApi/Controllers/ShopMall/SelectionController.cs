@@ -24,15 +24,17 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
         }
 
         [HttpPost]
-        public async Task<MorePageData<SelectionFeedListDto>> Feed([FromQuery] Pagination pagination)
+        public async Task<MorePageData<SelectionFeedListDto>> Feed([FromQuery] Pagination pagination, SelectionFeedQueryReq req)
         {
             var query = new FindAllArguments()
             {
                 Limit = pagination.Limit,
                 Page = pagination.Page,
+                CatId = req.CatId
             };
             var (_, list) = await this._selectionService.FindProductAll(query);
-            list.ForEach(item => { 
+            list.ForEach(item =>
+            {
                 item.Image = item.Image.ToCdnUrl();
             });
             return new MorePageData<SelectionFeedListDto>

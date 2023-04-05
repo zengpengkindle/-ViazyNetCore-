@@ -13,6 +13,16 @@
       }"
     >
       <slot>
+        <slot name="icon">
+          <view class="back-icon">
+            <u-icon
+              name="nav-back"
+              color="#ffffff"
+              :size="44"
+              @click="backClick"
+            />
+          </view>
+        </slot>
         <slot name="content">
           <view
             class="title ellipsis"
@@ -65,12 +75,26 @@ const props = defineProps({
     default: false
   }
 });
+const emit = defineEmits(["back-click"]);
+
 const systemInfo = uni.getSystemInfoSync();
 const statusBarHeight = ref(systemInfo.statusBarHeight);
 
 const rect = uni.getMenuButtonBoundingClientRect();
 const rectStyle = reactive({});
-
+const backClick = () => {
+  emit("back-click");
+  if (!props.beforeBackClick()) {
+    return;
+  }
+  if (getCurrentPages().length > 1) {
+    uni.navigateBack();
+  } else {
+    uni.switchTab({
+      url: "/pages/selection/index"
+    });
+  }
+};
 const { boundingRect } = useHeader();
 onMounted(() => {
   if (props.boundingRect) {

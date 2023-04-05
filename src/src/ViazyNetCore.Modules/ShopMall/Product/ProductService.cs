@@ -811,7 +811,7 @@ namespace ViazyNetCore.Modules.ShopMall
         }
 
 
-        public async Task<ProductSkuModel> GetProductSku(string productId, string outerType)
+        public async Task<ProductSkuModel> GetProductSku(string productId, string? outerType)
         {
             var product = await this._engine.Select<Product>().Where(p => p.Id == productId).FirstAsync();
             if (product == null)

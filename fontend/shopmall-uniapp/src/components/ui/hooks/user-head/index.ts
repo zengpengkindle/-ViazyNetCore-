@@ -24,8 +24,8 @@ export function useHeader() {
   };
 }
 export function GetRect(
-  instance,
-  selector,
+  instance: any,
+  selector: any,
   all = null
 ): Promise<UniApp.NodeInfo | UniApp.NodeInfo[]> {
   return new Promise(resolve => {

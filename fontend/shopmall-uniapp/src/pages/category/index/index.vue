@@ -7,7 +7,7 @@
         </view>
       </x-header>
       <image-tabs
-        v-model="catId"
+        v-model="bigCatId"
         :list="catLists"
         item-width="150"
         :gutter="12"
@@ -39,7 +39,6 @@
         </sidebar>
       </scroll-view>
       <view class="sub-main">
-        <view>ccccc {{ catId }} - {{ subCatActive }}</view>
         <view class="good_box">
           <product-list
             ref="productListRef"
@@ -66,13 +65,16 @@ import {
   onMounted,
   getCurrentInstance,
   ref,
+  computed,
+  watch,
+  reactive,
   type CSSProperties,
-  type Ref,
-  reactive
+  type Ref
 } from "vue";
 import { GetRect, useHeader } from "@/components/ui/hooks/user-head";
 import { onPullDownRefresh, onReachBottom, onShow } from "@dcloudio/uni-app";
-const catId = ref(5);
+
+const bigCatId = ref(0);
 const subCatActive: Ref<number> = ref(0);
 interface CatItem {
   id: string;
@@ -92,19 +94,17 @@ const catLists: Ref<Array<CatItem>> = ref([
 ]);
 function change(index: number) {
   // current.value = index;
-  console.log(index);
 }
 const subItems: Ref<Array<CatItem>> = ref([]);
 function mainTabChange(value: { index: number; item: CatItem }) {
   const selected = catLists.value[value.index];
-  console.log("item", value.item);
   subItems.value = [];
   subCatActive.value = -1;
   cats.value.forEach(cat => {
     if (cat.parentId == selected.id) {
       subItems.value.push({
         id: cat.id,
-        image: cat.image || "/static/images/cat/img-1.webp",
+        image: cat.image || "",
         text: cat.name
       });
     }
@@ -145,6 +145,19 @@ const params = reactive({
   limit: 10
 });
 const productListRef = ref<InstanceType<typeof ProductList>>();
+const queryCatId = computed(() => {
+  if (subCatActive.value >= 0 && subItems.value.length >= 0) {
+    return subItems.value[subCatActive.value].id;
+  } else {
+    return catLists.value[bigCatId.value].id;
+  }
+});
+watch(
+  () => queryCatId.value,
+  () => {
+    getProductList(true);
+  }
+);
 const getProductList = async (reset = false) => {
   if (reset) {
     uni.pageScrollTo({ scrollTop: 0 });
@@ -160,7 +173,9 @@ const getProductList = async (reset = false) => {
 
   loading.value = true;
 
-  const res = await SelectionApi.feed(params.page, params.limit);
+  const res = await SelectionApi.feed(params.page, params.limit, {
+    catId: queryCatId.value
+  });
   productListRef.value?.addItems(res.rows);
   hasMore.value = res.hasMore;
   loading.value = false;
