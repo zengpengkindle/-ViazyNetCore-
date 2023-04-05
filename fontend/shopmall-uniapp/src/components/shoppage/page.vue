@@ -14,7 +14,7 @@
 </template>
 <script lang="ts" setup>
 import Blank from "./blank.vue";
-import Search from "./search.vue";
+import Search from "./Search.vue";
 import Goods from "./goods.vue";
 import ImageSlide from "./image-slide.vue";
 import ImageWindow from "./image-window.vue";

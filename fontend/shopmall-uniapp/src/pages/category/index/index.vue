@@ -41,36 +41,13 @@
       <view class="sub-main">
         <view>ccccc {{ catId }} - {{ subCatActive }}</view>
         <view class="good_box">
-          <u-row gutter="5">
-            <u-col span="4">
-              <!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
-              <u-lazy-load
-                threshold="-150"
-                border-radius="10"
-                :image="productItem.image"
-                :index="productItem.id"
-              />
-              <view v-if="productItem.isRecommend" class="good-tag-recommend2">
-                推荐
-              </view>
-              <view v-if="productItem.isHot" class="good-tag-hot"> 热门 </view>
-            </u-col>
-            <u-col span="8">
-              <view class="good_title-xl u-line-3 u-padding-10">
-                {{ productItem.name }}
-              </view>
-              <view class="good-price u-padding-10">
-                <price
-                  :price="productItem.price"
-                  symbol="¥"
-                  :bold="true"
-                  decimal-smaller
-                  type="lighter"
-                />
-                <price :price="productItem.mktprice" symbol="¥" type="del" />
-              </view>
-            </u-col>
-          </u-row>
+          <product-list
+            ref="productListRef"
+            :loading="loading"
+            :no-more="!hasMore"
+            :min-height="`100%`"
+            class="product-list"
+          />
         </view>
       </view>
     </view>
@@ -82,30 +59,25 @@ import Sidebar from "@/components/ui/sidebar/index.vue";
 import ImageTabs from "@/components/ui/image-tabs/index.vue";
 import SidebarItem from "@/components/ui/sidebar-item/index.vue";
 import XHeader from "@/components/ui/header/index.vue";
+import ProductList from "@/components/ui/product-list/index.vue";
 import ProductCatApi, { type ProductCat } from "@/apis/shopmall/productCat";
+import SelectionApi from "@/apis/shopmall/selection";
 import {
   onMounted,
   getCurrentInstance,
   ref,
   type CSSProperties,
-  type Ref
+  type Ref,
+  reactive
 } from "vue";
-import { useHeader } from "@/components/ui/hooks/user-head";
+import { GetRect, useHeader } from "@/components/ui/hooks/user-head";
+import { onPullDownRefresh, onReachBottom, onShow } from "@dcloudio/uni-app";
 const catId = ref(5);
 const subCatActive: Ref<number> = ref(0);
 interface CatItem {
   id: string;
   image: string;
   text: string;
-}
-interface ProductItem {
-  id: string;
-  image: string;
-  name: string;
-  isRecommend: boolean;
-  isHot: boolean;
-  price: number;
-  mktprice: number;
 }
 const headerStyle: CSSProperties = {
   backgroundRepeat: "no-repeat",
@@ -115,15 +87,6 @@ const headerStyle: CSSProperties = {
 const { boundingRect } = useHeader();
 function handleSearch() {}
 
-const productItem: Ref<ProductItem> = ref({
-  id: "pid_1",
-  image: "/static/images/cat/img-1.webp",
-  name: "商品名称[商品名称]",
-  isRecommend: false,
-  isHot: true,
-  price: 15.99,
-  mktprice: 29.99
-});
 const catLists: Ref<Array<CatItem>> = ref([
   { id: "1", image: "/static/images/cat/img-1.webp", text: "分类" }
 ]);
@@ -162,19 +125,53 @@ onMounted(async () => {
     }
   });
   mainTabChange({ index: 0, item: catLists.value[0] });
-  uni
-    .createSelectorQuery()
-    .in(getCurrentInstance())
-    .select(".header-main")
-    .boundingClientRect(res => {
-      boundingRect.value.width = (res as UniApp.NodeInfo).width || 0;
-      boundingRect.value.height = (res as UniApp.NodeInfo).height || 0;
-      boundingRect.value.left = (res as UniApp.NodeInfo).left || 0;
-      boundingRect.value.right = (res as UniApp.NodeInfo).right || 0;
-      boundingRect.value.top = (res as UniApp.NodeInfo).top || 0;
-      boundingRect.value.bottom = (res as UniApp.NodeInfo).bottom || 0;
-    })
-    .exec();
+  await getProductList(true);
+});
+onShow(async () => {
+  const haedRect = (await GetRect(
+    getCurrentInstance(),
+    ".header-content"
+  )) as UniApp.NodeInfo;
+  boundingRect.value.height = haedRect.height;
+  boundingRect.value.width = haedRect.width;
+  boundingRect.value.top = haedRect.top;
+  boundingRect.value.bottom = haedRect.bottom;
+});
+const hasMore = ref(true);
+const loading = ref(false);
+const firstLoading = ref(true);
+const params = reactive({
+  page: 1,
+  limit: 10
+});
+const productListRef = ref<InstanceType<typeof ProductList>>();
+const getProductList = async (reset = false) => {
+  if (reset) {
+    uni.pageScrollTo({ scrollTop: 0 });
+    params.page = 1;
+    productListRef.value?.clear();
+    firstLoading.value = true;
+  } else {
+    if (!hasMore.value) {
+      return;
+    }
+    params.page++;
+  }
+
+  loading.value = true;
+
+  const res = await SelectionApi.feed(params.page, params.limit);
+  productListRef.value?.addItems(res.rows);
+  hasMore.value = res.hasMore;
+  loading.value = false;
+  firstLoading.value = false;
+};
+onReachBottom(() => {
+  getProductList();
+});
+onPullDownRefresh(() => {
+  uni.stopPullDownRefresh();
+  getProductList(true);
 });
 </script>
 

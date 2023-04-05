@@ -236,14 +236,14 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <summary>
         /// 设置或获取一个值，表示商品图片。
         /// </summary>
-        public string Image { get; set; }
+        public string? Image { get; set; }
 
-        public string SubImage { get; set; }
+        public string? SubImage { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示详情。
         /// </summary>
-        public string Detail { get; set; }
+        public string? Detail { get; set; }
 
         /// <summary>
         /// 

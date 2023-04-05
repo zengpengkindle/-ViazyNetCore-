@@ -89,4 +89,15 @@ namespace System
         [Required]
         public List<TModel> Rows { get; set; }
     }
+
+    public class MorePageData<TModel>
+    {
+        /// <summary>
+        /// 获取行的数据。
+        /// </summary>
+        [Required]
+        public List<TModel> Rows { get; set; }
+
+        public bool HasMore { get; set; }
+    }
 }

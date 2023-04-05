@@ -91,7 +91,7 @@ declare module "vue" {
 }
 declare module "vue" {
   export interface GlobalComponents {
-    price: import("src/components/ui/price.vue");
+    price: import("/src/components/ui/price.vue");
   }
 }
 export {};

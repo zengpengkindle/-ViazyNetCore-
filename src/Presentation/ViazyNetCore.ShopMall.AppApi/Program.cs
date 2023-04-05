@@ -105,7 +105,7 @@ app.UseEventBusWithStore(ServiceAssemblies);
 // Configure the HTTP response wrapper.
 app.UseApiResponseWrapper(option =>
 {
-    option.IsApiOnly = false;
+    option.IsApiOnly = true;
     option.EnableResponseLogging = true;
     option.EnableExceptionLogging = true;
 

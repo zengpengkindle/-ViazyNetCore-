@@ -23,3 +23,24 @@ export function useHeader() {
     boundingRect
   };
 }
+export function GetRect(
+  instance,
+  selector,
+  all = null
+): Promise<UniApp.NodeInfo | UniApp.NodeInfo[]> {
+  return new Promise(resolve => {
+    uni
+      .createSelectorQuery()
+      .in(instance)
+      [all ? "selectAll" : "select"](selector)
+      .boundingClientRect(rect => {
+        if (all && Array.isArray(rect) && rect.length) {
+          resolve(rect as UniApp.NodeInfo[]);
+        }
+        if (!all && rect) {
+          resolve(rect as UniApp.NodeInfo);
+        }
+      })
+      .exec();
+  });
+}

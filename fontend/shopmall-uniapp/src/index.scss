@@ -1,4 +1,13 @@
-@import url("./uni.scss");
+
+@font-face {
+  font-family: 'D-DIN';
+  src: url('./static/font/D-DIN-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'D-DIN-FINE';
+  src: url('./static/font/D-DIN.ttf') format('truetype');
+}
 
 .ellipsis {
   overflow: hidden;
@@ -11,7 +20,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
-  /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
 }
 
@@ -20,7 +28,5 @@
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 3;
-
-  /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
 }

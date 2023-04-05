@@ -24,7 +24,7 @@ namespace ViazyNetCore
                 PageSize = limit ?? 10
             };
             var items = await select.Page(pagingInfo).ToListAsync();
-            return new PageData<T1>(items.ToArray(), pagingInfo.Count);
+            return new PageData<T1>(items, pagingInfo.Count);
         }
 
 
@@ -36,7 +36,7 @@ namespace ViazyNetCore
                 PageSize = limit ?? 10
             };
             var items = await select.Page(pagingInfo).ToListAsync<T2>();
-            return new PageData<T2>(items.ToArray(), pagingInfo.Count);
+            return new PageData<T2>(items, pagingInfo.Count);
         }
 
         public static PageData<T1> ToPage<T1>(this ISelect<T1> select, int page, int limit)
@@ -47,7 +47,7 @@ namespace ViazyNetCore
                 PageSize = limit
             };
             var items = select.Page(pagingInfo).ToList();
-            return new PageData<T1>(items.ToArray(), pagingInfo.Count);
+            return new PageData<T1>(items, pagingInfo.Count);
         }
     }
 }

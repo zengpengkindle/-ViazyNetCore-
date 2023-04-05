@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Model;
+using ViazyNetCore.Modules.ShopMall.Models;
 
 namespace ViazyNetCore.ShopMall.AppApi.Controllers
 {
@@ -15,20 +16,30 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
     [Route("api/[controller]/[action]")]
     public class SelectionController : BaseController
     {
-        private readonly ProductService _productService;
+        private readonly SelectionService _selectionService;
 
-        public SelectionController(ProductService productService)
+        public SelectionController(SelectionService selectionService)
         {
-            this._productService = productService;
+            this._selectionService = selectionService;
         }
 
         [HttpPost]
-        public async Task<PageData<Product>> Feed()
+        public async Task<MorePageData<SelectionFeedListDto>> Feed([FromQuery] Pagination pagination)
         {
             var query = new FindAllArguments()
             {
+                Limit = pagination.Limit,
+                Page = pagination.Page,
             };
-            return await this._productService.FindProductAll(query);
+            var (_, list) = await this._selectionService.FindProductAll(query);
+            list.ForEach(item => { 
+                item.Image = item.Image.ToCdnUrl();
+            });
+            return new MorePageData<SelectionFeedListDto>
+            {
+                HasMore = list.Count == pagination.Limit,
+                Rows = list
+            };
         }
     }
 }

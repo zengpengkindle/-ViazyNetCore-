@@ -12,7 +12,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         private readonly ProductService _productService;
         private readonly ILockProvider _lockProvider;
         private readonly string _shopId = "123456";
-        private readonly string _imgBaseUrl = @"http://localhost:1799";
+        private readonly string _imgBaseUrl = @"http://localhost:7277";
 
         public ProductController(ProductService productService, ILockProvider lockProvider)
         {
@@ -64,9 +64,9 @@ namespace ViazyNetCore.ShopMall.AppApi
                 throw new ApiException("数据异常");
 
             var info = await this._productService.FindProductInfo(productId);
-            info.Image = _imgBaseUrl + info.Image;
-            info.SubImage = info.SubImage.Replace("/upload/", _imgBaseUrl + "/upload/");
-            info.Detail = info.Detail.Replace("/upload/", _imgBaseUrl + "/upload/");
+            info.Image = info.Image.ToCdnUrl();
+            info.SubImage = info.SubImage.ToCdnUrl();
+            info.Detail = info.Detail.ToCdnUrl();
             return info;
         }
     }

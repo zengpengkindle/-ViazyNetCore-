@@ -40,6 +40,13 @@
         "navigationStyle": "custom",
         "navigationBarTextStyle": "white"
       }
+    },
+    {
+      "path": "pages/selection/detail/index", //商品详情
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "white"
+      }
     }
   ],
   "globalStyle": {
