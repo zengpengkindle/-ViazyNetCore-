@@ -1,10 +1,5 @@
 <template>
-  <u-popup
-    :model-value="modelValue"
-    mode="bottom"
-    closeable
-    @update:model-value="(val: boolean) => $emit('update:modelValue', val)"
-  >
+  <u-popup v-model="showSpecPopup" mode="bottom" closeable>
     <view class="popup-container">
       <view class="popup-sku-header">
         <u-image
@@ -81,7 +76,7 @@
       <view
         v-if="outOperateStatus"
         class="single-confirm-btn"
-        :class="!isStock ? 'disabled' : ''"
+        :class="!isStock && spec.id == '' ? 'disabled' : ''"
         @click="specsConfirm"
       >
         确定
@@ -117,14 +112,16 @@
 </template>
 <script lang="ts" setup>
 import type { ProductSkuModel } from "@/apis/shopmall/product";
-import { ref, watch, type Ref } from "vue";
+import ProductCartApi, {
+  type ShoppingCartEditDto
+} from "@/apis/shopmall/productCart";
+import { ref, watch, computed, type Ref } from "vue";
+import { useProductSpec } from "./specsHooks";
 export interface GoodsSpecsPopupProps {
   sku: ProductSkuModel;
-  modelValue: boolean;
   title: string;
 }
 const props = defineProps<GoodsSpecsPopupProps>();
-defineEmits(["update:modelValue"]);
 
 interface SkuProps {
   specId: string;
@@ -143,9 +140,10 @@ interface SpecItem {
 const imageSrc = ref("");
 const specList: Ref<Array<SkuProps>> = ref();
 const limitBuyInfo = ref(0);
-const isStock = ref(true);
+const isStock = computed(() => {
+  return !props.sku.hide_stock;
+});
 const outOperateStatus = ref(1);
-const buyNum = ref(0);
 watch(
   () => props.sku,
   () => {
@@ -176,7 +174,17 @@ const init = () => {
     specList.value.push(spec);
   });
 };
-const addCart = () => {};
+const addCart = async () => {
+  if (spec.value.id != "" || props.sku.none_sku) {
+    const cart: ShoppingCartEditDto = {
+      pId: props.sku.collection_id,
+      skuId: spec.value.id,
+      num: buyNum.value
+    };
+    await ProductCartApi.addCart(cart);
+    uni.showToast({ title: "添加成功" });
+  }
+};
 const buyNow = () => {};
 const toChooseItem = (selectItem: SpecItem, item: Array<SpecItem>) => {
   selectItem.isSelected = !selectItem.isSelected;
@@ -185,9 +193,39 @@ const toChooseItem = (selectItem: SpecItem, item: Array<SpecItem>) => {
       subItem.isSelected = false;
     }
   });
-  console.log(selectItem);
 };
-const specsConfirm = () => {};
+
+watch(
+  () => specList.value,
+  nval => {
+    const selectValue = [];
+    nval.forEach(element => {
+      element.specValueList.forEach(specValue => {
+        if (specValue.isSelected) selectValue.push(specValue.specValueId);
+      });
+    });
+    spec.value = { id: "" };
+    for (const index in props.sku.list) {
+      const item = props.sku.list[index];
+      if (
+        item.s1 == selectValue[0] &&
+        (item.s2 == "0" || item.s2 == selectValue[1]) &&
+        (item.s3 == "0" || item.s3 == selectValue[2])
+      ) {
+        spec.value = item;
+      }
+    }
+  },
+  { deep: true }
+);
+const { buyNum, spec, showSpecPopup, specType } = useProductSpec();
+const specsConfirm = async () => {
+  if (specType.value == "addCart") {
+    await addCart();
+  }
+  specType.value = "";
+  showSpecPopup.value = !showSpecPopup.value;
+};
 </script>
 <style lang="scss" scoped>
 .popup-container {
@@ -271,8 +309,8 @@ const specsConfirm = () => {};
       justify-content: center;
     }
     .popup-sku-row__item.popup-sku-row__item--active {
-      border: 2rpx solid #fa4126;
-      color: #fa4126;
+      border: 2rpx solid $u-type-primary;
+      color: $u-type-primary;
       background: rgba(255, 95, 21, 0.04);
     }
     .disabled-sku-selected {
@@ -415,8 +453,8 @@ const specsConfirm = () => {};
   }
 
   .sku-operate .sku-operate-addCart {
-    background-color: #ffece9;
-    color: #fa4126;
+    background-color: $u-type-primary-light;
+    color: $u-type-primary;
     border-radius: 48rpx 0 0 48rpx;
   }
 
@@ -426,7 +464,7 @@ const specsConfirm = () => {};
   }
 
   .sku-operate .sku-operate-buyNow {
-    background-color: #fa4126;
+    background-color: $u-type-primary;
     border-radius: 0 48rpx 48rpx 0;
   }
 
@@ -448,7 +486,7 @@ const specsConfirm = () => {};
     height: 80rpx;
     text-align: center;
     line-height: 88rpx;
-    background-color: #fa4126;
+    background-color: $u-type-primary;
   }
 
   .single-confirm-btn.disabled {

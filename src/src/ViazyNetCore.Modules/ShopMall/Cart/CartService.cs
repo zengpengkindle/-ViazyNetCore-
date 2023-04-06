@@ -37,17 +37,17 @@ namespace ViazyNetCore.Modules.ShopMall
 
             foreach (var item in cartItems)
             {
-                var value = new ShoppingCartProduct();
-
-                value.Id = item.Id;
-
-                value.ImgUrl = item.Image;
-                value.PId = item.ProductId;
-                value.Pn = item.Title;
-                value.ShopId = item.ShopId;
-                value.SkuId = item.SkuId;
-                value.SkuText = item.SkuText;
-                value.Status = ComStatus.Enabled;
+                var value = new ShoppingCartProduct
+                {
+                    Id = item.Id,
+                    ImgUrl = item.Image,
+                    PId = item.ProductId,
+                    Pn = item.Title,
+                    ShopId = item.ShopId,
+                    SkuId = item.SkuId,
+                    SkuText = item.SkuText,
+                    Status = ComStatus.Enabled
+                };
 
                 var product = await this._engine.Select<Product>().Where(t => t.Id == item.ProductId).FirstAsync();
 
@@ -105,44 +105,51 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public async Task<bool> AddShoppingCartProduct(ShoppingCartProduct carItem, string memberId)
+        public async Task<bool> AddShoppingCartProduct(ShoppingCartEditDto carItem, string memberId)
         {
             var product = await this._engine.Select<Product>().Where(t => t.Id == carItem.PId).FirstAsync();
+
             if (product == null)
                 return false;
-            var query = this._engine.Select<MemberCarItem>().Where(t => t.ProductId == product.Id && t.CarId == memberId);
+            var item = await this._engine.Select<MemberCarItem>()
+                .Where(t => t.ProductId == product.Id && t.CarId == memberId)
+                .WhereIf(carItem.SkuId.IsNotNull(), t => t.SkuId == carItem.SkuId)
+                .FirstAsync();
 
-            if (carItem.SkuId.IsNotNull())
-                query = query.Where(t => t.SkuId == carItem.SkuId);
-
-
-
-            var item = await query.FirstAsync();
             if (item == null)
             {
-                var newItem = new MemberCarItem();
-                newItem.Id = Snowflake<MemberCarItem>.NextIdString();
-                newItem.AddTime = DateTime.Now;
-                newItem.CarId = memberId;
-                newItem.ChangedTime = DateTime.Now;
-                newItem.Num = carItem.Num;
-                newItem.ProductId = carItem.PId;
-                newItem.ShopId = product.ShopId;
-                newItem.SkuId = carItem.SkuId;
-                newItem.SkuText = carItem.SkuText;
-                newItem.Title = product.Title;
+                var newItem = new MemberCarItem
+                {
+                    Id = Snowflake<MemberCarItem>.NextIdString(),
+                    AddTime = DateTime.Now,
+                    CarId = memberId,
+                    ChangedTime = DateTime.Now,
+                    Num = carItem.Num,
+                    ProductId = carItem.PId,
+                    ShopId = product.ShopId,
+                    SkuId = null,
+                    SkuText = null,
+                    Title = product.Title,
+                    Credit1 = 0,
+                    Credit2 = 0,
+                    Credit3 = 0,
+                    Credit4 = 0,
+                    Credit5 = 0,
+                    IsFreeFreight = product.IsFreeFreight,
+                    Price = product.Price,
+                    Status = CarItemStatus.InCar,
+                    Freight = product.Freight,
+                    FreightStep = product.FreightStep,
 
-                newItem.Freight = product.Freight;
-                newItem.FreightStep = product.FreightStep;
-
-                newItem.Image = product.Image;
+                    Image = product.Image
+                };
 
                 if (carItem.SkuId.IsNotNull())
                 {
                     var sku = await this._engine.Select<ProductSku>().Where(t => t.Id == carItem.SkuId).FirstAsync();
                     if (sku == null)
                         return false;
-
+                    newItem.SkuId = sku.Id;
                     var trees = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SkuTree>>(product.SkuTree);
                     var tree = trees[0].V.Find(t => t.Id == sku.S1);
                     if (tree.ImgUrl.IsNotNull())
@@ -168,6 +175,8 @@ namespace ViazyNetCore.Modules.ShopMall
             {
                 item.Num += carItem.Num;
                 item.Freight = product.Freight;
+                item.Title = product.Title;
+                item.Image = product.Image;
                 item.FreightStep = product.FreightStep;
                 if (carItem.SkuId.IsNotNull())
                 {
@@ -175,12 +184,37 @@ namespace ViazyNetCore.Modules.ShopMall
                     if (sku == null)
                         return false;
                     item.Price = sku.Price;
+                    var trees = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SkuTree>>(product.SkuTree);
+                    var tree = trees[0].V.Find(t => t.Id == sku.S1);
+                    if (tree.ImgUrl.IsNotNull())
+                        item.Image = tree.ImgUrl;
+                    item.SkuText = string.Empty;
+                    if (sku.Key1.IsNotNull())
+                        item.SkuText += sku.Key1 + ":" + sku.Name1 + ";";
+                    if (sku.Key2.IsNotNull())
+                        item.SkuText += sku.Key2 + ":" + sku.Name2 + ";";
+                    if (sku.Key3.IsNotNull())
+                        item.SkuText += sku.Key3 + ":" + sku.Name3 + ";";
+
                 }
                 else
                 {
                     item.Price = product.Price;
                 }
-                await this._engine.Update<MemberCarItem>().SetDto(new { item.Id, item.Num, item.Price, item.Freight, item.FreightStep }).ExecuteAffrowsAsync();
+                await this._engine.Update<MemberCarItem>()
+                    .Where(p => p.Id == item.Id)
+                    .SetDto(new
+                    {
+                        item.Id,
+                        item.Num,
+                        item.Title,
+                        item.SkuText,
+                        item.Image,
+                        item.Price,
+                        item.Freight,
+                        item.FreightStep
+                    })
+                    .ExecuteAffrowsAsync();
             }
             return true;
         }
@@ -200,7 +234,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveShoppingCartProduct(ShoppingCartProduct product, string memberId)
+        public async Task<bool> RemoveShoppingCartProduct(ShoppingCartEditDto product, string memberId)
         {
             await this._engine.Delete<MemberCarItem>().Where(t => t.ProductId == product.PId && t.SkuId == product.SkuId && t.CarId == memberId).ExecuteAffrowsAsync();
             return true;

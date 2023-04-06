@@ -233,7 +233,6 @@ function getTabRect() {
   query.exec(
     function (res) {
       tabQueryInfo.value = res;
-      console.log("query", res);
       // 初始化滚动条和移动bar的位置
       scrollByIndex();
     }.bind(instance)

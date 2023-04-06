@@ -1,15 +1,17 @@
 <template>
-  <u-sticky :h5-nav-height="0" :offset-top="boundingRect.height * 2">
+  <u-sticky :h5-nav-height="0" :offset-top="boundingRect.height + 'px'">
     <view :class="prop.parameters.style" class="page-search">
       <!-- 搜索组件宽度自适应于外层 -->
       <u-toast ref="uToast" />
       <u-search
         v-model="keyword"
+        disabled
         :placeholder="prop.parameters.keywords"
         shape="round"
         :show-action="true"
         action-text="搜索"
         @custom="goSearch"
+        @click="goSearch"
         @search="goSearch"
       />
     </view>
@@ -30,7 +32,9 @@ const prop = defineProps<SearchProps>();
 const keyword = ref("");
 const { boundingRect } = useHeader();
 onMounted(() => {});
-function goSearch() {}
+function goSearch() {
+  uni.navigateTo({ url: "/pages/selection/search/index" });
+}
 </script>
 <style lang="scss" scoped>
 .page-search {

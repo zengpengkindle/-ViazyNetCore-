@@ -45,7 +45,24 @@
       "path": "pages/selection/detail/index", //商品详情
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTextStyle": "white"
+        "navigationBarTextStyle": "white",
+        "navigationBarBackgroundColor": "#F8F8F8"
+      }
+    },
+    {
+      "path": "pages/selection/search/index", //搜索页
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "搜索",
+        "navigationBarBackgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/selection/result/index", //搜索结果
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "搜索",
+        "navigationBarBackgroundColor": "#f8f8f8"
       }
     }
   ],

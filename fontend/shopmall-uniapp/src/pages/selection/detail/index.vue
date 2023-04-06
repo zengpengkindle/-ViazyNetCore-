@@ -53,12 +53,12 @@
         <view class="goods-title">
           <view class="goods-name">{{ detail.title }}</view>
           <view class="goods-tag">
-            <u-button open-type="share" t-class="shareBtn" variant="text">
+            <view open-type="share" class="shareBtn" variant="text">
               <view class="btn-icon">
-                <t-icon name="share" size="40rpx" color="#000" />
+                <u-icon name="share" size="40rpx" color="#000" />
                 <view class="share-text">分享</view>
               </view>
-            </u-button>
+            </view>
           </view>
         </view>
         <view class="goods-intro">{{ detail.subTitle }}</view>
@@ -66,32 +66,36 @@
       <view class="spu-select" @click="showSkuSelectPopup">
         <view class="label">已选</view>
         <view class="content">
-          <view class="{{!selectedAttrStr ? 'tintColor' : ''}}">
-            {{ selectedAttrStr ? buyNum : "" }}{{ selectedAttrStr || "请选择" }}
+          <view :class="!selectedAttrStr ? 'tintColor' : ''">
+            {{ selectedAttrStr || "请选择" }}
           </view>
-          <t-icon name="chevron-right" size="40rpx" color="#BBBBBB" />
+          <u-icon name="arrow-right" size="40rpx" color="#BBBBBB" />
         </view>
       </view>
-      <view class="goods-detail">
-        <u-parse :html="detail.detail" class="u-skeleton-rect" />
+      <view class="desc-content">
+        <view class="desc-content__title">
+          <u-section title="商品详情" :right="false" />
+        </view>
+        <u-parse :html="detail.detail" class="u-skeleton-rect desc-detail" />
       </view>
       <u-skeleton :loading="loading" :animation="true" bg-color="#FFF" />
     </view>
-    <GoodsSpecesPopup
-      v-model="showSpecPopup"
-      :sku="detail.skus"
-      :title="detail.title"
-    />
+    <GoodsSpecesPopup :sku="detail.skus" :title="detail.title" />
+    <view class="goods-bottom-operation">
+      <GoodsBuyBar :is-stock="true" :soldout="false" :jump-array="jumpArray" />
+    </view>
   </view>
 </template>
 <script lang="ts" setup>
 import XHeader from "@/components/ui/header/index.vue";
+import GoodsSpecesPopup from "./components/goods-specs-popup.vue";
+import GoodsBuyBar, { type JumpIcon } from "./components/goods-buy-bar.vue";
 import ProductApi, { type ProductInfoModel } from "@/apis/shopmall/product";
 import { useHeader, GetRect } from "@/components/ui/hooks/user-head";
 import { onLoad, onPageScroll } from "@dcloudio/uni-app";
 import { getCurrentInstance, onMounted } from "vue";
 import { ref, computed, type Ref } from "vue";
-import GoodsSpecesPopup from "./components/goods-specs-popup.vue";
+import { useProductSpec } from "./components/specsHooks";
 const imageHeight = ref(0);
 onMounted(async () => {
   const rect = await GetRect(getCurrentInstance(), ".product-image-wrap");
@@ -167,12 +171,31 @@ interface ActivityItem {
 }
 const activityList: Ref<Array<ActivityItem>> = ref([]);
 /** 商品Sku属性 */
-const showSpecPopup = ref(false);
-const buyNum = ref(0);
-const selectedAttrStr = computed(() => "");
+const { spec, showSpecPopup } = useProductSpec();
+const selectedAttrStr = computed(() => {
+  if (spec.value.id != "")
+    return `${spec.value.name1}${
+      spec.value.name2 == "" ? "" : "," + spec.value.name2
+    }${spec.value.name3 == "" ? "" : "," + spec.value.name3}`;
+  else return null;
+});
 const showSkuSelectPopup = () => {
   showSpecPopup.value = true;
 };
+const jumpArray: Array<JumpIcon> = [
+  {
+    iconName: "home",
+    title: "首页",
+    url: "home",
+    showCartNum: false
+  },
+  {
+    iconName: "shopping-cart",
+    title: "购物车",
+    url: "cart",
+    showCartNum: false
+  }
+];
 </script>
 
 <style lang="scss" scoped>
@@ -409,6 +432,28 @@ const showSkuSelectPopup = () => {
     .content .tintColor {
       color: #aaa;
     }
+  }
+  .desc-content {
+    margin-top: 20rpx;
+    background-color: #fff;
+    padding-bottom: 120rpx;
+    .desc-content__title {
+      font-size: 28rpx;
+      line-height: 36rpx;
+      padding: 30rpx 20rpx;
+    }
+    .desc-detail {
+      min-height: 100rpx;
+    }
+  }
+
+  .goods-bottom-operation {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 </style>

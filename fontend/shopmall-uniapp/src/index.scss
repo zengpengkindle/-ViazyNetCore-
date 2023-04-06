@@ -1,12 +1,11 @@
-
 @font-face {
-  font-family: 'D-DIN';
-  src: url('./static/font/D-DIN-Bold.ttf') format('truetype');
+  font-family: "D-DIN";
+  src: "./static/font/D-DIN-Bold.ttf" format("truetype");
 }
 
 @font-face {
-  font-family: 'D-DIN-FINE';
-  src: url('./static/font/D-DIN.ttf') format('truetype');
+  font-family: "D-DIN-FINE";
+  src: "./static/font/D-DIN.ttf" format("truetype");
 }
 
 .ellipsis {

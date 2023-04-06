@@ -113,11 +113,13 @@ defineExpose({
 .price {
   display: inline;
   color: inherit;
+  font-family: "D-DIN";
   font-size: inherit;
   text-decoration: inherit;
 }
 
 .lighter {
+  font-family: "D-DIN";
   font-weight: 400;
 }
 .mini {

@@ -10,7 +10,7 @@ export class ProductCartApi {
       method: "post"
     });
   }
-  public addCart(param1?: ShoppingCartProduct): Promise<boolean> {
+  public addCart(param1?: ShoppingCartEditDto): Promise<boolean> {
     return http.request({
       url: "/api/ProductCart/AddCart",
       method: "post",
@@ -20,7 +20,7 @@ export class ProductCartApi {
   /**
    * 无
    */
-  public removeCart(param1?: ShoppingCartProduct): Promise<boolean> {
+  public removeCart(param1?: ShoppingCartEditDto): Promise<boolean> {
     return http.request({
       url: "/api/ProductCart/RemoveCart",
       method: "post",
@@ -39,7 +39,11 @@ export interface ShoppingCart {
   propertyValues: string;
   packages: Array<ShoppingCartPackage>;
 }
-
+export interface ShoppingCartEditDto {
+  pId: string | null;
+  skuId: string | null;
+  num: number | null;
+}
 /**
  * ShoppingCartPackage
  */

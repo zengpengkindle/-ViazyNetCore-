@@ -101,13 +101,18 @@
 		methods: {
 			initObserver() {
 				if (!this.enable) return;
+				var endPxReg=/px$/;
+				var endRpxReg=/rpx$/;
+				if(endPxReg.test(this.offsetTop)&&!endRpxReg.test(this.offsetTop)){
+					this.stickyTop =this.offsetTop.substring(0, this.offsetTop.length - 2)
+				}else{
 				// #ifdef H5
 				this.stickyTop = this.offsetTop != 0 ? uni.upx2px(this.offsetTop) + this.h5NavHeight : this.h5NavHeight;
 				// #endif
 				// #ifndef H5
 				this.stickyTop = this.offsetTop != 0 ? uni.upx2px(this.offsetTop) : 0;
 				// #endif
-
+				}
 				this.disconnectObserver('contentObserver');
 				this.$uGetRect('.' + this.elClass).then((res) => {
 					this.height = res.height;

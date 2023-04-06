@@ -3,7 +3,9 @@
     <view class="header-content">
       <x-header bounding-rect :header-style="headerStyle">
         <view class="search-wrapper" @click="handleSearch">
-          <view class="placeholder-container" />
+          <view class="placeholder-container">
+            <text>请输入搜索商品信息</text>
+          </view>
         </view>
       </x-header>
       <image-tabs
@@ -87,7 +89,9 @@ const headerStyle: CSSProperties = {
 };
 
 const { boundingRect } = useHeader();
-function handleSearch() {}
+function handleSearch() {
+  uni.navigateTo({ url: "/pages/selection/search/index" });
+}
 
 const catLists: Ref<Array<CatItem>> = ref([
   { id: "1", image: "/static/images/cat/img-1.webp", text: "分类" }
@@ -147,9 +151,9 @@ const params = reactive({
 const productListRef = ref<InstanceType<typeof ProductList>>();
 const queryCatId = computed(() => {
   if (subCatActive.value >= 0 && subItems.value.length >= 0) {
-    return subItems.value[subCatActive.value].id;
+    return subItems.value[subCatActive.value]?.id;
   } else {
-    return catLists.value[bigCatId.value].id;
+    return catLists.value[bigCatId.value]?.id;
   }
 });
 watch(

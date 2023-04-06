@@ -24,7 +24,7 @@
                 decimal-smaller
                 type="lighter"
               />
-              <price :price="item.price" />
+              <price :price="item.price" symbol="¥" type="del" />
             </view>
           </view>
         </view>
@@ -170,11 +170,11 @@ const itemClick = () => {
       .price-wrapper {
         display: inline-block;
         align-items: baseline;
+        color: #de3f4f;
         .unit {
           font-weight: 600;
           font-size: 24rpx;
           line-height: 32rpx;
-          color: #de3f4f;
         }
         .integer-part {
           margin-left: 4rpx;

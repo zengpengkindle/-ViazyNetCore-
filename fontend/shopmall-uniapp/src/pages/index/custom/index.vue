@@ -16,10 +16,11 @@
   </view>
 </template>
 <script lang="ts" setup>
-import ShopPage from "@/components/shoppage/page.vue";
-import { ref, getCurrentInstance, onMounted, nextTick, type Ref } from "vue";
+import ShopPage from "@/components/ShopPage/page.vue";
+import { ref, getCurrentInstance, onMounted, type Ref } from "vue";
 import PageApi, { type DesginItem } from "@/apis/shopmall/page";
 import { GetRect, useHeader } from "@/components/ui/hooks/user-head";
+import { onShow } from "@dcloudio/uni-app";
 const appTitle = ref("ViazyNetCore");
 const {
   appContext: {
@@ -32,14 +33,15 @@ const pageData: Ref<Array<DesginItem>> = ref([]);
 const { boundingRect } = useHeader();
 onMounted(async () => {
   pageData.value = await PageApi.getPageData("mobile_home");
-  nextTick(async () => {
-    const haedRect = (await GetRect(
-      instance,
-      "#indexnavbar"
-    )) as UniApp.NodeInfo;
-    boundingRect.value.height = haedRect.height;
-  });
 });
+onShow(async () => {
+  const haedRect = (await GetRect(instance, "#indexnavbar")) as UniApp.NodeInfo;
+  boundingRect.value.height = haedRect.height;
+  boundingRect.value.width = haedRect.width;
+  boundingRect.value.top = haedRect.top;
+  boundingRect.value.bottom = haedRect.bottom;
 
+  uni.pageScrollTo({ scrollTop: 0 });
+});
 const instance = getCurrentInstance();
 </script>

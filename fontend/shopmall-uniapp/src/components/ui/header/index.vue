@@ -1,23 +1,23 @@
 <template>
-  <view class="header-main">
+  <view
+    class="header-main"
+    :class="{ 'sticky-top': stickyTop }"
+    :style="{
+      ...rectStyle,
+      ...headerStyle
+    }"
+  >
     <view
       class="haeder-status-bar"
       :style="{ height: statusBarHeight + 'px' }"
     />
-    <view
-      class="x-header"
-      :class="{ 'sticky-top': stickyTop }"
-      :style="{
-        ...rectStyle,
-        ...headerStyle
-      }"
-    >
+    <view class="x-header">
       <slot>
         <slot name="icon">
           <view class="back-icon">
             <u-icon
+              color="#000000"
               name="nav-back"
-              color="#ffffff"
               :size="44"
               @click="backClick"
             />
@@ -27,7 +27,7 @@
           <view
             class="title ellipsis"
             :style="{
-              top: rect.top + rect.height / 2 + 'px',
+              top: rect.height / 2 + 'px',
               color: titleColor
             }"
           >
@@ -42,9 +42,10 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { getCurrentInstance, reactive, ref } from "vue";
 import type { CSSProperties, PropType } from "vue";
-import { useHeader } from "../hooks/user-head";
+import { useHeader, GetRect } from "../hooks/user-head";
+import { onShow } from "@dcloudio/uni-app";
 
 const props = defineProps({
   title: {
@@ -91,26 +92,24 @@ const backClick = () => {
     uni.navigateBack();
   } else {
     uni.switchTab({
-      url: "/pages/selection/index"
+      url: "/pages/index/custom/index"
     });
   }
 };
 const { boundingRect } = useHeader();
-onMounted(() => {
+onShow(async () => {
   if (props.boundingRect) {
-    uni
-      .createSelectorQuery()
-      .in(getCurrentInstance())
-      .select(".header-main")
-      .boundingClientRect(res => {
-        boundingRect.value.width = (res as UniApp.NodeInfo).width || 0;
-        boundingRect.value.height = (res as UniApp.NodeInfo).height || 0;
-        boundingRect.value.left = (res as UniApp.NodeInfo).left || 0;
-        boundingRect.value.right = (res as UniApp.NodeInfo).right || 0;
-        boundingRect.value.top = (res as UniApp.NodeInfo).top || 0;
-        boundingRect.value.bottom = (res as UniApp.NodeInfo).bottom || 0;
-      })
-      .exec();
+    const res = (await GetRect(
+      getCurrentInstance(),
+      ".header-main"
+    )) as UniApp.NodeInfo;
+
+    boundingRect.value.width = res.width || 0;
+    boundingRect.value.height = res.height || 0;
+    boundingRect.value.left = res.left || 0;
+    boundingRect.value.right = res.right || 0;
+    boundingRect.value.top = res.top || 0;
+    boundingRect.value.bottom = res.bottom || 0;
   }
 });
 </script>
@@ -122,7 +121,7 @@ onMounted(() => {
 .x-header {
   width: 100vw;
   position: relative;
-  padding-bottom: 6px;
+  padding: 6px;
   display: flex;
   align-items: center;
   &.sticky-top {
@@ -135,6 +134,8 @@ onMounted(() => {
     height: 24px;
   }
   .title {
+    flex: 1;
+    text-align: center;
     max-width: 320rpx;
     font-weight: 400;
     font-size: 16px;
@@ -142,6 +143,7 @@ onMounted(() => {
     letter-spacing: 0.05em;
     color: #000;
     position: absolute;
+    top: 0;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
   }

@@ -41,7 +41,6 @@
                 <!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
                 <u-lazy-load
                   threshold="-150"
-                  border-radius="10"
                   :image="item.image"
                   :index="index"
                 />
@@ -53,12 +52,12 @@
                     :price="item.price || 100.01"
                     symbol="¥"
                     type="lighter"
+                    decimal-smaller
                   />
                   <price
                     :price="item.mktprice || 100.01"
                     symbol="¥"
                     type="del"
-                    decimal-smaller
                   />
                 </view>
                 <view v-if="item.isRecommend" class="good-tag-recommend">
@@ -121,7 +120,7 @@
               @click="goGoodsDetail(item.id)"
             >
               <view class="good_box">
-                <u-row gutter="5" justify="space-between">
+                <u-row gutter="10" justify="space-between">
                   <u-col span="4">
                     <!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
                     <u-lazy-load
@@ -142,10 +141,12 @@
                     <view class="good-price u-padding-10">
                       <price :price="item.price" symbol="￥" />
                       <price
+                        v-if="item.mktprice > 0"
                         :price="item.mktprice"
                         type="mini"
                         symbol="￥"
                         decimal-smaller
+                        style="margin-left: 10rpx"
                       />
                     </view>
                   </u-col>
@@ -238,12 +239,12 @@
                           >
                         </view>
                         <view
-                          class="good-tag-recommend"
                           v-if="item.isRecommend"
+                          class="good-tag-recommend"
                         >
                           推荐
                         </view>
-                        <view class="good-tag-hot" v-if="item.isHot">
+                        <view v-if="item.isHot" class="good-tag-hot">
                           热门
                         </view>
                       </view>
@@ -271,6 +272,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, ref } from "vue";
+import { stringify } from "qs";
 
 export interface GoodParameter {
   column: number;
@@ -300,7 +302,12 @@ const count = computed(() => {
   return prop.parameters.list.length;
 });
 const goGoodsDetail = (productId: string) => {
-  console.log(productId);
+  const queries = {
+    id: productId
+  };
+  uni.navigateTo({
+    url: `/pages/selection/detail/index?${stringify(queries)}`
+  });
 };
 const center = ref("center");
 const current = ref(0);
@@ -310,20 +317,27 @@ const change = (e: any) => {
 </script>
 <style scoped lang="scss">
 .goodsBox {
-  border-radius: 16rpx;
   color: #333333 !important;
-  margin: 0 10rpx;
+  padding: 10rpx 10rpx 0;
+  background-color: #f3f3f3;
   .good_box {
     border-radius: 8px;
-    margin: 3px;
     background-color: #ffffff;
-    padding: 5px;
     position: relative;
     width: calc(100% - 6px);
+    overflow: hidden;
+    margin-top: 15rpx;
     .good_title {
       font-size: 26rpx;
-      margin-top: 5px;
+      padding: 10rpx 15rpx 0;
       color: $u-main-color;
+    }
+    .u-line-2 {
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
     .good_title-xl {
       font-size: 28rpx;
@@ -380,8 +394,8 @@ const change = (e: any) => {
     }
     .good-price {
       font-size: 30rpx;
+      padding: 10rpx 15rpx;
       color: $u-type-error;
-      margin-top: 5px;
     }
   }
 

@@ -93,12 +93,12 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <summary>
         /// 设置或获取一个值，表示规格描述。
         /// </summary>
-        public string SkuText { get; set; }
+        public string? SkuText { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示图片。
         /// </summary>
-        public string ImgUrl { get; set; }
+        public string? ImgUrl { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示商品售价。
@@ -116,5 +116,23 @@ namespace ViazyNetCore.Modules.ShopMall
         /// 设置或获取一个值，表示购物车商品是否有效。
         /// </summary>
         public ComStatus Status { get; set; }
+    }
+
+    public class ShoppingCartEditDto
+    {
+        /// <summary>
+        /// 设置或获取一个值，表示商品Id。
+        /// </summary>
+        public string PId { get; set; }
+
+        /// <summary>
+        /// 设置或获取一个值，表示SkuId。
+        /// </summary>
+        public string? SkuId { get; set; }
+
+        /// <summary>
+        /// 设置或获取一个值，表示购买数。
+        /// </summary>
+        public int Num { get; set; }
     }
 }

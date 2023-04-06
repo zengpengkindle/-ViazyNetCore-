@@ -38,7 +38,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         }
 
         [HttpPost]
-        public async Task<bool> AddCart(ShoppingCartProduct product)
+        public async Task<bool> AddCart(ShoppingCartEditDto product)
         {
             var result = await this._cartService.AddShoppingCartProduct(product, _memberId);
             if (!result)
@@ -47,7 +47,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         }
 
         [HttpPost]
-        public async Task<bool> RemoveCart(ShoppingCartProduct product)
+        public async Task<bool> RemoveCart(ShoppingCartEditDto product)
         {
             var result = await this._cartService.RemoveShoppingCartProduct(product, _memberId);
             if (!result)
