@@ -26,7 +26,8 @@ export interface SelectionFeedListDtoMorePageData {
   hasMore: boolean;
 }
 export interface SelectionFeedQueryReq {
-  catId: string | null;
+  catId?: string;
+  keyword?: string;
 }
 /**
  * SelectionFeedListDto

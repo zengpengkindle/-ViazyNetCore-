@@ -8,7 +8,7 @@
     />
     <view class="u-skeleton">
       <view class="product-image-wrap u-skeleton-rect">
-        <u-swiper :list="imageList" :height="imageHeight * 2" />
+        <u-swiper :list="imageList" :height="imageHeight * 2" mode="number" />
       </view>
       <view class="goods-info">
         <view class="goods-number">
@@ -21,7 +21,6 @@
               :price="detail.price"
               type="lighter"
             />
-            <view class="goods-price-up">起</view>
             <price
               symbol="¥"
               class="class-goods-del"
@@ -67,9 +66,10 @@
         <view class="label">已选</view>
         <view class="content">
           <view :class="!selectedAttrStr ? 'tintColor' : ''">
+            {{ selectedAttrStr ? buyNum + "件" : "" }}
             {{ selectedAttrStr || "请选择" }}
           </view>
-          <u-icon name="arrow-right" size="40rpx" color="#BBBBBB" />
+          <u-icon name="arrow-right" size="28rpx" color="#BBBBBB" />
         </view>
       </view>
       <view class="desc-content">
@@ -171,7 +171,7 @@ interface ActivityItem {
 }
 const activityList: Ref<Array<ActivityItem>> = ref([]);
 /** 商品Sku属性 */
-const { spec, showSpecPopup } = useProductSpec();
+const { spec, showSpecPopup, buyNum } = useProductSpec();
 const selectedAttrStr = computed(() => {
   if (spec.value.id != "")
     return `${spec.value.name1}${
@@ -187,13 +187,19 @@ const jumpArray: Array<JumpIcon> = [
     iconName: "home",
     title: "首页",
     url: "home",
-    showCartNum: false
+    showCartNum: 0
+  },
+  {
+    iconName: "star",
+    title: "收藏",
+    url: "fav",
+    showCartNum: 0
   },
   {
     iconName: "shopping-cart",
     title: "购物车",
     url: "cart",
-    showCartNum: false
+    showCartNum: 0
   }
 ];
 </script>
@@ -278,7 +284,7 @@ const jumpArray: Array<JumpIcon> = [
     }
 
     .goods-price .class-goods-price {
-      font-size: 64rpx;
+      font-size: 52rpx;
       color: #fa4126;
       font-weight: bold;
       font-family: DIN Alternate;
@@ -295,7 +301,7 @@ const jumpArray: Array<JumpIcon> = [
       left: 16rpx;
       bottom: 2rpx;
       color: #999999;
-      font-size: 32rpx;
+      font-size: 26rpx;
     }
 
     .goods-number {
@@ -305,7 +311,7 @@ const jumpArray: Array<JumpIcon> = [
     }
     .goods-number .sold-num {
       font-size: 24rpx;
-      color: #999999;
+      color: $u-type-warning-dark;
       display: flex;
       align-items: flex-end;
       margin-right: 32rpx;
@@ -357,7 +363,8 @@ const jumpArray: Array<JumpIcon> = [
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow: hidden;
-      font-size: 32rpx;
+      font-size: 34rpx;
+      line-height: 1.5;
       word-break: break-all;
       color: #333333;
     }

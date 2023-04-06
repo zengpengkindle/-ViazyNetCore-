@@ -245,10 +245,8 @@ onPullDownRefresh(() => {
   }
 }
 .good_box {
-  border-radius: 8px;
-  margin: 3px;
-  background-color: #ffffff;
-  padding: 5px;
+  padding: 10rpx;
+  background-color: #fff;
   position: relative;
   width: calc(100% - 6px);
   .good_title {

@@ -10,37 +10,47 @@
           综合
         </view>
         <view class="filter-item" @click="handlePriseSort">
-          <text :style="{ color: sorts !== '' ? color : '' }">价格</text>
+          <text :style="{ color: sorts != '' ? color : '' }">价格</text>
           <view class="filter-price">
             <u-icon
               prefix="wr"
-              name="arrow_drop_up"
-              size="18rpx"
-              :style="{ color: sorts === 'asc' ? color : '#bbb' }"
+              name="arrow-up-fill"
+              :size="18"
+              :color="sorts === 'asc' ? color : '#bbbbbb'"
             />
             <u-icon
               prefix="wr"
-              name="arrow_drop_down"
-              size="18rpx"
-              :style="{ color: sorts === 'asc' ? color : '#bbb' }"
+              name="arrow-down-fill"
+              :size="18"
+              :color="sorts === 'desc' ? color : '#bbbbbb'"
             />
           </view>
         </view>
         <view class="filter-item" @click="openFilter">
           筛选
-          <u-icon name="filter" prefix="wr" color="#333" size="32rpx" />
+          <u-icon name="plus" class="wr-filter" color="#333" size="32rpx" />
         </view>
       </view>
     </view>
   </view>
 </template>
 <script lang="ts" setup>
-import { ref } from "vue";
-const sorts = ref("asc");
-const color = ref("#000");
-const overall = ref(1);
-const onOverallAction = () => {};
-const handlePriseSort = () => {};
+import { useFilter } from "./hook";
+const { sorts, color, overall, layout, changeFilter } = useFilter();
+const onOverallAction = () => {
+  changeFilter({
+    overall: overall.value === 1 ? 0 : 1,
+    layout: layout.value,
+    sorts: ""
+  });
+};
+const handlePriseSort = () => {
+  changeFilter({
+    overall: 0,
+    layout: layout.value,
+    sorts: sorts.value === "desc" ? "asc" : "desc"
+  });
+};
 const openFilter = () => {};
 </script>
 <style lang="scss" scoped>

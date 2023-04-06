@@ -11,23 +11,17 @@
 
     <view class="info-wrapper">
       <view class="title-wrapper">
-        <text class="title">
+        <text class="title multi-ellipsis--l2">
           {{ item.title }}
         </text>
       </view>
 
       <view class="money-row">
         <view class="price-wrapper">
-          <price
-            :price="item.price"
-            symbol="¥"
-            :bold="true"
-            decimal-smaller
-            type="lighter"
-          />
+          <price :price="item.price" symbol="¥" :bold="true" decimal-smaller />
         </view>
         <view class="sales">
-          <price :price="item.price" />
+          <price :price="item.price" symbol="¥" type="del" />
         </view>
       </view>
     </view>
@@ -120,44 +114,20 @@ const itemClick = () => {
         font-size: 24rpx;
         line-height: 36rpx;
         color: #2f3437;
+        display: -webkit-box;
         overflow: hidden;
-        white-space: nowrap;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
     }
     .money-row {
       margin-top: 16rpx;
       display: flex;
       align-items: center;
-      .price-wrapper {
-        display: flex;
-        align-items: baseline;
-        .unit {
-          font-weight: 600;
-          font-size: 20rpx;
-          line-height: 32rpx;
-          color: #de3f4f;
-        }
-        .integer-part {
-          margin-left: 4rpx;
-          font-family: D-DIN;
-          font-weight: 700;
-          font-size: 36rpx;
-          line-height: 36rpx;
-          color: #de3f4f;
-        }
-        .decimal-part {
-          margin-left: 4rpx;
-          font-family: D-DIN;
-          font-weight: 700;
-          font-size: 32rpx;
-          line-height: 36rpx;
-          color: #de3f4f;
-        }
-      }
+      color: $u-type-error;
       .sales {
         margin-left: 8rpx;
-        font-size: 20rpx;
-        line-height: 32rpx;
         color: #869198;
       }
     }

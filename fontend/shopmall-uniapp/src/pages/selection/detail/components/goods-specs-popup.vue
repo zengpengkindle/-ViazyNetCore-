@@ -141,7 +141,7 @@ const imageSrc = ref("");
 const specList: Ref<Array<SkuProps>> = ref();
 const limitBuyInfo = ref(0);
 const isStock = computed(() => {
-  return !props.sku.hide_stock;
+  return !(props.sku?.hide_stock ?? true);
 });
 const outOperateStatus = ref(1);
 watch(
@@ -311,7 +311,7 @@ const specsConfirm = async () => {
     .popup-sku-row__item.popup-sku-row__item--active {
       border: 2rpx solid $u-type-primary;
       color: $u-type-primary;
-      background: rgba(255, 95, 21, 0.04);
+      background: #ffffff;
     }
     .disabled-sku-selected {
       background: #f5f5f5 !important;

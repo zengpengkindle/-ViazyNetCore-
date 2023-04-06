@@ -169,6 +169,7 @@ defineExpose({
   .list-wrapper {
     .list-item {
       display: block;
+      position: relative;
     }
     .list-item + .list-item {
       margin-top: 24rpx;
@@ -187,6 +188,7 @@ defineExpose({
   .card-wrapper {
     display: flex;
     justify-content: space-between;
+    padding: 20rpx;
     .left-column,
     .right-column {
       .card-item {

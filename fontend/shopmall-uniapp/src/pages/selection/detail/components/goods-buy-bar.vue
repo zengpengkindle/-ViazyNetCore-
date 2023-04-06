@@ -56,7 +56,7 @@ export interface BuyBarProps {
 }
 export interface JumpIcon {
   url: string;
-  showCartNum: boolean;
+  showCartNum: number;
   iconName: string;
   title: string;
 }
@@ -154,7 +154,7 @@ const toBuyNow = () => {
 
 .bar-separately,
 .bar-buy {
-  width: 254rpx;
+  width: 244rpx;
   height: 80rpx;
   color: #fff;
   display: flex;
