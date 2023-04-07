@@ -7,7 +7,7 @@
     @click="goSearch"
   />
   <Filter />
-  <view class="good_box">
+  <view class="good-box">
     <product-list
       ref="productListRef"
       :loading="loading"
@@ -65,3 +65,8 @@ const getProductList = async (reset = false) => {
   firstLoading.value = false;
 };
 </script>
+<style lang="scss" scoped>
+.good-box {
+  background-color: #f2f2f2;
+}
+</style>

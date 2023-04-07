@@ -1,7 +1,7 @@
 .content {
   min-height: calc(100vh-50px);
-  box-sizing: content-box;
   padding: 20rpx;
+  box-sizing: border-box;
   background: #eee;
 }
 

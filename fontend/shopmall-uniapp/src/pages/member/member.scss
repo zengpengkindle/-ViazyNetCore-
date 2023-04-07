@@ -1,9 +1,10 @@
 .mine {
+  min-height: 100vh;
   padding-bottom: 24rpx;
   box-sizing: border-box;
   background-color: #f7f8fc;
   .order-section {
-    margin: 340rpx 24rpx 24rpx 24rpx;
+    margin: -140rpx 24rpx 24rpx 24rpx;
     position: relative;
     padding: 24rpx;
     background: #ffffff;
@@ -42,6 +43,7 @@
         flex: 1;
         padding: 2rpx 0;
         display: flex;
+        position: relative;
         flex-direction: column;
         align-items: center;
         .count {

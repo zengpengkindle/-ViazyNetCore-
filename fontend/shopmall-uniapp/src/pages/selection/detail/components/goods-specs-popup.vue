@@ -4,8 +4,8 @@
       <view class="popup-sku-header">
         <u-image
           class="popup-sku-header__img"
-          :width="176"
-          :height="176"
+          :width="146"
+          :height="146"
           :src="imageSrc"
           :duration="100"
           border-radius="10rpx"
@@ -16,7 +16,7 @@
             <slot name="goods-price" />
           </view>
           <!-- 已选规格 -->
-          <view class="popup-sku__selected-spec">
+          <view v-if="!sku.none_sku" class="popup-sku__selected-spec">
             <view>选择：</view>
             <view v-for="item in specList" :key="item.specId">
               <block
@@ -152,6 +152,7 @@ watch(
 );
 const init = () => {
   specList.value = [];
+  if (props.sku.none_sku) return;
   imageSrc.value = props.sku.tree[0].v[0].imgUrl;
   props.sku.tree.forEach(item => {
     const spec = {
@@ -248,9 +249,9 @@ const specsConfirm = async () => {
   padding: 30rpx 28rpx 0 30rpx;
 
   .popup-sku-header__img {
-    width: 176rpx;
-    height: 176rpx;
-    border-radius: 8rpx;
+    width: 146rpx;
+    height: 146rpx;
+    border-radius: 10rpx;
     background: #d8d8d8;
     margin-right: 24rpx;
   }
@@ -259,8 +260,8 @@ const specsConfirm = async () => {
     position: relative;
     width: 500rpx;
     .popup-sku__goods-name {
-      font-size: 28rpx;
-      line-height: 40rpx;
+      font-size: 26rpx;
+      line-height: 36rpx;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;

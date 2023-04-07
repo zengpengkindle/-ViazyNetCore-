@@ -9,8 +9,6 @@ namespace ViazyNetCore.Modules.ShopMall
         public decimal TotalMoney { get; set; }
 
         public List<BeforeShopTrade> ShopTrades { get; set; }
-
-        public List<KeyValuePair<string, object>> Properties { get; set; }
     }
 
     public class BeforeShopTrade
@@ -26,12 +24,10 @@ namespace ViazyNetCore.Modules.ShopMall
     {
         public string ProductId { get; set; }
 
-        public string SkuId { get; set; }
+        public string? SkuId { get; set; }
 
         public decimal Price { get; set; }
 
         public int Num { get; set; }
-
-        public List<KeyValuePair<string, object>> Properties { get; set; }
     }
 }

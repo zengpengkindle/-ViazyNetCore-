@@ -15,20 +15,20 @@
             <u-icon
               prefix="wr"
               name="arrow-up-fill"
-              :size="18"
+              :size="14"
               :color="sorts === 'asc' ? color : '#bbbbbb'"
             />
             <u-icon
               prefix="wr"
               name="arrow-down-fill"
-              :size="18"
+              :size="14"
               :color="sorts === 'desc' ? color : '#bbbbbb'"
             />
           </view>
         </view>
         <view class="filter-item" @click="openFilter">
           筛选
-          <u-icon name="plus" class="wr-filter" color="#333" size="32rpx" />
+          <u-icon name="plus" class="wr-filter" color="#333" size="28rpx" />
         </view>
       </view>
     </view>
@@ -56,18 +56,26 @@ const openFilter = () => {};
 <style lang="scss" scoped>
 .filter-wrap {
   width: 100%;
-  height: 88rpx;
+  height: 72rpx;
   display: flex;
   justify-content: space-between;
   position: relative;
   background: #f8f8f8;
+  &::after {
+    content: "";
+    height: 1rpx;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #ddd;
+  }
 }
 
 .filter-right-content {
   height: 100%;
   flex-basis: 100rpx;
   text-align: center;
-  line-height: 88rpx;
+  line-height: 72rpx;
 }
 
 .filter-left-content {
@@ -83,8 +91,8 @@ const openFilter = () => {};
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26rpx;
-    line-height: 36rpx;
+    font-size: 22rpx;
+    line-height: 28rpx;
     font-weight: 400;
     color: rgba(51, 51, 51, 1);
     .filter-price {

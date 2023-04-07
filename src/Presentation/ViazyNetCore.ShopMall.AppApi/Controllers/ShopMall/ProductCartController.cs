@@ -26,12 +26,12 @@ namespace ViazyNetCore.ShopMall.AppApi
         {
             var result = await this._cartService.GetShoppingCart(_memberId);
 
-            for (int i = 0; i < result.Packages.Count; i++)
+            foreach (var package in result.Packages)
             {
-                for (int j = 0; j < result.Packages[i].Items.Count; j++)
+                foreach (var item in package.Items)
                 {
-                    result.Packages[i].Items[j].ImgUrl = result.Packages[i].Items[j].ImgUrl.ToCdnUrl();
-                    result.Packages[i].Items[j].Num = 1;
+                    item.ImgUrl = item.ImgUrl.ToCdnUrl();
+                    item.Num = item.Num == 0 ? 1 : item.Num;
                 }
             }
             return result;

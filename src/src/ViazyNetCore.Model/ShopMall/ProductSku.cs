@@ -71,11 +71,39 @@ namespace ViazyNetCore.Model
         /// </summary>
         public decimal Price { get; set; }
 
-        
+
+        /// <summary>
+        /// 规格id列表,多规格以”,“分隔；[key1,key2]
+        /// </summary>
+        public string SpecDetailIds { get; set; }
+
+        /// <summary>
+        /// 规格名，多规格以”,“分隔
+        /// </summary>
+        public string SpecDetailText { get; set; }
+
         /// <summary>
         /// 设置或获取一个值，表示扩展数据。
         /// </summary>
         public string Exdata { get; set; }
 
+        /// <summary>
+        /// 规格图片
+        /// </summary>
+        public string Image { get; set; }
+
+
+        public ComStatus Status { get; set; }
+
+        /// <summary>
+        /// 添加时间
+        /// </summary>
+        [Column(CanUpdate = false)]
+        public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateTime { get; set; }
     }
 }

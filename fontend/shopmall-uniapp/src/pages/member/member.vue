@@ -22,26 +22,31 @@ const sampleOrderStatusList = ref([
   {
     title: "待付款",
     status: 0,
+    icon: "red-packet",
     count: 0
   },
   {
     title: "待发货",
     status: 100,
+    icon: "bag",
     count: 0
   },
   {
     title: "待收货",
     status: 200,
-    count: 0
+    icon: "car",
+    count: 2
   },
   {
     title: "待评价",
     status: 300,
-    count: 0
+    icon: "chat",
+    count: 3
   },
   {
     title: "退款/售后",
     status: 400,
+    icon: "rmb-circle",
     count: 0
   }
 ]);
@@ -111,9 +116,10 @@ watch(token, () => {
           class="status-item"
           @click="toSampleList(item.status)"
         >
-          <text class="count">
-            {{ item.count ? (item.count > 999 ? "999+" : item.count) : 0 }}
-          </text>
+          <view class="count">
+            <u-badge size="mini" :count="item.count" :offset="[-6, 14]" />
+            <u-icon :name="item.icon" size="36" />
+          </view>
           <text class="sample-status-title">
             {{ item.title }}
           </text>

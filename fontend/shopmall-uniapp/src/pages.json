@@ -64,7 +64,16 @@
         "navigationBarTitleText": "搜索",
         "navigationBarBackgroundColor": "#f8f8f8"
       }
-    }
+    },
+    // 订单
+    {
+      "path": "pages/order/confirm/index", // 收银台
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "收银台",
+        "navigationBarBackgroundColor": "#f8f8f8"
+      }
+    },
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",

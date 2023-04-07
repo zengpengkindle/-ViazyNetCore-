@@ -14,7 +14,7 @@ export class TradeApi {
     });
   }
 
-  public createTrade(param1?: CreateTradeSetModel): Promise<Array<string>> {
+  public createTrade(param1?: Array<BeforeTradeItem>): Promise<Array<string>> {
     return http.request({
       url: "/api/Trade/CreateTrade",
       method: "post",
@@ -58,7 +58,6 @@ export interface BeforeTradeItem {
   skuId: string | null;
   price: number | null;
   num: number | null;
-  properties: Array<StringObjectKeyValuePair> | null;
 }
 
 /**
@@ -68,7 +67,6 @@ export interface CreateTradeSetModel {
   totalMoney: number;
   addressId: string;
   shopTrades: Array<ShopTrade>;
-  properties: Array<StringObjectKeyValuePair>;
 }
 
 /**
@@ -105,7 +103,6 @@ export interface TradeItem {
   num: number;
   imgUrl: string;
   refundType: RefundType;
-  properties: Array<StringObjectKeyValuePair>;
 }
 
 //

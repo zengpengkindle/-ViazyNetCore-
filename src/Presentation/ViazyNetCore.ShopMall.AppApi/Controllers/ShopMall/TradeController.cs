@@ -13,7 +13,6 @@ namespace ViazyNetCore.ShopMall.AppApi
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private string _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
-        private readonly string _imgBaseUrl = @"http://localhost:1799";
 
         public TradeController(TradeService tradeService, ILockProvider lockProvider, IHttpContextAccessor httpContextAccessor)
         {
@@ -26,19 +25,27 @@ namespace ViazyNetCore.ShopMall.AppApi
         public async Task<CreateTradeSetModel> BeforeTrade(List<BeforeTradeItem> items)
         {
             var result = await this._tradeService.BeforeCreateTradeAsync(_memberId, items);
-            for (int i = 0; i < result.ShopTrades.Count; i++)
+            foreach (var trade in result.ShopTrades)
             {
-                for (int j = 0; j < result.ShopTrades[i].Items.Count; j++)
+                foreach (var item in trade.Items)
                 {
-                    result.ShopTrades[i].Items[j].ImgUrl = result.ShopTrades[i].Items[j].ImgUrl.Replace("/upload/", _imgBaseUrl + "/upload/");
+                    item.ImgUrl = item.ImgUrl.ToCdnUrl();
                 }
             }
             return result;
         }
 
         [HttpPost]
-        public async Task<string[]> CreateTrade(CreateTradeSetModel createTradeSet)
+        public async Task<string[]> BindTrade(CreateTradeSetModel createTradeSet)
         {
+            var result = await this._tradeService.CreateTradeSetAsync(_memberId, createTradeSet);
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<string[]> CreateTrade(List<BeforeTradeItem> items)
+        {
+            var createTradeSet = await this._tradeService.BeforeCreateTradeAsync(_memberId, items);
             var result = await this._tradeService.CreateTradeSetAsync(_memberId, createTradeSet);
             return result;
         }
@@ -52,7 +59,7 @@ namespace ViazyNetCore.ShopMall.AppApi
             {
                 foreach (var order in item.Orders)
                 {
-                    order.ImgUrl = order.ImgUrl.Replace("/upload/", _imgBaseUrl + "/upload/");
+                    order.ImgUrl = order.ImgUrl.ToCdnUrl();
                 }
             }
             return result;

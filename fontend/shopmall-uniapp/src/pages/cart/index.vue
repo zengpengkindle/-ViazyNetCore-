@@ -3,7 +3,8 @@
     class="content"
     :style="{
       backgroundSize: '100vw 520rpx',
-      backgroundRepeat: 'no-repeat'
+      backgroundRepeat: 'no-repeat',
+      minHeight: '100vh'
     }"
   >
     <u-empty
@@ -75,6 +76,7 @@
       :total-goods-num="totalCount"
       :fixed="true"
       :total-amount="totalAmount"
+      @handle-to-settle="handleToSettle"
     />
   </view>
 </template>
@@ -85,7 +87,9 @@ import ShopCartApi, {
   type ShoppingCart,
   type ShoppingCartPackage
 } from "@/apis/shopmall/productCart";
+import TradeApi, { type BeforeTradeItem } from "@/apis/shopmall/trade";
 import CartBar from "./components/cart-bar/index.vue";
+import { useTradeCash } from "../order/confirm/hook";
 import { onShow } from "@dcloudio/uni-app";
 onShow(() => {
   getCarts();
@@ -180,6 +184,28 @@ function checkShop(shop: ShoppingCartPackage) {
     }
   });
 }
+const { tradeSet } = useTradeCash();
+const handleToSettle = async () => {
+  const settelItems: Array<BeforeTradeItem> = [];
+  carts.value.packages.forEach(shop => {
+    shop.items.forEach(item => {
+      if (item.check) {
+        settelItems.push({
+          productId: item.pId,
+          skuId: item.skuId,
+          price: item.price,
+          num: item.num
+        });
+      }
+    });
+  });
+  if (settelItems.length > 0) {
+    tradeSet.value = await TradeApi.beforeTrade(settelItems);
+    uni.navigateTo({ url: "/pages/order/confirm/index" });
+  } else {
+    uni.showToast({ title: "请选择商品", icon: "none", position: "bottom" });
+  }
+};
 </script>
 
 <style>

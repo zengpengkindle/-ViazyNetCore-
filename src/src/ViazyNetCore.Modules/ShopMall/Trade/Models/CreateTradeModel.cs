@@ -13,8 +13,6 @@ namespace ViazyNetCore.Modules.ShopMall
         public string AddressId { get; set; }
 
         public List<ShopTrade> ShopTrades { get; set; }
-
-        public List<KeyValuePair<string, object>> Properties { get; set; }
     }
 
     public class ShopTrade
@@ -53,10 +51,8 @@ namespace ViazyNetCore.Modules.ShopMall
 
         public int Num { get; set; }
 
-        public string ImgUrl { get; set; }
+        public string? ImgUrl { get; set; }
 
         public RefundType RefundType { get; set; }
-
-        public List<KeyValuePair<string, object>> Properties { get; set; }
     }
 }

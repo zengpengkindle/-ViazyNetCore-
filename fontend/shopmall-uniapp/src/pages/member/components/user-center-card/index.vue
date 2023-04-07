@@ -74,7 +74,6 @@ const gotoUserEditPage = () => {};
 </script>
 <style class="scss" scoped>
 .user-center-card {
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -83,19 +82,19 @@ const gotoUserEditPage = () => {};
   background-size: cover;
   background-repeat: no-repeat;
   padding: 0 24rpx;
+  box-sizing: border-box;
 }
 .user-center-card__header {
-  margin-top: 192rpx;
-  margin-bottom: 48rpx;
-  height: 96rpx;
+  padding-top: 192rpx;
   line-height: 48rpx;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   color: #333;
-  position: relative;
+  width: 100%;
 }
 .user-center-card__header__avatar {
+  box-shadow: #333 3rpx 5rpx 0.5;
 }
 
 .user-center-card__header__name {

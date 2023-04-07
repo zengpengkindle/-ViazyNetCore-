@@ -190,7 +190,7 @@ namespace ViazyNetCore.Modules.ShopMall
     {
         public string OrderId { get; set; }
 
-        public string ImgUrl { get; set; }
+        public string? ImgUrl { get; set; }
 
         /// <summary>
         /// 商品名称

@@ -31,6 +31,7 @@
 <script lang="ts" setup>
 import type { PropType } from "vue";
 import type { SelectionFeedListDto } from "@/apis/shopmall/selection";
+import { stringify } from "qs";
 
 const props = defineProps({
   item: {
@@ -52,8 +53,11 @@ const props = defineProps({
 });
 
 const itemClick = () => {
+  const queries = {
+    id: props.item.id
+  };
   uni.navigateTo({
-    url: `/pages/selectionDetail/index?id=${props.item.id}`
+    url: `/pages/selection/detail/index?${stringify(queries)}`
   });
 };
 </script>
@@ -62,7 +66,7 @@ const itemClick = () => {
 .card-item {
   width: 340rpx;
   border-radius: 16rpx;
-  background-color: #fff;
+  background-color: #ffffff;
   position: relative;
 
   .rank-tag {
