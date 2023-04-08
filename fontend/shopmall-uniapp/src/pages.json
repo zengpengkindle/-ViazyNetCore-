@@ -18,13 +18,6 @@
       }
     },
     {
-      "path": "pages/index/index",
-      "style": {
-        "navigationStyle": "custom", // 隐藏系统导航栏
-        "navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
-      }
-    },
-    {
       "path": "pages/cart/index",
       "style": {
         "navigationBarTextStyle": "black",
@@ -74,6 +67,23 @@
         "navigationBarBackgroundColor": "#f8f8f8"
       }
     },
+    // 个人中心
+    {
+      "path": "pages/member/address/list", // 我的收货地址
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "我的收货地址",
+        "navigationBarBackgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/member/address/edit", // 编辑收货地址
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "编辑收货地址",
+        "navigationBarBackgroundColor": "#f8f8f8"
+      }
+    }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",

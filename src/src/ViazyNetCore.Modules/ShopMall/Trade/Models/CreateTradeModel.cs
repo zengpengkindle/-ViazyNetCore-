@@ -19,16 +19,16 @@ namespace ViazyNetCore.Modules.ShopMall
     {
         public string ShopId { get; set; }
 
-        public string ShopName { get; set; }
+        public string? ShopName { get; set; }
 
         public List<TradeItem> Items { get; set; }
 
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// 优惠券
         /// </summary>
-        public string VoucherId { get; set; }
+        public string? VoucherId { get; set; }
 
         public decimal ProductMoney { get; set; }
 

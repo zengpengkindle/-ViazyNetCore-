@@ -1,5 +1,5 @@
 <template>
-  <view class="cart-bar__placeholder" wx:if="{{fixed}}" />
+  <view v-if="fixed" class="cart-bar__placeholder" />
   <view
     class="cart-bar flex flex-v-center"
     :class="fixed ? 'cart-bar--fixed' : ''"
@@ -52,7 +52,7 @@ export interface CartBarProps {
 }
 const props = withDefaults(defineProps<CartBarProps>(), {
   bottomHeight: 0,
-  fixed: false
+  fixed: true
 });
 
 const allcheck = ref(false);

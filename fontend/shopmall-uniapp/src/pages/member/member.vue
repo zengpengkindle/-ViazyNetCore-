@@ -60,24 +60,29 @@ const toSampleOrder = () => {
 
 const menuList = shallowRef<MenuGroup[]>([
   [
-    { title: "收货地址", path: "/pages/myShopwindow/index", icon: "userStore" },
+    {
+      title: "收货地址",
+      path: "/pages/member/address/list",
+      icon: "map",
+      checkLogin: false
+    },
     {
       title: "我的收藏",
       path: "/pages/myCollection/index",
-      icon: "userCollect"
+      icon: "heart"
     }
   ],
   [
     {
       title: "联系我们",
       path: "/pages/contactUs/index",
-      icon: "userContact",
+      icon: "server-fill",
       checkLogin: false
     },
     {
       title: "常见问题",
       path: "/pages/commonProblem/index",
-      icon: "question_circle",
+      icon: "chat",
       checkLogin: false
     }
   ]
@@ -141,6 +146,7 @@ watch(token, () => {
           item.checkLogin !== false && !token ? 'redirect' : 'navigate'
         "
       >
+        <u-icon class="icon" :name="item.icon" />
         <text class="title">
           {{ item.title }}
         </text>

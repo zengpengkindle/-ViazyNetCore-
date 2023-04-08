@@ -186,6 +186,7 @@ function checkShop(shop: ShoppingCartPackage) {
 }
 const { tradeSet } = useTradeCash();
 const handleToSettle = async () => {
+  console.log("handleToSettle");
   const settelItems: Array<BeforeTradeItem> = [];
   carts.value.packages.forEach(shop => {
     shop.items.forEach(item => {

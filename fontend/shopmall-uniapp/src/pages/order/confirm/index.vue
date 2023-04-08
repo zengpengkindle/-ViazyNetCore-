@@ -11,68 +11,98 @@
         </view>
         <view class="header-icon" />
       </view>
-      <view class="trade-main">
-        <view class="container">
-          <view v-for="trade in trades" :key="trade.shopId" class="trade-card">
-            <view class="trade-card-header">
-              <view class="trade-card-title">
-                <u-icon name="shop" /> {{ trade.shopName }}
-              </view>
+      <view class="container">
+        <address-card />
+      </view>
+      <view class="trade-main container">
+        <view v-for="trade in trades" :key="trade.shopId" class="trade-card">
+          <view class="trade-card-header">
+            <view class="trade-card-title">
+              <u-icon name="tags" /> {{ trade.shopName }}
             </view>
-            <view class="trade-card-body">
-              <view
-                v-for="item in trade.items"
-                :key="item.pId + item.skuId"
-                class="trade-card-items"
-              >
-                <view class="trade-card-item goods-wrapper">
-                  <u-image
-                    :src="item.imgUrl"
-                    class="goods-image"
-                    :width="146"
-                    :height="146"
-                    mode="aspectFill"
+          </view>
+          <view class="trade-card-body">
+            <view
+              v-for="item in trade.items"
+              :key="item.pId + item.skuId"
+              class="trade-card-items"
+            >
+              <view class="trade-card-item goods-wrapper">
+                <u-image
+                  :src="item.imgUrl"
+                  class="goods-image"
+                  :width="146"
+                  :height="146"
+                  mode="aspectFill"
+                />
+                <view class="goods-content">
+                  <view class="goods-title">{{ item.pn }}</view>
+                  <view>{{ item.skuText }}</view>
+                </view>
+                <view class="goods-right">
+                  <price
+                    class="goods-price"
+                    symbol="￥"
+                    :price="item.price"
+                    decimal-smaller
                   />
-                  <view class="goods-content">
-                    <view class="goods-title">{{ item.pn }}</view>
-                    <view>{{ item.skuText }}</view>
-                  </view>
-                  <view class="goods-right">
-                    <price
-                      class="goods-price"
-                      :price="item.price"
-                      decimal-smaller
-                    />
-                    <view class="goods-num">x{{ item.num }}</view>
-                  </view>
+                  <view class="goods-num">x{{ item.num }}</view>
                 </view>
               </view>
-              <van-cell title="留言" :value="trade.message" />
             </view>
+            <van-cell title="留言" :value="trade.message" />
           </view>
         </view>
       </view>
-      <view class="container">
-        <view class="pay-detail">
-          <view class="pay-item">
-            <text>商品总额</text>
-            <price
-              fill
-              decimal-smaller
-              class="pay-item__right font-bold"
-              :price="tradeSet.totalMoney"
-            />
-          </view>
+      <view class="pay-detail container">
+        <view class="pay-item">
+          <text>商品总额</text>
+          <price
+            fill
+            symbol="￥"
+            decimal-smaller
+            class="pay-item__right font-bold"
+            :price="tradeSet.totalMoney"
+          />
+        </view>
+        <view class="pay-item">
+          <text>运费</text>
+          <price
+            fill
+            symbol="￥"
+            decimal-smaller
+            class="pay-item__right font-bold"
+            :price="tradeSet.totalMoney"
+          />
+        </view>
 
-          <view class="pay-item">
-            <text>订单备注</text>
-            <view class="pay-item__right">
-              <text class="pay-remark">选填，建议先和商家沟通确认</text>
-              <t-icon name="chevron-right" size="32rpx" color="#BBBBBB" />
-            </view>
+        <view class="pay-item">
+          <text>订单备注</text>
+          <view class="pay-item__right">
+            <text class="pay-remark">选填，建议先和商家沟通确认</text>
+            <u-icon name="arrow-right" size="32rpx" color="#BBBBBB" />
           </view>
         </view>
       </view>
+      <view class="amount-wrapper container">
+        <view class="pay-amount">
+          <text class="order-num">共 2 件</text>
+          <text>小计</text>
+          <price
+            class="total-price"
+            :price="tradeSet.totalMoney"
+            symbol="￥"
+            decimal-smaller
+          />
+        </view>
+      </view>
+      <pay-bar
+        :total-discount-amount="10"
+        :total-goods-num="2"
+        :fixed="true"
+        :total-amount="tradeSet.totalMoney"
+        @handle-to-pay="handToPay"
+      />
     </view>
   </view>
 </template>
@@ -80,22 +110,32 @@
 import { onShow } from "@dcloudio/uni-app";
 import { computed } from "vue";
 import { useTradeCash } from "./hook";
+import PayBar from "./components/pay-bar.vue";
+import AddressCard from "./components/address-card/index.vue";
+import TradeApi from "@/apis/shopmall/trade";
+
+import { useAddress } from "@/pages/member/address/hooks";
+const { selectAddress } = useAddress();
+
 const trades = computed(() => tradeSet.value.shopTrades);
 const { tradeSet } = useTradeCash();
 onShow(() => {
   // const id = decodeURIComponent(query!.tradeIds);
 });
+const handToPay = async () => {
+  tradeSet.value.addressId = selectAddress.value.id;
+  await TradeApi.bindTrade(tradeSet.value);
+};
 </script>
 <style lang="scss" scoped>
 .trade-header {
   display: flex;
-  padding: 20px 30px;
-  background: linear-gradient(to left, #408ce2, #58b5f2);
+  padding: 20rpx 30rpx 10rpx;
+  // background: linear-gradient(to left, #408ce2, #58b5f2);
   align-items: center;
 }
 .container {
   margin: 20rpx 20rpx 0;
-  padding: 0 10rpx;
   border-radius: 20rpx;
   background-color: #ffffff;
   overflow: hidden;
@@ -104,7 +144,7 @@ onShow(() => {
 .trade-header-info {
   flex: 2;
   margin: 0 auto;
-  color: #fff;
+  color: #333;
 }
 .trade-card {
   box-sizing: border-box;
@@ -201,12 +241,12 @@ onShow(() => {
   border-left: 3px solid $u-type-primary;
 }
 .trade-card-header {
-  padding: 16rpx 16rpx;
+  padding: 16rpx 20rpx;
 }
 .goods-wrapper {
   width: 100%;
   box-sizing: border-box;
-  padding: 16rpx 16rpx;
+  padding: 16rpx 20rpx;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -216,8 +256,6 @@ onShow(() => {
   background-color: #ffffff;
 
   .goods-image {
-    width: 176rpx;
-    height: 176rpx;
     border-radius: 8rpx;
     overflow: hidden;
     margin-right: 16rpx;
@@ -232,11 +270,11 @@ onShow(() => {
     -webkit-line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 28rpx;
+    font-size: 24rpx;
     line-height: 40rpx;
     margin-bottom: 12rpx;
     color: #333333;
-    margin-right: 16rpx;
+    margin-right: 20rpx;
   }
 
   .goods-right {
@@ -259,7 +297,7 @@ onShow(() => {
   }
 }
 .pay-detail {
-  padding: 16rpx 16rpx;
+  padding: 16rpx 20rpx;
 }
 .pay-detail .pay-item {
   width: 100%;
@@ -295,6 +333,46 @@ onShow(() => {
 }
 .pay-type .van-col {
   padding: 10px;
+}
+.amount-wrapper {
+  box-sizing: border-box;
+  background-color: #ffffff;
+  padding: 0rpx 32rpx;
+  height: 96rpx;
+}
+
+.pay-amount {
+  width: 100%;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 28rpx;
+  color: #333333;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    content: " ";
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    transform: scale(0.5);
+    transform-origin: 0 0;
+    border-top: 2rpx solid #f5f5f5;
+  }
+  .order-num {
+    color: #999999;
+    padding-right: 8rpx;
+  }
+
+  .total-price {
+    font-size: 36rpx;
+    color: #fa4126;
+    font-weight: bold;
+    padding-left: 8rpx;
+  }
 }
 
 .cash {

@@ -1,6 +1,10 @@
 import { http } from "@/utils/http";
+import type { Ref } from "vue";
 
 export class TradeApi {
+bindTrades(tradeSet: Ref<CreateTradeSetModel>) {
+throw new Error("Method not implemented.");
+}
   /**
    * 无
    */
@@ -17,6 +21,14 @@ export class TradeApi {
   public createTrade(param1?: Array<BeforeTradeItem>): Promise<Array<string>> {
     return http.request({
       url: "/api/Trade/CreateTrade",
+      method: "post",
+      data: param1
+    });
+  }
+
+  public bindTrade(param1?: CreateTradeSetModel): Promise<Array<string>> {
+    return http.request({
+      url: "/api/Trade/BindTrade",
       method: "post",
       data: param1
     });

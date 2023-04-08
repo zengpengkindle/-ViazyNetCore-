@@ -17,9 +17,10 @@ interface Item {
   count?: number;
 }
 const list: Ref<Array<Item>> = ref([
-  { name: "待收货" },
+  { name: "待收货", count: 0 },
   {
-    name: "待付款"
+    name: "待付款",
+    count: 1
   },
   {
     name: "待评价",
