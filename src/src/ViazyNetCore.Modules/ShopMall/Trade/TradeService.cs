@@ -203,11 +203,11 @@ namespace ViazyNetCore.Modules.ShopMall
                     throw new ApiException("未选择收货地址。");
                 }
 
-                var memberName = await this._memberService.GetMemberNameByMemberId(memberId);
-                if (memberName.IsNull())
-                {
-                    throw new ApiException("无效用户");
-                }
+                //var memberName = await this._memberService.GetMemberNameByMemberId(memberId);
+                //if (memberName.IsNull())
+                //{
+                //    throw new ApiException("无效用户");
+                //}
 
                 var trades = new List<ProductTrade>();
                 var tradeOrders = new List<ProductTradeOrder>();
@@ -218,7 +218,7 @@ namespace ViazyNetCore.Modules.ShopMall
                         Id = Snowflake<ProductTrade>.NextIdString(),
                         PaymentId = "",
                         MemberId = memberId,
-                        MemberName = memberName,
+                        //MemberName = memberName,
                         Status = TradeStatus.UnPay,
                         ShopId = shop.ShopId,
                         ShopName = shop.ShopName,

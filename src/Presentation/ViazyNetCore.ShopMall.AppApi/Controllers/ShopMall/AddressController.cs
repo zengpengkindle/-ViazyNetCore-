@@ -12,7 +12,6 @@ namespace ViazyNetCore.ShopMall.AppApi
         private readonly ILockProvider _lockProvider;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private string _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
         public AddressController(AddressService addressService, ILockProvider lockProvider, IHttpContextAccessor httpContextAccessor)
         {
             this._addressService = addressService;
@@ -23,7 +22,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         [HttpPost]
         public async Task<List<AddressModel>> FindAddress()
         {
-            var result = await this._addressService.GetMemberAddress(_memberId);
+            var result = await this._addressService.GetMemberAddress(this.MemberId);
 
             return result;
         }
@@ -33,12 +32,12 @@ namespace ViazyNetCore.ShopMall.AppApi
         {
             if (model.Id.IsNull())
             {
-                var result = await this._addressService.AddAddress(_memberId, model);
+                var result = await this._addressService.AddAddress(this.MemberId, model);
                 return result;
             }
             else
             {
-                await this._addressService.UpdateAddress(_memberId, model.Id, model);
+                await this._addressService.UpdateAddress(this.MemberId, model.Id, model);
                 return model.Id;
             }
         }
@@ -46,7 +45,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         [HttpPost]
         public async Task<bool> RemoveAddress(string addressId)
         {
-            await this._addressService.RemoveAddress(_memberId, addressId);
+            await this._addressService.RemoveAddress(this.MemberId, addressId);
             return true;
         }
     }

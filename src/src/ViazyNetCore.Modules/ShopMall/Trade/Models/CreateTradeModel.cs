@@ -10,6 +10,8 @@ namespace ViazyNetCore.Modules.ShopMall
     {
         public decimal TotalMoney { get; set; }
 
+        public int Num { get; set; }
+
         public string AddressId { get; set; }
 
         public List<ShopTrade> ShopTrades { get; set; }

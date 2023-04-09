@@ -60,10 +60,26 @@
     },
     // 订单
     {
-      "path": "pages/order/confirm/index", // 收银台
+      "path": "pages/order/confirm/index", // 确认订单
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "确认订单",
+        "navigationBarBackgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/order/cash/index", // 收银台
       "style": {
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "收银台",
+        "navigationBarBackgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/order/list/index", // 订单列表
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "订单列表",
         "navigationBarBackgroundColor": "#f8f8f8"
       }
     },

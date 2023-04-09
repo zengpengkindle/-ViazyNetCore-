@@ -5,7 +5,18 @@
     </view>
     <view v-else>
       <view class="container">
-        <address-card />
+        <u-cell-item class="address">
+          <u-icon class="van-cell__left-icon" name="location-o" />
+          <view>
+            <view class="address-item-name">
+              {{ tradeSet.address.address }}
+              <view class="address-item-tel">{{ tradeSet.address.tel }}</view>
+            </view>
+            <view class="address-item-address">{{
+              tradeSet.address.address
+            }}</view>
+          </view>
+        </u-cell-item>
       </view>
       <view class="trade-main container">
         <view v-for="trade in trades" :key="trade.shopId" class="trade-card">
@@ -62,7 +73,7 @@
                   symbol="￥"
                   decimal-smaller
                   class="pay-item__right font-bold"
-                  :price="trade.totalFreight"
+                  :price="trade.totalfeight"
                 />
               </view>
 
@@ -101,7 +112,7 @@
           />
         </view>
         <view class="pay-amount">
-          <text class="order-num">共 {{ tradeSet.num }} 件</text>
+          <text class="order-num">共 {{ 2 }} 件</text>
           <text>合计</text>
           <price
             class="total-price"
@@ -113,7 +124,7 @@
       </view>
       <pay-bar
         :total-discount-amount="10"
-        :total-goods-num="tradeSet.num"
+        :total-goods-num="2"
         :fixed="true"
         :total-amount="tradeSet.totalMoney"
         @handle-to-pay="handToPay"
@@ -122,28 +133,18 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { onShow } from "@dcloudio/uni-app";
-import { computed } from "vue";
-import { useTradeCash } from "./hook";
+import { onLoad } from "@dcloudio/uni-app";
+import { ref, computed, type Ref } from "vue";
 import PayBar from "../components/pay-bar.vue";
-import AddressCard from "../components/address-card/index.vue";
-import TradeApi from "@/apis/shopmall/trade";
+import TradeApi, { type TradeSetModel } from "@/apis/shopmall/trade";
 
-import { useAddress } from "@/pages/member/address/hooks";
-const { selectAddress } = useAddress();
-
-const trades = computed(() => tradeSet.value.shopTrades);
-const { tradeSet } = useTradeCash();
-onShow(() => {
-  // const id = decodeURIComponent(query!.tradeIds);
+const tradeSet: Ref<TradeSetModel> = ref();
+const trades = computed(() => tradeSet.value.trades);
+onLoad(async query => {
+  const id = decodeURIComponent(query!.tradeIds);
+  tradeSet.value = await TradeApi.findTradesPayInfo(id.split(","));
 });
-const handToPay = async () => {
-  tradeSet.value.addressId = selectAddress.value.id;
-  const tradeIds = await TradeApi.bindTrade(tradeSet.value);
-  uni.redirectTo({
-    url: `/pages/order/cash/index?tradeIds=${tradeIds.join(",")}`
-  });
-};
+const handToPay = async () => {};
 </script>
 <style lang="scss" scoped>
 .trade-header {

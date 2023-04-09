@@ -7,7 +7,7 @@
     >
       <template #title>
         <view class="order-address">
-          <u-icon name="map" color="#BBBBBB" size="40rpx" />
+          <u-icon name="map" color="#BBBBBB" size="32rpx" />
           <view class="address-content">
             <view class="title">
               <view v-if="selectAddress.postalCode" class="address-tag">
@@ -26,7 +26,7 @@
     </u-cell-item>
     <u-cell-item v-else title="添加收货地址" hover @click="onAddTap">
       <template #icon>
-        <u-icon name="plus-circle" size="40rpx" />
+        <u-icon name="plus-circle" size="32rpx" />
       </template>
     </u-cell-item>
     <view class="top-line" />
@@ -80,11 +80,11 @@ const hidePhoneNum = function (array) {
     .title {
       display: flex;
       align-items: center;
-      height: 40rpx;
-      font-size: 28rpx;
+      height: 32rpx;
+      font-size: 24rpx;
       font-weight: normal;
       color: #999999;
-      line-height: 40rpx;
+      line-height: 32rpx;
     }
     .title .address-tag {
       width: 52rpx;
@@ -104,18 +104,18 @@ const hidePhoneNum = function (array) {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-      font-size: 36rpx;
+      font-size: 26rpx;
       font-weight: bold;
       color: #333333;
-      line-height: 48rpx;
+      line-height: 36rpx;
       margin: 8rpx 0;
     }
     .info {
-      height: 40rpx;
+      height: 32rpx;
       font-size: 28rpx;
       font-weight: normal;
       color: #333333;
-      line-height: 40rpx;
+      line-height: 32rpx;
     }
   }
   .address__right {

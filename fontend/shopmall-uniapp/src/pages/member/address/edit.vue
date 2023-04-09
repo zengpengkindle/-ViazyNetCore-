@@ -5,7 +5,7 @@
         class="form-content"
         label-width="110rpx"
         label-align="right"
-        :label-style="{ fontSize: '22rpx' }"
+        :label-style="{ fontSize: '26rpx' }"
       >
         <u-form-item class="form-cell" label="收货人">
           <u-input
@@ -49,7 +49,7 @@
         >
           <view class="textarea__wrapper">
             <u-input
-              v-model="address.address"
+              v-model="address.addressDetail"
               type="textarea"
               placeholder="门牌号等(例如:10栋1001号)"
               auto-height

@@ -11,8 +11,6 @@ namespace ViazyNetCore.ShopMall.AppApi
     {
         private readonly ProductService _productService;
         private readonly ILockProvider _lockProvider;
-        private readonly string _shopId = "123456";
-        private readonly string _imgBaseUrl = @"http://localhost:7277";
 
         public ProductController(ProductService productService, ILockProvider lockProvider)
         {

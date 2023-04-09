@@ -9,24 +9,18 @@ namespace ViazyNetCore.ShopMall.AppApi
     {
         private readonly RefundService _refundService;
         private readonly ILockProvider _lockProvider;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private string _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
-        private readonly string _imgBaseUrl = @"http://localhost:1799";
-
-        public RefundController(RefundService refundService, ILockProvider lockProvider, IHttpContextAccessor httpContextAccessor)
+        public RefundController(RefundService refundService, ILockProvider lockProvider)
         {
             this._refundService = refundService;
             this._lockProvider = lockProvider;
-            this._httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
         public async Task<RefundTradeModel> FindTradeRefundInfo(string tradeId)
         {
-            var result = await this._refundService.FindRefundTradeInfo(this._memberId, tradeId);
+            var result = await this._refundService.FindRefundTradeInfo(this.MemberId, tradeId);
             return result;
-
         }
     }
 }

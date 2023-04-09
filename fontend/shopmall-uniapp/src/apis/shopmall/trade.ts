@@ -1,10 +1,6 @@
 import { http } from "@/utils/http";
-import type { Ref } from "vue";
 
 export class TradeApi {
-bindTrades(tradeSet: Ref<CreateTradeSetModel>) {
-throw new Error("Method not implemented.");
-}
   /**
    * 无
    */
@@ -37,7 +33,7 @@ throw new Error("Method not implemented.");
    * 无
    */
   public findMyTrades(
-    param1?: TradePageArgments
+    param1?: TradePageReq
   ): Promise<TradeDetailModelPageData> {
     return http.request({
       url: "/api/Trade/FindMyTrades",
@@ -77,6 +73,7 @@ export interface BeforeTradeItem {
  */
 export interface CreateTradeSetModel {
   totalMoney: number;
+  num: number;
   addressId: string;
   shopTrades: Array<ShopTrade>;
 }
@@ -174,19 +171,8 @@ export interface StringObjectKeyValuePair {
 /**
  * TradePageArgments
  */
-export interface TradePageArgments {
-  memberId: string | null;
-  tradeId: string | null;
-  nickNameLike: string | null;
-  username: string | null;
-  shopId: string | null;
-  shopName: string | null;
-  createTimes: Array<string> | null;
-  begin: string | null;
-  end: string | null;
+export interface TradePageReq {
   tradeStatus: TradeStatus | null;
-  timeType: number | null;
-  payMode: PayMode | null;
   page: number | null;
   limit: number | null;
 }

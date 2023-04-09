@@ -12,8 +12,6 @@ namespace ViazyNetCore.ShopMall.AppApi
         private readonly ILockProvider _lockProvider;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private string _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
-
         public ProductCartController(CartService cartService, ILockProvider lockProvider, IHttpContextAccessor httpContextAccessor)
         {
             this._cartService = cartService;
@@ -24,7 +22,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         [HttpPost]
         public async Task<ShoppingCart> FindCart()
         {
-            var result = await this._cartService.GetShoppingCart(_memberId);
+            var result = await this._cartService.GetShoppingCart(this.MemberId);
 
             foreach (var package in result.Packages)
             {
@@ -40,7 +38,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         [HttpPost]
         public async Task<bool> AddCart(ShoppingCartEditDto product)
         {
-            var result = await this._cartService.AddShoppingCartProduct(product, _memberId);
+            var result = await this._cartService.AddShoppingCartProduct(product, this.MemberId);
             if (!result)
                 throw new ApiException("购物车商品添加失败");
             return true;
@@ -49,7 +47,7 @@ namespace ViazyNetCore.ShopMall.AppApi
         [HttpPost]
         public async Task<bool> RemoveCart(ShoppingCartEditDto product)
         {
-            var result = await this._cartService.RemoveShoppingCartProduct(product, _memberId);
+            var result = await this._cartService.RemoveShoppingCartProduct(product, this.MemberId);
             if (!result)
                 throw new ApiException("购物车商品移除失败");
             return true;

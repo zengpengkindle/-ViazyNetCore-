@@ -18,7 +18,7 @@ const toLoginOrEditInfo = () => {
   }
 };
 
-const sampleOrderStatusList = ref([
+const orderStatusList = ref([
   {
     title: "待付款",
     status: 0,
@@ -51,11 +51,11 @@ const sampleOrderStatusList = ref([
   }
 ]);
 const toSampleList = (status: number) => {
-  uni.navigateTo({ url: `/pages/sampleOrder/index?status=${status}` });
+  uni.navigateTo({ url: `/pages/order/list/index?status=${status}` });
 };
 
 const toSampleOrder = () => {
-  uni.navigateTo({ url: "/pages/sampleOrder/index" });
+  uni.navigateTo({ url: `/pages/order/list/index` });
 };
 
 const menuList = shallowRef<MenuGroup[]>([
@@ -116,7 +116,7 @@ watch(token, () => {
       </view>
       <view class="sample-status-wrapper">
         <view
-          v-for="item of sampleOrderStatusList"
+          v-for="item of orderStatusList"
           :key="item.status"
           class="status-item"
           @click="toSampleList(item.status)"
