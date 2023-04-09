@@ -72,6 +72,11 @@ namespace ViazyNetCore.ShopMall.AppApi
         public async Task<TradeDetailModel> FindTrade(string tradeId)
         {
             var result = await this._tradeService.GetTradeDetail(this.MemberId, tradeId);
+
+            foreach (var order in result.Orders)
+            {
+                order.ImgUrl = order.ImgUrl.ToCdnUrl();
+            }
             return result;
         }
 
@@ -79,6 +84,13 @@ namespace ViazyNetCore.ShopMall.AppApi
         public async Task<TradeSetModel> FindTradesPayInfo(string[] tradeIds)
         {
             var result = await this._tradeService.GetTradesPayInfo(tradeIds, this.MemberId);
+            foreach (var item in result.Trades)
+            {
+                foreach (var order in item.Orders)
+                {
+                    order.ImgUrl = order.ImgUrl.ToCdnUrl();
+                }
+            }
             return result;
         }
 

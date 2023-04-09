@@ -62,7 +62,12 @@
               <view class="order-item-foot">
                 <u-icon name="chat-fill" size="34" color="" label="30评论" />
                 <view class="trade-card-cell">
-                  <u-button v-if="trade.tradeStatus == -1" size="mini" round>
+                  <u-button
+                    v-if="trade.tradeStatus == -1"
+                    size="mini"
+                    round
+                    @click="goCash(trade.id)"
+                  >
                     去支付
                   </u-button>
                   <u-button v-if="trade.tradeStatus == -1" size="mini" round>
@@ -154,6 +159,9 @@ onLoad(async query => {
 });
 
 const goDetail = (id: string) => {
+  uni.navigateTo({ url: `/pages/order/cash/index?tradeIds=${id}` });
+};
+const goCash = (id: string) => {
   uni.navigateTo({ url: `/pages/order/cash/index?tradeIds=${id}` });
 };
 </script>
