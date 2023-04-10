@@ -35,7 +35,7 @@
       :hover-class="!isDisabled ? '' : 'hover-btn'"
       @click="handleToPay"
     >
-      去支付
+      提交订单
     </view>
   </view>
 </template>
@@ -62,7 +62,8 @@ const handleToPay = () => {
 </script>
 <style lang="scss" scoped>
 .pay-bar__placeholder {
-  height: 100rpx;
+  height: calc(env(safe-area-inset-bottom) + 100rpx);
+  box-sizing: border-box;
 }
 .flex {
   display: flex;
@@ -85,10 +86,9 @@ const handleToPay = () => {
 }
 
 .pay-bar {
-  height: 112rpx;
   background-color: #fff;
   border-top: 1rpx solid #e5e5e5;
-  padding: 16rpx 32rpx;
+  padding: 12rpx 32rpx calc(env(safe-area-inset-bottom) + 12rpx) 32rpx;
   box-sizing: border-box;
   font-size: 24rpx;
   line-height: 36rpx;

@@ -125,8 +125,8 @@
 import { onShow } from "@dcloudio/uni-app";
 import { computed } from "vue";
 import { useTradeCash } from "./hook";
-import PayBar from "../components/pay-bar.vue";
-import AddressCard from "../components/address-card/index.vue";
+import PayBar from "@/pages/order/components/pay-bar.vue";
+import AddressCard from "@/pages/order/components/address-card/index.vue";
 import TradeApi from "@/apis/shopmall/trade";
 
 import { useAddress } from "@/pages/member/address/hooks";
@@ -135,6 +135,8 @@ const { selectAddress } = useAddress();
 const trades = computed(() => tradeSet.value.shopTrades);
 const { tradeSet } = useTradeCash();
 onShow(() => {
+  if (!tradeSet.value || tradeSet.value?.totalMoney == 0)
+    uni.switchTab({ url: "/pages/cart/index" });
   // const id = decodeURIComponent(query!.tradeIds);
 });
 const handToPay = async () => {

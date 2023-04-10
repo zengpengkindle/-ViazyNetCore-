@@ -4,10 +4,10 @@
       <u-empty mode="order" />
     </view>
     <view v-else>
-      <view class="container">
-        <u-cell-item class="address">
-          <u-icon class="van-cell__left-icon" name="location-o" />
-          <view>
+      <view class="container address">
+        <view class="address-cell">
+          <u-icon name="map" size="40rpx" />
+          <view class="address-content">
             <view class="address-item-name">
               {{ tradeSet.address.address }}
               <view class="address-item-tel">{{ tradeSet.address.tel }}</view>
@@ -16,7 +16,7 @@
               tradeSet.address.address
             }}</view>
           </view>
-        </u-cell-item>
+        </view>
       </view>
       <view class="trade-main container">
         <view v-for="trade in trades" :key="trade.shopId" class="trade-card">
@@ -80,9 +80,11 @@
               <view class="pay-item">
                 <text>订单备注</text>
                 <view class="pay-item__right">
-                  <text class="pay-remark">{{
-                    trade.message || "选填，建议先和商家沟通确认"
-                  }}</text>
+                  <u-input
+                    v-model="trade.message"
+                    borderless
+                    placeholder="选填，建议先和商家沟通确认"
+                  />
                   <u-icon name="arrow-right" size="32rpx" color="#BBBBBB" />
                 </view>
               </view>
@@ -189,10 +191,17 @@ const handToPay = async () => {};
   -webkit-box-align: center;
   -webkit-align-items: center;
   align-items: center;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 20rpx;
+  border-radius: 20rpx;
 }
-
+.address-cell {
+  display: flex;
+}
+.address-content {
+  flex: 1;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+}
 .address-item-tel {
   font-size: 10px;
   color: #666;

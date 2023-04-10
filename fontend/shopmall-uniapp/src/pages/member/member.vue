@@ -12,7 +12,7 @@ const user = useUserStore();
 
 const toLoginOrEditInfo = () => {
   if (token.value) {
-    uni.navigateTo({ url: "/pages/accountSetting/index" });
+    uni.navigateTo({ url: "/pages/member/setting/index" });
   } else {
     uni.navigateTo({ url: "/pages/authorization/index" });
   }

@@ -1,6 +1,6 @@
 <template>
   <view class="address-item-wrapper item-wrapper-class">
-    <u-swipe-action class="swipe-out" :option="option" @click="click">
+    <u-swipe-action class="swipe-out" :options="option" @click="click">
       <view
         class="address"
         :class="isDrawLine ? 'draw-line' : ''"
@@ -36,7 +36,7 @@
           </view>
         </view>
         <view class="address-edit" @click="onEdit">
-          <u-icon name="edit" size="46rpx" color="#BBBBBB" />
+          <u-icon name="edit-pen" size="36rpx" color="#BBBBBB" />
         </view>
       </view>
     </u-swipe-action>
@@ -70,9 +70,6 @@ const onEdit = () => {
 };
 </script>
 <style lang="scss" scoped>
-.address-item-wrapper {
-  overflow: hidden;
-}
 .address-item-wrapper .swipe-out .wr-swiper-cell {
   margin-top: 20rpx;
 }
@@ -106,71 +103,73 @@ const onEdit = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 32rpx;
+  padding: 20rpx;
   background-color: #fff;
-}
-.address-item-wrapper .address .address-edit {
-  padding: 20rpx 0 20rpx 46rpx;
-}
-.address-item-wrapper .address .address-left {
-  width: 80rpx;
-  display: flex;
-  justify-content: center;
-}
-.address-item-wrapper .address .address-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-.address-item-wrapper .address .address-content .title {
-  font-size: 32rpx;
-  line-height: 48rpx;
-  margin-bottom: 16rpx;
-  color: #333333;
-  font-weight: bold;
-  display: flex;
-}
-.address-item-wrapper .address .address-content .title .text-style {
-  margin-right: 8rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 280rpx;
-}
-.address-item-wrapper .address .address-content .label-adds {
-  display: flex;
-}
-.address-item-wrapper .address .address-content .label-adds .adds {
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  color: #999999;
-}
-.address-item-wrapper .address .address-content .label-adds .tag {
-  display: inline-block;
-  padding: 0rpx 8rpx;
-  min-width: 40rpx;
-  height: 32rpx;
-  border-radius: 18rpx;
-  font-size: 20rpx;
-  line-height: 32rpx;
-  text-align: center;
-  margin-right: 8rpx;
-  vertical-align: text-top;
-}
-.address-item-wrapper .address .address-content .label-adds .tag-default {
-  background: #ffece9;
-  color: #fa4126;
-}
-.address-item-wrapper .address .address-content .label-adds .tag-primary {
-  background: #f0f1ff;
-  color: #5a66ff;
-}
-.address-item-wrapper .address .address-content .label-adds .address-text {
-  font-size: 28rpx;
-  line-height: 40rpx;
-  color: #999999;
+
+  .address-edit {
+    padding: 20rpx 0 20rpx 46rpx;
+  }
+  .address-left {
+    width: 80rpx;
+    display: flex;
+    justify-content: center;
+  }
+  .address-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .title {
+      font-size: 28rpx;
+      line-height: 42rpx;
+      margin-bottom: 16rpx;
+      color: #333333;
+      font-weight: bold;
+      display: flex;
+    }
+    .title .text-style {
+      margin-right: 8rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 280rpx;
+    }
+    .label-adds {
+      display: flex;
+    }
+    .label-adds .adds {
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      color: #999999;
+    }
+    .label-adds .tag {
+      display: inline-block;
+      padding: 0rpx 8rpx;
+      min-width: 40rpx;
+      height: 32rpx;
+      border-radius: 18rpx;
+      font-size: 20rpx;
+      line-height: 32rpx;
+      text-align: center;
+      margin-right: 8rpx;
+      vertical-align: text-top;
+    }
+    .label-adds .tag-default {
+      background: #ffece9;
+      color: #fa4126;
+    }
+    .label-adds .tag-primary {
+      background: #f0f1ff;
+      color: #5a66ff;
+    }
+    .label-adds .address-text {
+      font-size: 24rpx;
+      line-height: 36rpx;
+      color: #999999;
+    }
+  }
 }
 </style>

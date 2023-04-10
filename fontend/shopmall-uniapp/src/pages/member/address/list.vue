@@ -5,7 +5,6 @@
         <address-item
           :is-draw-line="index + 1 !== addressList.length"
           :extra-space="extraSpace"
-          class-prefix="ym"
           :address="address"
           @on-select="selectHandle"
           @on-delete="deleteAddressHandle"
@@ -49,7 +48,9 @@ const selectHandle = (item: AddressModel) => {
   }
 };
 const deleteAddressHandle = () => {};
-const editAddressHandle = () => {};
+const editAddressHandle = (addressId: string) => {
+  uni.navigateTo({ url: `/pages/member/address/edit?id=${addressId}` });
+};
 const createHandle = () => {
   uni.navigateTo({ url: "/pages/member/address/edit" });
 };
@@ -75,7 +76,10 @@ onLoad(query => {
   padding-bottom: calc(env(safe-area-inset-bottom) + 172rpx);
 
   .address-list {
+    margin: 20rpx;
+    border-radius: 20rpx;
     font-size: 24rpx;
+    box-sizing: border-box;
     background-color: #ffffff;
     -webkit-overflow-scrolling: touch;
   }

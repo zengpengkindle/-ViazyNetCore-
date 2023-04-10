@@ -1,37 +1,41 @@
 <template>
   <view class="address-card wr-class">
-    <cell-item
+    <u-cell-item
       v-if="selectAddress && selectAddress.address"
       right-icon="arrow-right"
-      icon="map"
       @click="onAddressTap"
     >
       <template #title>
         <view class="order-address">
+          <u-icon name="map" color="#BBBBBB" size="32rpx" />
           <view class="address-content">
-            <view class="detail">
-              {{ selectAddress.name }} {{ hidePhoneNum(selectAddress.tel) }}
-            </view>
-            <view class="info">
+            <view class="title">
               <view v-if="selectAddress.postalCode" class="address-tag">
                 {{ selectAddress.postalCode }}
               </view>
-              {{ selectAddress.address }}
+              {{ selectAddress.province }} {{ selectAddress.city }}
+              {{ selectAddress.county }}
+            </view>
+            <view class="detail">{{ selectAddress.address }}</view>
+            <view class="info">
+              {{ selectAddress.name }} {{ hidePhoneNum(selectAddress.tel) }}
             </view>
           </view>
         </view>
       </template>
-    </cell-item>
-    <cell-item v-else icon="plus-circle" @click="onAddTap">
+    </u-cell-item>
+    <u-cell-item v-else hover title="添加收货地址" @click="onAddTap">
+      <template #icon>
+        <u-icon name="plus-circle" color="#BBBBBB" size="32rpx" />
+      </template>
       <template #title>
         <view>添加收货地址</view>
       </template>
-    </cell-item>
+    </u-cell-item>
     <view class="top-line" />
   </view>
 </template>
 <script lang="ts" setup>
-import CellItem from "./cell-item.vue";
 import { onShow } from "@dcloudio/uni-app";
 import { useAddress } from "@/pages/member/address/hooks";
 import { stringify } from "qs";
@@ -64,6 +68,7 @@ const hidePhoneNum = function (array) {
 <style lang="scss" scoped>
 .address-card {
   background: #fff;
+  margin: 0rpx 0rpx 24rpx;
 
   .wr-cell__title {
     color: #999;
@@ -74,8 +79,6 @@ const hidePhoneNum = function (array) {
     width: 100%;
     .address-content {
       flex: 1;
-      padding-left: 20rpx;
-      box-sizing: border-box;
     }
     .title {
       display: flex;
@@ -86,7 +89,7 @@ const hidePhoneNum = function (array) {
       color: #999999;
       line-height: 32rpx;
     }
-    .address-tag {
+    .title .address-tag {
       width: 52rpx;
       height: 29rpx;
       border: 1rpx solid #0091ff;
@@ -109,9 +112,6 @@ const hidePhoneNum = function (array) {
       color: #333333;
       line-height: 36rpx;
       margin: 8rpx 0;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
     .info {
       height: 32rpx;
@@ -119,9 +119,6 @@ const hidePhoneNum = function (array) {
       font-weight: normal;
       color: #333333;
       line-height: 32rpx;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
   }
   .address__right {
@@ -132,7 +129,7 @@ const hidePhoneNum = function (array) {
     width: 100%;
     height: 6rpx;
     background-color: #fff;
-    background-image: url("/static/images/common/add-rs.png");
+    background-image: "/static/images/common/add-res.png";
     background-repeat: repeat-x;
     display: block;
   }

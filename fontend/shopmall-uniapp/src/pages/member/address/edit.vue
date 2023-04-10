@@ -3,9 +3,9 @@
     <view class="container">
       <u-form
         class="form-content"
-        label-width="110rpx"
+        label-width="140rpx"
         label-align="right"
-        :label-style="{ fontSize: '26rpx' }"
+        :label-style="{ fontSize: '28rpx' }"
       >
         <u-form-item class="form-cell" label="收货人">
           <u-input
@@ -56,7 +56,7 @@
             />
           </view>
         </u-form-item>
-        <u-form-item label="默认">
+        <u-form-item label="默认" :border-bottom="false">
           <u-switch
             v-model="address.isDefault"
             bind:change="onCheckDefaultAddress"
@@ -144,6 +144,9 @@ const saveSubmit = async () => {
   background-color: #f2f2f2;
   box-sizing: border-box;
   overflow: hidden;
+  :deep(.u-form-item) {
+    padding: 10rpx;
+  }
 }
 .container {
   margin: 20rpx 20rpx 0;
