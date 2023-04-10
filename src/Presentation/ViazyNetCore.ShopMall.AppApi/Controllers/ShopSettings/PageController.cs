@@ -60,6 +60,19 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
                         pageItem.Value = JObject.FromObject(item, JsonSerializer.Create(JSON.SerializerSettings));
                     }
                 }
+                else if (pageItem.Type == "navBar")
+                {
+                    var item = pageItem.Value.ToObject<NavBarPageItem>();
+                    if (item != null)
+                    {
+                        item.List.ForEach(p =>
+                        {
+                            p.Url = p.Url.ToCdnUrl();
+                        });
+
+                        pageItem.Value = JObject.FromObject(item, JsonSerializer.Create(JSON.SerializerSettings));
+                    }
+                }
             }
             return pageItems;
         }

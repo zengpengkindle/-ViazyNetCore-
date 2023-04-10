@@ -23,11 +23,18 @@
         class="swiper-item"
       >
         <scroll-view
-          scroll-y
+          :scroll-y="true"
           style="width: 100%"
           @scrolltolower="onreachBottom"
         >
-          <u-card v-for="trade in tradeList" :key="trade.id" :title="trade.id">
+          <u-card
+            v-for="trade in tradeList"
+            :key="trade.id"
+            :title="trade.id"
+            :title-size="26"
+            margin="20rpx 20rpx 0"
+            :padding="20"
+          >
             <template #body>
               <view
                 v-for="item in trade.items"
@@ -159,17 +166,20 @@ onLoad(async query => {
 });
 
 const goDetail = (id: string) => {
-  uni.navigateTo({ url: `/pages/order/cash/index?tradeIds=${id}` });
+  uni.navigateTo({ url: `/pages/order/detail/index?tradeIds=${id}` });
 };
 const goCash = (id: string) => {
   uni.navigateTo({ url: `/pages/order/cash/index?tradeIds=${id}` });
 };
 </script>
 <style lang="scss" scoped>
+.order-list-tabs {
+  background-color: #f8f8f8;
+}
 .goods-wrapper {
   width: 100%;
   box-sizing: border-box;
-  padding: 16rpx 20rpx;
+  padding: 8rpx 0;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -190,7 +200,7 @@ const goCash = (id: string) => {
   .goods-content .goods-title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 24rpx;
@@ -208,11 +218,10 @@ const goCash = (id: string) => {
   }
 
   .goods-right .goods-price {
-    color: #333333;
-    font-size: 32rpx;
-    line-height: 48rpx;
+    color: #000;
+    font-size: 28rpx;
+    line-height: 40rpx;
     font-weight: bold;
-    margin-bottom: 16rpx;
   }
 
   .goods-right .goods-num {

@@ -7,7 +7,7 @@
         @click="showSliderInfo(item.linkType, item.linkValue)"
       >
         <u-icon
-          :name="item.image"
+          :name="item.url || item.image"
           width="80"
           height="80"
           :label="item.text"

@@ -82,3 +82,18 @@ public class GoodsPageProductItem
     /// </summary>
     public string Image { get; set; }
 }
+
+public class NavBarPageItem
+{
+    public int Limit { get; set; }
+    public List<NavBarItem> List { get; set; }
+}
+
+public class NavBarItem
+{
+    public string Image { get; set; }
+    public string Text { get; set; }
+    public string LinkType { get; set; }
+    public string LinkValue { get; set; }
+    public string Url { get; set; }
+}

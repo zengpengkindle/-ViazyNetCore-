@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import { useToken } from "@/hooks";
 import WechatApi from "@/apis/wechat";
@@ -54,11 +54,34 @@ export const useCommonStore = defineStore("common", () => {
       log.error([res]);
     });
   };
+
+  /**
+   * 是否已登录
+   */
+  const isLogin = computed(() => !!token.value);
+
+  /**
+   * 自定义重定向地址，用于登录后跳转
+   */
+  const redirectPath = ref("");
+  const setRedirectPath = (path: string) => {
+    redirectPath.value = path;
+  };
+  const clearRedirectPath = () => {
+    redirectPath.value = "";
+  };
+
   return {
     env,
     token,
     getEnvVersion,
     checkUpdate,
-    getUid
+    getUid,
+
+    isLogin,
+
+    redirectPath,
+    setRedirectPath,
+    clearRedirectPath
   };
 });
