@@ -24,24 +24,27 @@
       >
         <scroll-view
           :scroll-y="true"
-          style="width: 100%"
+          style="width: 100%; background-color: #f2f2f2"
           @scrolltolower="onreachBottom"
         >
           <u-card
             v-for="trade in tradeList"
             :key="trade.id"
-            :title="trade.id"
+            :head-border-bottom="true"
+            :foot-border-top="false"
+            :title="'订单号:' + trade.id"
             :title-size="26"
             margin="20rpx 20rpx 0"
             :padding="20"
+            body-style="padding:10rpx 20rpx 0"
           >
             <template #body>
-              <view
-                v-for="item in trade.items"
-                :key="item.pId + item.skuId"
-                class="trade-card-items"
-              >
-                <view class="trade-card-item goods-wrapper">
+              <view class="trade-card-items">
+                <view
+                  v-for="item in trade.items"
+                  :key="item.pId + item.skuId"
+                  class="trade-card-item goods-wrapper"
+                >
                   <u-image
                     :src="item.imgUrl"
                     class="goods-image"
@@ -57,42 +60,87 @@
                     <price
                       class="goods-price"
                       symbol="￥"
+                      fill
                       :price="item.price"
                       decimal-smaller
                     />
                     <view class="goods-num">x{{ item.num }}</view>
                   </view>
                 </view>
+                <view class="pay-detail">
+                  <view class="pay-item">
+                    <text>运费</text>
+                    <price
+                      fill
+                      symbol="￥"
+                      decimal-smaller
+                      class="pay-item__right font-bold"
+                      :price="trade.totalfeight"
+                    />
+                  </view>
+                  <view class="pay-item">
+                    <text>商品总额</text>
+                    <price
+                      fill
+                      symbol="￥"
+                      decimal-smaller
+                      class="pay-item__right font-bold"
+                      :price="trade.totalMoney"
+                    />
+                  </view>
+                </view>
               </view>
             </template>
             <template #foot>
               <view class="order-item-foot">
-                <u-icon name="chat-fill" size="34" color="" label="30评论" />
                 <view class="trade-card-cell">
                   <u-button
                     v-if="trade.tradeStatus == -1"
                     size="mini"
-                    round
+                    shape="circle"
                     @click="goCash(trade.id)"
                   >
                     去支付
                   </u-button>
-                  <u-button v-if="trade.tradeStatus == -1" size="mini" round>
+                  <u-button
+                    v-if="trade.tradeStatus == -1"
+                    size="mini"
+                    shape="circle"
+                  >
                     取消订单
                   </u-button>
-                  <u-button v-if="trade.tradeStatus == 0" size="mini" round>
+                  <u-button
+                    v-if="trade.tradeStatus == 0"
+                    size="mini"
+                    shape="circle"
+                  >
                     提醒发货
                   </u-button>
-                  <u-button v-if="trade.tradeStatus == 0" size="mini" round
+                  <u-button
+                    v-if="trade.tradeStatus == 0"
+                    size="mini"
+                    shape="circle"
                     >取消订单</u-button
                   >
-                  <u-button v-if="trade.tradeStatus == 1" size="mini" round>
+                  <u-button
+                    v-if="trade.tradeStatus == 1"
+                    size="mini"
+                    shape="circle"
+                  >
                     确认收货
                   </u-button>
-                  <u-button v-if="trade.tradeStatus == 2" size="mini" round>
+                  <u-button
+                    v-if="trade.tradeStatus == 2"
+                    size="mini"
+                    shape="circle"
+                  >
                     立即评价
                   </u-button>
-                  <u-button v-if="trade.tradeStatus == 2" size="mini" round>
+                  <u-button
+                    v-if="trade.tradeStatus == 2"
+                    size="mini"
+                    shape="circle"
+                  >
                     申请售后
                   </u-button>
                 </view>
@@ -179,7 +227,6 @@ const goCash = (id: string) => {
 .goods-wrapper {
   width: 100%;
   box-sizing: border-box;
-  padding: 8rpx 0;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -187,7 +234,9 @@ const goCash = (id: string) => {
   line-height: 32rpx;
   color: #999999;
   background-color: #ffffff;
-
+  &:not(:first-child) {
+    margin-top: 10rpx;
+  }
   .goods-image {
     border-radius: 8rpx;
     overflow: hidden;
@@ -228,11 +277,48 @@ const goCash = (id: string) => {
     text-align: right;
   }
 }
+
+.pay-detail .pay-item {
+  width: 100%;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #666666;
+  .pay-item__right {
+    color: #333333;
+    font-size: 24rpx;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: 400rpx;
+  }
+  .pay-item__right .pay-remark {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    max-width: 400rpx;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .font-bold {
+    font-weight: bold;
+  }
+  .primary {
+    color: #fa4126;
+  }
+}
 .order-item-foot {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 .trade-card-cell {
   display: flex;
+  justify-content: space-between;
+  :deep(.u-btn) {
+    margin: 0 5rpx;
+  }
 }
 </style>

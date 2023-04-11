@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net6.0'">
+	    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Essensoft.AspNetCore.Payment.Security\Essensoft.AspNetCore.Payment.Security.csproj" />
+  </ItemGroup>
+
+</Project>

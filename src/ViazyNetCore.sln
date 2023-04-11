@@ -81,7 +81,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essensoft.AspNetCore.Paymen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.ShopMall.AppApi", "Presentation\ViazyNetCore.ShopMall.AppApi\ViazyNetCore.ShopMall.AppApi.csproj", "{DB61695C-51A4-4EB1-AB9A-6BF9C405BE15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.AttachmentProvider", "Core\ViazyNetCore.AttachmentProvider\ViazyNetCore.AttachmentProvider.csproj", "{F1C6E24E-9A07-482A-932A-D01DA2D994B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.AttachmentProvider", "Core\ViazyNetCore.AttachmentProvider\ViazyNetCore.AttachmentProvider.csproj", "{F1C6E24E-9A07-482A-932A-D01DA2D994B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essensoft.Paylink.WeChatPay", "sdks\payment\Essensoft.Paylink.WeChatPay\Essensoft.Paylink.WeChatPay.csproj", "{31B69BF7-913C-495D-B642-4C2BD7C39E3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -209,6 +211,10 @@ Global
 		{F1C6E24E-9A07-482A-932A-D01DA2D994B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1C6E24E-9A07-482A-932A-D01DA2D994B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1C6E24E-9A07-482A-932A-D01DA2D994B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31B69BF7-913C-495D-B642-4C2BD7C39E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31B69BF7-913C-495D-B642-4C2BD7C39E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31B69BF7-913C-495D-B642-4C2BD7C39E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31B69BF7-913C-495D-B642-4C2BD7C39E3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -245,6 +251,7 @@ Global
 		{A513C7F7-1042-4344-BAEF-4B0ECB2CF2D1} = {CE2CCA46-921A-4321-B277-430F0A52F499}
 		{DB61695C-51A4-4EB1-AB9A-6BF9C405BE15} = {57CCA8FF-D37C-4F0E-91CB-C0B155DB5861}
 		{F1C6E24E-9A07-482A-932A-D01DA2D994B3} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
+		{31B69BF7-913C-495D-B642-4C2BD7C39E3A} = {CE2CCA46-921A-4321-B277-430F0A52F499}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

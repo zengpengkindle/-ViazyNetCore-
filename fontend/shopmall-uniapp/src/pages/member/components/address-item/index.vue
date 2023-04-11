@@ -15,7 +15,7 @@
           />
         </view>
         <view class="address-left">
-          <u-avatar :text="address.name" font-size="18" random-bg-color />
+          <u-avatar :text="address.name" font-size="18" />
         </view>
         <view class="address-content">
           <view class="title title-class">

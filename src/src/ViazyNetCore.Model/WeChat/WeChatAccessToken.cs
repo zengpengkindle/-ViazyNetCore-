@@ -27,20 +27,26 @@ namespace ViazyNetCore.Model
         public int AppType { get; set; }
 
         /// <summary>
-        /// 微信appId
+        /// appId
         /// </summary>
-        [Display(Name = "微信appId")]
+        [Display(Name = "appId")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
         public string AppId { get; set; }
 
         /// <summary>
-        ///     微信accessToken
+        /// accessToken
         /// </summary>
-        [Display(Name = "微信accessToken")]
+        [Display(Name = "accessToken")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(250, ErrorMessage = "{0}不能超过{1}字")]
         public string AccessToken { get; set; }
+
+        /// <summary>
+        /// 第三方登录类型
+        /// </summary>
+        [Display(Name = "第三方登录类型")]
+        public UserAccountTypes? Type { get; set; }
 
         /// <summary>
         ///     截止时间
