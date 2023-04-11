@@ -13,6 +13,6 @@ namespace ViazyNetCore.Modules
         /// <summary>
         /// 微信授权
         /// </summary>
-        Task<WechatAuthDto> Auth(WeChatAuthUpdateDto updateDto);
+        Task<WechatAuthDto> Auth(WechatAuthUpdateDto updateDto);
     }
 }

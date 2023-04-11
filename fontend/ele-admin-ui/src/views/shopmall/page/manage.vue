@@ -446,7 +446,7 @@ const tools: Array<ToolGroup> = [
                     :key="key"
                   >
                     <div class="item-image">
-                      <img :src="nav.image" alt="" />
+                      <img :src="nav.url || nav.image" alt="" />
                     </div>
                     <p class="item-text">{{ nav.text }}</p>
                   </div>
@@ -651,12 +651,12 @@ const tools: Array<ToolGroup> = [
                             animation: 150
                           }"
                         >
-                          <template #item="{ element: goods, index }">
+                          <template #item="{ element, index }">
                             <i
                               class="layui-icon layui-icon-close-fill icon-delete"
                               @click="handleDeleteGoods(index)"
                             />
-                            <img :src="goods.image" alt="" />
+                            <img :src="element.image" alt="" />
                           </template>
                         </draggable>
                       </div>
@@ -796,37 +796,30 @@ const tools: Array<ToolGroup> = [
                       </div>
                       <div v-show="child.type == 'choose'">
                         <div class="select_seller_goods_box">
-                          <input
-                            type="hidden"
-                            name="params[goodsId]"
-                            value=""
-                          />
-                          <ul
+                          <div
                             id="selectGoods"
                             class="sellect_seller_goods_list clearfix"
                           >
-                            <el-select
+                            <draggable
                               element="ul"
                               :list="child.list"
-                              :options="{
-                                group: { name: 'selectGoodsList' },
-                                ghostClass: 'ghost',
-                                animation: 150
-                              }"
+                              :group="{ name: 'selectGoodsList' }"
+                              ghost-class="ghost"
+                              :animation="150"
                             >
-                              <el-option
-                                :value="goods.key"
-                                v-for="(goods, index) in child.list"
-                                :key="index"
-                              >
-                                <i
-                                  class="layui-icon layui-icon-close-fill icon-delete"
-                                  @click="handleDeleteTabBarGoods(key, index)"
-                                />
-                                <img :src="goods.image" alt="" />
-                              </el-option>
-                            </el-select>
-                          </ul>
+                              <template #item="{ element, index }">
+                                <div>
+                                  <i
+                                    class="layui-icon layui-icon-close-fill icon-delete"
+                                    @click="
+                                      handleDeleteTabBarGoods(index, index)
+                                    "
+                                  />
+                                  <img :src="element.image" alt="" />
+                                </div>
+                              </template>
+                            </draggable>
+                          </div>
                           <div class="addImg" @click="selectTabBarGoods(key)">
                             <i class="iconfontCustom icon-icon-test" />
                             <span>选择商品</span>
@@ -1012,8 +1005,8 @@ const tools: Array<ToolGroup> = [
                           <select-link
                             @choose-link="chooseLink(index, element.linkType)"
                             :index="index"
-                            :type="element.linkType"
-                            :id="element.linkValue"
+                            v-model:type="element.linkType"
+                            v-model="element.linkValue"
                           />
                         </div>
                         <div class="handle-icon" title="删除这一项">
@@ -1044,8 +1037,8 @@ const tools: Array<ToolGroup> = [
                     </div>
                     <select-link
                       @choose-link="chooseLink(index, item.linkType)"
-                      :type="item.linkType"
-                      :id="item.linkValue"
+                      v-model:type="item.linkType"
+                      v-model="item.linkValue"
                     />
                     <div class="content-item">
                       <el-form-item label="添加按钮：">
@@ -1148,8 +1141,8 @@ const tools: Array<ToolGroup> = [
                           <select-link
                             @choose-link="chooseLink(index, item.linkType)"
                             :index="index"
-                            :type="item.linkType"
-                            :id="item.linkValue"
+                            v-model:type="item.linkType"
+                            v-model="item.linkValue"
                           />
                         </div>
                       </div>
@@ -1251,7 +1244,7 @@ const tools: Array<ToolGroup> = [
                           </div>
                           <div class="content-item">
                             <el-form-item label="按钮文字：">
-                              <input
+                              <el-input
                                 type="text"
                                 class="selectLinkVal"
                                 v-model="item.text"
@@ -1261,8 +1254,8 @@ const tools: Array<ToolGroup> = [
                           <select-link
                             @choose-link="chooseLink(index, item.linkType)"
                             :index="index"
-                            :type="item.linkType"
-                            :id="item.linkValue"
+                            v-model:type="item.linkType"
+                            v-model="item.linkValue"
                           />
                         </div>
                       </div>

@@ -543,8 +543,6 @@ namespace ViazyNetCore.Modules.ShopMall
                             sku.Id = Snowflake<ProductSku>.NextIdString();
                             sku.Cost = skuItem.Cost;
                             sku.Price = skuItem.Price;
-                            if (sku.Price > max)
-                                max = sku.Price;
                             sku.ProductId = product.Id;
 
                             sku.S1 = skuItem.S1.IsNull() ? "0" : skuItem.S1;
@@ -558,7 +556,10 @@ namespace ViazyNetCore.Modules.ShopMall
                             sku.Name1 = skuItem.Name1;
                             sku.Name2 = skuItem.Name2;
                             sku.Name3 = skuItem.Name3;
+                            sku.CreateTime = DateTime.Now; sku.UpdateTime = DateTime.Now;
 
+                            if (sku.Price > max)
+                                max = sku.Price;
                             var skuStockResult = await this._stockService.CreateProductStock(this._engine, product.Id, sku.Id, skuItem.StockNum);
                             if (!skuStockResult)
                                 throw new ApiException("创建初始sku库存失败");

@@ -8,7 +8,7 @@ namespace ViazyNetCore.Modules.Models
 {
     public class WechatAuthDto
     {
-        public int KolUserId { get; set; }
+        public long MemberId { get; set; }
         public bool GetUserProfile { get; set; }
 
         public string OpenId { get; set; }

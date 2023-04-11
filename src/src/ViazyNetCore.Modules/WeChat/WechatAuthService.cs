@@ -21,7 +21,7 @@ namespace ViazyNetCore.Modules
             this._memberThridAccountRepository = memberThridAccountRepository;
         }
 
-        public async Task<WechatAuthDto> Auth(WeChatAuthUpdateDto updateDto)
+        public async Task<WechatAuthDto> Auth(WechatAuthUpdateDto updateDto)
         {
             var thridAuthUser = await this._thridAuthUserRepository.Where(p => p.UnionId == updateDto.UnionId).FirstAsync();
             if (thridAuthUser == null)

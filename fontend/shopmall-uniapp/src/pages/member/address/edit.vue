@@ -5,7 +5,7 @@
         class="form-content"
         label-width="140rpx"
         label-align="right"
-        :label-style="{ fontSize: '28rpx' }"
+        :label-style="{ fontSize: '28rpx', alignItems: 'flex-start' }"
       >
         <u-form-item class="form-cell" label="收货人">
           <u-input
@@ -57,10 +57,7 @@
           </view>
         </u-form-item>
         <u-form-item label="默认" :border-bottom="false">
-          <u-switch
-            v-model="address.isDefault"
-            bind:change="onCheckDefaultAddress"
-          />
+          <u-switch v-model="address.isDefault" />
           设置为默认收货地址
         </u-form-item>
         <view class="submit">

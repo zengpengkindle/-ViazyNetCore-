@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Modules.Models
 {
-    public class WeChatAuthUpdateDto
+    public class WechatAuthUpdateDto
     {
         public string UnionId { get; set; }
 

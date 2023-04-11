@@ -69,4 +69,9 @@ const getProductList = async (reset = false) => {
 .good-box {
   background-color: #f2f2f2;
 }
+:deep(.u-search) {
+  background-color: #f8f8f8;
+  padding: 4rpx 20rpx;
+  box-sizing: border-box;
+}
 </style>

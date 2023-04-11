@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Senparc.Weixin;
 using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
 using ViazyNetCore.Auth.Jwt;
+using ViazyNetCore.Modules.Models;
 
 namespace ViazyNetCore.ShopMall.AppApi.Controllers
 {
@@ -74,7 +75,7 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
         /// <returns></returns>
         /// <exception cref="ApiException"></exception>
         [HttpPost, Route("wx/code")]
-        public async Task<JsCodeRes> JsCode2Session([FromBody] JsCodeReq request, [FromServices] IWeChatAccessTokenService wechatAuthService,
+        public async Task<JsCodeRes> JsCode2Session([FromBody] JsCodeReq request, [FromServices] IWechatAuthService wechatAuthService,
             [FromServices] TokenProvider tokenProvider)
         {
             if (request.Code.IsNull())
@@ -83,14 +84,14 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
             var result = await SnsApi.JsCode2JsonAsync(MiniAppId, MiniSecret, request.Code);
             if (result?.errcode == ReturnCode.请求成功)
             {
-                var wechatAuthResult = await wechatAuthService.Auth(new WechatAuthModel
+                var wechatAuthResult = await wechatAuthService.Auth(new WechatAuthUpdateDto
                 {
                     AppId = MiniAppId,
                     OpenId = result.openid,
                     UnionId = result.unionid
                 });
 
-                if (wechatAuthResult.KolUserId > 0)
+                if (wechatAuthResult.MemberId > 0)
                 {
                     return new JsCodeRes
                     {
@@ -98,7 +99,7 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
                         GetUserProfile = wechatAuthResult.GetUserProfile,
                         OpenId = result.openid,
                         OpType = 1,
-                        Token = tokenProvider.IssueToken(wechatAuthResult.KolUserId, wechatAuthResult.KolUserId)
+                        Token = await tokenProvider.IssueToken(wechatAuthResult.MemberId.ToString(), wechatAuthResult.MemberId.ToString(), null)
                     };
                 }
                 else

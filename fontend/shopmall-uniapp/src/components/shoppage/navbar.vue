@@ -36,7 +36,8 @@ onMounted(() => {
 });
 const limit = computed(() => prop.parameters.limit);
 const showSliderInfo = (type: any, val: any) => {
-  console.log(type);
-  console.log(val);
+  if (type == 1) {
+    uni.navigateTo({ url: val });
+  }
 };
 </script>

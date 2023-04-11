@@ -1,11 +1,7 @@
 <template>
   <view class="address-item-wrapper item-wrapper-class">
     <u-swipe-action class="swipe-out" :options="option" @click="click">
-      <view
-        class="address"
-        :class="isDrawLine ? 'draw-line' : ''"
-        @click="onSelect"
-      >
+      <view class="address" :class="isDrawLine ? 'draw-line' : ''">
         <view v-if="extraSpace" class="address-left">
           <u-icon
             v-if="address.checked"
@@ -17,7 +13,7 @@
         <view class="address-left">
           <u-avatar :text="address.name" font-size="18" />
         </view>
-        <view class="address-content">
+        <view class="address-content" @click="onSelect">
           <view class="title title-class">
             <text class="text-style">{{ address.name }}</text>
             <text>{{ address.tel || "" }}</text>
