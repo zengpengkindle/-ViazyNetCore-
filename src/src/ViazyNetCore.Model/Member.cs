@@ -19,7 +19,7 @@ namespace ViazyNetCore.Model
         /// <summary>
         /// 设置或获取一个值，表示姓名。
         /// </summary>
-        public string Name { get; set; }
+        public string NickName { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示密码。
@@ -30,6 +30,32 @@ namespace ViazyNetCore.Model
         /// 设置或获取一个值，表示加盐值。
         /// </summary>
         public Guid Salt { get; set; }
+
+        /// <summary>
+        /// 绑定的手机号 可用于登陆
+        /// </summary>
+        public string Mobile { get; set; }
+
+        /// <summary>
+        /// 关联手机  不能用于登陆
+        /// </summary>
+        public string RelatedMobile { get; set; }
+
+        [Column(IsIgnore = true)]
+        public bool IsBindMobile
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(Mobile))
+                {
+                    return !string.IsNullOrWhiteSpace(RelatedMobile);
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
 
         /// <summary>
         /// 设置或获取一个值，表示创建时间。

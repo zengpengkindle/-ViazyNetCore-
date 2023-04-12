@@ -31,7 +31,7 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
         }
 
         /// <summary>
-        ///     统一下单支付结果通知
+        /// 统一下单支付结果通知
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> Unifiedorder()
@@ -54,9 +54,8 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
             }
         }
 
-
         /// <summary>
-        ///     退款结果通知
+        /// 退款结果通知
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> Refund()

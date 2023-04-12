@@ -12,6 +12,7 @@ using ViazyNetCore.Modules.ShopMall;
 using Microsoft.Extensions.Options;
 using Essensoft.Paylink.WeChatPay;
 using Essensoft.Paylink.WeChatPay.V2.Request;
+using ViazyNetCore.Modules.Internal;
 
 namespace ViazyNetCore.Modules.Payment
 {

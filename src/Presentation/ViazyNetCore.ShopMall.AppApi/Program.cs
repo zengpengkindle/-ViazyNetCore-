@@ -10,6 +10,7 @@ using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.DI;
+using ViazyNetCore.Modules.Internal;
 using ViazyNetCore.ShopMall.AppApi.Extensions;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();

@@ -23,15 +23,15 @@ namespace Microsoft.Extensions.DependencyInjection
 
             options.Valid();
 
-            AppConsts.DefaultAreaName = options.DefaultAreaName;
-            AppConsts.DefaultHttpVerb = options.DefaultHttpVerb;
-            AppConsts.DefaultApiPreFix = options.DefaultApiPrefix;
-            AppConsts.ControllerPostfixes = options.RemoveControllerPostfixes;
-            AppConsts.ActionPostfixes = options.RemoveActionPostfixes;
-            AppConsts.FormBodyBindingIgnoredTypes = options.FormBodyBindingIgnoredTypes;
-            AppConsts.GetRestFulControllerName = options.GetRestFulControllerName;
-            AppConsts.GetRestFulActionName = options.GetRestFulActionName;
-            AppConsts.AssemblyDynamicApiOptions = options.DynamicAssemblyControllerOptions;
+            DynamicApplicationConsts.DefaultAreaName = options.DefaultAreaName;
+            DynamicApplicationConsts.DefaultHttpVerb = options.DefaultHttpVerb;
+            DynamicApplicationConsts.DefaultApiPreFix = options.DefaultApiPrefix;
+            DynamicApplicationConsts.ControllerPostfixes = options.RemoveControllerPostfixes;
+            DynamicApplicationConsts.ActionPostfixes = options.RemoveActionPostfixes;
+            DynamicApplicationConsts.FormBodyBindingIgnoredTypes = options.FormBodyBindingIgnoredTypes;
+            DynamicApplicationConsts.GetRestFulControllerName = options.GetRestFulControllerName;
+            DynamicApplicationConsts.GetRestFulActionName = options.GetRestFulActionName;
+            DynamicApplicationConsts.AssemblyDynamicApiOptions = options.DynamicAssemblyControllerOptions;
 
             var partManager = application.ApplicationServices.GetRequiredService<ApplicationPartManager>();
 
@@ -84,15 +84,15 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             options.Valid();
-            AppConsts.DefaultAreaName = options.DefaultAreaName;
-            AppConsts.DefaultHttpVerb = options.DefaultHttpVerb;
-            AppConsts.DefaultApiPreFix = options.DefaultApiPrefix;
-            AppConsts.ControllerPostfixes = options.RemoveControllerPostfixes;
-            AppConsts.ActionPostfixes = options.RemoveActionPostfixes;
-            AppConsts.FormBodyBindingIgnoredTypes = options.FormBodyBindingIgnoredTypes;
-            AppConsts.GetRestFulControllerName = options.GetRestFulControllerName;
-            AppConsts.GetRestFulActionName = options.GetRestFulActionName;
-            AppConsts.AssemblyDynamicApiOptions = options.DynamicAssemblyControllerOptions;
+            DynamicApplicationConsts.DefaultAreaName = options.DefaultAreaName;
+            DynamicApplicationConsts.DefaultHttpVerb = options.DefaultHttpVerb;
+            DynamicApplicationConsts.DefaultApiPreFix = options.DefaultApiPrefix;
+            DynamicApplicationConsts.ControllerPostfixes = options.RemoveControllerPostfixes;
+            DynamicApplicationConsts.ActionPostfixes = options.RemoveActionPostfixes;
+            DynamicApplicationConsts.FormBodyBindingIgnoredTypes = options.FormBodyBindingIgnoredTypes;
+            DynamicApplicationConsts.GetRestFulControllerName = options.GetRestFulControllerName;
+            DynamicApplicationConsts.GetRestFulActionName = options.GetRestFulActionName;
+            DynamicApplicationConsts.AssemblyDynamicApiOptions = options.DynamicAssemblyControllerOptions;
             //var partManager = (ApplicationPartManager?)services.FirstOrDefault(d => d.ServiceType == typeof(ApplicationPartManager))
             //?.ImplementationInstance;
 

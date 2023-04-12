@@ -16,14 +16,14 @@ namespace ViazyNetCore.DI
     {
         private static string GetControllerPreFix(ActionModel action)
         {
-            var getValueSuccess = AppConsts.AssemblyDynamicApiOptions
+            var getValueSuccess = DynamicApplicationConsts.AssemblyDynamicApiOptions
                 .TryGetValue(action.Controller.ControllerType.Assembly, out var assemblyDynamicApiOptions);
             if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicApiOptions?.ApiPrefix))
             {
                 return assemblyDynamicApiOptions.ApiPrefix;
             }
 
-            return AppConsts.DefaultApiPreFix;
+            return DynamicApplicationConsts.DefaultApiPreFix;
         }
 
         public string CreateActionRouteModel(string areaName, string controllerName, ActionModel action)

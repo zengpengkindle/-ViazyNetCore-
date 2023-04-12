@@ -5,6 +5,7 @@ using System.Linq;
 using System.Providers;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.Modules.Internal;
 
 namespace ViazyNetCore.Modules.ShopMall
 {
