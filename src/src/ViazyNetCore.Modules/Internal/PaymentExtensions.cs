@@ -4,8 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using ViazyNetCore.Modules.ShopMall;
 
-namespace ViazyNetCore.Modules.ShopMall
+namespace ViazyNetCore.Modules.Internal
 {
     public static class PaymentExtensions
     {
@@ -14,17 +15,17 @@ namespace ViazyNetCore.Modules.ShopMall
                 , IConfiguration alipayOptions
                 , Action<AlipayMiddlewareOptions> configureOptions = null)
         {
-            if(services == null)
+            if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
             services.AddSingleton<IAlipayClient, AlipayClient>();
             services.AddSingleton<IAlipayNotifyClient, AlipayNotifyClient>();
-            if(alipayOptions != null)
+            if (alipayOptions != null)
             {
                 services.Configure<AlipayOptions>(alipayOptions);
             }
-            if(configureOptions == null)
+            if (configureOptions == null)
             {
                 configureOptions = options => options = new AlipayMiddlewareOptions();
             }
@@ -36,17 +37,17 @@ namespace ViazyNetCore.Modules.ShopMall
             , Action<AlipayOptions> setupAction
             , Action<AlipayMiddlewareOptions> configureOptions = null)
         {
-            if(services == null)
+            if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
             services.AddSingleton<IAlipayClient, AlipayClient>();
             services.AddSingleton<IAlipayNotifyClient, AlipayNotifyClient>();
-            if(setupAction != null)
+            if (setupAction != null)
             {
                 services.Configure(setupAction);
             }
-            if(configureOptions == null)
+            if (configureOptions == null)
             {
                 configureOptions = options => options = new AlipayMiddlewareOptions();
             }

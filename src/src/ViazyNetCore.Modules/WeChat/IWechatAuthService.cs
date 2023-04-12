@@ -14,5 +14,7 @@ namespace ViazyNetCore.Modules
         /// 微信授权
         /// </summary>
         Task<WechatAuthDto> Auth(WechatAuthUpdateDto updateDto);
+        Task<WechatAuthDto> BindMobile(BindMobileDto bindMobileDto);
+        Task<WechatAuthUpdateDto?> GetWechatAuthCodeInfo(string authCode);
     }
 }

@@ -56,7 +56,7 @@ namespace ViazyNetCore.DI
 
                 if (this._selectController is not DefaultSelectController && this._selectController.IsController(type))
                 {
-                    controller.ControllerName = controller.ControllerName.RemovePostFix(AppConsts.ControllerPostfixes.ToArray());
+                    controller.ControllerName = controller.ControllerName.RemovePostFix(DynamicApplicationConsts.ControllerPostfixes.ToArray());
 
                     controller.ControllerName = GetRestFulControllerName(controller.ControllerName);
 
@@ -66,7 +66,7 @@ namespace ViazyNetCore.DI
                 {
                     if (typeof(IDynamicController).GetTypeInfo().IsAssignableFrom(type))
                     {
-                        controller.ControllerName = controller.ControllerName.RemovePostFix(AppConsts.ControllerPostfixes.ToArray());
+                        controller.ControllerName = controller.ControllerName.RemovePostFix(DynamicApplicationConsts.ControllerPostfixes.ToArray());
 
                         ConfigureArea(controller, DynamicApiAttr);
                         ConfigureDynamicApi(controller, DynamicApiAttr);
@@ -96,9 +96,9 @@ namespace ViazyNetCore.DI
                 {
                     controller.RouteValues["area"] = attr.Area;
                 }
-                else if (!string.IsNullOrEmpty(AppConsts.DefaultAreaName))
+                else if (!string.IsNullOrEmpty(DynamicApplicationConsts.DefaultAreaName))
                 {
-                    controller.RouteValues["area"] = AppConsts.DefaultAreaName;
+                    controller.RouteValues["area"] = DynamicApplicationConsts.DefaultAreaName;
                 }
             }
 
@@ -151,7 +151,7 @@ namespace ViazyNetCore.DI
 
         private bool CanUseFormBodyBinding(ActionModel action, ParameterModel parameter)
         {
-            if (AppConsts.FormBodyBindingIgnoredTypes.Any(t => t.IsAssignableFrom(parameter.ParameterInfo.ParameterType)))
+            if (DynamicApplicationConsts.FormBodyBindingIgnoredTypes.Any(t => t.IsAssignableFrom(parameter.ParameterInfo.ParameterType)))
             {
                 return false;
             }
@@ -322,7 +322,7 @@ namespace ViazyNetCore.DI
         private static string GetRestFulActionName(string actionName)
         {
             // custom process action name
-            var appConstsActionName = AppConsts.GetRestFulActionName?.Invoke(actionName);
+            var appConstsActionName = DynamicApplicationConsts.GetRestFulActionName?.Invoke(actionName);
             if (appConstsActionName != null)
             {
                 return appConstsActionName;
@@ -331,11 +331,11 @@ namespace ViazyNetCore.DI
             // default process action name.
 
             // Remove Postfix
-            actionName = actionName.RemovePostFix(AppConsts.ActionPostfixes.ToArray());
+            actionName = actionName.RemovePostFix(DynamicApplicationConsts.ActionPostfixes.ToArray());
 
             // Remove Prefix
             var verbKey = actionName.GetPascalOrCamelCaseFirstWord().ToLower();
-            if (AppConsts.HttpVerbs.ContainsKey(verbKey))
+            if (DynamicApplicationConsts.HttpVerbs.ContainsKey(verbKey))
             {
                 if (actionName.Length == verbKey.Length)
                 {
@@ -355,7 +355,7 @@ namespace ViazyNetCore.DI
         private static string GetRestFulControllerName(string controllerName)
         {
             // custom process action name
-            var appConstsControllerName = AppConsts.GetRestFulControllerName?.Invoke(controllerName);
+            var appConstsControllerName = DynamicApplicationConsts.GetRestFulControllerName?.Invoke(controllerName);
             if (appConstsControllerName != null)
             {
                 return appConstsControllerName;
@@ -381,7 +381,7 @@ namespace ViazyNetCore.DI
 
         private static string GetHttpVerb(ActionModel action)
         {
-            var getValueSuccess = AppConsts.AssemblyDynamicApiOptions
+            var getValueSuccess = DynamicApplicationConsts.AssemblyDynamicApiOptions
                 .TryGetValue(action.Controller.ControllerType.Assembly, out DynamicAssemblyControllerOptions? assemblyDynamicApiOptions);
             if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicApiOptions?.HttpVerb))
             {
@@ -391,7 +391,7 @@ namespace ViazyNetCore.DI
 
             var verbKey = action.ActionName.GetPascalOrCamelCaseFirstWord().ToLower();
 
-            var verb = AppConsts.HttpVerbs.ContainsKey(verbKey) ? AppConsts.HttpVerbs[verbKey] : AppConsts.DefaultHttpVerb;
+            var verb = DynamicApplicationConsts.HttpVerbs.ContainsKey(verbKey) ? DynamicApplicationConsts.HttpVerbs[verbKey] : DynamicApplicationConsts.DefaultHttpVerb;
             return verb;
         }
 

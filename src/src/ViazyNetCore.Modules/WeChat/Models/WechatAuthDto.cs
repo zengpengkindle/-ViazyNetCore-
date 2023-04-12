@@ -8,10 +8,16 @@ namespace ViazyNetCore.Modules.Models
 {
     public class WechatAuthDto
     {
-        public long MemberId { get; set; }
+        public string MemberId { get; set; }
         public bool GetUserProfile { get; set; }
 
         public string OpenId { get; set; }
+
+        /// <summary>
+        /// 1:注册 2:登录
+        /// </summary>
+        public int OpType { get; set; }
+
         /// <summary>
         /// 是否绑定了手机
         /// </summary>

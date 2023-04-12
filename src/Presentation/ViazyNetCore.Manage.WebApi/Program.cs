@@ -10,7 +10,7 @@ using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.DI;
-using ViazyNetCore.Modules.ShopMall;
+using ViazyNetCore.Modules.Internal;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);

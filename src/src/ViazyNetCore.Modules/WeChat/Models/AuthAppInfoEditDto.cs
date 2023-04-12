@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Model
+namespace ViazyNetCore.Modules.Models
 {
-    public class MemberThridAccount: EntityBase<long>
+    public class AuthAppInfoEditDto
     {
         public string UnionId { get; set; }
 
-        public long UserId { get; set; }
+        public string AppId { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        public string OpenId { get; set; }
     }
 }

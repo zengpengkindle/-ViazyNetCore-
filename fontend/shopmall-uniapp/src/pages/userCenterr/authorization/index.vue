@@ -24,10 +24,6 @@
     <view class="phone-login" @click="toPhoneLogin"> 手机号验证登录 </view>
 
     <view class="footer-wrapper" @click="checked = !checked">
-      <image
-        :src="checked ? iconMap.checkedCircle : iconMap.uncheckedCircle"
-        class="check-icon"
-      />
       <view class="agreement-text">
         若账号未注册，登录即完成注册并同意猿推推用户<text
           class="protocol"
@@ -43,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { wxBind, wxCode } from "@/apis/login";
+import WechatApi from "@/apis/wechat";
 import { useStorage, useToken } from "@/hooks";
 import { AGREEMENT_CHECK_KEY, asyncLogin } from "@/utils";
 import { useUserStore } from "@/store/user";
@@ -76,16 +72,18 @@ const getPhoneNumber = async (e: any) => {
   try {
     uni.showLoading({ title: "正在登录", mask: true });
     const loginRes = await asyncLogin();
-    let res = await wxCode({ code: loginRes.code });
+    let res = await WechatApi.getJscode({ code: loginRes.code });
     user.setLoginInfo(res);
-    if (!res.is_bind_mobile) {
-      res = await wxBind({
-        auth_code: res.auth_code,
+    if (!res.isBindMobile) {
+      res = await WechatApi.bindmobile({
+        authCode: res.authCode,
         encryptedData: e.detail.encryptedData,
-        iv: e.detail.iv
+        iv: e.detail.iv,
+        mobile: "",
+        smsCode: ""
       });
     }
-    setToken(res.token.access_token);
+    setToken(res.token.accessToken);
 
     console.log(res);
     if (res.get_user_profile) {
@@ -145,7 +143,7 @@ const toPrivateProtocol = () => {
     height: 104rpx;
     border-radius: 8rpx;
     color: #fff;
-    background-color: #de3f4f;
+    background-color: $u-type-primary;
     border: none;
     outline: none;
     font-size: 32rpx;

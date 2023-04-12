@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.DI
 {
-    public static class AppConsts
+    public static class DynamicApplicationConsts
     {
         public static string DefaultHttpVerb { get; set; }
 
@@ -29,7 +29,7 @@ namespace ViazyNetCore.DI
 
         public static Dictionary<Assembly, DynamicAssemblyControllerOptions> AssemblyDynamicApiOptions { get; set; }
 
-        static AppConsts()
+        static DynamicApplicationConsts()
         {
             HttpVerbs = new Dictionary<string, string>()
             {
