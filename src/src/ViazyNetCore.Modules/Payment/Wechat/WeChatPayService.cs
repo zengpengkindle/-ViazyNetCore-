@@ -69,14 +69,14 @@ namespace ViazyNetCore.Modules.Payment
                 //{
                 //    throw new ApiException("账户关联微信用户信息获取失败");
                 //}
-                var userWechatInfo = _wechatAuthService.GetWechatInfoByMemberId(userId);
+                var userWechatInfo = await _wechatAuthService.GetWechatInfoByMemberId(userId);
                 //var user = await _userWeChatInfoServices.QueryByClauseAsync(p => p.id == userAccount.userWx);
-                //if (user == null)
-                //{
-                //    throw new ApiException("微信用户信息获取失败");
-                //}
+                if (userWechatInfo == null)
+                {
+                    throw new ApiException("账户关联微信用户信息获取失败");
+                }
 
-                //openId = user.openid;
+                openId = userWechatInfo.OpenId;
             }
 
             var request = new WeChatPayUnifiedOrderRequest

@@ -319,7 +319,7 @@ const change = (e: any) => {
 .goodsBox {
   color: #333333 !important;
   padding: 10rpx 10rpx 0;
-  background-color: #f3f3f3;
+  background-color: #f8f8f8;
   .good_box {
     border-radius: 8px;
     background-color: #ffffff;

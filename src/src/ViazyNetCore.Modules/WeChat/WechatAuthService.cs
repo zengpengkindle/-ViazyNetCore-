@@ -207,5 +207,12 @@ namespace ViazyNetCore.Modules
             var authCodeKey = GetWxAuthCodeCacheKey(authCode);
             return Task.FromResult(this._cacheService.Get<WechatAuthUpdateDto>(authCodeKey));
         }
+
+        public async Task<ThirdAuthAppInfo> GetWechatInfoByMemberId(string userId)
+        {
+            return await this._thirdAuthAppInfoRepository
+                 .Where(w => w.Type == UserAccountTypes.WxApp && w.AppId == userId)
+                 .FirstAsync();
+        }
     }
 }

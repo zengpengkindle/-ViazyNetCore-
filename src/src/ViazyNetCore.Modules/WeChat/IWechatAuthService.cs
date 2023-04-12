@@ -16,5 +16,6 @@ namespace ViazyNetCore.Modules
         Task<WechatAuthDto> Auth(WechatAuthUpdateDto updateDto);
         Task<WechatAuthDto> BindMobile(BindMobileDto bindMobileDto);
         Task<WechatAuthUpdateDto?> GetWechatAuthCodeInfo(string authCode);
+        Task<ThirdAuthAppInfo> GetWechatInfoByMemberId(string userId);
     }
 }
