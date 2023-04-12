@@ -19,14 +19,18 @@ namespace ViazyNetCore.Modules.Payment
     {
         private readonly IWeChatPayClient _client;
         private readonly IMemberService _memberService;
+        private readonly IWechatAuthService _wechatAuthService;
         private readonly IOptions<WeChatPayOptions> _optionsAccessor;
 
-        public WeChatPayService(IWeChatPayClient client, IMemberService memberService
+        public WeChatPayService(IWeChatPayClient client
+            , IMemberService memberService
+            , IWechatAuthService wechatAuthService
             , IOptions<WeChatPayOptions> optionsAccessor
             )
         {
             this._client = client;
             this._memberService = memberService;
+            this._wechatAuthService = wechatAuthService;
             this._optionsAccessor = optionsAccessor;
         }
 
@@ -64,7 +68,7 @@ namespace ViazyNetCore.Modules.Payment
                 //{
                 //    throw new ApiException("账户关联微信用户信息获取失败");
                 //}
-
+                var userWechatInfo = _wechatAuthService.GetWechatInfoByMemberId(userId);
                 //var user = await _userWeChatInfoServices.QueryByClauseAsync(p => p.id == userAccount.userWx);
                 //if (user == null)
                 //{
