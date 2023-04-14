@@ -1,4 +1,5 @@
-import { ref } from "vue";
+import type { BackGround } from "@/utils/themes";
+import { ref, type Ref } from "vue";
 
 export type BoundingRect = {
   width: number;
@@ -17,10 +18,21 @@ const boundingRect = ref<BoundingRect>({
   top: 0,
   width: 0
 });
+export interface HeaderStyle {
+  background?: BackGround;
+  titleColor?: string;
+}
 
+const customHeaderStyle: Ref<HeaderStyle> = ref({
+  background: {
+    backgroundImage: "linear-gradient(90deg, #007aff, #005acf)"
+  },
+  titleColor: "#ffffff"
+});
 export function useHeader() {
   return {
-    boundingRect
+    boundingRect,
+    customHeaderStyle
   };
 }
 export function GetRect(

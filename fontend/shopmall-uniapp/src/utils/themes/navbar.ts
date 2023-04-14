@@ -9,7 +9,7 @@ export const mainNavBar: MainNavBar = {
     // backgroundSize: 'cover',
 
     // 渐变色
-    backgroundImage: "linear-gradient(45deg, #007aff, #005acf)"
+    backgroundImage: "linear-gradient(90deg, #007aff, #005acf)"
   },
   //通用头部文字颜色
   titleColor: "#ffffff",
@@ -21,7 +21,7 @@ export interface MainNavBar {
   titleColor?: string;
   backIconColor?: string;
 }
-interface BackGround {
+export interface BackGround {
   backgroundColor?: string;
   background?: string;
   backgroundSize?: string;
