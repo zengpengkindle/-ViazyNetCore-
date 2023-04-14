@@ -1,9 +1,7 @@
 import { nextTick, Ref, ref } from "vue";
 import PageApi from "@/api/shopmall/shoppage";
-import ModelTitle from "@/assets/images/model-title.png";
 import EmptyBanner from "@/assets/images/empty-banner.png";
 import Empty from "@/assets/images/empty.png";
-import IcCar from "@/assets/images/ic-car.png";
 import { ElMessageBox } from "element-plus";
 
 import ImageFourColumn from "@/assets/images/image-four-column.png";
@@ -534,10 +532,10 @@ export function useWidget() {
       setSelectWg(pageData.value[index + 1]);
     });
   }
-  function handleDragRemove(evt: any) {
+  function handleDragRemove(_evt: any) {
     setSelectWg(null);
   }
-  function datadragEnd(evt: any) {}
+  function datadragEnd(_evt: any) {}
   const selectWidget = (type: string) => {
     for (const key in allWidget) {
       for (let index = 0; index < allWidget[key].length; index++) {

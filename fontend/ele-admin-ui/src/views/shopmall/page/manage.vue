@@ -4,6 +4,7 @@ import EmptyBanner from "@/assets/images/empty-banner.png";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import SelectLink from "./components/SelectLink.vue";
 import draggable from "vuedraggable";
+import { CloseBold } from "@element-plus/icons-vue";
 
 import { allWidget, useWidget } from "./components/widget";
 
@@ -123,7 +124,7 @@ const tools: Array<ToolGroup> = [
           <el-button type="primary" @click="SavePageDesign">保存页面</el-button>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="8">
         <div class="center-container">
           <div class="model-title">
             <img :src="ModelTitle" />
@@ -474,13 +475,17 @@ const tools: Array<ToolGroup> = [
                     />
                   </div>
                 </div>
-                <div
-                  @click.stop="handleWidgetDelete(index)"
-                  class="btn-delete"
+                <el-button-group
                   v-if="selectWg.key === element.key"
+                  class="ml-4 lay-tools"
+                  size="small"
                 >
-                  删除
-                </div>
+                  <el-button
+                    type="primary"
+                    :icon="CloseBold"
+                    @click.stop="handleWidgetDelete(index)"
+                  />
+                </el-button-group>
                 <!-- <div
                   @click.stop="handleWidgetClone(element)"
                   class="btn-clone"
@@ -493,7 +498,7 @@ const tools: Array<ToolGroup> = [
           </draggable>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="8">
         <el-card v-if="selectWg && Object.keys(selectWg).length > 0">
           <div class="custom-item main-body" id="editbody">
             <el-form ref="form" label-width="100px" label-position="left">
@@ -1291,6 +1296,9 @@ const tools: Array<ToolGroup> = [
   </div>
 </template>
 <style scoped lang="scss">
+.main {
+  min-width: 1200px;
+}
 .component-item {
   width: 100%;
   padding: 3px 0;
@@ -1322,6 +1330,7 @@ const tools: Array<ToolGroup> = [
 
 .center-container {
   width: 375px;
+  margin: 0 auto;
   height: 806px;
   border: 1px solid #e9e9e9;
   box-shadow: 0 3px 10px #dcdcdc;
@@ -1336,6 +1345,7 @@ const tools: Array<ToolGroup> = [
   .layout-list {
     height: 710px;
     overflow-y: scroll;
+    overflow-x: visible;
 
     .layout-main {
       position: relative;
@@ -1350,7 +1360,19 @@ const tools: Array<ToolGroup> = [
         position: relative;
       }
 
-      &.active .drag:before,
+      &.active .drag:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 2px;
+        border-style: solid;
+        border-color: var(--el-color-primary);
+        cursor: move;
+        z-index: 1001;
+      }
       &:hover .drag:before {
         content: "";
         position: absolute;
@@ -1358,12 +1380,10 @@ const tools: Array<ToolGroup> = [
         left: 0;
         right: 0;
         bottom: 0;
-        border: 0px;
+        border: 2px;
+        border-color: var(--el-color-primary-light-5);
         border-style: solid;
-        border-color: rgba(50, 108, 235, 0.6);
-        box-shadow: rgba(50, 108, 235, 0.6) 0px 0px 12px 6px;
-        cursor: move;
-        z-index: 1001;
+        box-shadow: #dcdcdc 0 0 6px 6px;
       }
 
       .lay-imgSlide {
@@ -1669,7 +1689,13 @@ const tools: Array<ToolGroup> = [
     border: 1px solid #ff7159;
   }
 }
+.center-container {
+  overflow: visible;
+}
 .layout-list .layout-main {
+  overflow: visible;
+  width: 355px;
+  position: relative;
   .lay-navBar {
     &.row3 .item {
       width: 33.3333%;
@@ -1692,6 +1718,7 @@ const tools: Array<ToolGroup> = [
     .item-image img {
       height: 44px;
       width: 44px;
+      margin: 0 auto;
       object-fit: cover;
     }
     .item-text {
@@ -1704,6 +1731,27 @@ const tools: Array<ToolGroup> = [
       text-overflow: ellipsis;
       overflow: hidden;
     }
+  }
+  .lay-tools {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    border-bottom-left-radius: 3px;
+    z-index: 1300;
+    overflow: visible;
+    color: #fff;
+  }
+  .btn-delete {
+    position: relative;
+    height: 18px;
+    line-height: 18px;
+    z-index: 90;
+    width: 36px;
+    text-align: center;
+    font-size: 10px;
+    color: #fff;
+    // background: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
   }
 }
 </style>

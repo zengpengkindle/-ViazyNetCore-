@@ -36,35 +36,81 @@ const {
     <div>
       <PureTableBar title="商品类别管理" @refresh="onSearch">
         <template #buttons>
-          <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="handleUpdate(null)">
+          <el-button
+            type="primary"
+            :icon="useRenderIcon(AddFill)"
+            @click="handleUpdate(null)"
+          >
             新增
           </el-button>
         </template>
         <template v-slot="{ size, checkList }">
-          <pure-table align-whole="center" table-layout="auto" :loading="loading" :size="size" :data="dataList"
-            :columns="columns" :checkList="checkList" :pagination="pagination"
-            :paginationSmall="size === 'small' ? true : false" :header-cell-style="{
+          <pure-table
+            align-whole="center"
+            table-layout="auto"
+            :loading="loading"
+            :size="size"
+            :data="dataList"
+            :columns="columns"
+            :checkList="checkList"
+            :pagination="pagination"
+            :paginationSmall="size === 'small' ? true : false"
+            :header-cell-style="{
               background: 'var(--el-table-row-hover-bg-color)',
               color: 'var(--el-text-color-primary)'
-            }" @selection-change="handleSelectionChange" @size-change="handleSizeChange"
-            @current-change="handleCurrentChange">
+            }"
+            @selection-change="handleSelectionChange"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          >
             <template #operation="{ row }">
-              <el-button class="reset-margin" link type="primary" :size="size" @click="handleUpdate(row)"
-                :icon="useRenderIcon(EditPen)">
+              <el-button
+                class="reset-margin"
+                link
+                type="primary"
+                :size="size"
+                @click="handleUpdate(row)"
+                :icon="useRenderIcon(EditPen)"
+              >
                 修改
               </el-button>
-              <el-button class="buttonClass" link type="primary" :size="size"
-                @click="router.push({ path: '/shopmall/page/manage', query: { id: row.id } })">
+              <el-button
+                class="buttonClass"
+                link
+                type="primary"
+                :size="size"
+                @click="
+                  router.push({
+                    path: '/shopmall/page/manage',
+                    query: { id: row.id }
+                  })
+                "
+              >
                 版面设计
               </el-button>
               <el-dropdown>
-                <el-button class="ml-3 mt-[2px]" link type="primary" :size="size" :icon="useRenderIcon(More)" />
+                <el-button
+                  class="ml-3 mt-[2px]"
+                  link
+                  type="primary"
+                  :size="size"
+                  :icon="useRenderIcon(More)"
+                />
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item>
-                      <el-popconfirm title="是否确认删除?" @confirm="handleDelete(row)">
+                      <el-popconfirm
+                        title="是否确认删除?"
+                        @confirm="handleDelete(row)"
+                      >
                         <template #reference>
-                          <el-button class="reset-margin" link type="info" :size="size" :icon="useRenderIcon(Delete)">
+                          <el-button
+                            class="reset-margin"
+                            link
+                            type="info"
+                            :size="size"
+                            :icon="useRenderIcon(Delete)"
+                          >
                             删除
                           </el-button>
                         </template>
@@ -78,7 +124,11 @@ const {
         </template>
       </PureTableBar>
     </div>
-    <edit v-model="editDrawer.show" :id="editDrawer.editId" @refresh="onSearch" />
+    <edit
+      v-model="editDrawer.show"
+      :id="editDrawer.editId"
+      @refresh="onSearch"
+    />
   </div>
 </template>
 

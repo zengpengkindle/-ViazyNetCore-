@@ -60,7 +60,7 @@ const openFilter = () => {};
   display: flex;
   justify-content: space-between;
   position: relative;
-  background: #f8f8f8;
+  background: #ffffff;
   &::after {
     content: "";
     height: 1rpx;

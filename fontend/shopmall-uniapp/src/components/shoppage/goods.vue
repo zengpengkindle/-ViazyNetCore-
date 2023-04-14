@@ -49,13 +49,14 @@
                 </view>
                 <view class="good-price">
                   <price
-                    :price="item.price || 100.01"
+                    :price="item.price"
                     symbol="¥"
                     type="lighter"
                     decimal-smaller
                   />
                   <price
-                    :price="item.mktprice || 100.01"
+                    v-if="item.mktprice > 0"
+                    :price="item.mktprice"
                     symbol="¥"
                     type="del"
                   />
@@ -324,11 +325,11 @@ const change = (e: any) => {
     border-radius: 8px;
     background-color: #ffffff;
     position: relative;
-    width: calc(100% - 6px);
+    width: calc(100% - 16px);
     overflow: hidden;
-    margin-top: 15rpx;
+    margin-top: 20rpx;
     .good_title {
-      font-size: 26rpx;
+      font-size: 24rpx;
       padding: 10rpx 15rpx 0;
       color: $u-main-color;
     }

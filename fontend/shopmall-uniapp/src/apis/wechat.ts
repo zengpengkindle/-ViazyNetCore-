@@ -45,7 +45,6 @@ export interface JsCodeReq {
  * JsCodeRes
  */
 export interface JsCodeRes {
-get_user_profile: any;
   openId: string;
   getUserProfile: boolean;
   token: JwtTokenResult;
@@ -57,7 +56,7 @@ get_user_profile: any;
  * JwtTokenResult
  */
 export interface JwtTokenResult {
-access_token(access_token: any): unknown;
+  access_token(access_token: any): unknown;
   /** 获取到的凭证 */ accessToken: string;
   /** 凭证有效时间，单位：秒 */ expiresIn: number;
 }

@@ -55,7 +55,7 @@
       "style": {
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "搜索",
-        "navigationBarBackgroundColor": "#f8f8f8"
+        "navigationBarBackgroundColor": "#ffffff"
       }
     },
     // 订单
@@ -109,7 +109,7 @@
   },
   "tabBar": {
     "color": "#999",
-    "selectedColor": "#333",
+    "selectedColor": "#51a0f5",
     "backgroundColor": "#fff",
     "list": [
       {

@@ -132,20 +132,4 @@ onMounted(() => {
   cursor: pointer;
   z-index: 1300;
 }
-
-.layout-list .layout-main .btn-delete {
-  position: absolute;
-  height: 18px;
-  line-height: 18px;
-  right: 2px;
-  bottom: 2px;
-  z-index: 90;
-  width: 36px;
-  text-align: center;
-  font-size: 10px;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.4);
-  cursor: pointer;
-  z-index: 1300;
-}
 </style>

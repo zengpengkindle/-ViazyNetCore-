@@ -1,26 +1,22 @@
 import dayjs from "dayjs";
 import { message } from "@/utils/message";
-import { Pagination } from "@/api/model";
-import ShopPageApi, { ShopPage,ShopPageQuery } from "@/api/shopmall/shoppage";
+import ShopPageApi, { ShopPage, ShopPageQuery } from "@/api/shopmall/shoppage";
 import { ElMessageBox } from "element-plus";
 import { type PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted, type Ref } from "vue";
 import { nextTick } from "process";
-import { ComStatus } from "@/api/model";
-import { useRouter } from "vue-router";
 
 export function useProductOuter() {
   const form: ShopPageQuery = reactive({
-    code:null,
-    name:null,
-    layout:null,
-    type:null,
+    code: null,
+    name: null,
+    layout: null,
+    type: null,
     sort: 0,
     sortField: null,
     page: 1,
     limit: 10
   });
-  const router = useRouter();
   const dataList: Ref<Array<ShopPage>> = ref([]);
   const loading = ref(true);
   const switchLoadMap = ref({});
@@ -96,7 +92,7 @@ export function useProductOuter() {
     show: false,
     editId: 0
   });
-  function onChange({ row, index }) {
+  function _onChange({ row, index }) {
     ElMessageBox.confirm(
       `确认要<strong>${
         row.status === 0 ? "停用" : "启用"
@@ -141,7 +137,7 @@ export function useProductOuter() {
   function handleUpdate(row?: ShopPage) {
     (editDrawer.show = true), (editDrawer.editId = row?.id);
   }
-  async function handleDelete(row:ShopPage) {
+  async function handleDelete(row: ShopPage) {
     if (row?.id) {
       await ShopPageApi.deletePage(row.id);
       message(`删除成功`, { type: "success" });

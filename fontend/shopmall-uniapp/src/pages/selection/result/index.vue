@@ -1,12 +1,14 @@
 <template>
-  <u-search
-    :placeholder="keyword || '请输入商品信息'"
-    :animation="false"
-    :show-action="false"
-    disabled
-    @click="goSearch"
-  />
-  <Filter />
+  <u-sticky>
+    <u-search
+      :placeholder="keyword || '请输入商品信息'"
+      :animation="false"
+      :show-action="false"
+      disabled
+      @click="goSearch"
+    />
+    <Filter />
+  </u-sticky>
   <view class="good-box">
     <product-list
       ref="productListRef"
@@ -70,7 +72,7 @@ const getProductList = async (reset = false) => {
   background-color: #f2f2f2;
 }
 :deep(.u-search) {
-  background-color: #f8f8f8;
+  background-color: #ffffff;
   padding: 4rpx 20rpx;
   box-sizing: border-box;
 }

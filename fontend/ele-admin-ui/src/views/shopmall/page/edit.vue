@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { ref, Ref, reactive, watch } from "vue";
-import ShopPageApi, { ShopPageEditModel, PageLayout, PageType } from "@/api/shopmall/shoppage";
+import ShopPageApi, {
+  ShopPageEditModel,
+  PageLayout,
+  PageType
+} from "@/api/shopmall/shoppage";
 import { ComStatus } from "@/api/model";
 import { FormInstance, FormRules, SingleOrRange } from "element-plus";
 import { message } from "@/utils/message";
@@ -31,7 +35,8 @@ const rules = reactive<FormRules>({
   ],
   description: [
     { required: false, message: "可编辑区域名称" },
-    { min: 0, max: 500, message: "长度在 1 到 500 个字符" }]
+    { min: 0, max: 500, message: "长度在 1 到 500 个字符" }
+  ]
 });
 const defaultItem: ShopPageEditModel = {
   code: "",
@@ -62,7 +67,7 @@ const submit = (formEl: FormInstance | undefined) => {
       await ShopPageApi.updatePage(item.value);
       message("提交成功", { type: "success" });
       emit("refresh");
-      handleClose(() => { });
+      handleClose(() => {});
     } else {
       console.log("error submit!");
       return false;
@@ -74,12 +79,22 @@ const handleClose = (done: () => void) => {
   done();
 };
 const closeForm = () => {
-  handleClose(() => { });
+  handleClose(() => {});
 };
 </script>
 <template title="货币类型管理">
-  <el-drawer v-model="visible" size="35%" :title="id ? '编辑货币类型' : '新增货币类型'" :before-close="handleClose">
-    <el-form ref="formRef" :model="item" :rules="rules" :validate-on-rule-change="false">
+  <el-drawer
+    v-model="visible"
+    size="35%"
+    :title="id ? '编辑货币类型' : '新增货币类型'"
+    :before-close="handleClose"
+  >
+    <el-form
+      ref="formRef"
+      :model="item"
+      :rules="rules"
+      :validate-on-rule-change="false"
+    >
       <el-form-item label="区域编码" prop="code">
         <el-input v-model="item.code" :disabled="isEdit" />
       </el-form-item>
@@ -92,8 +107,8 @@ const closeForm = () => {
       </el-form-item>
       <el-form-item label="布局样式" prop="layout">
         <el-select v-model="item.layout">
-          <el-option :value="PageLayout.Mobile" label="手机端"/>
-          <el-option :value="PageLayout.Pc" label="PC端"/>
+          <el-option :value="PageLayout.Mobile" label="手机端" />
+          <el-option :value="PageLayout.Pc" label="PC端" />
         </el-select>
       </el-form-item>
       <el-form-item label="布局类型" prop="type">
