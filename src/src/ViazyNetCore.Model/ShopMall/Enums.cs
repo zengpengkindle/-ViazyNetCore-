@@ -337,11 +337,14 @@ public enum PayMediaType
     /// 微信公众号
     /// </summary>
     WeiXinMP = 2,
-
+    /// <summary>
+    /// 微信小程序
+    /// </summary>
+    Wechat = 3,
     /// <summary>
     /// 手机APP端
     /// </summary>
-    APP = 3
+    APP = 4
 }
 /// <summary>
 /// 定义支付结果内容的类型。

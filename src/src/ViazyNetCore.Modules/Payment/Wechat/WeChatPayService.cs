@@ -40,7 +40,7 @@ namespace ViazyNetCore.Modules.Payment
         /// </summary>
         /// <param name="entity">实体数据</param>
         /// <returns></returns>
-        public async Task<object> PubPay(BillPayments entity, string userId)
+        public async Task<object> CreatePay(BillPayments entity, string userId)
         {
             var weChatPayUrl = AppSettingsConstVars.PayCallBackWeChatPayUrl;
             if (string.IsNullOrEmpty(weChatPayUrl))
@@ -111,7 +111,7 @@ namespace ViazyNetCore.Modules.Payment
         }
 
         /// <summary>
-        ///     用户退款
+        /// 用户退款
         /// </summary>
         /// <param name="refundInfo">退款单数据</param>
         /// <param name="paymentInfo">支付单数据</param>

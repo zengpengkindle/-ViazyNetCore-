@@ -39,16 +39,11 @@ namespace ViazyNetCore.Modules.ShopMall
             await this._engine.Insert<MemberPayment>().AppendData(memberPayment).ExecuteAffrowsAsync();
             if (this._paymentHandlers != null)
             {
-                switch (buyway)
+                var handler = this._paymentHandlers.Where(p => p.Buyway == buyway).FirstOrDefault();
+                if (handler != null)
                 {
-                    case Buyway.AliPay:
-                        var handler = this._paymentHandlers.Where(p => p.Buyway == Buyway.AliPay).FirstOrDefault();
-                        var aliPrePayResult = await handler.CreatePayment(payMediaType, tradeModel);
-                        return aliPrePayResult;
-                    case Buyway.WxPay:
-                        break;
-                    default:
-                        break;
+                    var prePayResult = await handler.CreatePayment(payMediaType, tradeModel);
+                    return prePayResult;
                 }
             }
             throw new NotImplementedException("不支持该类型支付");

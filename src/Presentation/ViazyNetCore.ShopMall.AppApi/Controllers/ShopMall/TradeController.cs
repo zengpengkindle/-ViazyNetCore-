@@ -100,5 +100,12 @@ namespace ViazyNetCore.ShopMall.AppApi
             var result = await this._tradeService.CreatePayTradeSetAsync(tradeIds, Buyway.AliPay, PayMediaType.WAP, "http://wlhsa.ngrok.xiaomiqiu.cn/app/shop__trade__list.html");
             return result;
         }
+
+        [HttpPost]
+        public async Task<PayCreateValue> CreateTradeWechatPay(string[] tradeIds)
+        {
+            var result = await this._tradeService.CreatePayTradeSetAsync(tradeIds, Buyway.WxPay, PayMediaType.WeiXinMP, "http://wlhsa.ngrok.xiaomiqiu.cn/app/shop__trade__list.html");
+            return result;
+        }
     }
 }
