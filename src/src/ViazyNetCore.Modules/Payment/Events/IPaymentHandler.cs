@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.Modules.ShopMall;
 
-namespace ViazyNetCore.Modules.ShopMall
+namespace ViazyNetCore.Modules.Payment.Events
 {
     public interface IPaymentHandler
     {
         Buyway Buyway { get; }
-        Task<PayCreateValue> CreatePayment(PayMediaType payMediaType,TradeViewModel trade);
+        Task<PayCreateValue> CreatePayment(PayMediaType payMediaType, TradeViewModel trade);
     }
 
 

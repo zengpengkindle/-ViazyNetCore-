@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.Modules.Payment.Events;
+using ViazyNetCore.Modules.ShopMall;
 
-namespace ViazyNetCore.Modules.ShopMall
+namespace ViazyNetCore.Modules.Payment.Alipay.Events
 {
     public class AlipaymentHandler : IPaymentHandler
     {
@@ -56,7 +58,7 @@ namespace ViazyNetCore.Modules.ShopMall
             var req = new AlipayTradePagePayRequest();
             req.SetBizModel(model);
 
-            var notifyUrl = GA.UrlCombine(this._alipayOptions.Host,this._alipayOptions.NotifyUrl, this._alipayOptions.PageNotifyRoute);
+            var notifyUrl = GA.UrlCombine(this._alipayOptions.Host, this._alipayOptions.NotifyUrl, this._alipayOptions.PageNotifyRoute);
 
             req.SetNotifyUrl(notifyUrl);
             req.SetReturnUrl(viewModel.ReturnUrl);

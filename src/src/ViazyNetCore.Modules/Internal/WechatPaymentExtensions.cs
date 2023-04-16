@@ -3,15 +3,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
+using ViazyNetCore.Modules.Payment.Alipay.Events;
+using ViazyNetCore.Modules.Payment.Events;
 using ViazyNetCore.Modules.ShopMall;
 
 namespace ViazyNetCore.Modules.Internal
 {
-    public static class PaymentExtensions
+    public static class WechatPaymentExtensions
     {
 
-        public static IServiceCollection AddAlipayMiddleware(this IServiceCollection services
+        public static IServiceCollection AddWxpayMiddleware(this IServiceCollection services
                 , IConfiguration alipayOptions
                 , Action<AlipayMiddlewareOptions> configureOptions = null)
         {
@@ -33,7 +34,7 @@ namespace ViazyNetCore.Modules.Internal
             services.Configure(configureOptions);
             return services;
         }
-        public static IServiceCollection AddAlipayMiddleware(this IServiceCollection services
+        public static IServiceCollection AddWxpayMiddleware(this IServiceCollection services
             , Action<AlipayOptions> setupAction
             , Action<AlipayMiddlewareOptions> configureOptions = null)
         {
@@ -56,7 +57,7 @@ namespace ViazyNetCore.Modules.Internal
             return services;
         }
 
-        public static void UseAlipayMiddleware(this IApplicationBuilder appBuilder)
+        public static void UseWxpayMiddleware(this IApplicationBuilder appBuilder)
         {
             appBuilder.UseMiddleware<AlipayNotifyMiddleware>();
         }

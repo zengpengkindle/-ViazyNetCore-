@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Modules.ShopMall
+namespace ViazyNetCore.Modules.Payment.Events
 {
     public interface IPayNotifyHandler
     {

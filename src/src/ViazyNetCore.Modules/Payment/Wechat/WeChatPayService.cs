@@ -36,7 +36,7 @@ namespace ViazyNetCore.Modules.Payment
         }
 
         /// <summary>
-        ///     发起支付
+        /// 发起支付
         /// </summary>
         /// <param name="entity">实体数据</param>
         /// <returns></returns>

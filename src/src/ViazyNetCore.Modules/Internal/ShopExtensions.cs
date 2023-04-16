@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ViazyNetCore.Modules.Payment.Events;
 using ViazyNetCore.Modules.ShopMall;
 
 namespace ViazyNetCore.Modules.Internal

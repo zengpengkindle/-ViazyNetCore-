@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ViazyNetCore.Modules.Payment.Events;
 
 namespace ViazyNetCore.Modules.ShopMall
 {

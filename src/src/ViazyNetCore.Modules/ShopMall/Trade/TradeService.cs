@@ -6,6 +6,7 @@ using System.Providers;
 using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Modules.Internal;
+using ViazyNetCore.Modules.Payment.Events;
 
 namespace ViazyNetCore.Modules.ShopMall
 {
