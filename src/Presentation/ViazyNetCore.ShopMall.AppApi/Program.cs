@@ -33,7 +33,7 @@ var ServiceAssemblies = new Assembly?[]
     RuntimeHelper.GetAssembly("ViazyNetCore.Modules")
 };
 var autoMapperIoc = new Assembly?[] {
-        RuntimeHelper.GetAssembly("ViazyNetCore.Modules"),
+        RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules"),
         RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.AppApi")
     };
 builder.Services.AddJwtAuthentication(option =>

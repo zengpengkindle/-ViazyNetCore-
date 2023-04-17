@@ -1343,13 +1343,21 @@ const tools: Array<ToolGroup> = [
   }
 
   .layout-list {
-    height: 710px;
-    overflow-y: scroll;
+    min-height: 710px;
     overflow-x: visible;
-
+    padding-bottom: 20px;
+    box-sizing: border-box;
     .layout-main {
       position: relative;
-
+      overflow-x: visible;
+      &:hover {
+        -webkit-transform: scale(1.01);
+        transform: scale(1.01);
+        -webkit-box-shadow: 0 0 10px 0 rgb(24 144 255 / 30%);
+        box-shadow: 0 0 10px 0 rgb(24 144 255 / 30%);
+        -webkit-transition: all 0.2s;
+        transition: all 0.2s;
+      }
       .lay-item {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -1370,20 +1378,9 @@ const tools: Array<ToolGroup> = [
         border: 2px;
         border-style: solid;
         border-color: var(--el-color-primary);
+        box-shadow: 0 0 10px 0 rgb(24 144 255 / 30%);
         cursor: move;
         z-index: 1001;
-      }
-      &:hover .drag:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border: 2px;
-        border-color: var(--el-color-primary-light-5);
-        border-style: solid;
-        box-shadow: #dcdcdc 0 0 6px 6px;
       }
 
       .lay-imgSlide {
@@ -1527,6 +1524,7 @@ const tools: Array<ToolGroup> = [
 }
 .lay-goods.list .goods-item {
   float: left;
+  box-sizing: border-box;
 }
 .lay-goods.slide {
   overflow-x: hidden;
@@ -1538,7 +1536,7 @@ const tools: Array<ToolGroup> = [
   display: inline-block;
 }
 .lay-goods .goods-item.column2 {
-  width: 50%;
+  width: 49%;
   padding: 3px;
   float: left;
 }
@@ -1694,7 +1692,6 @@ const tools: Array<ToolGroup> = [
 }
 .layout-list .layout-main {
   overflow: visible;
-  width: 355px;
   position: relative;
   .lay-navBar {
     &.row3 .item {

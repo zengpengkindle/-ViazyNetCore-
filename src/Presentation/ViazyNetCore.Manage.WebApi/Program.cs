@@ -29,12 +29,12 @@ builder.WebHost.ConfigureLogging(logging =>
 // Add services to the container.
 var ServiceAssemblies = new Assembly?[]
 {
-    RuntimeHelper.GetAssembly("ViazyNetCore.Modules"),
+    RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules"),
     RuntimeHelper.GetAssembly("ViazyNetCore.Authorization")
 };
 var autoMapperIoc = new Assembly?[]
 {
-    RuntimeHelper.GetAssembly("ViazyNetCore.Modules"),
+    RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules"),
     RuntimeHelper.GetAssembly("ViazyNetCore.Manage.WebApi")
 };
 builder.Services.AddJwtAuthentication(option =>

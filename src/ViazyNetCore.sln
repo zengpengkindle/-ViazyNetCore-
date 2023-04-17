@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Caching", "Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Model", "src\ViazyNetCore.Model\ViazyNetCore.Model.csproj", "{822D24D8-BFF1-4C61-9249-EC7BACB182E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Modules", "src\ViazyNetCore.Modules\ViazyNetCore.Modules.csproj", "{28E78A94-49AF-4207-8910-3711874F745D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.ShopMall.Modules", "src\ViazyNetCore.ShopMall.Modules\ViazyNetCore.ShopMall.Modules.csproj", "{28E78A94-49AF-4207-8910-3711874F745D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Formatter.Excel", "Infrastructure\ViazyNetCore.Formatter.Excel\ViazyNetCore.Formatter.Excel.csproj", "{EBA7E6DA-4888-43B6-9B2A-F8074708344C}"
 EndProject
@@ -83,7 +83,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.ShopMall.AppAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.AttachmentProvider", "Core\ViazyNetCore.AttachmentProvider\ViazyNetCore.AttachmentProvider.csproj", "{F1C6E24E-9A07-482A-932A-D01DA2D994B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essensoft.Paylink.WeChatPay", "sdks\payment\Essensoft.Paylink.WeChatPay\Essensoft.Paylink.WeChatPay.csproj", "{31B69BF7-913C-495D-B642-4C2BD7C39E3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essensoft.Paylink.WeChatPay", "sdks\payment\Essensoft.Paylink.WeChatPay\Essensoft.Paylink.WeChatPay.csproj", "{31B69BF7-913C-495D-B642-4C2BD7C39E3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
