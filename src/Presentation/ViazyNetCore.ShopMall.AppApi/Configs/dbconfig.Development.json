@@ -1,0 +1,6 @@
+{
+  "dbConfig": {
+    "MonitorCommand": true,
+    "Curd": true
+  }
+}

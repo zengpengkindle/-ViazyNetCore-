@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using FreeSql.Aop;
-using ViazyNetCore.Annotations;
+using ViazyNetCore;
 using ViazyNetCore.Data.FreeSql;
 
 namespace FreeSql
@@ -62,14 +62,13 @@ namespace FreeSql
                     freeSqlBuilder.UseSlave(slaveList).UseSlaveWeight(slaveWeightList);
                 }
 
-
                 #region 监听所有命令
 
                 if (dbConfig.MonitorCommand)
                 {
                     freeSqlBuilder.UseMonitorCommand(cmd => { }, (cmd, traceLog) =>
                     {
-                        //Console.WriteLine($"{cmd.CommandText}\n{traceLog}{Environment.NewLine}");
+                        //Console.WriteLine($"{cmd.CommandText}{Environment.NewLine}{traceLog}{Environment.NewLine}");
                         Console.WriteLine($"{cmd.CommandText}{Environment.NewLine}");
                     });
                 }
@@ -95,7 +94,14 @@ namespace FreeSql
                 var serverTime = fsql.Ado.QuerySingle(() => DateTime.UtcNow);
                 var timeOffset = DateTime.UtcNow.Subtract(serverTime);
                 fsql.Aop.AuditValue += AopAuditValue;
-
+                if (dbConfig.UseEnumInt)
+                {
+                    fsql.Aop.ConfigEntityProperty += (s, e) =>
+                    {
+                        if (e.Property.PropertyType.IsEnum)
+                            e.ModifyResult.MapType = typeof(int);
+                    };
+                }
                 #endregion 审计数据
 
 
@@ -128,39 +134,21 @@ namespace FreeSql
         /// <param name="e"></param>
         private static void AopAuditValue(object? sender, AuditValueEventArgs e)
         {
-            switch (e.AuditValueType)
+            //雪花Id
+            if (e.AuditValueType is AuditValueType.Insert or AuditValueType.InsertOrUpdate)
             {
-                case AuditValueType.Update:
-                    if (e.AuditValueType == AuditValueType.InsertOrUpdate && e.Property.Name.ToLower() == "updatetime"
-                        && e.Property.PropertyType == typeof(long)
-                        && e.Value == default)
-                        e.Value = DateTime.Now.ToUniversalTime();
-                    break;
-                case AuditValueType.Insert:
-                    if (e.Property.GetCustomAttribute<SnowflakeAttribute>(false) != null && e.Property.PropertyType == typeof(long))
+                if (e.Property.GetCustomAttribute<SnowflakeAttribute>(false) is SnowflakeAttribute snowflakeAttribute
+            && snowflakeAttribute.Enable)
+                {
+                    if (e.Column.CsType == typeof(long) && (e.Value == null || (long)e.Value == default || (long?)e.Value == default))
                     {
-                        if (e.Value is long v)
-                        {
-                            if (v == 0)
-                            {
-                                e.Value = Snowflake.NextId();
-                            }
-                        }
+                        e.Value = Snowflake.NextId();
                     }
-                    else if (e.AuditValueType == AuditValueType.InsertOrUpdate && e.Property.Name.ToLower() == "createtime" && e.Property.PropertyType == typeof(long))
-                        e.Value = DateTime.Now.ToUniversalTime();
-                    //e.Value = SnowflakeHelper.NextId();
-                    break;
-                case AuditValueType.InsertOrUpdate:
-                    if (e.AuditValueType == AuditValueType.InsertOrUpdate && e.Property.Name.ToLower() == "updatetime"
-                        && e.Property.PropertyType == typeof(long)
-                        && e.Value == default)
-                        e.Value = DateTime.Now.ToUniversalTime();
-
-
-                    break;
-                default:
-                    break;
+                    else if (e.Column.CsType == typeof(string) && (e.Value == null || (string)e.Value == string.Empty))
+                    {
+                        e.Value = Snowflake.NextIdString();
+                    }
+                }
             }
         }
 
@@ -183,7 +171,7 @@ namespace FreeSql
         public static void SyncStructure(IFreeSql db, string? msg = null, DbConfig? dbConfig = null)
         {
             //打印结构同步脚本
-            if (dbConfig.SyncStructureSql)
+            if (dbConfig!.SyncStructureSql)
             {
                 db.Aop.SyncStructureAfter += SyncStructureAfter;
             }

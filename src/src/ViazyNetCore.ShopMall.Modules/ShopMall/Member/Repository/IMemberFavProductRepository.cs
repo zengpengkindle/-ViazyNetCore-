@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.Model.ShopMall;
 
 namespace ViazyNetCore.Modules.ShopMall.Repository
 {
     [Injection]
-    public interface IShopPageItemRepository : IBaseRepository<ShopPageItem, long>
+    public interface IMemberFavProductRepository : IBaseRepository<MemberFavProduct, long>
     {
-        Task DeleteByCode(string code);
+        Task<(long total, List<Product>)> FindAllAsync(Pagination args);
     }
 }

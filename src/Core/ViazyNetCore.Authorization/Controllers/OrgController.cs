@@ -18,28 +18,28 @@ namespace ViazyNetCore.Authorization.Controllers
 
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public Task<OrgGetOutput> GetAsync(long id)
+        public Task<OrgGetDto> GetAsync(long id)
         {
             return _orgService.GetAsync(id);
         }
 
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public Task<List<OrgListOutput>> GetListAsync(string key)
+        public Task<List<OrgListDto>> GetListAsync(string key)
         {
             return _orgService.GetListAsync(key);
         }
 
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public Task<long> AddAsync(OrgAddInput input)
+        public Task<long> AddAsync(OrgAddDto input)
         {
             return _orgService.AddAsync(input);
         }
 
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public async Task<bool> UpdateAsync(OrgUpdateInput input)
+        public async Task<bool> UpdateAsync(OrgUpdateDto input)
         {
             await _orgService.UpdateAsync(input);
             return true;

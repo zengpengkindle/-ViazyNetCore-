@@ -27,9 +27,9 @@ namespace ViazyNetCore.Authorization
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<OrgGetOutput> GetAsync(long id)
+        public async Task<OrgGetDto> GetAsync(long id)
         {
-            var result = await _orgRepository.Where(p => p.Id == id).ToOneAsync<OrgGetOutput>();
+            var result = await _orgRepository.Where(p => p.Id == id).ToOneAsync<OrgGetDto>();
             return result;
         }
 
@@ -38,13 +38,13 @@ namespace ViazyNetCore.Authorization
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task<List<OrgListOutput>> GetListAsync(string key)
+        public async Task<List<OrgListDto>> GetListAsync(string key)
         {
             var data = await _orgRepository
                 .WhereIf(key.IsNotNull(), a => a.Name.Contains(key) || a.Code.Contains(key))
                 .OrderBy(a => a.ParentId)
                 .OrderBy(a => a.Sort)
-                .ToListAsync<OrgListOutput>();
+                .ToListAsync<OrgListDto>();
 
             return data;
         }
@@ -54,7 +54,7 @@ namespace ViazyNetCore.Authorization
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<long> AddAsync(OrgAddInput input)
+        public async Task<long> AddAsync(OrgAddDto input)
         {
             if (await _orgRepository.Select.AnyAsync(a => a.ParentId == input.ParentId && a.Name == input.Name))
             {
@@ -85,7 +85,7 @@ namespace ViazyNetCore.Authorization
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(OrgUpdateInput input)
+        public async Task UpdateAsync(OrgUpdateDto input)
         {
             var entity = await _orgRepository.GetAsync(input.Id);
             if (!(entity?.Id > 0))

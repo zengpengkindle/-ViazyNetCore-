@@ -9,6 +9,7 @@ using ViazyNetCore.Modules;
 using ViazyNetCore.Caching;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.Core.System;
+using ViazyNetCore.Data.FreeSql;
 
 namespace ViazyNetCore.Authorization.Modules
 {
@@ -21,13 +22,13 @@ namespace ViazyNetCore.Authorization.Modules
         private readonly ICacheService _cacheService;
         private readonly UnitOfWorkManager _uowm;
 
-        public PermissionService(IFreeSql freeSql, IUserService userService, RoleService roleService, ICacheService cacheService, UnitOfWorkManager uowm)
+        public PermissionService(IFreeSql freeSql, IUserService userService, RoleService roleService, ICacheService cacheService, UnitOfWorkManagerCloud uowm)
         {
             this._freeSql = freeSql;
             this._userService = userService;
             this._roleService = roleService;
             this._cacheService = cacheService;
-            this._uowm = uowm;
+            this._uowm = uowm.GetUnitOfWorkManager("master");
         }
 
         public Task<List<PermissionKey>> GetAll()

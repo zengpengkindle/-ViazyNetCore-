@@ -8,7 +8,7 @@ using FreeSql;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using System.Reflection;
-using ViazyNetCore.Annotations;
+using ViazyNetCore;
 using Microsoft.AspNetCore.Builder;
 
 namespace Microsoft.Extensions.DependencyInjection

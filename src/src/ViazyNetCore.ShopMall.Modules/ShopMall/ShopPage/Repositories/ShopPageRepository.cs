@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Modules.ShopMall.Repositories
+namespace ViazyNetCore.Modules.ShopMall.Repository
 {
     [Injection]
     public class ShopPageRepository : DefaultRepository<ShopPage, long>, IShopPageRepository

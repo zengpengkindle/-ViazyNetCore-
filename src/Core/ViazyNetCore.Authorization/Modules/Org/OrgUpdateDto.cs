@@ -4,7 +4,7 @@ namespace ViazyNetCore.Authorization;
 /// <summary>
 /// 修改
 /// </summary>
-public class OrgUpdateInput : OrgAddInput
+public class OrgUpdateDto : OrgAddDto
 {
     /// <summary>
     /// 主键Id

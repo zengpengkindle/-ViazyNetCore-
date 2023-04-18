@@ -13,9 +13,11 @@ namespace ViazyNetCore.Auth.Authorization.ViewModels
         public string Label { get; set; }
 
         public MenuType Type { get; set; }
+
         public string Icon { get; set; }
 
         public List<MenuTreeModel> Children { get; set; }
+
         public string ParentId { get; set; }
     }
 }

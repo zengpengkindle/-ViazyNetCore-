@@ -91,7 +91,7 @@ const {
                 link
                 type="primary"
                 :size="size"
-                @click="handleUpdate(row)"
+                @click.stop="handleUpdate(row)"
                 :icon="useRenderIcon(EditPen)"
               >
                 修改

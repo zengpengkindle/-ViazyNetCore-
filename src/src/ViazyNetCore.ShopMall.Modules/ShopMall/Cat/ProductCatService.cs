@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using ViazyNetCore.Modules.ShopMall.Repositories;
+using ViazyNetCore.Modules.ShopMall.Repository;
 
 namespace ViazyNetCore.Modules.ShopMall
 {

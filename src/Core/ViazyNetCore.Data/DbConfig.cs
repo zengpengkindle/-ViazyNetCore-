@@ -77,6 +77,11 @@ namespace ViazyNetCore.Data.FreeSql
         /// 读写分离从库列表
         /// </summary>
         public SlaveDb[] SlaveList { get; set; }
+
+        /// <summary>
+        /// 启用枚举映射为Int类型
+        /// </summary>
+        public bool UseEnumInt { get; set; }
     }
 
     /// <summary>

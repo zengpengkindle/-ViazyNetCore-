@@ -63,7 +63,7 @@ builder.Services.AddControllers(options =>
 //builder.Services.AddEndpointsApiExplorer();
 
 
-builder.Services.AddFreeMySqlDb();
+builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
 builder.Services.AddEventBus();
 // Redis 分布式缓存注入
 //builder.Services.AddRedisDistributedHashCache(options =>
@@ -88,6 +88,9 @@ builder.Services.AddSwagger(option =>
         Version = "v2.0",
     });
 });
+
+builder.Services.AddHealthChecks();
+builder.Services.AddResponseCompression();
 
 var app = builder.Build();
 app.UseFreeSql();

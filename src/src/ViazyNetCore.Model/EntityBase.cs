@@ -8,7 +8,8 @@ namespace ViazyNetCore.Model
 
     public class EntityBase : EntityBase<long>
     {
-        [Column(IsPrimary = true, Position = 1, IsIdentity = true)]
+        [Column(IsPrimary = true, Position = 1)]
+        [Snowflake]
         public override long Id { get => base.Id; set => base.Id = value; }
     }
 

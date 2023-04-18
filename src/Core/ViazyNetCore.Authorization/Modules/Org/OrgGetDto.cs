@@ -1,5 +1,5 @@
 ﻿namespace ViazyNetCore.Authorization;
 
-public class OrgGetOutput : OrgUpdateInput
+public class OrgGetDto : OrgUpdateDto
 {
 }

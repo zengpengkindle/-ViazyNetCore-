@@ -9,13 +9,13 @@ namespace ViazyNetCore.Authorization
     [Injection]
     public interface IOrgService
     {
-        Task<OrgGetOutput> GetAsync(long id);
+        Task<OrgGetDto> GetAsync(long id);
 
-        Task<List<OrgListOutput>> GetListAsync(string key);
+        Task<List<OrgListDto>> GetListAsync(string key);
 
-        Task<long> AddAsync(OrgAddInput input);
+        Task<long> AddAsync(OrgAddDto input);
 
-        Task UpdateAsync(OrgUpdateInput input);
+        Task UpdateAsync(OrgUpdateDto input);
 
         Task DeleteAsync(long id);
 
