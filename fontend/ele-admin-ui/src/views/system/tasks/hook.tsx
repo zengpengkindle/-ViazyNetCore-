@@ -41,7 +41,7 @@ export function useTask() {
         };
         const tableStyle = {
           // position: "sticky",
-          left: "60px",
+          left: "60px"
           // width: "800px"
         };
         return (
@@ -134,6 +134,18 @@ export function useTask() {
       label: "执行类",
       prop: "className",
       minWidth: 90
+    },
+    {
+      label: "并行数",
+      prop: "triggerCount",
+      minWidth: 90
+    },
+
+    {
+      label: "当前并行数",
+      minWidth: 90,
+      prop: "triggers",
+      formatter: ({ triggers }) => triggers?.length
     },
     {
       label: "状态-数据库",

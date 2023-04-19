@@ -160,6 +160,7 @@ export interface TasksQzPageData {
  * TasksQz
  */
 export interface TasksQz {
+  triggerCount: number | null;
   id: number | null;
   /** 任务名称 */ name: string | null;
   /** 任务分组 */ jobGroup: string | null;

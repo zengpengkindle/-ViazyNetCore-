@@ -158,14 +158,27 @@ namespace ViazyNetCore.TaskScheduler
                         trigger = CreateCronTrigger(tasksQz);
 
                         ((CronTriggerImpl)trigger).MisfireInstruction = MisfireInstruction.CronTrigger.DoNothing;
+
+                        // 告诉Quartz使用我们的触发器来安排作业
+                        await _scheduler.Result.ScheduleJob(job, trigger);
                     }
                     else
                     {
-                        trigger = CreateSimpleTrigger(tasksQz);
+                        List<ITrigger> triggers = new List<ITrigger>();
+                        if (tasksQz.TriggerCount <= 0)
+                        {
+                            triggers.Add(CreateSimpleTrigger(tasksQz));
+                        }
+                        else
+                        {
+                            for (var i = 0; i < tasksQz.TriggerCount; i++)
+                            {
+                                triggers.Add(CreateSimpleTrigger(tasksQz));
+                            }
+                        }
+                        // 告诉Quartz使用我们的触发器来安排作业
+                        await _scheduler.Result.ScheduleJob(job, triggers, replace: true);
                     }
-
-                    // 告诉Quartz使用我们的触发器来安排作业
-                    await _scheduler.Result.ScheduleJob(job, trigger);
                     //await Task.Delay(TimeSpan.FromSeconds(120));
                     //await Console.Out.WriteLineAsync("关闭了调度器！");
                     //await _scheduler.Result.Shutdown();

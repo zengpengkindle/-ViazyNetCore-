@@ -50,6 +50,9 @@ namespace ViazyNetCore.TaskScheduler
         /// 触发器类型（0、simple 1、cron）
         /// </summary>
         public int TriggerType { get; set; }
+
+        public int TriggerCount { get; set; }
+
         /// <summary>
         /// 执行间隔时间, 秒为单位
         /// </summary>

@@ -20,7 +20,7 @@ namespace ViazyNetCore.TaskScheduler
     [Authorize]
     [Area("task")]
     [DynamicApi]
-    public class TaskController : ControllerBase
+    public class TaskController : IDynamicController
     {
         private readonly TasksQzService _tasksQzService;
         private readonly ISchedulerCenter _schedulerCenter;

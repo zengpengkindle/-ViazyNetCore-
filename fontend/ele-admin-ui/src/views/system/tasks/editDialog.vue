@@ -32,7 +32,7 @@ const handleClose = (done: () => void) => {
   emit("update:modelValue", false);
   done();
 };
-const defaultUserInfo: TasksQz = {
+const defaultTaskQz: TasksQz = {
   id: 0,
   name: "",
   jobGroup: "",
@@ -56,16 +56,17 @@ const defaultUserInfo: TasksQz = {
   updateTime: "",
   createUserId: 0,
   createUserName: "",
-  createTime: ""
+  createTime: "",
+  triggerCount: 0
 };
 
-const editForm: Ref<TasksQz> = ref({ ...defaultUserInfo });
+const editForm: Ref<TasksQz> = ref({ ...defaultTaskQz });
 
 async function getDicInfo() {
   if (props.id) {
     editForm.value = await TaskApi.get(props.id);
   } else {
-    editForm.value = { ...defaultUserInfo };
+    editForm.value = { ...defaultTaskQz };
   }
 }
 const formRef = ref<FormInstance>();
@@ -260,6 +261,19 @@ const handleTask = () => {};
       >
         <el-input-number
           v-model="editForm.cycleHasRunTimes"
+          :min="0"
+          style="width: 200px"
+          auto-complete="off"
+        />
+        <span style="float: right; color: #aaa">(单位：次)</span>
+      </el-form-item>
+      <el-form-item
+        label="并行数"
+        v-if="!editForm.triggerType"
+        prop="triggerCount"
+      >
+        <el-input-number
+          v-model="editForm.triggerCount"
           :min="0"
           style="width: 200px"
           auto-complete="off"

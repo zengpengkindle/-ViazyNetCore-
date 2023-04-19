@@ -40,6 +40,11 @@ namespace ViazyNetCore.TaskScheduler
         /// </summary>
         [Column(StringLength = 1000, IsNullable = true)]
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 并行触发数
+        /// </summary>
+        public int TriggerCount { get; set; }
         /// <summary>
         /// 执行次数
         /// </summary>
