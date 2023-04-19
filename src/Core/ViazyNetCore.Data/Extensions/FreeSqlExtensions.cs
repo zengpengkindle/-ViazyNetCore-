@@ -51,9 +51,13 @@ namespace FreeSql
                 var providerType = dbConfig.ProviderType.IsNotNull() ? Type.GetType(dbConfig.ProviderType!) : null;
                 var freeSqlBuilder = new FreeSqlBuilder()
                         .UseConnectionString(dbConfig.Type, dbConfig.ConnectionString, providerType)
-                        .UseAutoSyncStructure(false)
                         .UseLazyLoading(false)
                         .UseNoneCommandParameter(true);
+
+                if (dbConfig.AutoSyncStructure)
+                {
+                    freeSqlBuilder.UseAutoSyncStructure(dbConfig.AutoSyncStructure);
+                }
 
                 if (dbConfig.SlaveList?.Length > 0)
                 {

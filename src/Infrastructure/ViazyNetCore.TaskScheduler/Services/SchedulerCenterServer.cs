@@ -104,7 +104,7 @@ namespace ViazyNetCore.TaskScheduler
                 try
                 {
                     JobKey jobKey = new JobKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
-                    if (await _scheduler.Result.CheckExists(jobKey))
+                    if (await _scheduler.Result.CheckExists(jobKey) && tasksQz.TriggerType > 0)
                     {
                         throw new ApiException($"该任务计划已经在执行:【{tasksQz.Name}】,请勿重复启动！");
                     }
@@ -113,7 +113,7 @@ namespace ViazyNetCore.TaskScheduler
                         //result.success = false;
                         //result.msg = $"该任务计划已完成:【{tasksQz.Name}】,无需重复启动,如需启动请修改已循环次数再提交";
                         //return result;
-                        return;
+                        throw new ApiException($"该任务计划已完成:【{tasksQz.Name}】,无需重复启动,如需启动请修改已循环次数再提交");
                     }
                     #region 设置开始时间和结束时间
 
@@ -133,13 +133,13 @@ namespace ViazyNetCore.TaskScheduler
                     #region 通过反射获取程序集类型和类   
 
                     Assembly assembly = Assembly.Load(new AssemblyName(tasksQz.AssemblyName));
-                    Type jobType = assembly.GetType(tasksQz.AssemblyName + "." + tasksQz.ClassName);
+                    Type jobType = assembly.GetType(tasksQz.ClassName);
 
                     #endregion
                     //判断任务调度是否开启
                     if (!_scheduler.Result.IsStarted)
                     {
-                        await StartScheduleAsync();
+                        await this.StartScheduleAsync();
                     }
 
                     //传入反射出来的执行程序集
@@ -263,6 +263,7 @@ namespace ViazyNetCore.TaskScheduler
                 throw;
             }
         }
+
         #region 状态状态帮助方法
         public async Task<List<TaskInfoDto>> GetTaskStaus(TasksQz sysSchedule)
         {
@@ -352,6 +353,7 @@ namespace ViazyNetCore.TaskScheduler
             return state;
         }
         #endregion
+
         #region 创建触发器帮助方法
 
         /// <summary>
@@ -366,25 +368,27 @@ namespace ViazyNetCore.TaskScheduler
             if (sysSchedule.CycleRunTimes > 0)
             {
                 ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(sysSchedule.Id.ToString(), sysSchedule.JobGroup)
+                .WithIdentity(Guid.NewGuid().ToString("N"), sysSchedule.JobGroup)
                 .StartAt(sysSchedule.BeginTime.Value)
                 .WithSimpleSchedule(x => x
                     .WithIntervalInSeconds(sysSchedule.IntervalSecond)
                     .WithRepeatCount(sysSchedule.CycleRunTimes - 1))
                 .EndAt(sysSchedule.EndTime.Value)
+                .ForJob(sysSchedule.Id.ToString(), sysSchedule.JobGroup)//作业名称
                 .Build();
                 return trigger;
             }
             else
             {
                 ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(sysSchedule.Id.ToString(), sysSchedule.JobGroup)
+                .WithIdentity(Guid.NewGuid().ToString("N"), sysSchedule.JobGroup)
                 .StartAt(sysSchedule.BeginTime.Value)
                 .WithSimpleSchedule(x => x
                     .WithIntervalInSeconds(sysSchedule.IntervalSecond)
                     .RepeatForever()
                 )
                 .EndAt(sysSchedule.EndTime.Value)
+                .ForJob(sysSchedule.Id.ToString(), sysSchedule.JobGroup)//作业名称
                 .Build();
                 return trigger;
             }
@@ -400,7 +404,7 @@ namespace ViazyNetCore.TaskScheduler
         {
             // 作业触发器
             return TriggerBuilder.Create()
-                   .WithIdentity(sysSchedule.Id.ToString(), sysSchedule.JobGroup)
+                   .WithIdentity(Guid.NewGuid().ToString("N"), sysSchedule.JobGroup)
                    .StartAt(sysSchedule.BeginTime.Value)//开始时间
                    .EndAt(sysSchedule.EndTime.Value)//结束数据
                    .WithCronSchedule(sysSchedule.Cron)//指定cron表达式
@@ -408,7 +412,6 @@ namespace ViazyNetCore.TaskScheduler
                    .Build();
         }
         #endregion
-
 
         /// <summary>
         /// 立即执行 一个任务

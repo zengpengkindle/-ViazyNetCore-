@@ -60,7 +60,9 @@ builder.Services.AddControllers(options =>
 }).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.InitializeDefault();
-}).AddApplicationPart(typeof(UserOption).Assembly);
+})
+.AddApplicationPart(typeof(UserOption).Assembly)
+.AddApplicationPart(typeof(JobSetup).Assembly);
 
 builder.Services.AddAuthorizationController();
 
@@ -87,6 +89,8 @@ builder.Services.AddApiDescriptor(option =>
 //- 添加自动依赖注入
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
+builder.Services.AddJobSetup();
+builder.Services.AddJobTaskSetup();
 
 builder.Services.AddLocalStoreProvider(options =>
 {
@@ -111,6 +115,14 @@ builder.Services.AddSwagger(option =>
         Code = "shopmall",
         Description = "ShopMall",
         Name = "ShopMall",
+        Version = "v1",
+    });
+
+    option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
+    {
+        Code = "task",
+        Description = "TaskJob",
+        Name = "TaskJob",
         Version = "v1",
     });
 });

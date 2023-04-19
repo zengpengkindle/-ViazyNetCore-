@@ -4,41 +4,35 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FreeSql.DataAnnotations;
 
 namespace ViazyNetCore.TaskScheduler
 {
-    public class TasksQz:EntityUpdate
+    public class TasksQzEditDto
     {
+        public long Id { get; set; }
         /// <summary>
         /// 任务名称
         /// </summary>
-        [Column(StringLength = 200, IsNullable = true)]
         public string Name { get; set; }
         /// <summary>
         /// 任务分组
         /// </summary>
-        [Column(StringLength = 200, IsNullable = true)]
         public string JobGroup { get; set; }
         /// <summary>
         /// 任务运行时间表达式
         /// </summary>
-        [Column(StringLength = 200, IsNullable = true)]
         public string Cron { get; set; }
         /// <summary>
         /// 任务所在DLL对应的程序集名称
         /// </summary>
-        [Column(StringLength = 200, IsNullable = true)]
         public string AssemblyName { get; set; }
         /// <summary>
         /// 任务所在类
         /// </summary>
-        [Column(StringLength = 200, IsNullable = true)]
         public string ClassName { get; set; }
         /// <summary>
         /// 任务描述
         /// </summary>
-        [Column(StringLength = 1000, IsNullable = true)]
         public string Remark { get; set; }
         /// <summary>
         /// 执行次数
@@ -76,9 +70,5 @@ namespace ViazyNetCore.TaskScheduler
         /// 执行传参
         /// </summary>
         public string JobParams { get; set; }
-
-
-        [Column(IsNullable = true)]
-        public bool? IsDeleted { get; set; }
     }
 }

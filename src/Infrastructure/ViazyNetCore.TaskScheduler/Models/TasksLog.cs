@@ -11,7 +11,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 任务ID
         /// </summary>
-        public int JobId { get; set; }
+        public long JobId { get; set; }
         /// <summary>
         /// 任务耗时
         /// </summary>
@@ -32,17 +32,17 @@ namespace Blog.Core.Model.Models
         /// 执行参数
         /// </summary>
         [Column(StringLength = 500, IsNullable = true)]
-        public string RunPars { get; set; }
+        public string? RunPars { get; set; }
         /// <summary>
         /// 异常信息
         /// </summary>
         [Column(StringLength = 500, IsNullable = true)]
-        public string ErrMessage { get; set; }
+        public string? ErrMessage { get; set; }
         /// <summary>
         /// 异常堆栈
         /// </summary>
         [Column(StringLength = 2000, IsNullable = true)]
-        public string ErrStackTrace { get; set; }
+        public string? ErrStackTrace { get; set; }
         /// <summary>
         /// 任务名称
         /// </summary>

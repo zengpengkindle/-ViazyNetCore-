@@ -30,6 +30,7 @@
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Redis\ViazyNetCore.Redis.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.TaskScheduler\ViazyNetCore.TaskScheduler.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Web.DevServer\ViazyNetCore.Web.DevServer.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.ShopMall.Modules\ViazyNetCore.ShopMall.Modules.csproj" />

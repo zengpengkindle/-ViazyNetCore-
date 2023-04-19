@@ -82,6 +82,11 @@ namespace ViazyNetCore.Data.FreeSql
         /// 启用枚举映射为Int类型
         /// </summary>
         public bool UseEnumInt { get; set; }
+
+        /// <summary>
+        /// 是否自动同步结构
+        /// </summary>
+        public bool AutoSyncStructure { get; set; }
     }
 
     /// <summary>

@@ -1,6 +1,7 @@
 {
   "dbConfig": {
     "MonitorCommand": true,
-    "Curd": true
+    "Curd": true,
+    "AutoSyncStructure": true
   }
 }

@@ -194,7 +194,7 @@ const router = useRouter();
       </el-form>
     </div>
     <div>
-      <PureTableBar title="商品类别管理" @refresh="onSearch">
+      <PureTableBar title="订单管理" @refresh="onSearch">
         <template #buttons>
           <el-button
             type="primary"

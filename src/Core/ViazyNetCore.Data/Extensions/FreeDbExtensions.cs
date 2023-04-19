@@ -26,6 +26,11 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IFreeSql>(freeSqlCloud);
             services.AddSingleton(freeSqlCloud);
             services.AddScoped<UnitOfWorkManagerCloud>();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(GuidRepository<>));
+            services.AddScoped(typeof(BaseRepository<>), typeof(GuidRepository<>));
+
+            services.AddScoped(typeof(IBaseRepository<,>), typeof(DefaultRepository<,>));
+            services.AddScoped(typeof(BaseRepository<,>), typeof(DefaultRepository<,>));
 
             var fsql = freeSqlCloud.Use(dbConfig.Key);
             services.AddSingleton(provider => fsql);

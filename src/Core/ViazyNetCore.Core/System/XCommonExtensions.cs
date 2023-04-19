@@ -488,38 +488,5 @@ namespace System
             var d = Regex.Replace(s, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}");
             return Regex.Replace(d, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString());
         }
-
-        /// <summary>
-        /// 读取所有流的所有字节。
-        /// </summary>
-        /// <param name="stream">流</param>
-        /// <param name="encoding">编号。</param>
-        /// <returns>所有字节。</returns>
-        public static async Task<string> ReadToEndAsync(this IO.Stream stream, Encoding encoding = null)
-        {
-            using var reader = encoding is null ? new IO.StreamReader(stream
-                 , detectEncodingFromByteOrderMarks: false
-                 , leaveOpen: true) : new IO.StreamReader(stream, encoding
-                 , detectEncodingFromByteOrderMarks: false
-                 , leaveOpen: true);
-            return await reader.ReadToEndAsync();
-        }
-
-
-        /// <summary>
-        /// 读取所有流的所有字节。
-        /// </summary>
-        /// <param name="stream">流</param>
-        /// <param name="encoding">编号。</param>
-        /// <returns>所有字节。</returns>
-        public static string ReadToEnd(this IO.Stream stream, Encoding encoding = null)
-        {
-            using var reader = encoding is null ? new IO.StreamReader(stream
-                 , detectEncodingFromByteOrderMarks: false
-                 , leaveOpen: true) : new IO.StreamReader(stream, encoding
-                 , detectEncodingFromByteOrderMarks: false
-                 , leaveOpen: true);
-            return reader.ReadToEnd();
-        }
     }
 }

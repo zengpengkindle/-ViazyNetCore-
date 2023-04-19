@@ -125,11 +125,13 @@ namespace ViazyNetCore.Model
         /// <summary>
         /// 商品规格属性 JSON 字符串，如“[{k: '颜色',v: [{id: '30349',name: '红色',imgUrl: '1.jpg'},{id: '1215',name: '蓝色',imgUrl: 2.jpg'}],k_s: 's1'}]”
         /// </summary>
+        [Column(StringLength = -2)]
         public string SkuTree { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示详情。
         /// </summary>
+        [Column(StringLength = -2)]
         public string Detail { get; set; }
 
         /// <summary>
