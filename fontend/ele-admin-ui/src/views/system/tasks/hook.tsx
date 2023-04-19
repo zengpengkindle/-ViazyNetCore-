@@ -53,18 +53,7 @@ export function useTask() {
             header-cell-style={headStyle}
           >
             <el-table-column prop="jobId" label="任务编号" fixed width="190" />
-            <el-table-column
-              prop="jobName"
-              label="任务名称"
-              fixed
-              width="190"
-            />
-            <el-table-column
-              prop="jobGroup"
-              label="任务分组"
-              fixed
-              width="190"
-            />
+            <el-table-column prop="jobGroup" label="任务" fixed width="190" />
             <el-table-column
               prop="triggerId"
               label="触发器ID"
@@ -96,17 +85,17 @@ export function useTask() {
     {
       label: "任务编号",
       prop: "id",
-      minWidth: 150
+      minWidth: 450
     },
     {
       label: "任务组",
       prop: "jobGroup",
-      minWidth: 130
+      minWidth: 230
     },
     {
       label: "名称",
       prop: "name",
-      minWidth: 130
+      minWidth: 230
     },
     {
       label: "任务类型",
@@ -117,6 +106,19 @@ export function useTask() {
           disable-transitions
         >
           {row.triggerType == 1 ? "Cron" : "Simple"}
+        </el-tag>
+      )
+    },
+    {
+      label: "状态",
+      prop: "status",
+      minWidth: 120,
+      cellRenderer: scope => (
+        <el-tag
+          type={scope.row.isStart ? "success" : "danger"}
+          disable-transitions
+        >
+          {scope.row.isStart ? "启用" : "停止"}
         </el-tag>
       )
     },
@@ -146,34 +148,6 @@ export function useTask() {
       minWidth: 90,
       prop: "triggers",
       formatter: ({ triggers }) => triggers?.length
-    },
-    {
-      label: "状态-数据库",
-      prop: "status",
-      minWidth: 90,
-      cellRenderer: scope => (
-        <el-tag
-          type={scope.row.isStart ? "success" : "danger"}
-          disable-transitions
-        >
-          {scope.row.isStart ? "运行中" : "停止"}
-        </el-tag>
-      )
-    },
-    {
-      label: "状态-任务",
-      prop: "status",
-      minWidth: 90,
-      cellRenderer: scope => (
-        <el-tag
-          type={
-            scope.row.triggers[0].triggerStatus == "正常" ? "success" : "danger"
-          }
-          disable-transitions
-        >
-          {scope.row.triggers[0].triggerStatus}
-        </el-tag>
-      )
     },
     {
       label: "开始时间",
@@ -222,6 +196,23 @@ export function useTask() {
       prop: "createTime",
       formatter: ({ createTime }) =>
         dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
+    },
+
+    {
+      label: "运行状态",
+      prop: "status",
+      fixed: "right",
+      minWidth: 120,
+      cellRenderer: scope => (
+        <el-tag
+          type={
+            scope.row.triggers[0].triggerStatus == "正常" ? "success" : "danger"
+          }
+          disable-transitions
+        >
+          {scope.row.triggers[0].triggerStatus}
+        </el-tag>
+      )
     },
     {
       label: "操作",

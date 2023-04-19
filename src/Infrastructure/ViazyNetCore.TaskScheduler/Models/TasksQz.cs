@@ -38,7 +38,7 @@ namespace ViazyNetCore.TaskScheduler
         /// <summary>
         /// 任务描述
         /// </summary>
-        [Column(StringLength = 1000, IsNullable = true)]
+        [Column(StringLength = -2, IsNullable = true)]
         public string Remark { get; set; }
 
         /// <summary>

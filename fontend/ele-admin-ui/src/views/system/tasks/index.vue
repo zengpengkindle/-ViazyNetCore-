@@ -76,7 +76,7 @@ const {
         </el-form-item>
       </el-form>
 
-      <PureTableBar title="用户管理" @refresh="onSearch">
+      <PureTableBar title="任务管理" @refresh="onSearch">
         <template #buttons>
           <el-button
             type="primary"
@@ -106,8 +106,13 @@ const {
             @current-change="handleCurrentChange"
           >
             <template #operation="{ row }">
-              <el-popover trigger="hover" placement="top" v-if="row.remark">
-                <div v-html="row.remark" />
+              <el-popover
+                trigger="hover"
+                :popper-style="{ width: '450px' }"
+                placement="left"
+                v-if="row.remark"
+              >
+                <div style="overflow: hidden" v-html="row.remark" />
                 <template v-slot:reference>
                   <el-button
                     link
@@ -156,7 +161,7 @@ const {
                         link
                         type="info"
                         :size="size"
-                        :icon="useRenderIcon(Password)"
+                        :icon="useRenderIcon('fa-solid:caret-square-right')"
                         @click="startJob(row)"
                       >
                         启动任务
@@ -168,7 +173,7 @@ const {
                         link
                         type="info"
                         :size="size"
-                        :icon="useRenderIcon(Password)"
+                        :icon="useRenderIcon('fa:stop-circle')"
                         @click="stopJob(row)"
                       >
                         停止任务
@@ -180,7 +185,7 @@ const {
                         link
                         type="primary"
                         :size="size"
-                        :icon="useRenderIcon(Role)"
+                        :icon="useRenderIcon('fa:pause-circle')"
                         @click="pauseJob(row)"
                       >
                         暂停任务
@@ -192,7 +197,7 @@ const {
                         link
                         type="primary"
                         :size="size"
-                        :icon="useRenderIcon(Role)"
+                        :icon="useRenderIcon('fa:history')"
                         @click="resumeJob(row)"
                       >
                         恢复任务
@@ -204,7 +209,7 @@ const {
                         link
                         type="primary"
                         :size="size"
-                        :icon="useRenderIcon(Role)"
+                        :icon="useRenderIcon('fa:refresh')"
                         @click.stop="reCovery(row)"
                       >
                         重启任务
@@ -216,7 +221,7 @@ const {
                         link
                         type="primary"
                         :size="size"
-                        :icon="useRenderIcon(Role)"
+                        :icon="useRenderIcon('fa:check-square')"
                         @click.stop="executeJob(row)"
                       >
                         立即执行

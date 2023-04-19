@@ -221,7 +221,8 @@ namespace ViazyNetCore.TaskScheduler
                 JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
                 if (!await _scheduler.Result.CheckExists(jobKey))
                 {
-                    throw new ApiException($"未找到要暂停的任务:【{sysSchedule.Name}】");
+                    //throw new ApiException($"未找到要暂停的任务:【{sysSchedule.Name}】");
+                    return;
                 }
                 else
                 {
