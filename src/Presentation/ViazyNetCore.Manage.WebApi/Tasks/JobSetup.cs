@@ -18,6 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
             //注入测试任务
             services.AddTransient<Job_Test>();
+            services.AddTransient<Job_RabbitMqTest>();
         }
     }
 }

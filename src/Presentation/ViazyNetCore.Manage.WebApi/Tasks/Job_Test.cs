@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.MQueue;
 using System.Text;
 using System.Threading.Tasks;
 using Quartz;
@@ -10,14 +11,18 @@ namespace ViazyNetCore.Manage.WebApi.Tasks
 {
     public class Job_Test : JobBase
     {
-        public Job_Test(IServiceProvider serviceProvider) : base(serviceProvider)
+        private readonly IMessageBus _bus;
+
+        public Job_Test(IServiceProvider serviceProvider, IMessageBus bus) : base(serviceProvider)
         {
+            this._bus = bus;
         }
 
-        public override Task RunJob(IJobExecutionContext context)
+        protected override async Task RunJob(IJobExecutionContext context)
         {
-            Console.WriteLine("任务执行！");
-            return Task.CompletedTask;
+            await this._bus.PublishAsync(new MqTestModel());
+            await Task.Delay(FastRandom.Instance.Next(10000));
+            Console.Out.WriteLine("任务执行！");
         }
     }
 }

@@ -90,6 +90,7 @@ namespace ViazyNetCore.TaskScheduler
         {
             //var request = await this._httpContextAccessor.HttpContext.Request.Body.ReadToEndAsync();
             using var unow = _unitOfWorkManage.Begin();
+            if (tasksQzDto.TriggerType == 0) tasksQzDto.Cron = null;
             var tasksQz = tasksQzDto.CopyTo<TasksQz>();
             await _tasksQzService.InsertAsync(tasksQz);
             try
@@ -118,21 +119,22 @@ namespace ViazyNetCore.TaskScheduler
         public async Task UpdateTask([FromBody] TasksQzEditDto tasksQzDto)
         {
             var tasksQz = tasksQzDto.CopyTo<TasksQz>();
+            if (tasksQzDto.TriggerType == 0) tasksQzDto.Cron = null;
             if (tasksQz != null && tasksQz.Id > 0)
             {
                 using var unow = _unitOfWorkManage.Begin();
+                var oldTaskQz = await _tasksQzService.GetByIdAsync(tasksQz.Id);
                 await _tasksQzService.Update(tasksQz);
                 try
                 {
-
                     if (tasksQz.IsStart)
                     {
-                        await _schedulerCenter.StopScheduleJobAsync(tasksQz);
+                        await _schedulerCenter.StopScheduleJobAsync(oldTaskQz);
                         await _schedulerCenter.AddScheduleJobAsync(tasksQz);
                     }
                     else
                     {
-                        await _schedulerCenter.StopScheduleJobAsync(tasksQz);
+                        await _schedulerCenter.StopScheduleJobAsync(oldTaskQz);
                     }
                     unow.Commit();
                 }

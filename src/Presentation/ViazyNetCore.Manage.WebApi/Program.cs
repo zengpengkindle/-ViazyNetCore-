@@ -89,6 +89,8 @@ builder.Services.AddApiDescriptor(option =>
 //- 添加自动依赖注入
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
+
+builder.Services.AddMQueue();
 builder.Services.AddJobSetup();
 builder.Services.AddJobTaskSetup();
 

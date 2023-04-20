@@ -24,8 +24,12 @@ namespace ViazyNetCore.xUnitTest.RabbitMq
             if (bus == null)
                 throw new ArgumentNullException(nameof(bus));
             using var context = bus.Context;
-            await context.PublishAsync(new MqTestModel());
-            await context.SubscribeAsync<MqTestModel>((ss, ee) => OnSubscribe(context, ee)); ;
+            var i = 0;
+            do
+            {
+                await context.PublishAsync(new MqTestModel());
+            } while (i++ < 100);
+            //await context.SubscribeAsync<MqTestModel>((ss, ee) => OnSubscribe(context, ee)); ;
         }
 
         private static async Task OnSubscribe<TBody>(IMessageBusContext context, SubscribeEventArgs<TBody> args)
@@ -35,7 +39,7 @@ namespace ViazyNetCore.xUnitTest.RabbitMq
             //args.Requeue = false;
         }
 
-        [Message()]
+        [Message(Exchange= "ViazyNetCore.MqTestModel.Exchange",Queue = "ViazyNetCore.MqTestModel.Queue")]
         public class MqTestModel
         {
             public Guid Id { get; set; } = Guid.NewGuid();

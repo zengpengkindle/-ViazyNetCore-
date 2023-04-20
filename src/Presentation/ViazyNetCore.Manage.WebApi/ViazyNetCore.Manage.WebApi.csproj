@@ -16,6 +16,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Configs\rabbitmq.Development.json" />
+    <Content Remove="Configs\rabbitmq.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Configs\rabbitmq.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Configs\rabbitmq.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="6.0.16" />
@@ -30,6 +44,7 @@
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Redis\ViazyNetCore.Redis.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.TaskScheduer.RabbitMQ\ViazyNetCore.TaskScheduer.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.TaskScheduler\ViazyNetCore.TaskScheduler.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Web.DevServer\ViazyNetCore.Web.DevServer.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />

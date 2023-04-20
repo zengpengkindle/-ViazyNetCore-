@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Model.Models;
+using FreeSql.DataAnnotations;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
@@ -20,12 +21,12 @@ namespace ViazyNetCore.TaskScheduler
             this._tasksLogService = serviceProvider.GetService<TasksLogService>();
         }
 
-        public abstract Task RunJob(IJobExecutionContext context);
+        protected abstract Task RunJob(IJobExecutionContext context);
 
         /// <inheritdoc/>
         public async Task Execute(IJobExecutionContext context)
         {
-            await ExecuteJob(context, async () => await RunJob(context));
+            await this.RunJob(context);
         }
 
         /// <summary>
@@ -68,12 +69,12 @@ namespace ViazyNetCore.TaskScheduler
             {
                 tasksLog.TotalTime = Math.Round((tasksLog.EndTime - tasksLog.RunTime).TotalSeconds, 3);
                 jobHistory += $"(耗时:{tasksLog.TotalTime}秒)";
-                if (_tasksQzService != null)
+                if (this._tasksQzService != null)
                 {
-                    var model = await _tasksQzService.GetByIdAsync(jobid);
+                    var model = await this._tasksQzService.GetByIdAsync(jobid);
                     if (model != null)
                     {
-                        if (_tasksLogService != null) await _tasksLogService.InsertAsync(tasksLog);
+                        if (_tasksLogService != null) await this._tasksLogService.InsertAsync(tasksLog);
                         model.RunTimes += 1;
                         if (model.TriggerType == 0) model.CycleHasRunTimes += 1;
                         if (model.TriggerType == 0 && model.CycleRunTimes != 0 && model.CycleHasRunTimes >= model.CycleRunTimes) model.IsStart = false;//循环完善,当循环任务完成后,停止该任务,防止下次启动再次执行
@@ -81,7 +82,7 @@ namespace ViazyNetCore.TaskScheduler
                         // 这里注意数据库字段的长度问题，超过限制，会造成数据库remark不更新问题。
                         model.Remark =
                             $"{jobHistory}{separator}" + string.Join(separator, UnitHelper.GetTopDataBySeparator(model.Remark, separator, 9));
-                        await _tasksQzService.Update(model);
+                        await this._tasksQzService.Update(model);
                     }
                 }
             }

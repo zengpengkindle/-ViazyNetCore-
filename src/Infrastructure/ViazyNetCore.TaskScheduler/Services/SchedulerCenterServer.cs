@@ -9,32 +9,46 @@ using Quartz.Impl.Triggers;
 using Quartz.Impl;
 using Quartz.Spi;
 using Quartz;
+using System.Threading;
 
 namespace ViazyNetCore.TaskScheduler
 {
     public class SchedulerCenterServer : ISchedulerCenter
     {
-        private Task<IScheduler> _scheduler;
+        private Lazy<IScheduler> _scheduler;
         private readonly IJobFactory _iocjobFactory;
-        public SchedulerCenterServer(IJobFactory jobFactory)
+        private readonly IServiceProvider _serviceProvider;
+
+        public SchedulerCenterServer(IJobFactory jobFactory, IServiceProvider serviceProvider)
         {
-            _iocjobFactory = jobFactory;
-            _scheduler = GetSchedulerAsync();
+            this._iocjobFactory = jobFactory;
+            this._serviceProvider = serviceProvider;
+            this._scheduler = new Lazy<IScheduler>(() => GetSchedulerAsync());
         }
-        private Task<IScheduler> GetSchedulerAsync()
+        private IScheduler GetSchedulerAsync()
         {
-            if (_scheduler != null)
-                return this._scheduler;
-            else
-            {
-                // 从Factory中获取Scheduler实例
-                NameValueCollection collection = new NameValueCollection
+            // 从Factory中获取Scheduler实例
+            NameValueCollection collection = new NameValueCollection
                 {
                     { "quartz.serializer.type", "binary" },
                 };
-                StdSchedulerFactory factory = new StdSchedulerFactory(collection);
-                return _scheduler = factory.GetScheduler();
-            }
+            var factory = new StdSchedulerFactory(collection);
+            var scheduler = factory.GetScheduler().GetAwaiter().GetResult();
+            scheduler.ListenerManager.AddSchedulerListener(new CustomSchedulerListener());
+            scheduler.ListenerManager.AddJobListener(new CustomJobListener(this._serviceProvider));
+            return scheduler;
+        }
+
+        private Task<IScheduler> GetSchedulerAsync(string groupName)
+        {
+            // 从Factory中获取Scheduler实例
+            NameValueCollection collection = new NameValueCollection
+                {
+                    { "quartz.serializer.type", "binary" },
+                    { "quartz.scheduler.instanceName",groupName}
+                };
+            var factory = new StdSchedulerFactory(collection);
+            return factory.GetScheduler(groupName);
         }
 
         /// <summary>
@@ -45,11 +59,11 @@ namespace ViazyNetCore.TaskScheduler
         {
             try
             {
-                this._scheduler.Result.JobFactory = this._iocjobFactory;
-                if (!this._scheduler.Result.IsStarted)
+                this._scheduler.Value.JobFactory = this._iocjobFactory;
+                if (!this._scheduler.Value.IsStarted)
                 {
                     //等待任务运行完成
-                    await this._scheduler.Result.Start();
+                    await this._scheduler.Value.Start();
                     await Console.Out.WriteLineAsync("任务调度开启！");
 
                     return true;
@@ -73,10 +87,10 @@ namespace ViazyNetCore.TaskScheduler
         {
             try
             {
-                if (!this._scheduler.Result.IsShutdown)
+                if (!this._scheduler.Value.IsShutdown)
                 {
                     //等待任务运行完成
-                    await this._scheduler.Result.Shutdown();
+                    await this._scheduler.Value.Shutdown();
                     await Console.Out.WriteLineAsync("任务调度停止！");
                     return true;
                 }
@@ -104,7 +118,7 @@ namespace ViazyNetCore.TaskScheduler
                 try
                 {
                     JobKey jobKey = new JobKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
-                    if (await _scheduler.Result.CheckExists(jobKey) && tasksQz.TriggerType > 0)
+                    if (await _scheduler.Value.CheckExists(jobKey) && tasksQz.TriggerType > 0)
                     {
                         throw new ApiException($"该任务计划已经在执行:【{tasksQz.Name}】,请勿重复启动！");
                     }
@@ -137,13 +151,13 @@ namespace ViazyNetCore.TaskScheduler
 
                     #endregion
                     //判断任务调度是否开启
-                    if (!_scheduler.Result.IsStarted)
+                    if (!_scheduler.Value.IsStarted)
                     {
                         await this.StartScheduleAsync();
                     }
 
                     //传入反射出来的执行程序集
-                    IJobDetail job = new JobDetailImpl(tasksQz.Id.ToString(), tasksQz.JobGroup, jobType);
+                    IJobDetail job = new JobDetailImpl(tasksQz.Id.ToString(), tasksQz.JobGroup, jobType, false, false);
                     job.JobDataMap.Add("JobParam", tasksQz.JobParams);
                     ITrigger trigger;
 
@@ -160,28 +174,25 @@ namespace ViazyNetCore.TaskScheduler
                         ((CronTriggerImpl)trigger).MisfireInstruction = MisfireInstruction.CronTrigger.DoNothing;
 
                         // 告诉Quartz使用我们的触发器来安排作业
-                        await _scheduler.Result.ScheduleJob(job, trigger);
+                        await _scheduler.Value.ScheduleJob(job, trigger);
                     }
                     else
                     {
                         List<ITrigger> triggers = new List<ITrigger>();
                         if (tasksQz.TriggerCount <= 0)
                         {
+                            tasksQz.TriggerCount = 1;
+                        }
+                        for (var i = 0; i < tasksQz.TriggerCount; i++)
+                        {
                             triggers.Add(CreateSimpleTrigger(tasksQz));
                         }
-                        else
-                        {
-                            for (var i = 0; i < tasksQz.TriggerCount; i++)
-                            {
-                                triggers.Add(CreateSimpleTrigger(tasksQz));
-                            }
-                        }
                         // 告诉Quartz使用我们的触发器来安排作业
-                        await _scheduler.Result.ScheduleJob(job, triggers, replace: true);
+                        await _scheduler.Value.ScheduleJob(job, triggers, replace: true);
                     }
                     //await Task.Delay(TimeSpan.FromSeconds(120));
                     //await Console.Out.WriteLineAsync("关闭了调度器！");
-                    //await _scheduler.Result.Shutdown();
+                    //await _scheduler.Value.Shutdown();
                 }
                 catch (Exception ex)
                 {
@@ -201,7 +212,7 @@ namespace ViazyNetCore.TaskScheduler
         public async Task<bool> IsExistScheduleJobAsync(TasksQz sysSchedule)
         {
             JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
-            if (await _scheduler.Result.CheckExists(jobKey))
+            if (await _scheduler.Value.CheckExists(jobKey))
             {
                 return true;
             }
@@ -219,14 +230,19 @@ namespace ViazyNetCore.TaskScheduler
             try
             {
                 JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
-                if (!await _scheduler.Result.CheckExists(jobKey))
+                if (!await _scheduler.Value.CheckExists(jobKey))
                 {
                     //throw new ApiException($"未找到要暂停的任务:【{sysSchedule.Name}】");
                     return;
                 }
                 else
                 {
-                    await this._scheduler.Result.DeleteJob(jobKey);
+                    var jobDetail = await this._scheduler.Value.GetJobDetail(jobKey);
+                    if (jobDetail != null && typeof(IInterruptableJob).IsAssignableFrom(jobDetail.JobType))
+                    {
+                        await this._scheduler.Value.Interrupt(jobKey);// 先任务终止
+                    }
+                    await this._scheduler.Value.DeleteJob(jobKey);
                 }
             }
             catch (Exception)
@@ -245,11 +261,11 @@ namespace ViazyNetCore.TaskScheduler
             try
             {
                 JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
-                if (!await _scheduler.Result.CheckExists(jobKey))
+                if (!await _scheduler.Value.CheckExists(jobKey))
                 {
                     throw new ApiException($"未找到要恢复的任务:【{sysSchedule.Name}】");
                 }
-                await this._scheduler.Result.ResumeJob(jobKey);
+                await this._scheduler.Value.ResumeJob(jobKey);
             }
             catch (Exception)
             {
@@ -266,11 +282,11 @@ namespace ViazyNetCore.TaskScheduler
             try
             {
                 JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
-                if (!await _scheduler.Result.CheckExists(jobKey))
+                if (!await _scheduler.Value.CheckExists(jobKey))
                 {
                     throw new ApiException($"未找到要暂停的任务:【{sysSchedule.Name}】");
                 }
-                await this._scheduler.Result.PauseJob(jobKey);
+                await this._scheduler.Value.PauseJob(jobKey);
             }
             catch (Exception)
             {
@@ -291,20 +307,20 @@ namespace ViazyNetCore.TaskScheduler
                 TriggerStatus = "不存在"
             } };
             JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
-            IJobDetail job = await this._scheduler.Result.GetJobDetail(jobKey);
+            IJobDetail job = await this._scheduler.Value.GetJobDetail(jobKey);
             if (job == null)
             {
                 return noTask;
             }
             //info.Append(string.Format("任务ID:{0}\r\n任务名称:{1}\r\n", job.Key.Name, job.Description)); 
-            var triggers = await this._scheduler.Result.GetTriggersOfJob(jobKey);
+            var triggers = await this._scheduler.Value.GetTriggersOfJob(jobKey);
             if (triggers == null || triggers.Count == 0)
             {
                 return noTask;
             }
             foreach (var trigger in triggers)
             {
-                var triggerStaus = await this._scheduler.Result.GetTriggerState(trigger.Key);
+                var triggerStaus = await this._scheduler.Value.GetTriggerState(trigger.Key);
                 string state = GetTriggerState(triggerStaus.ToString());
                 ls.Add(new TaskInfoDto
                 {
@@ -379,33 +395,29 @@ namespace ViazyNetCore.TaskScheduler
         /// <returns></returns>
         private ITrigger CreateSimpleTrigger(TasksQz sysSchedule)
         {
-            if (sysSchedule.CycleRunTimes > 0)
+            ITrigger trigger = TriggerBuilder.Create()
+            .WithIdentity(Guid.NewGuid().ToString("N"), sysSchedule.JobGroup)
+            .StartAt(sysSchedule.BeginTime.Value)
+            .WithSimpleSchedule(x =>
             {
-                ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(Guid.NewGuid().ToString("N"), sysSchedule.JobGroup)
-                .StartAt(sysSchedule.BeginTime.Value)
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(sysSchedule.IntervalSecond)
-                    .WithRepeatCount(sysSchedule.CycleRunTimes - 1))
-                .EndAt(sysSchedule.EndTime.Value)
-                .ForJob(sysSchedule.Id.ToString(), sysSchedule.JobGroup)//作业名称
-                .Build();
-                return trigger;
-            }
-            else
-            {
-                ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(Guid.NewGuid().ToString("N"), sysSchedule.JobGroup)
-                .StartAt(sysSchedule.BeginTime.Value)
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(sysSchedule.IntervalSecond)
-                    .RepeatForever()
-                )
-                .EndAt(sysSchedule.EndTime.Value)
-                .ForJob(sysSchedule.Id.ToString(), sysSchedule.JobGroup)//作业名称
-                .Build();
-                return trigger;
-            }
+                if (sysSchedule.IntervalSecond > 0)
+                {
+                    x.WithIntervalInSeconds(sysSchedule.IntervalSecond);
+                }
+                if (sysSchedule.CycleRunTimes > 0)
+                {
+                    x.WithRepeatCount(sysSchedule.CycleRunTimes - 1);
+                }
+                else
+                {
+                    x.RepeatForever();
+                }
+            })
+            .EndAt(sysSchedule.EndTime)
+            .ForJob(sysSchedule.Id.ToString(), sysSchedule.JobGroup)//作业名称
+            .Build();
+            return trigger;
+
             // 触发作业立即运行，然后每10秒重复一次，无限循环
 
         }
@@ -438,18 +450,18 @@ namespace ViazyNetCore.TaskScheduler
             {
                 JobKey jobKey = new JobKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
                 //判断任务是否存在，存在则 触发一次，不存在则先添加一个任务，触发以后再 停止任务
-                if (!await _scheduler.Result.CheckExists(jobKey))
+                if (!await _scheduler.Value.CheckExists(jobKey))
                 {
                     //不存在 则 添加一个计划任务
                     await AddScheduleJobAsync(tasksQz);
                     //触发执行一次
-                    await _scheduler.Result.TriggerJob(jobKey);
+                    await _scheduler.Value.TriggerJob(jobKey);
                     //停止任务
                     await StopScheduleJobAsync(tasksQz);
                 }
                 else
                 {
-                    await _scheduler.Result.TriggerJob(jobKey);
+                    await _scheduler.Value.TriggerJob(jobKey);
                 }
             }
             catch (Exception ex)

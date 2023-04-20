@@ -15,10 +15,17 @@ namespace Microsoft.AspNetCore.Builder
             {
                 configurationManager.AddJsonFile($"./Configs/ratelimitconfig.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
             }
+
             configurationManager.AddJsonFile("./Configs/dbconfig.json", optional: true, reloadOnChange: true);
             if (env.EnvironmentName.IsNotNull())
             {
                 configurationManager.AddJsonFile($"./Configs/dbconfig.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+            }
+
+            configurationManager.AddJsonFile("./Configs/rabbitmq.json", optional: true, reloadOnChange: true);
+            if (env.EnvironmentName.IsNotNull())
+            {
+                configurationManager.AddJsonFile($"./Configs/rabbitmq.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
             }
 
             configurationManager.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
