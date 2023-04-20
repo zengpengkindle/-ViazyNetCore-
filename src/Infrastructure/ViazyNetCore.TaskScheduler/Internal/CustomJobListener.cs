@@ -16,7 +16,6 @@ namespace ViazyNetCore.TaskScheduler
     {
         private readonly TasksLogService? _tasksLogService;
         private readonly TasksQzService? _tasksQzService;
-        static ThreadLocal<DateTime> BeginTimeContext = new ThreadLocal<DateTime>();
         public string Name => "CustomJobListener";
 
         public CustomJobListener(IServiceProvider serviceProvider)
@@ -48,17 +47,12 @@ namespace ViazyNetCore.TaskScheduler
         /// <returns></returns>
         public async Task JobToBeExecuted(IJobExecutionContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
-            //记录Job
-            TasksLog tasksLog = new TasksLog();
-            //JOBID
-            long jobid = context.JobDetail.Key.Name.ParseTo<long>();
-            //JOB组名
-            string groupName = context.JobDetail.Key.Group;
-            //日志
-            tasksLog.JobId = jobid;
-            tasksLog.RunTime = DateTime.Now;
-            BeginTimeContext.Value = DateTime.Now;
-            string jobHistory = $"【{tasksLog.RunTime.ToString("yyyy-MM-dd HH:mm:ss")}】【执行开始】【Id：{jobid}，组别：{groupName}】";
+            await Task.Run(() =>
+            {
+                JobDataMap triggerPars = context.Trigger.JobDataMap;
+                triggerPars.Add("#Trigger:BeginTime", DateTime.Now.ToJsTime());
+                Console.WriteLine("this is JobToBeExecuted");
+            });
         }
 
         /// <summary>
@@ -76,10 +70,12 @@ namespace ViazyNetCore.TaskScheduler
             long jobid = context.JobDetail.Key.Name.ParseTo<long>();
             //JOB组名
             string groupName = context.JobDetail.Key.Group;
+            JobDataMap triggerPars = context.Trigger.JobDataMap;
+            var triggerBeginTime = triggerPars.GetLong("#Trigger:BeginTime");
+            tasksLog.RunTime = triggerBeginTime.FromJsTime();
             //日志
             tasksLog.JobId = jobid;
-            tasksLog.RunTime = BeginTimeContext.Value;
-            string jobHistory = $"【{BeginTimeContext.Value.ToString("yyyy-MM-dd HH:mm:ss")}】【执行开始】【Id：{jobid}，组别：{groupName}】";
+            string jobHistory = $"【{tasksLog.RunTime.ToString("yyyy-MM-dd HH:mm:ss")}】【执行开始】【Id：{jobid}，组别：{groupName}】";
 
             tasksLog.EndTime = DateTime.Now;
             tasksLog.RunResult = true;
