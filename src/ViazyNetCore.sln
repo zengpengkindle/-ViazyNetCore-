@@ -85,7 +85,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.AttachmentProv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essensoft.Paylink.WeChatPay", "sdks\payment\Essensoft.Paylink.WeChatPay\Essensoft.Paylink.WeChatPay.csproj", "{31B69BF7-913C-495D-B642-4C2BD7C39E3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.TaskScheduer.RabbitMQ", "Infrastructure\ViazyNetCore.TaskScheduer.RabbitMQ\ViazyNetCore.TaskScheduer.RabbitMQ.csproj", "{3B888AA5-F8D1-48F4-A66C-0A67FDF79F93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.TaskScheduler.RabbitMQ", "Infrastructure\ViazyNetCore.TaskScheduler.RabbitMQ\ViazyNetCore.TaskScheduler.RabbitMQ.csproj", "{3B888AA5-F8D1-48F4-A66C-0A67FDF79F93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

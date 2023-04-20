@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.MQueue;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.MQueue;
 using Quartz;
-using ViazyNetCore.TaskScheduer;
+using ViazyNetCore.TaskScheduler;
 
 namespace ViazyNetCore.Manage.WebApi.Tasks
 {

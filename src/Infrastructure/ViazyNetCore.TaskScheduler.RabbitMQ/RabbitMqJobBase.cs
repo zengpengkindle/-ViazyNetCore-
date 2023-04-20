@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Quartz;
 using System.MQueue;
-using ViazyNetCore.TaskScheduler;
 
-namespace ViazyNetCore.TaskScheduer
+namespace ViazyNetCore.TaskScheduler
 {
     public abstract class RabbitMqJobBase<TBody> : JobBase, IInterruptableJob
     {
@@ -24,12 +23,10 @@ namespace ViazyNetCore.TaskScheduer
 
         protected override async Task RunJob(IJobExecutionContext jobContext)
         {
-            using (var context = this.Bus.Context)
-            {
-                await context.SubscribeAsync<TBody>((ss, ee) => this.OnSubscribe(context, ee, jobContext.CancellationToken)
-                , this.SubscribeOptions
-                , cancellationToken: jobContext.CancellationToken);
-            }
+            using var context = this.Bus.Context;
+            await context.SubscribeAsync<TBody>((ss, ee) => this.OnSubscribe(context, ee, jobContext.CancellationToken)
+            , this.SubscribeOptions
+            , cancellationToken: jobContext.CancellationToken);
         }
 
         /// <summary>
