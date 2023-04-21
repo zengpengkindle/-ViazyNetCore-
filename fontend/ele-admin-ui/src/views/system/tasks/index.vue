@@ -4,8 +4,6 @@ import { useTask } from "./hook";
 import { PureTableBar } from "@/components/RePureTableBar";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 
-import Role from "@iconify-icons/ri/admin-line";
-import Password from "@iconify-icons/ri/lock-password-line";
 import More from "@iconify-icons/ep/more-filled";
 import Delete from "@iconify-icons/ep/delete";
 import Notebook from "@iconify-icons/ep/notebook";
@@ -18,7 +16,7 @@ import editorDialog from "./editDialog.vue";
 defineOptions({
   name: "Tasks"
 });
-
+const tableRef = ref();
 const formRef = ref();
 const {
   form,
@@ -32,9 +30,6 @@ const {
   resetForm,
   handleUpdate,
   handleDelete,
-  handleSizeChange,
-  handleCurrentChange,
-  handleSelectionChange,
   startJob,
   stopJob,
   pauseJob,
@@ -76,7 +71,11 @@ const {
         </el-form-item>
       </el-form>
 
-      <PureTableBar title="任务管理" @refresh="onSearch">
+      <PureTableBar
+        title="任务管理"
+        @refresh="onSearch"
+        :table-ref="tableRef?.getTableRef()"
+      >
         <template #buttons>
           <el-button
             type="primary"
@@ -87,7 +86,8 @@ const {
           </el-button>
         </template>
         <template v-slot="{ size, checkList }">
-          <pure-table
+          <x-table
+            ref="tableRef"
             align-whole="center"
             table-layout="auto"
             :loading="loading"
@@ -96,14 +96,11 @@ const {
             :columns="columns"
             :checkList="checkList"
             :pagination="pagination"
-            :paginationSmall="size === 'small' ? true : false"
+            :pagination-small="size === 'small' ? true : false"
             :header-cell-style="{
               background: 'var(--el-table-row-hover-bg-color)',
               color: 'var(--el-text-color-primary)'
             }"
-            @selection-change="handleSelectionChange"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
           >
             <template #operation="{ row }">
               <el-popover
@@ -162,7 +159,7 @@ const {
                         type="info"
                         :size="size"
                         :icon="useRenderIcon('fa-solid:caret-square-right')"
-                        @click="startJob(row)"
+                        @click.stop="startJob(row)"
                       >
                         启动任务
                       </el-button>
@@ -174,7 +171,7 @@ const {
                         type="info"
                         :size="size"
                         :icon="useRenderIcon('fa:stop-circle')"
-                        @click="stopJob(row)"
+                        @click.stop="stopJob(row)"
                       >
                         停止任务
                       </el-button>
@@ -186,7 +183,7 @@ const {
                         type="primary"
                         :size="size"
                         :icon="useRenderIcon('fa:pause-circle')"
-                        @click="pauseJob(row)"
+                        @click.stop="pauseJob(row)"
                       >
                         暂停任务
                       </el-button>
@@ -198,7 +195,7 @@ const {
                         type="primary"
                         :size="size"
                         :icon="useRenderIcon('fa:history')"
-                        @click="resumeJob(row)"
+                        @click.stop="resumeJob(row)"
                       >
                         恢复任务
                       </el-button>
@@ -231,7 +228,7 @@ const {
                 </template>
               </el-dropdown>
             </template>
-          </pure-table>
+          </x-table>
         </template>
       </PureTableBar>
     </div>

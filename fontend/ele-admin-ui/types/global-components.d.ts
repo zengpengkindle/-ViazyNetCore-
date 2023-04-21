@@ -9,6 +9,7 @@ declare module "vue" {
     Auth: typeof import("../src/components/ReAuth")["Auth"];
     XStatus: typeof import("../src/components/ui/status.vue")['default'];
     XImage: typeof import("../src/components/ui/image.vue")['default'];
+    XTable: typeof import("@/components/Table")["XTable"];
   }
 }
 

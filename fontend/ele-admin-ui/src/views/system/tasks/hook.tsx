@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { message } from "@/utils/message";
 import TaskApi, { TasksQz } from "@/api/task";
 import { type PaginationProps } from "@pureadmin/table";
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { reactive, ref, computed, onMounted, type Ref } from "vue";
 import { nextTick } from "process";
 
@@ -17,6 +18,22 @@ export function useTask() {
     currentPage: 1,
     background: true
   });
+
+  const handleTriggerStopClick = async (jobId, triggerId) => {
+    if (triggerId) {
+      await TaskApi.stopTrigger(jobId, triggerId);
+      message(`停止Trigger任务成功`, { type: "success" });
+    }
+    onSearch();
+  };
+  const handleTriggerStartClick = async (jobId, triggerId) => {
+    if (triggerId) {
+      await TaskApi.startTrigger(jobId, triggerId);
+      message(`启动Trigger任务成功`, { type: "success" });
+    }
+    onSearch();
+  };
+
   const columns: TableColumnList = [
     {
       type: "selection",
@@ -33,7 +50,6 @@ export function useTask() {
     {
       label: "",
       type: "expand",
-      fixed: "left",
       cellRenderer: ({ row }) => {
         const headStyle = {
           background: "var(--el-table-row-hover-bg-color)",
@@ -44,41 +60,73 @@ export function useTask() {
           left: "60px"
           // width: "800px"
         };
+        const opCloumn = {
+          default: scope2 => {
+            const row2 = scope2.row;
+
+            if (row2.triggerId) {
+              return (
+                <>
+                  <el-popconfirm
+                    title="是否确认启动?"
+                    onConfirm={() =>
+                      handleTriggerStartClick(row.id, row2.triggerId)
+                    }
+                    v-slots={{
+                      reference: () => (
+                        <el-button
+                          link
+                          type="primary"
+                          icon={useRenderIcon("fa-solid:caret-square-right")}
+                        />
+                      )
+                    }}
+                  ></el-popconfirm>
+                  <el-popconfirm
+                    title="是否确认停止?"
+                    onConfirm={() =>
+                      handleTriggerStopClick(row.id, row2.triggerId)
+                    }
+                    v-slots={{
+                      reference: () => (
+                        <el-button
+                          link
+                          icon={useRenderIcon("fa:stop-circle")}
+                          type="warning"
+                        />
+                      )
+                    }}
+                  ></el-popconfirm>
+                </>
+              );
+            }
+          }
+        };
         return (
-          <el-table
-            data={row.triggers}
-            size="small"
-            border
-            style={tableStyle}
-            header-cell-style={headStyle}
-          >
-            <el-table-column prop="jobId" label="任务编号" fixed width="190" />
-            <el-table-column prop="jobGroup" label="任务" fixed width="190" />
-            <el-table-column
-              prop="triggerId"
-              label="触发器ID"
-              fixed
-              width="190"
-            />
-            <el-table-column
-              prop="triggerName"
-              label="触发器名称"
-              fixed
-              width="190"
-            />
-            <el-table-column
-              prop="triggerGroup"
-              label="触发器分组"
-              fixed
-              width="190"
-            />
-            <el-table-column
-              prop="triggerStatus"
-              label="触发器状态"
-              fixed
-              width="190"
-            />
-          </el-table>
+          <>
+            <el-table
+              data={row.triggers}
+              size="small"
+              border
+              headerAlign="center"
+              style={tableStyle}
+              header-cell-style={headStyle}
+            >
+              <el-table-column prop="jobGroup" label="任务" width="130" />
+              <el-table-column prop="triggerId" label="触发器ID" width="180" />
+              <el-table-column
+                prop="triggerGroup"
+                label="触发器分组"
+                width="120"
+              />
+              <el-table-column
+                prop="triggerStatus"
+                label="触发器状态"
+                width="120"
+              />
+              <el-table-column label="操作" width="80" v-slots={opCloumn} />
+            </el-table>
+          </>
         );
       }
     },
@@ -130,12 +178,14 @@ export function useTask() {
     {
       label: "程序集",
       prop: "assemblyName",
-      minWidth: 90
+      showOverflowTooltip: true,
+      minWidth: 120
     },
     {
       label: "执行类",
       prop: "className",
-      minWidth: 90
+      showOverflowTooltip: true,
+      minWidth: 120
     },
     {
       label: "并行数",
@@ -197,7 +247,6 @@ export function useTask() {
       formatter: ({ createTime }) =>
         dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     },
-
     {
       label: "运行状态",
       prop: "status",

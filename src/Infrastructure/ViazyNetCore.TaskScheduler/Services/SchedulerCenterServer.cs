@@ -336,6 +336,63 @@ namespace ViazyNetCore.TaskScheduler
             return ls;
         }
 
+        /// <summary>
+        /// 暂停一个指定的计划任务
+        /// </summary>
+        /// <returns></returns>
+        public async Task PauseScheduleTriggerAsync(TasksQz sysSchedule, string triggerId)
+        {
+            try
+            {
+                JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
+                if (!await _scheduler.Value.CheckExists(jobKey))
+                {
+                    return;
+                }
+                else
+                {
+                    var triggerKey = new TriggerKey(triggerId, sysSchedule.JobGroup);
+                    if (await this._scheduler.Value.CheckExists(triggerKey))
+                    {
+                        //await this._scheduler.Value.PauseTrigger(triggerKey);
+                        await this._scheduler.Value.UnscheduleJob(triggerKey);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 暂停一个指定的计划任务
+        /// </summary>
+        /// <returns></returns>
+        public async Task ResumeScheduleTriggerAsync(TasksQz sysSchedule, string triggerId)
+        {
+            try
+            {
+                JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
+                if (!await _scheduler.Value.CheckExists(jobKey))
+                {
+                    return;
+                }
+                else
+                {
+                    var triggerKey = new TriggerKey(triggerId, sysSchedule.JobGroup);
+                    if (await this._scheduler.Value.CheckExists(triggerKey))
+                    {
+                        await this._scheduler.Value.ResumeTrigger(triggerKey);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public string GetTriggerState(string key)
         {
             string state = null;

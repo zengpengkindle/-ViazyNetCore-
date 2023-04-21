@@ -11,6 +11,7 @@ import { injectResponsiveStorage } from "@/utils/responsive";
 
 import Table from "@pureadmin/table";
 import Status from "@/components/ui/status.vue";
+import XTable from "@/components/Table";
 import ImageUpload from "@/components/ui/image.vue";
 // import PureDescriptions from "@pureadmin/descriptions";
 
@@ -58,6 +59,7 @@ getServerConfig(app).then(async config => {
   app
     .use(createGlobal())
     // .use(useEcharts)
-    .use(Table); // .use(PureDescriptions)
+    .use(Table)
+    .use(XTable); // .use(PureDescriptions)
   app.mount("#app");
 });

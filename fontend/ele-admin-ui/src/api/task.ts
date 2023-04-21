@@ -138,6 +138,26 @@ export class TaskApi {
       params: { Page: page, Limit: limit, jobId, runTimeStart, runTimeEnd }
     });
   }
+  /**
+   * 停止一个Trigger
+   */
+  public stopTrigger(jobId?: number, triggerId?: string): Promise<void> {
+    return http.request({
+      url: "/api/Task/stopTrigger",
+      method: "get",
+      params: { jobId, triggerId }
+    });
+  }
+  /**
+   * 启用一个计划任务
+   */
+  public startTrigger(jobId?: number, triggerId?: string): Promise<void> {
+    return http.request({
+      url: "/api/Task/startTrigger",
+      method: "get",
+      params: { jobId, triggerId }
+    });
+  }
 }
 export default new TaskApi();
 /**

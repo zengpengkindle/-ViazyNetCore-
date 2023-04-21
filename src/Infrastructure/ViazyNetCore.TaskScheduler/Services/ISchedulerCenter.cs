@@ -72,5 +72,10 @@ namespace ViazyNetCore.TaskScheduler
         /// <returns></returns>
         Task ExecuteJobAsync(TasksQz tasksQz);
 
+        /// <summary>
+        /// 停止一个指定的Trigger
+        /// </summary>
+        Task PauseScheduleTriggerAsync(TasksQz model, string triggerId);
+        Task ResumeScheduleTriggerAsync(TasksQz model, string triggerId);
     }
 }

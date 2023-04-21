@@ -21,10 +21,10 @@ export type {
 import type { App } from "vue";
 import Table from "./components/table";
 
-export const PureTable = Object.assign(Table, {
+export const XTable = Object.assign(Table, {
   install: function (app: App) {
     app.component(Table.name, Table);
   }
 });
 
-export default PureTable;
+export default XTable;

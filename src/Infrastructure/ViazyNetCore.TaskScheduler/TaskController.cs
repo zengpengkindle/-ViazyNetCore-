@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using ViazyNetCore.Data.FreeSql;
 using ViazyNetCore.DI;
+using static FreeSql.Internal.GlobalFilter;
 
 namespace ViazyNetCore.TaskScheduler
 {
@@ -225,6 +226,62 @@ namespace ViazyNetCore.TaskScheduler
                 throw new ApiException("任务不存在");
             }
         }
+
+        /// <summary>
+        /// 停止一个计划任务
+        /// </summary>
+        /// <returns></returns>        
+        [HttpGet]
+        public async Task StopTrigger(long jobId, string triggerId)
+        {
+            var model = await _tasksQzService.GetByIdAsync(jobId);
+            if (model != null)
+            {
+                var triggers = await _schedulerCenter.GetTaskStaus(model);
+                if (triggers.Any(p => p.TriggerId == triggerId))
+                {
+                    await _schedulerCenter.PauseScheduleTriggerAsync(model, triggerId);
+                    if (triggers.Count == 1)
+                    {
+                        model.IsStart = false;
+                        await this._tasksQzService.Update(model);
+                        await this._schedulerCenter.StopScheduleJobAsync(model);
+                    }
+                }
+            }
+            else
+            {
+                throw new ApiException("任务不存在");
+            }
+        }
+
+        /// <summary>
+        /// 停止一个计划任务
+        /// </summary>
+        /// <returns></returns>        
+        [HttpGet]
+        public async Task StartTrigger(long jobId, string triggerId)
+        {
+            var model = await _tasksQzService.GetByIdAsync(jobId);
+            if (model != null)
+            {
+                var triggers = await _schedulerCenter.GetTaskStaus(model);
+                if (triggers.Any(p => p.TriggerId == triggerId))
+                {
+                    await _schedulerCenter.ResumeScheduleTriggerAsync(model, triggerId);
+                    if (triggers.Count == 1)
+                    {
+                        model.IsStart = true;
+                        await this._tasksQzService.Update(model);
+                    }
+                }
+            }
+            else
+            {
+                throw new ApiException("任务不存在");
+            }
+        }
+
         /// <summary>
         /// 暂停一个计划任务
         /// </summary>

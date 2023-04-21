@@ -51,9 +51,18 @@ namespace ViazyNetCore.Auth
     public enum AuthUserType
     {
         /// <summary>
+        /// 会员
+        /// </summary>
+        Member = 0,
+        /// <summary>
         /// 普通用户
         /// </summary>
         [Description("普通用户")]
-        Normal,
+        Normal = 1,
+        /// <summary>
+        /// 管理员
+        /// </summary>
+        [Description("管理员")]
+        PlatformAdmin =99
     }
 }

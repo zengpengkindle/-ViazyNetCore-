@@ -17,16 +17,10 @@ import {
   TableColumnRenderer
 } from "../../types";
 import DecimalColumn from "../column/decimals";
-import {
-  ElTable,
-  ElTableColumn,
-  ElPagination,
-  dayjs,
-  TableColumnCtx
-} from "element-plus";
+import { ElTable, ElTableColumn, ElPagination } from "element-plus";
 
 export default defineComponent({
-  name: "PureTable",
+  name: "XTable",
   props,
   emits: ["page-size-change", "page-current-change"],
   setup(props, { slots, attrs, emit, expose }) {
@@ -116,16 +110,8 @@ export default defineComponent({
       unref(pagination).pageSize;
 
     const renderColumns = (columns: Record<string, any>, index: number) => {
-      const {
-        slot,
-        headerRenderer,
-        hide,
-        formatter,
-        valueType,
-        children,
-        prop,
-        ...args
-      } = columns;
+      const { slot, headerRenderer, hide, valueType, children, prop, ...args } =
+        columns;
       let { cellRenderer } = columns;
 
       const defaultSlots = {
@@ -141,7 +127,7 @@ export default defineComponent({
                 })}
               ></Renderer>
             );
-          } else if (valueType && formatter === null) {
+          } else if (valueType) {
             if (valueType === "amount") {
               cellRenderer = ({ row, column }: TableColumnRenderer) => (
                 <DecimalColumn value={row[column.prop as string]} />
