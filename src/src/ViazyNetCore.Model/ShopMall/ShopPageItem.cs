@@ -46,7 +46,7 @@ namespace ViazyNetCore.Model
         /// 组件配置内容
         /// </summary>
         [Display(Name = "组件配置内容")]
-        [Column(IsNullable = true)]
+        [Column(IsNullable = true, StringLength = -2)]
         public string Parameters { get; set; }
     }
 }

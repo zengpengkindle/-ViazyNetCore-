@@ -7,12 +7,12 @@ import draggable from "vuedraggable";
 import { CloseBold } from "@element-plus/icons-vue";
 
 import { allWidget, useWidget } from "./components/widget";
-
+import { useRouter } from "vue-router";
 export interface Props {
   modelValue: boolean;
   readonly id: number;
 }
-
+const router = useRouter();
 const {
   pageData,
   selectWg,
@@ -86,7 +86,14 @@ const tools: Array<ToolGroup> = [
 // const widgetAdd = () => {};
 </script>
 <template>
-  <div class="main">
+  <el-card>
+    <el-page-header @back="router.back()">
+      <template #content>
+        <span class="text-large font-600 mr-3"> 商城页面设计 </span>
+      </template>
+    </el-page-header>
+  </el-card>
+  <div class="main mt-5">
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card>
