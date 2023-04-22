@@ -12,6 +12,9 @@
 - ViazyNetCore.Formmatter.Response 公共处理返回业务模块。
 - ViazyNetCore.Formmatter.Excel 数据转Excel文件下载模块
 - ViazyNetCore.Web.DevServer ViteNode Spa处理模块。
+- ViazyNetCore.TaskScheduler 基于Quartz.Net的任务管理。
+- ViazyNetCore.RabbitMQ RabbitMQ消息队列
+- ViazyNetCore.TaskScheduler.RabbitMQ RabbitMQ Quartz任务消费者
 - 
 - fontend/ele-admin-ui vue3 管理后台-前端UI
 - fontend/shopmall-uniapp 前端商城小程序 uni-app项目

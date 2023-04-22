@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Quartz.Spi;
 using Quartz;
 using ViazyNetCore.TaskScheduler;
+using Microsoft.AspNetCore.Builder;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -20,6 +21,27 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<ISchedulerCenter, SchedulerCenterServer>();
             services.AddScoped<TasksQzService>();
             services.AddScoped<TasksLogService>();
+        }
+
+        /// <summary>
+        /// 程序启动后添加任务计划
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseJobSchedulers(this IApplicationBuilder app)
+        {
+            TasksQzService tasksQzService = app.ApplicationServices.GetRequiredService<TasksQzService>();
+            ISchedulerCenter schedulerCenter = app.ApplicationServices.GetRequiredService<ISchedulerCenter>();
+
+            var tasks = tasksQzService.GetAllStart().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            //程序启动后注册所有定时任务
+            foreach (var task in tasks)
+            {
+                schedulerCenter.AddScheduleJobAsync(task);
+            }
+
+            return app;
         }
     }
 }

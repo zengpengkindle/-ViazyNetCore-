@@ -18,7 +18,12 @@ namespace ViazyNetCore.Redis
         private readonly IRedisCache _redisCache;
         private IDatabase _cache;
         private bool _disposed;
-        private string _setScript = "\r\n                redis.call('HSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])\r\n                if ARGV[3] ~= '-1' then\r\n                  redis.call('EXPIRE', KEYS[1], ARGV[3])\r\n                end\r\n                return 1";
+        private string _setScript = @"
+                redis.call('HSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])
+                if ARGV[3] ~= '-1' then
+                  redis.call('EXPIRE', KEYS[1], ARGV[3])
+                end
+                return 1";
 
         private static readonly Version ServerVersionWithExtendedSetCommand = new Version(4, 0, 0);
 
@@ -134,14 +139,24 @@ namespace ViazyNetCore.Redis
                 {
                     if (_connection.GetServer(endpoint).Version < ServerVersionWithExtendedSetCommand)
                     {
-                        _setScript = "\r\n                redis.call('HMSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])\r\n                if ARGV[3] ~= '-1' then\r\n                  redis.call('EXPIRE', KEYS[1], ARGV[3])\r\n                end\r\n                return 1";
+                        _setScript = @"
+                redis.call('HMSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])
+                if ARGV[3] ~= '-1' then
+                  redis.call('EXPIRE', KEYS[1], ARGV[3])
+                end
+                return 1";
                         break;
                     }
                 }
             }
             catch (NotSupportedException exception)
             {
-                _setScript = "\r\n                redis.call('HMSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])\r\n                if ARGV[3] ~= '-1' then\r\n                  redis.call('EXPIRE', KEYS[1], ARGV[3])\r\n                end\r\n                return 1";
+                _setScript = @"
+                redis.call('HMSET', KEYS[1], 'absexp', ARGV[1], 'sldexp', ARGV[2], 'data', ARGV[4])
+                if ARGV[3] ~= '-1' then
+                  redis.call('EXPIRE', KEYS[1], ARGV[3])
+                end
+                return 1";
             }
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Model.Models;
 using FreeSql;
+using Quartz.Util;
 
 namespace ViazyNetCore.TaskScheduler
 {
@@ -29,7 +30,7 @@ namespace ViazyNetCore.TaskScheduler
 
         public Task<PageData<TasksQz>> QueryPageList(Pagination pagination, string key)
         {
-            return this._taskQzRepository.Where(p=>!p.IsDeleted).WhereIf(key.IsNotNull(), p => p.Name.Contains(key))
+            return this._taskQzRepository.Where(p => !p.IsDeleted).WhereIf(key.IsNotNull(), p => p.Name.Contains(key))
                 .OrderByDescending(p => p.CreateTime)
                  .ToPageAsync(pagination);
         }
@@ -42,6 +43,11 @@ namespace ViazyNetCore.TaskScheduler
         public async Task DeleteAsync(long taskId)
         {
             await this._taskQzRepository.DeleteAsync(taskId);
+        }
+
+        public Task<List<TasksQz>> GetAllStart()
+        {
+            return this._taskQzRepository.Where(p => !p.IsDeleted && p.IsStart).ToListAsync();
         }
     }
 }
