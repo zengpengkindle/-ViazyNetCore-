@@ -20,3 +20,5 @@ bld/
 App_Data
 PublishProfiles
 yarn.lock
+/src/Presentation/ViazyNetCore.Manage.WebApi/Configs/dbconfig.Development.json
+/src/Presentation/ViazyNetCore.Manage.WebApi/Configs/rabbitmq.Development.json
