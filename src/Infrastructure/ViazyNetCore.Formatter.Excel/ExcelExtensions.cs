@@ -86,7 +86,7 @@ namespace ViazyNetCore.Formatter.Excel
         {
             var table = await data.ToDataTableAsync(sheetName);
 
-            using (var wb = new XLWorkbook(XLEventTracking.Disabled))
+            using (var wb = new XLWorkbook())
             {
                 wb.Worksheets.Add(table).ColumnsUsed().AdjustToContents();
                 wb.SaveAs(path);

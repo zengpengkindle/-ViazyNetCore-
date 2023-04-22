@@ -1,6 +1,6 @@
 {
   "MQueue": {
-    "ConnectionStrings": { "Default": "host=47.98.34.91;Port=5672;virtualHost=caesar;username=ytt;password=mqEeIzfAYNmr2hfFsVK" },
+    "ConnectionStrings": { "Default": "" },
     "Options": {
       "PreheatCount": 10, //预热通道数。
       "MaxChannelPerConnection": 211, //每个连接最多可以创建的通道数量
