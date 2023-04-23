@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Model.Crm
 {
-    public class CrmContactsBusiness : EntityUpdate
+    /// <summary>
+    /// 商机联系人关联表
+    /// </summary>
+    public class CrmContactsBusiness : EntityAdd
     {
-
+        public long BusinessId { get; set; }
+        public long ContactsId { get; set; }
     }
 }

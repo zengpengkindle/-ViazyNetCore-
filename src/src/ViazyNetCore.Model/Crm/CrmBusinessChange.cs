@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Model.Crm
 {
+    /// <summary>
+    /// 商机阶段变化表
+    /// </summary>
     public class CrmBusinessChange : EntityUpdate
     {
+        public long BusinessId { get; set; }
 
+        /// <summary>
+        /// 阶段ID
+        /// </summary>
+        public int StatusId { get; set; }
     }
 }
