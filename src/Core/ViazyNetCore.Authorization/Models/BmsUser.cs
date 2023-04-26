@@ -9,7 +9,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个管理用户。
     /// </summary>
-    public partial class BmsUser : EntityBase<string>
+    public partial class BmsUser : EntityAdd<string>
     {
         /// <summary>
         /// 设置或获取一个值，表示账号。
@@ -30,11 +30,6 @@ namespace ViazyNetCore.Authorization.Models
         /// 设置或获取一个值，表示昵称。
         /// </summary>
         public string Nickname { get; set; }
-
-        /// <summary>
-        /// 设置或获取一个值，表示创建时间。
-        /// </summary>
-        public DateTime CreateTime { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示状态（-1删除，0禁用，1启用）。

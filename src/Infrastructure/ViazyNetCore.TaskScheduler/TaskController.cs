@@ -46,7 +46,7 @@ namespace ViazyNetCore.TaskScheduler
         /// <param name="key"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<PageData<TasksQz>> GetList([FromQuery] Pagination pagination, string key = "")
+        public async Task<PageData<TaskInfo>> GetList([FromQuery] Pagination pagination, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -71,7 +71,7 @@ namespace ViazyNetCore.TaskScheduler
         /// <param name="key"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<TasksQz> Get(long jobId)
+        public async Task<TaskInfo> Get(long jobId)
         {
             var model = await _tasksQzService.GetByIdAsync(jobId);
             if (model == null)
@@ -87,12 +87,12 @@ namespace ViazyNetCore.TaskScheduler
         /// <param name="tasksQz"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task AddTask([Required][FromBody] TasksQzEditDto tasksQzDto)
+        public async Task AddTask([Required][FromBody] TaskInfoEditDto tasksQzDto)
         {
             //var request = await this._httpContextAccessor.HttpContext.Request.Body.ReadToEndAsync();
             using var unow = _unitOfWorkManage.Begin();
             if (tasksQzDto.TriggerType == 0) tasksQzDto.Cron = null;
-            var tasksQz = tasksQzDto.CopyTo<TasksQz>();
+            var tasksQz = tasksQzDto.CopyTo<TaskInfo>();
             await _tasksQzService.InsertAsync(tasksQz);
             try
             {
@@ -117,9 +117,9 @@ namespace ViazyNetCore.TaskScheduler
         /// <param name="tasksQz"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task UpdateTask([FromBody] TasksQzEditDto tasksQzDto)
+        public async Task UpdateTask([FromBody] TaskInfoEditDto tasksQzDto)
         {
-            var tasksQz = tasksQzDto.CopyTo<TasksQz>();
+            var tasksQz = tasksQzDto.CopyTo<TaskInfo>();
             if (tasksQzDto.TriggerType == 0) tasksQzDto.Cron = null;
             if (tasksQz != null && tasksQz.Id > 0)
             {
@@ -415,7 +415,7 @@ namespace ViazyNetCore.TaskScheduler
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<PageData<TasksLog>> GetTaskLogs([FromQuery] Pagination pagination, int jobId, DateTime? runTimeStart = null, DateTime? runTimeEnd = null)
+        public async Task<PageData<TaskLog>> GetTaskLogs([FromQuery] Pagination pagination, int jobId, DateTime? runTimeStart = null, DateTime? runTimeEnd = null)
         {
             var model = await _tasksLogService.GetTaskLogs(pagination, jobId, runTimeStart, runTimeEnd);
             return model;

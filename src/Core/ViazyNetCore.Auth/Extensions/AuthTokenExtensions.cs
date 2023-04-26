@@ -11,6 +11,19 @@ namespace Microsoft.AspNetCore.Http
     public static class AuthTokenExtensions
     {
         #region AuthUser用户信息
+
+        /// <summary>
+        /// AuthUser用户信息
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static AuthUser? GetAuthUser(this IHttpContextAccessor context)
+        {
+            if (context.HttpContext == null)
+                return null;
+            return context.HttpContext.GetAuthUser();
+        }
+
         /// <summary>
         /// AuthUser用户信息
         /// </summary>
@@ -37,23 +50,22 @@ namespace Microsoft.AspNetCore.Http
             }
             return new AuthUser
             {
-                Token = rawToken,
                 AuthUserType = claims.GetAuthUserType(),
-                UserKey = claims.GetUserId(),
+                Id = claims.GetUserId(),
                 ClientId = claims.GetClientId(),
                 Exp = claims.GetExp(),
                 Nbf = claims.GetNbf(),
-                UserName = claims.GetUserName(),
+                Username = claims.GetUserName(),
             };
         }
 
         public static int[] GetAuthUserRoleIds(this HttpContext context)
         {
             var roles = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-            if(roles.IsNull())
+            if (roles.IsNull())
                 return new int[0];
             else
-                return roles!.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(p=>p.ParseTo<int>()).ToArray();
+                return roles!.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(p => p.ParseTo<int>()).ToArray();
         }
         #endregion
 
@@ -81,13 +93,13 @@ namespace Microsoft.AspNetCore.Http
             }
             return new AuthUser
             {
-                Token = jwtToken,
                 AuthUserType = claims.GetAuthUserType(),
-                UserKey = claims.GetUserId(),
+                Id = claims.GetUserId(),
                 ClientId = claims.GetClientId(),
                 Exp = claims.GetExp(),
                 Nbf = claims.GetNbf(),
-                UserName = claims.GetUserName(),
+                Username = claims.GetUserName(),
+                Nickname = claims.GetNickName(),
                 Amr = amr
             };
         }
@@ -145,7 +157,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="request">当前用户接口实例。</param>
         /// <returns>返回用户名称。</returns>
-        public static string GetUserName(this HttpRequest request)
+        public static string? GetUserName(this HttpRequest request)
         {
             return request.Claims().FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
         }
@@ -155,9 +167,18 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        public static string GetUserName(this Claim[] claims)
+        public static string? GetUserName(this Claim[] claims)
         {
             return claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        }
+        /// <summary>
+        /// 获取当前用户的用户名称
+        /// </summary>
+        /// <param name="claims"></param>
+        /// <returns></returns>
+        public static string? GetNickName(this Claim[] claims)
+        {
+            return claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
         }
         #endregion
 

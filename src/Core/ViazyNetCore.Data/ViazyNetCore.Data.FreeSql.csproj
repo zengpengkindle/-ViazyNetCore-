@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
   </ItemGroup>
 

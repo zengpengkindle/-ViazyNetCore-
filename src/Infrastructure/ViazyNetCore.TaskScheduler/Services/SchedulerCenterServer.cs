@@ -111,7 +111,7 @@ namespace ViazyNetCore.TaskScheduler
         /// <typeparam name="T"></typeparam>
         /// <param name="tasksQz"></param>
         /// <returns></returns>
-        public async Task AddScheduleJobAsync(TasksQz tasksQz)
+        public async Task AddScheduleJobAsync(TaskInfo tasksQz)
         {
             if (tasksQz != null)
             {
@@ -209,7 +209,7 @@ namespace ViazyNetCore.TaskScheduler
         /// 任务是否存在?
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> IsExistScheduleJobAsync(TasksQz sysSchedule)
+        public async Task<bool> IsExistScheduleJobAsync(TaskInfo sysSchedule)
         {
             JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
             if (await _scheduler.Value.CheckExists(jobKey))
@@ -225,7 +225,7 @@ namespace ViazyNetCore.TaskScheduler
         /// 暂停一个指定的计划任务
         /// </summary>
         /// <returns></returns>
-        public async Task StopScheduleJobAsync(TasksQz sysSchedule)
+        public async Task StopScheduleJobAsync(TaskInfo sysSchedule)
         {
             try
             {
@@ -256,7 +256,7 @@ namespace ViazyNetCore.TaskScheduler
         /// </summary>
         /// <param name="sysSchedule"></param>
         /// <returns></returns>
-        public async Task ResumeJob(TasksQz sysSchedule)
+        public async Task ResumeJob(TaskInfo sysSchedule)
         {
             try
             {
@@ -277,7 +277,7 @@ namespace ViazyNetCore.TaskScheduler
         /// </summary>
         /// <param name="sysSchedule"></param>
         /// <returns></returns>
-        public async Task PauseJob(TasksQz sysSchedule)
+        public async Task PauseJob(TaskInfo sysSchedule)
         {
             try
             {
@@ -295,7 +295,7 @@ namespace ViazyNetCore.TaskScheduler
         }
 
         #region 状态状态帮助方法
-        public async Task<List<TaskInfoDto>> GetTaskStaus(TasksQz sysSchedule)
+        public async Task<List<TaskInfoDto>> GetTaskStaus(TaskInfo sysSchedule)
         {
 
             var ls = new List<TaskInfoDto>();
@@ -340,7 +340,7 @@ namespace ViazyNetCore.TaskScheduler
         /// 暂停一个指定的计划任务
         /// </summary>
         /// <returns></returns>
-        public async Task PauseScheduleTriggerAsync(TasksQz sysSchedule, string triggerId)
+        public async Task PauseScheduleTriggerAsync(TaskInfo sysSchedule, string triggerId)
         {
             try
             {
@@ -369,7 +369,7 @@ namespace ViazyNetCore.TaskScheduler
         /// 暂停一个指定的计划任务
         /// </summary>
         /// <returns></returns>
-        public async Task ResumeScheduleTriggerAsync(TasksQz sysSchedule, string triggerId)
+        public async Task ResumeScheduleTriggerAsync(TaskInfo sysSchedule, string triggerId)
         {
             try
             {
@@ -450,7 +450,7 @@ namespace ViazyNetCore.TaskScheduler
         /// <param name="starRunTime"></param>
         /// <param name="endRunTime"></param>
         /// <returns></returns>
-        private ITrigger CreateSimpleTrigger(TasksQz sysSchedule)
+        private ITrigger CreateSimpleTrigger(TaskInfo sysSchedule)
         {
             ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity(Guid.NewGuid().ToString("N"), sysSchedule.JobGroup)
@@ -483,7 +483,7 @@ namespace ViazyNetCore.TaskScheduler
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        private ITrigger CreateCronTrigger(TasksQz sysSchedule)
+        private ITrigger CreateCronTrigger(TaskInfo sysSchedule)
         {
             // 作业触发器
             return TriggerBuilder.Create()
@@ -501,7 +501,7 @@ namespace ViazyNetCore.TaskScheduler
         /// </summary>
         /// <param name="tasksQz"></param>
         /// <returns></returns>
-        public async Task ExecuteJobAsync(TasksQz tasksQz)
+        public async Task ExecuteJobAsync(TaskInfo tasksQz)
         {
             try
             {

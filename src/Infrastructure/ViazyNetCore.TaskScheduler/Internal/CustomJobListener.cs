@@ -65,7 +65,7 @@ namespace ViazyNetCore.TaskScheduler
         public async Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken = default(CancellationToken))
         {
             //记录Job
-            TasksLog tasksLog = new TasksLog();
+            TaskLog tasksLog = new TaskLog();
             //JOBID
             long jobid = context.JobDetail.Key.Name.ParseTo<long>();
             //JOB组名

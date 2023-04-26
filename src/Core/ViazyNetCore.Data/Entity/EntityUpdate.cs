@@ -13,7 +13,7 @@ namespace ViazyNetCore
     /// 修改接口
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public interface IEntityUpdate<TKey> where TKey : struct
+    public interface IEntityUpdate<TKey>
     {
         /// <summary>
         /// 修改者Id
@@ -31,7 +31,7 @@ namespace ViazyNetCore
         DateTime? UpdateTime { get; set; }
     }
 
-    public class EntityUpdate<TKey> : EntityAdd<TKey>, IEntityUpdate<TKey> where TKey : struct
+    public class EntityUpdate<TKey> : EntityAdd<TKey>, IEntityUpdate<TKey>
     {
         /// <summary>
         /// 修改者Id

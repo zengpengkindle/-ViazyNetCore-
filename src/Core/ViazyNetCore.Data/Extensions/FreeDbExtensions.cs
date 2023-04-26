@@ -4,8 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreeSql;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
+using ViazyNetCore;
 using ViazyNetCore.Data.FreeSql;
+using ViazyNetCore.Data.FreeSql.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -34,6 +39,21 @@ namespace Microsoft.Extensions.DependencyInjection
 
             var fsql = freeSqlCloud.Use(dbConfig.Key);
             services.AddSingleton(provider => fsql);
+        }
+
+        public static IApplicationBuilder UseFreeSql(this IApplicationBuilder app)
+        {
+            var fsql = app.ApplicationServices.GetService<IFreeSql>();
+            var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
+            User user = new User(httpContextAccessor);
+            if (fsql == null)
+                throw new ArgumentNullException(nameof(IFreeSql));
+            //fsql.Aop.CurdAfter += Aop_CurdAfter; ;
+            fsql.Aop.AuditValue += (s, e) =>
+            {
+                FreeSqlExtensions.AopAuditValue(user, e);
+            };
+            return app;
         }
     }
 }

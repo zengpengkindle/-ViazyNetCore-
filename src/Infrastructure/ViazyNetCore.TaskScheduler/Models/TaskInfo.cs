@@ -8,7 +8,7 @@ using FreeSql.DataAnnotations;
 
 namespace ViazyNetCore.TaskScheduler
 {
-    public class TasksQz:EntityUpdate
+    public class TaskInfo:EntityUpdate
     {
         /// <summary>
         /// 任务名称

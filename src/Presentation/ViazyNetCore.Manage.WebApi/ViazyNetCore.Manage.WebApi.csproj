@@ -16,14 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Configs\rabbitmq.Development.json" />
     <Content Remove="Configs\rabbitmq.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Configs\rabbitmq.Development.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Configs\rabbitmq.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

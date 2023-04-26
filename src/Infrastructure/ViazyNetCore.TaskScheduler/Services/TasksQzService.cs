@@ -11,31 +11,31 @@ namespace ViazyNetCore.TaskScheduler
 {
     public class TasksQzService
     {
-        private readonly IBaseRepository<TasksQz, long> _taskQzRepository;
+        private readonly IBaseRepository<TaskInfo, long> _taskQzRepository;
 
-        public TasksQzService(IBaseRepository<TasksQz, long> taskQzRepository)
+        public TasksQzService(IBaseRepository<TaskInfo, long> taskQzRepository)
         {
             this._taskQzRepository = taskQzRepository;
         }
 
-        public Task<TasksQz> GetByIdAsync(long jobId)
+        public Task<TaskInfo> GetByIdAsync(long jobId)
         {
             return this._taskQzRepository.GetAsync(jobId);
         }
 
-        public Task Update(TasksQz model)
+        public Task Update(TaskInfo model)
         {
             return this._taskQzRepository.UpdateAsync(model);
         }
 
-        public Task<PageData<TasksQz>> QueryPageList(Pagination pagination, string key)
+        public Task<PageData<TaskInfo>> QueryPageList(Pagination pagination, string key)
         {
             return this._taskQzRepository.Where(p => !p.IsDeleted).WhereIf(key.IsNotNull(), p => p.Name.Contains(key))
                 .OrderByDescending(p => p.CreateTime)
                  .ToPageAsync(pagination);
         }
 
-        public async Task InsertAsync(TasksQz tasksQz)
+        public async Task InsertAsync(TaskInfo tasksQz)
         {
             await this._taskQzRepository.InsertAsync(tasksQz);
         }
@@ -45,7 +45,7 @@ namespace ViazyNetCore.TaskScheduler
             await this._taskQzRepository.DeleteAsync(taskId);
         }
 
-        public Task<List<TasksQz>> GetAllStart()
+        public Task<List<TaskInfo>> GetAllStart()
         {
             return this._taskQzRepository.Where(p => !p.IsDeleted && p.IsStart).ToListAsync();
         }

@@ -165,9 +165,9 @@ namespace ViazyNetCore.Authrozation
         public async Task<List<string>> GetUserMenus()
         {
             var auth = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            var privs = await this._permissionService.ResolveUserPermission(auth.UserKey);
+            var privs = await this._permissionService.ResolveUserPermission(auth.Id);
             var privKeys = privs.Select(p => p.PermissionItemKey).Distinct().ToArray();
-            if (auth.UserName == "admin")
+            if (auth.Username == "admin")
             {
                 if (!privKeys.Contains(PermissionIds.User))
                     privKeys = privKeys.Concat(new string[] { PermissionIds.User }).ToArray();
@@ -234,9 +234,9 @@ namespace ViazyNetCore.Authrozation
         public async Task<List<PrivTreeModel>> GetUserMenusTree()
         {
             var auth = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            var privs = await this._permissionService.ResolveUserPermission(auth.UserKey);
+            var privs = await this._permissionService.ResolveUserPermission(auth.Id);
             var privKeys = privs.Select(p => p.PermissionItemKey).Distinct().ToArray();
-            if (auth.UserName == "admin")
+            if (auth.Username == "admin")
             {
                 if (!privKeys.Contains(PermissionIds.User))
                     privKeys = privKeys.Concat(new string[] { PermissionIds.User }).ToArray();
