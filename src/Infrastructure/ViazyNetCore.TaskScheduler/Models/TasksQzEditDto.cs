@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.TaskScheduler
 {
-    public class TasksQzEditDto
+    public class TaskInfoEditDto
     {
         public long Id { get; set; }
         /// <summary>

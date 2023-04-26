@@ -26,7 +26,6 @@
 		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.DI\ViazyNetCore.DI.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.EventBus\ViazyNetCore.EventBus.csproj" />
 		<ProjectReference Include="..\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
-		<ProjectReference Include="..\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
 	</ItemGroup>
 
 </Project>

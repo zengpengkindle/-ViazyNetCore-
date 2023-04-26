@@ -24,7 +24,7 @@ namespace ViazyNetCore.TaskScheduler
         public async Task TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode, CancellationToken cancellationToken = default(CancellationToken))
         {
             //记录Job
-            TasksLog tasksLog = new TasksLog();
+            TaskLog tasksLog = new TaskLog();
             //JOBID
             long jobid = context.JobDetail.Key.Name.ParseTo<long>();
             //JOB组名

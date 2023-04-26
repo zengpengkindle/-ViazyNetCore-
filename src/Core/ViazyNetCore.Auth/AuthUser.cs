@@ -7,22 +7,17 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Auth
 {
-    public class AuthUser
+    public class AuthUser : IUser
     {
         /// <summary>
         /// 认证授权中心用户Key
         /// </summary>
-        public string UserKey { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// ids4认证授权中心用户类型
         /// </summary>
         public AuthUserType? AuthUserType { get; set; }
-
-        /// <summary>
-        /// Token
-        /// </summary>
-        public string Token { get; set; }
 
         /// <summary>
         /// 获取Client Id
@@ -45,7 +40,15 @@ namespace ViazyNetCore.Auth
         /// <summary>
         /// 登录账号
         /// </summary>
-        public string UserName { get; set; }
+        public string Username { get; set; }
+        /// <summary>
+        /// 昵称
+        /// </summary>
+        public string Nickname { get; set; }
+
+        public int IdentityType => AuthUserType == null ? 0 : AuthUserType.ToInt32();
+
+        public bool IsModerated => false;
     }
 
     public enum AuthUserType
@@ -63,6 +66,6 @@ namespace ViazyNetCore.Auth
         /// 管理员
         /// </summary>
         [Description("管理员")]
-        PlatformAdmin =99
+        PlatformAdmin = 99
     }
 }

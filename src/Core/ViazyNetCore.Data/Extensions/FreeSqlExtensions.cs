@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using FreeSql.Aop;
+using Microsoft.AspNetCore.Builder;
 using ViazyNetCore;
 using ViazyNetCore.Data.FreeSql;
 
@@ -97,7 +98,7 @@ namespace FreeSql
                 //计算服务器时间
                 var serverTime = fsql.Ado.QuerySingle(() => DateTime.UtcNow);
                 var timeOffset = DateTime.UtcNow.Subtract(serverTime);
-                fsql.Aop.AuditValue += AopAuditValue;
+              
                 if (dbConfig.UseEnumInt)
                 {
                     fsql.Aop.ConfigEntityProperty += (s, e) =>
@@ -136,7 +137,7 @@ namespace FreeSql
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private static void AopAuditValue(object? sender, AuditValueEventArgs e)
+        internal static void AopAuditValue(IUser user, AuditValueEventArgs e)
         {
             //雪花Id
             if (e.AuditValueType is AuditValueType.Insert or AuditValueType.InsertOrUpdate)
@@ -152,6 +153,63 @@ namespace FreeSql
                     {
                         e.Value = Snowflake.NextIdString();
                     }
+                }
+            }
+            if (e.AuditValueType is AuditValueType.Insert or AuditValueType.InsertOrUpdate)
+            {
+                switch (e.Property.Name)
+                {
+                    case "CreatedUserId":
+                        if (e.Value == null || (long)e.Value == default || (long?)e.Value == default)
+                        {
+                            e.Value = user.Id;
+                        }
+                        break;
+                    case "CreatedUserName":
+                        if (e.Value == null || ((string)e.Value).IsNull())
+                        {
+                            e.Value = user.Nickname;
+                        }
+                        break;
+                    case "CreateTime":
+                        if ((e.Column.CsType == typeof(DateTime) || e.Column.CsType == typeof(DateTime?))
+                             && (e.Value == null || (DateTime)e.Value == default || (DateTime?)e.Value == default))
+                        {
+                            e.Value = DateTime.Now;
+                        }
+                        break;
+                        //case "TenantId":
+                        //    if (e.Value == null || (long)e.Value == default || (long?)e.Value == default)
+                        //    {
+                        //        e.Value = user.TenantId;
+                        //    }
+                        //    break;
+                }
+            }
+
+            if (e.AuditValueType is AuditValueType.Update or AuditValueType.InsertOrUpdate)
+            {
+                switch (e.Property.Name)
+                {
+                    case "UpdateUserId":
+                        if (e.Value == null || (long)e.Value == default || (long?)e.Value == default)
+                        {
+                            e.Value = user.Id;
+                        }
+                        break;
+                    case "UpdateUserName":
+                        if (e.Value == null || ((string)e.Value).IsNull())
+                        {
+                            e.Value = user.Nickname;
+                        }
+                        break;
+                    case "UpdateTime":
+                        if ((e.Column.CsType == typeof(DateTime) || e.Column.CsType == typeof(DateTime?))
+                             && (e.Value == null || (DateTime)e.Value == default || (DateTime?)e.Value == default))
+                        {
+                            e.Value = DateTime.Now;
+                        }
+                        break;
                 }
             }
         }

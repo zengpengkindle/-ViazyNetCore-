@@ -69,14 +69,14 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped(typeof(BaseRepository<,>), typeof(DefaultRepository<,>));
         }
 
-        public static IApplicationBuilder UseFreeSql(this IApplicationBuilder app)
-        {
-            var fsql = app.ApplicationServices.GetService<IFreeSql>();
-            if (fsql == null)
-                throw new ArgumentNullException(nameof(IFreeSql));
-            fsql.Aop.CurdAfter += Aop_CurdAfter; ;
-            return app;
-        }
+        //public static IApplicationBuilder UseFreeSql(this IApplicationBuilder app)
+        //{
+        //    var fsql = app.ApplicationServices.GetService<IFreeSql>();
+        //    if (fsql == null)
+        //        throw new ArgumentNullException(nameof(IFreeSql));
+        //    fsql.Aop.CurdAfter += Aop_CurdAfter; ;
+        //    return app;
+        //}
 
         #region EventHanlders
         private static void Aop_CommandAfter(object? sender, CommandAfterEventArgs e)

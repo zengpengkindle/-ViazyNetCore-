@@ -9,7 +9,7 @@ namespace ViazyNetCore.TaskScheduler
 {
     public interface ITasksLogService
     {
-        public Task<PageData<TasksLog>> GetTaskLogs(Pagination pagination, int jobId, DateTime? runTime, DateTime? endTime);
+        public Task<PageData<TaskLog>> GetTaskLogs(Pagination pagination, int jobId, DateTime? runTime, DateTime? endTime);
         public Task<object> GetTaskOverview(int jobId, DateTime? runTime, DateTime? endTime, string type);
     }
 }

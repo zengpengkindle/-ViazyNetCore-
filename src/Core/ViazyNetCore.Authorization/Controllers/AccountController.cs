@@ -90,7 +90,7 @@ namespace ViazyNetCore.Authorization
         [HttpPost]
         public Task<AuthUser> GetIdentityAsync()
         {
-            return Task.FromResult(this._httpContextAccessor.HttpContext!.GetAuthUser());
+            return Task.FromResult(this._httpContextAccessor.GetAuthUser()!);
         }
 
         [AllowAnonymous]
@@ -106,18 +106,18 @@ namespace ViazyNetCore.Authorization
         public async Task<bool> ModifyPasswordAsync([Required] UserModifyPasswordArgs args)
         {
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.UserKey, authUser.UserName, OperatorType.Bms)
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.Id, authUser.Username, OperatorType.Bms)
             {
-                ObjectName = $"{authUser.UserName}",
-                ObjectId = authUser.UserKey,
+                ObjectName = $"{authUser.Username}",
+                ObjectId = authUser.Id,
                 OperationType = $"用户密码修改",
-                Description = $"用户名：{authUser.UserName}",
+                Description = $"用户名：{authUser.Username}",
                 LogLevel = LogRecordLevel.Warning
             };
 
             try
             {
-                var res = await this._userService.ModifyPasswordAsync(authUser.UserKey, args);
+                var res = await this._userService.ModifyPasswordAsync(authUser.Id, args);
                 if (res)
                 {
                     this._eventBus.Publish(new OperationLogEventData(operationLog));

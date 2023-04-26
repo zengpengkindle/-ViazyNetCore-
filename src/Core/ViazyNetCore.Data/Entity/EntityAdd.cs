@@ -14,7 +14,7 @@ namespace ViazyNetCore
     /// 添加接口
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public interface IEntityAdd<TKey> where TKey : struct
+    public interface IEntityAdd<TKey>
     {
         /// <summary>
         /// 创建者用户Id
@@ -30,7 +30,7 @@ namespace ViazyNetCore
         DateTime? CreateTime { get; set; }
     }
 
-    public class EntityAdd<TKey> : Entity<TKey>, IEntityAdd<TKey> where TKey : struct
+    public class EntityAdd<TKey> : Entity<TKey>, IEntityAdd<TKey>
     {
         /// <summary>
         /// 创建者Id

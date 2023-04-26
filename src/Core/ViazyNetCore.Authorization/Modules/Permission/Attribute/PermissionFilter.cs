@@ -49,10 +49,7 @@ namespace ViazyNetCore.Authorization.Modules
                 {
                     return;
                 }
-                var identity = context.HttpContext.User;
-                var identityId = identity.GetUserId();
-                var result = await this._permissionService.Check(
-                    new SimpleUser { Id = identityId, Username = identity.GetUserName() }
+                var result = await this._permissionService.Check(context.HttpContext.GetAuthUser()
                     , privilegeAttr?.PermissionKeys ?? Array.Empty<string>());
                 if (!result)
                 {
