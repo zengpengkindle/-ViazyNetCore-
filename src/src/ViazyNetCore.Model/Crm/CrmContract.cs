@@ -14,7 +14,7 @@ namespace ViazyNetCore.Model.Crm
         /// <summary>
         /// 合同名称
         /// </summary>
-        public string Name { get; set; }
+        public string ContractName { get; set; }
         /// <summary>
         /// 客户ID
         /// </summary>

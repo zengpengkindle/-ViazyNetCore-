@@ -25,12 +25,12 @@ builder.WebHost.ConfigureLogging(logging =>
     options.ValidateScopes = false;
 })
 .UseNLog();
-
+builder.Configuration.ConfigBuild(builder.Environment);
 
 // Add services to the container.
 var ServiceAssemblies = new Assembly?[]
 {
-    RuntimeHelper.GetAssembly("ViazyNetCore.Modules")
+    RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules")
 };
 var autoMapperIoc = new Assembly?[] {
         RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules"),

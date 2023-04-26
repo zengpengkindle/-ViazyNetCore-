@@ -89,5 +89,83 @@ namespace ViazyNetCore.Modules
 
             return busineessDto;
         }
+        public async Task<BusinessRecordDto> QueryByName(string name)
+        {
+            var entity = await this._businessRepository.Where(p => p.BusinessName == name).FirstAsync();
+            if (entity == null)
+                throw new ApiException("请求记录不存在");
+            var busineessDto = this._mapper.Map<CrmBusiness, BusinessRecordDto>(entity);
+
+            return busineessDto;
+        }
+
+        /// <summary>
+        /// 根据商机id查询合同
+        /// </summary>
+        /// <returns></returns>
+        public async Task<PageData<BusinessContractListDto>> GetContractPageList(Pagination pagination, long businessId)
+        {
+            return await this._contactsBusinessRepository.GetContractPageList(pagination, businessId);
+        }
+
+        /// <summary>
+        /// 根据商机id查询联系人
+        /// </summary>
+        /// <returns></returns>
+        public async Task<PageData<BusinessContactListDto>> GetContactPageList(Pagination pagination, long businessId)
+        {
+            return await this._contactsBusinessRepository.GetContactPageList(pagination, businessId);
+        }
+
+        /// <summary>
+        /// 商机关联联系人
+        /// </summary>
+        /// <param name="businessId"></param>
+        /// <param name="contactsId"></param>
+        /// <returns></returns>
+        public async Task RelateContacts(long businessId, List<long> contactsId)
+        {
+            await this._contactsBusinessRepository
+                .DeleteAsync(p => p.BusinessId == businessId);
+
+            var list = new List<CrmContactsBusiness>();
+            foreach (var contactId in contactsId)
+            {
+                list.Add(new CrmContactsBusiness
+                {
+                    BusinessId = businessId,
+                    ContactsId = contactId
+                });
+            }
+            await this._contactsBusinessRepository.InsertAsync(list);
+        }
+
+        /// <summary>
+        /// 商机解除关联联系人
+        /// </summary>
+        /// <param name="businessId"></param>
+        /// <param name="contactsId"></param>
+        /// <returns></returns>
+        public async Task UnRelateContacts(long businessId, List<long> contactsId)
+        {
+            await this._contactsBusinessRepository
+                .DeleteAsync(p => p.BusinessId == businessId && contactsId.Contains(p.ContactsId));
+        }
+
+        public async Task DeleteByIds(List<long> businessIds)
+        {
+            await this._contactsBusinessRepository
+                .DeleteAsync(p => businessIds.Contains(p.BusinessId));
+        }
+
+        public async Task UpdateOwnerUserId(CrmCustomer customer)
+        {
+            
+        }
+
+        public async Task Transfer(CrmCustomer customer)
+        {
+            
+        }
     }
 }
