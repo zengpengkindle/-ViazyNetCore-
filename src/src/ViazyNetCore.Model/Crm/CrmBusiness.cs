@@ -38,7 +38,7 @@ namespace ViazyNetCore.Model.Crm
         public string BusinessName { get; set; }
 
         /// <summary>
-        /// 注册资金
+        /// 商机金额
         /// </summary>
         public decimal Money { get; set; }
 
