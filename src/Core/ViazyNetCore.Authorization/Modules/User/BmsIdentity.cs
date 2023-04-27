@@ -14,7 +14,7 @@ namespace ViazyNetCore.Authorization.Modules
 
         public string Nickname { get; set; }
 
-        public int IdentityType { get; set; }
+        public AuthUserType IdentityType { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]
         public string UserType => this.IdentityType.ToString();

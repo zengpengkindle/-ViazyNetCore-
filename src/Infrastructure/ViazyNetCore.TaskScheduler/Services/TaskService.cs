@@ -9,11 +9,11 @@ using Quartz.Util;
 
 namespace ViazyNetCore.TaskScheduler
 {
-    public class TasksQzService
+    public class TaskService
     {
         private readonly IBaseRepository<TaskInfo, long> _taskQzRepository;
 
-        public TasksQzService(IBaseRepository<TaskInfo, long> taskQzRepository)
+        public TaskService(IBaseRepository<TaskInfo, long> taskQzRepository)
         {
             this._taskQzRepository = taskQzRepository;
         }

@@ -24,7 +24,7 @@ namespace ViazyNetCore.Auth.Jwt
         private const string HashCachePrefix = "JwtToken:";
 #pragma warning restore IDE1006 // 命名样式
 
-        public async Task<JwtTokenResult> IssueToken(long userId, string username, object[]? roleIds)
+        public async Task<JwtTokenResult> IssueToken(long userId, string username, AuthUserType userType, object[]? roleIds)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var expires = DateTime.Now.Add(TimeSpan.FromSeconds(_option.ExpiresIn));
@@ -46,8 +46,8 @@ namespace ViazyNetCore.Auth.Jwt
                      new Claim(ClaimTypes.Name, username),
                      new Claim(JwtRegisteredClaimNames.Iss, this._option.Issuer),
                      new Claim(JwtRegisteredClaimNames.Exp, expires.ConvertToJsTime().ToString()),
-                     new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ConvertToJsTime().ToString())
-                     //new Claim(JwtRegisteredClaimNames.Typ, )
+                     new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ConvertToJsTime().ToString()),
+                     new Claim(JwtRegisteredClaimNames.Typ, userType.ToString())
                 })
             };
             if (roleIds != null)

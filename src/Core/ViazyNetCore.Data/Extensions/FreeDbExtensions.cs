@@ -58,6 +58,17 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 fsql.GlobalFilter.ApplyOnly<ITenant>(FilterNames.Tenant, a => a.TenantId == user.TenantId);
             }
+
+            //会员过滤器
+            fsql.GlobalFilter.ApplyOnlyIf<IMember>(FilterNames.Member,
+                () =>
+                {
+                    if (user?.Id > 0 && user.IdentityType != AuthUserType.Member)
+                        return false;
+                    return true;
+                },
+                a => a.MemberId == user.Id
+            );
             fsql.Aop.AuditValue += (s, e) =>
             {
                 FreeSqlExtensions.AopAuditValue(user, e);

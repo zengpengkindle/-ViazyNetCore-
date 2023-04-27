@@ -23,17 +23,17 @@ namespace ViazyNetCore.TaskScheduler
     [DynamicApi]
     public class TaskController : IDynamicController
     {
-        private readonly TasksQzService _tasksQzService;
+        private readonly TaskService _taskService;
         private readonly ISchedulerCenter _schedulerCenter;
         private readonly UnitOfWorkManager _unitOfWorkManage;
         private readonly TasksLogService _tasksLogService;
 
-        public TaskController(TasksQzService tasksQzService,
+        public TaskController(TaskService taskService,
             ISchedulerCenter schedulerCenter,
             UnitOfWorkManagerCloud unitOfWorkManage,
             TasksLogService tasksLogService)
         {
-            this._tasksQzService = tasksQzService;
+            this._taskService = taskService;
             this._schedulerCenter = schedulerCenter;
             this._unitOfWorkManage = unitOfWorkManage.GetUnitOfWorkManager("master");
             this._tasksLogService = tasksLogService;
@@ -53,7 +53,7 @@ namespace ViazyNetCore.TaskScheduler
                 key = "";
             }
 
-            var data = await _tasksQzService.QueryPageList(pagination, key);
+            var data = await _taskService.QueryPageList(pagination, key);
             if (data.Total > 0)
             {
                 foreach (var item in data.Rows)
@@ -73,7 +73,7 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task<TaskInfo> Get(long jobId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model == null)
                 throw new ApiException("任务不存在");
 
@@ -93,7 +93,7 @@ namespace ViazyNetCore.TaskScheduler
             using var unow = _unitOfWorkManage.Begin();
             if (tasksQzDto.TriggerType == 0) tasksQzDto.Cron = null;
             var tasksQz = tasksQzDto.CopyTo<TaskInfo>();
-            await _tasksQzService.InsertAsync(tasksQz);
+            await _taskService.InsertAsync(tasksQz);
             try
             {
                 if (tasksQz.IsStart)
@@ -124,8 +124,8 @@ namespace ViazyNetCore.TaskScheduler
             if (tasksQz != null && tasksQz.Id > 0)
             {
                 using var unow = _unitOfWorkManage.Begin();
-                var oldTaskQz = await _tasksQzService.GetByIdAsync(tasksQz.Id);
-                await _tasksQzService.Update(tasksQz);
+                var oldTaskQz = await _taskService.GetByIdAsync(tasksQz.Id);
+                await _taskService.Update(tasksQz);
                 try
                 {
                     if (tasksQz.IsStart)
@@ -154,11 +154,11 @@ namespace ViazyNetCore.TaskScheduler
         [HttpDelete]
         public async Task Delete(long jobId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 using var unow = _unitOfWorkManage.Begin();
-                await _tasksQzService.DeleteAsync(jobId);
+                await _taskService.DeleteAsync(jobId);
                 try
                 {
                     await _schedulerCenter.StopScheduleJobAsync(model);
@@ -184,14 +184,14 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task StartJob(long jobId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 using var unow = _unitOfWorkManage.Begin();
                 try
                 {
                     model.IsStart = true;
-                    await _tasksQzService.Update(model);
+                    await _taskService.Update(model);
                     await _schedulerCenter.AddScheduleJobAsync(model);
                     unow.Commit();
                 }
@@ -214,11 +214,11 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task StopJob(long jobId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 model.IsStart = false;
-                await _tasksQzService.Update(model);
+                await _taskService.Update(model);
                 await _schedulerCenter.StopScheduleJobAsync(model);
             }
             else
@@ -234,7 +234,7 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task StopTrigger(long jobId, string triggerId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 var triggers = await _schedulerCenter.GetTaskStaus(model);
@@ -244,7 +244,7 @@ namespace ViazyNetCore.TaskScheduler
                     if (triggers.Count == 1)
                     {
                         model.IsStart = false;
-                        await this._tasksQzService.Update(model);
+                        await this._taskService.Update(model);
                         await this._schedulerCenter.StopScheduleJobAsync(model);
                     }
                 }
@@ -262,7 +262,7 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task StartTrigger(long jobId, string triggerId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 var triggers = await _schedulerCenter.GetTaskStaus(model);
@@ -272,7 +272,7 @@ namespace ViazyNetCore.TaskScheduler
                     if (triggers.Count == 1)
                     {
                         model.IsStart = true;
-                        await this._tasksQzService.Update(model);
+                        await this._taskService.Update(model);
                     }
                 }
             }
@@ -290,13 +290,13 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task PauseJob(long jobId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 using var unow = _unitOfWorkManage.Begin();
                 try
                 {
-                    await _tasksQzService.Update(model);
+                    await _taskService.Update(model);
                     jobId.ToString();
                     await _schedulerCenter.PauseJob(model);
                     unow.Commit();
@@ -320,14 +320,14 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task ResumeJob(long jobId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 using var unow = _unitOfWorkManage.Begin();
                 try
                 {
                     model.IsStart = true;
-                    await _tasksQzService.Update(model);
+                    await _taskService.Update(model);
                     await _schedulerCenter.ResumeJob(model);
                     unow.Commit();
                 }
@@ -350,14 +350,14 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task ReCovery(long jobId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 using var unow = _unitOfWorkManage.Begin();
                 try
                 {
                     model.IsStart = true;
-                    await _tasksQzService.Update(model);
+                    await _taskService.Update(model);
 
                     await _schedulerCenter.StopScheduleJobAsync(model);
                     await _schedulerCenter.AddScheduleJobAsync(model);
@@ -401,7 +401,7 @@ namespace ViazyNetCore.TaskScheduler
         [HttpGet]
         public async Task ExecuteJob(long jobId)
         {
-            var model = await _tasksQzService.GetByIdAsync(jobId);
+            var model = await _taskService.GetByIdAsync(jobId);
             if (model != null)
             {
                 await _schedulerCenter.ExecuteJobAsync(model);

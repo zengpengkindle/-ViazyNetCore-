@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddSingleton<IJobFactory, JobFactory>();
             services.AddSingleton<ISchedulerCenter, SchedulerCenterServer>();
-            services.AddScoped<TasksQzService>();
+            services.AddScoped<TaskService>();
             services.AddScoped<TasksLogService>();
         }
 
@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IApplicationBuilder UseJobSchedulers(this IApplicationBuilder app)
         {
-            TasksQzService tasksQzService = app.ApplicationServices.GetRequiredService<TasksQzService>();
+            TaskService tasksQzService = app.ApplicationServices.GetRequiredService<TaskService>();
             ISchedulerCenter schedulerCenter = app.ApplicationServices.GetRequiredService<ISchedulerCenter>();
 
             var tasks = tasksQzService.GetAllStart().ConfigureAwait(false).GetAwaiter().GetResult();

@@ -52,7 +52,7 @@ namespace ViazyNetCore.Authorization
                 {
                     var identity = await this._userService.GetUserLoginIdentityAsync(args, ip, false);
                     var permissions = await permissionService.ResolveUserPermission(identity.Id);
-                    var token = await this._tokenProvider.IssueToken(identity.Id, identity.Nickname, permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
+                    var token = await this._tokenProvider.IssueToken(identity.Id, identity.Nickname, AuthUserType.Normal ,permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
                     //登陆成功，清空缓存
                     _userService.ClearCache(args.Username);
 

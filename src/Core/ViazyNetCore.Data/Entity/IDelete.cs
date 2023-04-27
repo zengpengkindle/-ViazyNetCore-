@@ -1,4 +1,4 @@
-﻿namespace ViazyNetCore.Data.FreeSql
+﻿namespace ViazyNetCore
 {
     public interface IDelete
     {

@@ -99,7 +99,7 @@ namespace FreeSql
                 //计算服务器时间
                 var serverTime = fsql.Ado.QuerySingle(() => DateTime.UtcNow);
                 var timeOffset = DateTime.UtcNow.Subtract(serverTime);
-              
+
                 if (dbConfig.UseEnumInt)
                 {
                     fsql.Aop.ConfigEntityProperty += (s, e) =>
@@ -156,11 +156,18 @@ namespace FreeSql
                     }
                 }
             }
+
+            if (user == null || user.Id <= 0)
+            {
+                return;
+            }
             if (e.AuditValueType is AuditValueType.Insert or AuditValueType.InsertOrUpdate)
             {
                 switch (e.Property.Name)
                 {
                     case "CreateUserId":
+                    case "MemberId":
+                    case "OwnerId":
                         if (e.Value == null || (long)e.Value == default || (long?)e.Value == default)
                         {
                             e.Value = user.Id;
@@ -188,6 +195,10 @@ namespace FreeSql
                 }
             }
 
+            if (user.IdentityType != AuthUserType.Normal)
+            {
+                return;
+            }
             if (e.AuditValueType is AuditValueType.Update or AuditValueType.InsertOrUpdate)
             {
                 switch (e.Property.Name)

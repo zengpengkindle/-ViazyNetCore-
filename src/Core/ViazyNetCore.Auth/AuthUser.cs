@@ -15,11 +15,6 @@ namespace ViazyNetCore.Auth
         public long Id { get; set; }
 
         /// <summary>
-        /// ids4认证授权中心用户类型
-        /// </summary>
-        public AuthUserType? AuthUserType { get; set; }
-
-        /// <summary>
         /// 获取Client Id
         /// </summary>
         public string ClientId { get; set; }
@@ -46,26 +41,8 @@ namespace ViazyNetCore.Auth
         /// </summary>
         public string Nickname { get; set; }
 
-        public int IdentityType => AuthUserType == null ? 0 : AuthUserType.ToInt32();
+        public AuthUserType IdentityType { get; set; }
 
         public bool IsModerated => false;
-    }
-
-    public enum AuthUserType
-    {
-        /// <summary>
-        /// 会员
-        /// </summary>
-        Member = 0,
-        /// <summary>
-        /// 普通用户
-        /// </summary>
-        [Description("普通用户")]
-        Normal = 1,
-        /// <summary>
-        /// 管理员
-        /// </summary>
-        [Description("管理员")]
-        PlatformAdmin = 99
     }
 }

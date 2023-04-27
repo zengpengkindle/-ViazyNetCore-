@@ -29,7 +29,7 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
         public string Username { get => this.AuthUser?.Username; }
         public string Nickname { get => this.AuthUser?.Nickname; }
 
-        public int IdentityType => this.AuthUser?.IdentityType ?? 0;
+        public AuthUserType IdentityType => this.AuthUser?.IdentityType ?? AuthUserType.Normal;
 
         public bool IsModerated => this.AuthUser?.IsModerated ?? false;
 

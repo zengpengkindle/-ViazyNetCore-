@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
+using ViazyNetCore;
 using ViazyNetCore.Auth;
 
 namespace Microsoft.AspNetCore.Http
@@ -51,7 +52,7 @@ namespace Microsoft.AspNetCore.Http
             }
             return new AuthUser
             {
-                AuthUserType = claims.GetAuthUserType(),
+                IdentityType = claims.GetAuthUserType() ?? AuthUserType.Unknown,
                 Id = claims.GetUserId(),
                 ClientId = claims.GetClientId(),
                 Exp = claims.GetExp(),
@@ -94,7 +95,7 @@ namespace Microsoft.AspNetCore.Http
             }
             return new AuthUser
             {
-                AuthUserType = claims.GetAuthUserType(),
+                IdentityType = claims.GetAuthUserType() ?? AuthUserType.Unknown,
                 Id = claims.GetUserId(),
                 ClientId = claims.GetClientId(),
                 Exp = claims.GetExp(),
@@ -189,7 +190,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static AuthUserType? GetAuthUserType(this Claim[] claims)
         {
-            var value = claims.FirstOrDefault(c => c.Type == "user_type")?.Value;
+            var value = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Typ)?.Value;
             if (string.IsNullOrEmpty(value))
                 return null;
             return Enum.Parse<AuthUserType>(value);
@@ -201,7 +202,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static AuthUserType? GetAuthUserType(this IEnumerable<Claim> claims)
         {
-            var value = claims.FirstOrDefault(c => c.Type == "user_type")?.Value;
+            var value = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Typ)?.Value;
             if (string.IsNullOrEmpty(value))
                 return null;
             return Enum.Parse<AuthUserType>(value);
@@ -214,11 +215,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static AuthUserType? GetAuthUserType(this HttpRequest request)
         {
-            var value = request.Claims().FirstOrDefault(c => c.Type == "user_type")?.Value;
-            if (string.IsNullOrEmpty(value))
-                return null;
-            else
-                return Enum.Parse<AuthUserType>(value);
+            return request.Claims().GetAuthUserType();
         }
         #endregion
 

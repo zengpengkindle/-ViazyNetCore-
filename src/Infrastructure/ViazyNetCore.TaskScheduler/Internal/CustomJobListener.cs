@@ -15,13 +15,13 @@ namespace ViazyNetCore.TaskScheduler
     public class CustomJobListener : IJobListener
     {
         private readonly TasksLogService? _tasksLogService;
-        private readonly TasksQzService? _tasksQzService;
+        private readonly TaskService? _tasksQzService;
         public string Name => "CustomJobListener";
 
         public CustomJobListener(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
-            this._tasksQzService = scope.ServiceProvider.GetService<TasksQzService>();
+            this._tasksQzService = scope.ServiceProvider.GetService<TaskService>();
             this._tasksLogService = scope.ServiceProvider.GetService<TasksLogService>();
         }
 

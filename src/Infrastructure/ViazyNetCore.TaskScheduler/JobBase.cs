@@ -13,11 +13,11 @@ namespace ViazyNetCore.TaskScheduler
     public abstract class JobBase : IJob
     {
         private readonly TasksLogService? _tasksLogService;
-        private readonly TasksQzService? _tasksQzService;
+        private readonly TaskService? _tasksQzService;
 
         public JobBase(IServiceProvider serviceProvider)
         {
-            this._tasksQzService = serviceProvider.GetService<TasksQzService>();
+            this._tasksQzService = serviceProvider.GetService<TaskService>();
             this._tasksLogService = serviceProvider.GetService<TasksLogService>();
         }
 
