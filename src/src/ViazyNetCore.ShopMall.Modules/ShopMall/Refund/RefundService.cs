@@ -19,7 +19,7 @@ namespace ViazyNetCore.Modules.ShopMall
             this._lockProvider = lockProvider;
         }
 
-        public async Task<RefundTradeModel> FindRefundTradeInfo(string memberId, string tradeId)
+        public async Task<RefundTradeModel> FindRefundTradeInfo(long memberId, string tradeId)
         {
             var model = new RefundTradeModel();
 
@@ -289,8 +289,8 @@ namespace ViazyNetCore.Modules.ShopMall
         public async Task<PageData<RefundListModel>> FindRefundTrades(RefundArgments args)
         {
             var fsql = this._engine.Select<RefundTrade>().From<ProductTrade>((rt, to) => rt.InnerJoin(r => r.TradeId == to.Id))
-            .WhereIf(args.Id.IsNotNull(), (rt, to) =>rt.Id==args.Id)
-            .WhereIf(args.MemberId.IsNotNull(), (rt, to) => to.MemberId == args.MemberId)
+            .WhereIf(args.Id.IsNotNull(), (rt, to) => rt.Id == args.Id)
+            .WhereIf(args.MemberId > 0, (rt, to) => to.MemberId == args.MemberId)
             //.WhereIf(args.HandleUserType.HasValue, (rt, to) => rt.Id == args.Id)
             .WhereIf(args.ShopId.IsNotNull(), (rt, to) => to.ShopId == args.ShopId)
             .WhereIf(args.Status.HasValue, (rt, to) => rt.Status == args.Status)

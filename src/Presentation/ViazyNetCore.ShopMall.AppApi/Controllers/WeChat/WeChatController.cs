@@ -101,7 +101,7 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
                     UnionId = result.unionid
                 });
 
-                if (wechatAuthResult.MemberId.IsNull())
+                if (wechatAuthResult.MemberId == 0)
                 {
                     return new JsCodeRes
                     {
@@ -109,7 +109,7 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
                         GetUserProfile = wechatAuthResult.GetUserProfile,
                         OpenId = result.openid,
                         OpType = 1,
-                        Token = await tokenProvider.IssueToken(wechatAuthResult.MemberId.ToString(), wechatAuthResult.MemberId.ToString(), null)
+                        Token = await tokenProvider.IssueToken(wechatAuthResult.MemberId, wechatAuthResult.MemberId.ToString(), null)
                     };
                 }
                 else
@@ -212,7 +212,7 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
                 AuthCode = request.AuthCode,
                 Mobile = request.Mobile
             });
-            if (wechatAuthResult.MemberId.IsNotNull())
+            if (wechatAuthResult.MemberId == 0)
             {
                 return new JsCodeRes
                 {
@@ -220,7 +220,7 @@ namespace ViazyNetCore.ShopMall.AppApi.Controllers
                     GetUserProfile = wechatAuthResult.GetUserProfile,
                     OpenId = wechatAuthResult.OpenId,
                     OpType = 1,
-                    Token = await tokenProvider.IssueToken(wechatAuthResult.MemberId, wechatAuthResult.MemberId, null)
+                    Token = await tokenProvider.IssueToken(wechatAuthResult.MemberId, wechatAuthResult.MemberId.ToString(), null)
                 };
             }
             else

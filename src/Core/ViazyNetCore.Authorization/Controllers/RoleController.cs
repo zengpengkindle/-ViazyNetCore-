@@ -29,7 +29,7 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost]
-        public async Task<bool> RemoveRole(string id)
+        public async Task<bool> RemoveRole(long id)
         {
             if (id == RoleIds.Instance().SuperAdministrator())
             {
@@ -52,20 +52,20 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost]
-        public async Task<BmsRole> FindRole(string id)
+        public async Task<BmsRole> FindRole(long id)
         {
             var role = await this._roleService.GetAsync(id);
             return role;
         }
 
         [HttpPost]
-        public Task<List<string>> GetUserRoleIds(string userId)
+        public Task<List<long>> GetUserRoleIds(long userId)
         {
             return this._roleService.GetRoleIdsOfUser(userId);
         }
 
         [HttpPost]
-        public async Task<bool> UpdateUserRoles(string userId, List<string> roleIds)
+        public async Task<bool> UpdateUserRoles(long userId, List<long> roleIds)
         {
             await this._roleService.UpdateUserToRoles(userId, roleIds);
             return true;

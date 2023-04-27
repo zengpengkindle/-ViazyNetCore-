@@ -1,9 +1,9 @@
 ﻿namespace ViazyNetCore.Authorization.Modules.Repositories
 {
     [Injection]
-    public interface IUserRoleRepository : IBaseRepository<BmsUserRole, string>
+    public interface IUserRoleRepository : IBaseRepository<BmsUserRole, long>
     {
-        Task UpdateUserToRoles(string userId, List<string> roleIds);
-        Task<List<string>?> GetRoleIdsOfUser(string userId);
+        Task UpdateUserToRoles(long userId, List<long> roleIds);
+        Task<List<long>?> GetRoleIdsOfUser(long userId);
     }
 }

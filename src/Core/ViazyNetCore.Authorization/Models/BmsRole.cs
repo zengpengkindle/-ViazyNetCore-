@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个角色。
     /// </summary>
-    public partial class BmsRole : EntityBase<string>
+    public partial class BmsRole : EntityUpdate<long>
     {
         /// <summary>
         /// 设置或获取一个值，表示名称。
@@ -21,9 +21,5 @@ namespace ViazyNetCore.Authorization.Models
         /// 设置或获取一个值，表示扩展数据。
         /// </summary>
         public string ExtraData { get; set; }
-
-        public DateTime CreateTime { get; set; }
-
-        public DateTime ModifyTime { get; set; }
     }
 }

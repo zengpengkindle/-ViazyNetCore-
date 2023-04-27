@@ -4,7 +4,7 @@
     /// 表示一个角色的服务仓储接口。
     /// </summary>
     [Injection]
-    public interface IRoleRepository : IBaseRepository<BmsRole, string>
+    public interface IRoleRepository : IBaseRepository<BmsRole, long>
     {
         Task<PageData<RoleFindAllModel>> FindAllAsync(string nameLike, ComStatus enabled, Pagination pagination);
 

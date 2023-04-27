@@ -29,7 +29,7 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpGet]
-        public async Task<List<string>> GetRolePermission(string roleId)
+        public async Task<List<string>> GetRolePermission(long roleId)
         {
             var result = await this._permissionService.GetPermissionsInUserRole(roleId, OwnerType.Role);
 
@@ -37,7 +37,7 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost]
-        public async Task<bool> UpdatePermissionsInRole(string roleId, string[] key)
+        public async Task<bool> UpdatePermissionsInRole(long roleId, string[] key)
         {
             await _permissionService.UpdatePermissionsInUserRole(key, roleId, OwnerType.Role);
             return true;

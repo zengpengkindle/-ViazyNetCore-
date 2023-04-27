@@ -10,7 +10,7 @@ namespace ViazyNetCore.Dtos
         /// <summary>
         /// 设置或获取一个值，表示编号。
         /// </summary>
-        public string? Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示用户账号。

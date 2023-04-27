@@ -87,6 +87,10 @@ namespace ViazyNetCore.Data.FreeSql
         /// 是否自动同步结构
         /// </summary>
         public bool AutoSyncStructure { get; set; }
+        /// <summary>
+        /// 是否启用租户
+        /// </summary>
+        public bool Tenant { get; set; }
     }
 
     /// <summary>

@@ -7,7 +7,7 @@ namespace ViazyNetCore.Modules
     /// 表示一个用户的服务仓储。
     /// </summary>
     [Injection]
-    public class UserRepository : DefaultRepository<BmsUser, string>, IUserRepository
+    public class UserRepository : DefaultRepository<BmsUser, long>, IUserRepository
     {
         public UserRepository(IFreeSql fsql) : base(fsql)
         {
@@ -56,7 +56,7 @@ namespace ViazyNetCore.Modules
         /// <param name="salt">密码盐。</param>
         /// <param name="password">密码。</param>
         /// <returns>修改成功返回 true 值，否则返回 false 值。</returns>
-        public async Task ModifyPasswordAsync(string password, Guid salt, string id)
+        public async Task ModifyPasswordAsync(string password, Guid salt, long id)
         {
             await this.UpdateDiy
                     .Where(pg => pg.Id == id)
@@ -76,7 +76,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>异步操作。</returns>
-        public Task RemoveByIdAsync(string id)
+        public Task RemoveByIdAsync(long id)
         {
             return this.DeleteAsync(u => u.Id == id);
         }
@@ -89,7 +89,7 @@ namespace ViazyNetCore.Modules
         /// 查询user账号是否存在
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> UserExistAsync(string userName, string id)
+        public async Task<bool> UserExistAsync(string userName, long id)
         {
             return await this.Select.AnyAsync(u => u.Username == userName && u.Id != id);
         }
@@ -165,7 +165,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">用户编号</param>
         /// <returns></returns>
-        public Task<BmsUser> GetEnabledUserByIdAsync(string id)
+        public Task<BmsUser> GetEnabledUserByIdAsync(long id)
         {
             return this.Select.Where(u => u.Id == id && u.Status == ComStatus.Enabled)
                 .WithTempQuery(u => new BmsUser
@@ -185,7 +185,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">用户Id</param>
         /// <returns>true：已绑定</returns>
-        public async Task<bool> CheckUserBindGoogleAuthenticator(string id)
+        public async Task<bool> CheckUserBindGoogleAuthenticator(long id)
         {
             var result = await (this.Select.Where(u => u.Id == id).WithTempQuery(u =>
                                new { u.Id, u.GoogleKey }).FirstAsync());
@@ -199,7 +199,7 @@ namespace ViazyNetCore.Modules
         /// <param name="id"></param>
         /// <param name="secretKey"></param>
         /// <returns></returns>
-        public Task<bool> BindGoogleAuthenticator(string id, string secretKey)
+        public Task<bool> BindGoogleAuthenticator(long id, string secretKey)
         {
             return this.UpdateDiy
                      .Where(pg => pg.Id == id)
@@ -217,7 +217,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<bool> ClearGoogleAuthenticator(string id)
+        public Task<bool> ClearGoogleAuthenticator(long id)
         {
             return this.UpdateDiy
                      .Where(pg => pg.Id == id)
@@ -229,7 +229,7 @@ namespace ViazyNetCore.Modules
                      .ContinueWith(t => t.Result == 1);
         }
 
-        public Task<UserFindModel> FindByIdAsync(string id)
+        public Task<UserFindModel> FindByIdAsync(long id)
         {
             return this.Select.Where(p => p.Id == id).WithTempQuery(p => new UserFindModel
             {
@@ -268,7 +268,7 @@ namespace ViazyNetCore.Modules
         //    throw new NotImplementedException();
         //}
 
-        public Task ActivateUsers(IEnumerable<string> userIds, ComStatus status)
+        public Task ActivateUsers(IEnumerable<long> userIds, ComStatus status)
         {
             return this.UpdateDiy.Set(p => p.Status == status).Where(p => userIds.Contains(p.Id)).ExecuteAffrowsAsync();
         }
@@ -278,7 +278,7 @@ namespace ViazyNetCore.Modules
             throw new NotImplementedException();
         }
 
-        public Task<string> GetUserIdByUserName(string username)
+        public Task<long> GetUserIdByUserName(string username)
         {
             return this.Select.Where(p => p.Username == username).WithTempQuery(p => p.Id).FirstAsync();
         }

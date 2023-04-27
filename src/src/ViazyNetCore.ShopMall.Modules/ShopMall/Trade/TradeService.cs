@@ -68,7 +68,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// 构建订单
         /// </summary>
         /// <returns></returns>
-        public async Task<CreateTradeSetModel> BeforeCreateTradeAsync(string memberId, List<BeforeTradeItem> beforeTradeItems)
+        public async Task<CreateTradeSetModel> BeforeCreateTradeAsync(long memberId, List<BeforeTradeItem> beforeTradeItems)
         {
             CreateTradeSetModel tradeSet = new CreateTradeSetModel();
             tradeSet.ShopTrades = new List<ShopTrade>();
@@ -193,7 +193,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// 创建订单
         /// </summary>
         /// <returns></returns>
-        public async Task<string[]> CreateTradeSetAsync(string memberId, CreateTradeSetModel createTrade, string outerType = null)
+        public async Task<string[]> CreateTradeSetAsync(long memberId, CreateTradeSetModel createTrade, string outerType = null)
         {
             using (_lockProvider.Lock("Create" + memberId))
             {
@@ -360,12 +360,12 @@ namespace ViazyNetCore.Modules.ShopMall
         {
             var table = this._engine.Select<ProductTrade>();
 
-            if (args.MemberId.IsNotNull())
+            if (args.MemberId > 0)
                 table = table.Where(t => t.MemberId == args.MemberId);
             else if (args.Username.IsNotNull())
             {
                 var memberId = await this._memberService.GetMemberIdByUsername(args.Username);
-                if (memberId.IsNull())
+                if (memberId == 0)
                     return new PageData<TradeDetailModel>();
                 table = table.Where(t => t.MemberId == memberId);
             }
@@ -469,10 +469,10 @@ namespace ViazyNetCore.Modules.ShopMall
             return trades;
         }
 
-        public async Task<TradeDetailModel> GetTradeDetail(string memberId, string tradeId)
+        public async Task<TradeDetailModel> GetTradeDetail(long memberId, string tradeId)
         {
             var table = this._engine.Select<ProductTrade>().Where(t => t.Id == tradeId);
-            if (memberId.IsNotNull())
+            if (memberId > 0)
                 table = table.Where(t => t.MemberId == memberId);
             //var member = this._engine.Select<Member>();
 
@@ -554,7 +554,7 @@ namespace ViazyNetCore.Modules.ShopMall
             return result;
         }
 
-        public async Task<TradeSetModel> GetTradesPayInfo(string[] tradeIds, string memberId)
+        public async Task<TradeSetModel> GetTradesPayInfo(string[] tradeIds, long memberId)
         {
             var table = this._engine.Select<ProductTrade>().Where(t => tradeIds.Contains(t.Id));
 
@@ -708,7 +708,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// 取消订单
         /// </summary>
         /// <returns></returns>
-        public async Task CancelTradeSetAsync(string memberId, string[] tradeIds)
+        public async Task CancelTradeSetAsync(long memberId, string[] tradeIds)
         {
             using (_lockProvider.Lock("Trade" + memberId))
             {
@@ -758,7 +758,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// 取消订单
         /// </summary>
         /// <returns></returns>
-        public async Task CancelTradeAsync(string memberId, string tradeId)
+        public async Task CancelTradeAsync(long memberId, string tradeId)
         {
             using (_lockProvider.Lock("Trade" + tradeId))
             {

@@ -10,7 +10,7 @@ namespace ViazyNetCore.Modules.ShopMall
     /// </summary>
     public class TradePageArgments : Pagination
     {
-        public string? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         public string? TradeId { get; set; }
 

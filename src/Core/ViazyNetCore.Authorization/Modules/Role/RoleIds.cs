@@ -32,41 +32,41 @@ namespace ViazyNetCore.Authorization.Modules
         /// <summary>
         /// 超级管理员
         /// </summary>
-        public string SuperAdministrator()
+        public long SuperAdministrator()
         {
-            return "101";
+            return 101;
         }
 
         /// <summary>
         /// 注册用户
         /// </summary>
-        public string RegisteredUsers()
+        public long RegisteredUsers()
         {
-            return "121";
+            return 121;
         }
 
         /// <summary>
         /// 管制用户
         /// </summary>
-        public string ModeratedUser()
+        public long ModeratedUser()
         {
-            return "123";
+            return 123;
         }
 
         /// <summary>
         /// 匿名用户
         /// </summary>
-        public string Anonymous()
+        public long Anonymous()
         {
-            return "122";
+            return 122;
         }
 
         /// <summary>
         /// 受信任用户
         /// </summary>
-        public string TrustedUser()
+        public long TrustedUser()
         {
-            return "111";
+            return 111;
         }
     }
 }

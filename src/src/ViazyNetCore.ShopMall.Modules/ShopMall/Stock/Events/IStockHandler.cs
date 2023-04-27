@@ -17,7 +17,7 @@ namespace ViazyNetCore.Modules.ShopMall
         Task OnUpdateLockStockAsync(IFreeSql context, string productId, string skuId, int lockNum);
         Task OnUpdateUnDeliverStockAsync(IFreeSql context, string productId, string skuId, int unDeliverNum);
         Task OnUpdateOutStockAsync(IFreeSql context, string productId, string skuId, int outStockNum);
-        Task OnUpdateInStockAsync(IFreeSql context, string stockId, int inStockNum, string remark, string userId);
+        Task OnUpdateInStockAsync(IFreeSql context, string stockId, int inStockNum, string remark, long userId);
         Task OnUpdateRefundStockAsync(IFreeSql context, string productId, string skuId, int refundNum);
         Task OnUpdateExchangeStockAsync(IFreeSql context, string productId, string skuId, int exchangeNum);
     }

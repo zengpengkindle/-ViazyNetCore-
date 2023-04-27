@@ -9,7 +9,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个管理用户。
     /// </summary>
-    public partial class BmsUser : EntityAdd<string>
+    public partial class BmsUser : EntityUpdate<long>
     {
         /// <summary>
         /// 设置或获取一个值，表示账号。

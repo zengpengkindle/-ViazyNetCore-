@@ -9,7 +9,7 @@ namespace ViazyNetCore.Model
         /// <summary>
         /// 设置或获取一个值，表示购物车Id(同MemberId)。
         /// </summary>
-        public string CarId { get; set; }
+        public long CarId { get; set; }
         
         /// <summary>
         /// 设置或获取一个值，表示商品Id。

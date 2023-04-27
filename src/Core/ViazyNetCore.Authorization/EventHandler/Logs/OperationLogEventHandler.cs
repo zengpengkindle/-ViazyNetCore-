@@ -24,7 +24,7 @@ namespace ViazyNetCore.Modules.EventHandler
                 eventData.Data.CreateTime = eventData.EventTime;
                 if (this._authUser != null)
                 {
-                    eventData.Data.OperateUserId = this._authUser.Id;
+                    eventData.Data.OperateUserId = this._authUser.Id.ToString();
                     eventData.Data.Operator = this._authUser.Username;
 
                 }

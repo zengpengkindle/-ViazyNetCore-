@@ -172,7 +172,7 @@
         /// <summary>
         /// 修改人
         /// </summary>
-        public string UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 备注信息

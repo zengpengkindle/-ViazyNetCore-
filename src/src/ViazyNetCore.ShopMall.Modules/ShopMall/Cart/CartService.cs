@@ -28,7 +28,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="memberId"></param>
         /// <returns></returns>
-        public async Task<ShoppingCart> GetShoppingCart(string memberId)
+        public async Task<ShoppingCart> GetShoppingCart(long memberId)
         {
             var cartItems = await this._engine.Select<MemberCarItem>().Where(t => t.CarId == memberId).ToListAsync();
 
@@ -105,7 +105,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public async Task<bool> AddShoppingCartProduct(ShoppingCartEditDto carItem, string memberId)
+        public async Task<bool> AddShoppingCartProduct(ShoppingCartEditDto carItem, long memberId)
         {
             var product = await this._engine.Select<Product>().Where(t => t.Id == carItem.PId).FirstAsync();
 
@@ -234,7 +234,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveShoppingCartProduct(ShoppingCartEditDto product, string memberId)
+        public async Task<bool> RemoveShoppingCartProduct(ShoppingCartEditDto product, long memberId)
         {
             await this._engine.Delete<MemberCarItem>().Where(t => t.ProductId == product.PId && t.SkuId == product.SkuId && t.CarId == memberId).ExecuteAffrowsAsync();
             return true;
@@ -247,7 +247,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <param name="product"></param>
         /// <param name="memberId"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveShoppingCartProductAfterTrade(IFreeSql context, string pId, string skuId, string memberId)
+        public async Task<bool> RemoveShoppingCartProductAfterTrade(IFreeSql context, string pId, string skuId, long memberId)
         {
             await context.Delete<MemberCarItem>().Where(t => t.ProductId == pId && t.SkuId == skuId && t.CarId == memberId).ExecuteAffrowsAsync();
             return true;

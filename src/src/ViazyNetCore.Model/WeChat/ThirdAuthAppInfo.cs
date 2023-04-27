@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Model
 {
-    public class ThirdAuthAppInfo: EntityBase
+    public class ThirdAuthAppInfo : EntityBase
     {
         public string UnionId { get; set; }
 
@@ -22,6 +22,6 @@ namespace ViazyNetCore.Model
         public int IsSubscribe { get; set; }
 
         public DateTime CreateTime { get; set; }
-        public string MemberId { get; set; }
+        public long MemberId { get; set; }
     }
 }

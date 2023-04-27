@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -23,7 +24,7 @@ namespace ViazyNetCore.Auth.Jwt
         private const string HashCachePrefix = "JwtToken:";
 #pragma warning restore IDE1006 // 命名样式
 
-        public async Task<JwtTokenResult> IssueToken(string userId, string username, object[]? roleIds)
+        public async Task<JwtTokenResult> IssueToken(long userId, string username, object[]? roleIds)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var expires = DateTime.Now.Add(TimeSpan.FromSeconds(_option.ExpiresIn));
@@ -79,15 +80,15 @@ namespace ViazyNetCore.Auth.Jwt
         public async Task ValidToken(JwtSecurityToken token)
         {
             var jti = token.Id;
-            var sid = token.Claims.FirstOrDefault(t => t.Type == JwtRegisteredClaimNames.Sid)?.Value;
-            var clientName = token.Claims.FirstOrDefault(t => t.Type == JwtRegisteredClaimNames.Aud)?.Value;
+            var sid = token.Claims.GetUserId();
+            var clientName = token.Claims.GetClientId();
 
-            if (jti.IsNullOrEmpty() || sid.IsNullOrEmpty() || clientName.IsNullOrEmpty())
+            if (jti.IsNullOrEmpty() || sid == 0 || clientName.IsNullOrEmpty())
             {
                 throw new UnauthorizedAccessException();
             }
 
-            if (sid.IsNull())
+            if (sid == 0)
             {
                 throw new UnauthorizedAccessException();
             }
@@ -109,12 +110,12 @@ namespace ViazyNetCore.Auth.Jwt
             }
         }
 
-        private string GenerateCacheKey(string userId)
+        private string GenerateCacheKey(long userId)
         {
             return $"JwtToken:{userId}";
         }
 
-        public void RemoveToken(string userId)
+        public void RemoveToken(long userId)
         {
             if (this._option.UseDistributedCache)
             {

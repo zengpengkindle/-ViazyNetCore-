@@ -292,7 +292,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <summary>
         /// 用户编号
         /// </summary>
-        public string? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         public string? Id { get; set; }
 
@@ -319,7 +319,7 @@ namespace ViazyNetCore.Modules.ShopMall
     {
         public string Id { get; set; }
 
-        public string MemberId { get; set; }
+        public long MemberId { get; set; }
 
         public string MemberName { get; set; }
 
@@ -468,7 +468,7 @@ namespace ViazyNetCore.Modules.ShopMall
 
         public List<NextStepModel> NextSteps { get; set; }
 
-        public string UserId { get; set; }
+        public long UserId { get; set; }
 
         public string Message { get; set; }
 

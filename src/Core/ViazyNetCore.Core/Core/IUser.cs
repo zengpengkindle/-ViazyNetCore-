@@ -14,6 +14,6 @@
         bool IsModerated { get; }
     }
 
-    public interface IUser : IUser<string>
+    public interface IUser : IUser<long>
     { }
 }

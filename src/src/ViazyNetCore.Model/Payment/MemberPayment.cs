@@ -3,7 +3,7 @@
     [Table(Name = "ShopMall.MemberPayment")]
     public class MemberPayment : EntityBase<string>
     {
-        public string MemberId { get; set; }
+        public long MemberId { get; set; }
         public string TradeType { get; set; }
         public Buyway PayType { get; set; }
         public string PayChannel { get; set; }

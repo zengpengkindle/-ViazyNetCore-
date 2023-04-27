@@ -104,7 +104,7 @@ namespace ViazyNetCore.Modules
              .FirstAsync();
             Member? member = null;
             var isNewMember = false;
-            if (thirdAuthAppInfo == null || thirdAuthAppInfo.MemberId.IsNull())
+            if (thirdAuthAppInfo == null || thirdAuthAppInfo.MemberId == 0)
             {
                 member = await this._memberService.GetByMobile(bindModel.Mobile);
                 if (member == null)
@@ -112,7 +112,6 @@ namespace ViazyNetCore.Modules
                     isNewMember = true;
                     member = new Member
                     {
-                        Id = Snowflake<Member>.NextIdString(),
                         Salt = Guid.NewGuid(),
                         AvatarUrl = null,
                         LastLoginTime = DateTime.Now,
@@ -148,7 +147,7 @@ namespace ViazyNetCore.Modules
 
                     await this._thirdAuthAppInfoRepository.InsertAsync(thirdAuthAppInfo);
                 }
-                else if (thirdAuthAppInfo.MemberId.IsNull())
+                else if (thirdAuthAppInfo.MemberId == 0)
                 {
                     await this._thirdAuthAppInfoRepository.UpdateDiy
                         .Where(p => p.Id == thirdAuthAppInfo.Id).Set(p => p.MemberId == member.Id)
@@ -208,10 +207,10 @@ namespace ViazyNetCore.Modules
             return Task.FromResult(this._cacheService.Get<WechatAuthUpdateDto>(authCodeKey));
         }
 
-        public async Task<ThirdAuthAppInfo> GetWechatInfoByMemberId(string userId)
+        public async Task<ThirdAuthAppInfo> GetWechatInfoByMemberId(long userId)
         {
             return await this._thirdAuthAppInfoRepository
-                 .Where(w => w.Type == UserAccountTypes.WxApp && w.AppId == userId)
+                 .Where(w => w.Type == UserAccountTypes.WxApp && w.MemberId == userId)
                  .FirstAsync();
         }
     }

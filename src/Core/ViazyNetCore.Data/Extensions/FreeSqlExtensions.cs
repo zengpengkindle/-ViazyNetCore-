@@ -10,6 +10,7 @@ using FreeSql.Aop;
 using Microsoft.AspNetCore.Builder;
 using ViazyNetCore;
 using ViazyNetCore.Data.FreeSql;
+using ViazyNetCore.Data.FreeSql.Extensions;
 
 namespace FreeSql
 {
@@ -159,13 +160,13 @@ namespace FreeSql
             {
                 switch (e.Property.Name)
                 {
-                    case "CreatedUserId":
+                    case "CreateUserId":
                         if (e.Value == null || (long)e.Value == default || (long?)e.Value == default)
                         {
                             e.Value = user.Id;
                         }
                         break;
-                    case "CreatedUserName":
+                    case "CreateUserName":
                         if (e.Value == null || ((string)e.Value).IsNull())
                         {
                             e.Value = user.Nickname;

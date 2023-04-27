@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using ViazyNetCore;
 using ViazyNetCore.Data.FreeSql;
 using ViazyNetCore.Data.FreeSql.Extensions;
@@ -45,10 +46,18 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var fsql = app.ApplicationServices.GetService<IFreeSql>();
             var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
+            var dbOption = app.ApplicationServices.GetService<IOptions<DbConfig>>();
             User user = new User(httpContextAccessor);
             if (fsql == null)
                 throw new ArgumentNullException(nameof(IFreeSql));
+            if (dbOption == null)
+                throw new ArgumentNullException(nameof(DbConfig));
             //fsql.Aop.CurdAfter += Aop_CurdAfter; ;
+
+            if (dbOption.Value.Tenant)
+            {
+                fsql.GlobalFilter.ApplyOnly<ITenant>(FilterNames.Tenant, a => a.TenantId == user.TenantId);
+            }
             fsql.Aop.AuditValue += (s, e) =>
             {
                 FreeSqlExtensions.AopAuditValue(user, e);

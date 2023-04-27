@@ -17,7 +17,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILockProvider _lockProvider;
 
-        private string _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
+        private long _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
 
         public TradeController(TradeService tradeService, ILockProvider lockProvider, LogisticsService logisticsService, IHttpContextAccessor httpContextAccessor)
         {
@@ -36,7 +36,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         [HttpPost]
         public async Task<TradeDetailModel> FindTrade(string tradeId)
         {
-            return await this._tradeService.GetTradeDetail(null, tradeId);
+            return await this._tradeService.GetTradeDetail(0, tradeId);
         }
 
         [HttpPost]

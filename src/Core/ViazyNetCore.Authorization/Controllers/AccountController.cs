@@ -56,9 +56,9 @@ namespace ViazyNetCore.Authorization
                     //登陆成功，清空缓存
                     _userService.ClearCache(args.Username);
 
-                    operationLog.OperateUserId = identity.Id;
+                    operationLog.OperateUserId = identity.Id.ToString();
                     operationLog.ObjectName = identity.Nickname;
-                    operationLog.ObjectId = identity.Id;
+                    operationLog.ObjectId = identity.Id.ToString();
                     operationLog.Description = $"登录用户：{args.Username},登陆成功";
 
                     return new UserTokenModel
@@ -97,7 +97,7 @@ namespace ViazyNetCore.Authorization
         [HttpPost]
         public Task LogoutAsync()
         {
-            this._tokenProvider.RemoveToken(this._httpContextAccessor.HttpContext!.User.GetUserId());
+            this._tokenProvider.RemoveToken(this._httpContextAccessor.GetAuthUser()!.Id);
             return Task.CompletedTask;
         }
 
@@ -106,10 +106,10 @@ namespace ViazyNetCore.Authorization
         public async Task<bool> ModifyPasswordAsync([Required] UserModifyPasswordArgs args)
         {
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
-            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.Id, authUser.Username, OperatorType.Bms)
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.Id.ToString(), authUser.Username, OperatorType.Bms)
             {
                 ObjectName = $"{authUser.Username}",
-                ObjectId = authUser.Id,
+                ObjectId = authUser.Id.ToString(),
                 OperationType = $"用户密码修改",
                 Description = $"用户名：{authUser.Username}",
                 LogLevel = LogRecordLevel.Warning
@@ -126,7 +126,7 @@ namespace ViazyNetCore.Authorization
             }
             finally
             {
-                this._tokenProvider.RemoveToken(this._httpContextAccessor.HttpContext!.User.GetUserId());
+                this._tokenProvider.RemoveToken(this._httpContextAccessor.GetAuthUser()!.Id);
             }
         }
     }

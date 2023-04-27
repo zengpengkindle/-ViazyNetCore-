@@ -9,7 +9,7 @@ namespace ViazyNetCore.Model
         /// <summary>
         /// 设置或获取一个值，表示会员编号。
         /// </summary>
-        public string MemberId { get; set; }
+        public long MemberId { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示是否默认。

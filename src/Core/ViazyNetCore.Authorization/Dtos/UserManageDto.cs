@@ -8,7 +8,7 @@
         /// <summary>
         /// 用户编码
         /// </summary>
-        public string UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 用户账号

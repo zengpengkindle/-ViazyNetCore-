@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.SignalR;
 using ViazyNetCore.Auth;
 
 namespace Microsoft.AspNetCore.Http
@@ -111,11 +112,11 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="claims">当前用户接口实例。</param>
         /// <returns>返回用户Id，如果未登录则返回null。</returns>
-        public static string GetUserId(this ClaimsPrincipal claims)
+        public static long GetUserId(this ClaimsPrincipal claims)
         {
             //ids4用户的唯一标识符
             var userid = claims.GetFirstValue(JwtRegisteredClaimNames.Sid);
-            return userid;
+            return userid?.ParseTo<long>() ?? 0;
         }
 
         /// <summary>
@@ -123,22 +124,20 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        public static string GetUserId(this Claim[] claims)
+        public static long GetUserId(this IEnumerable<Claim> claims)
         {
             var sub = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value;
             //ids4用户的唯一标识符
-            return sub;
+            return sub?.ParseTo<long>() ?? 0;
         }
         /// <summary>
         /// 获取当前登录用户的Id（ids4用户主键guid）。
         /// </summary>
         /// <param name="request">当前用户接口实例。</param>
         /// <returns>返回用户Id，如果未登录则返回null。</returns>
-        public static string GetUserId(this HttpRequest request)
+        public static long GetUserId(this HttpRequest request)
         {
-            var sub = request.Claims().FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value;
-            //ids4用户的唯一标识符
-            return sub;
+            return request.Claims().GetUserId();
         }
         #endregion
 
@@ -167,7 +166,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        public static string? GetUserName(this Claim[] claims)
+        public static string? GetUserName(this IEnumerable<Claim> claims)
         {
             return claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
         }
@@ -176,7 +175,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        public static string? GetNickName(this Claim[] claims)
+        public static string? GetNickName(this IEnumerable<Claim> claims)
         {
             return claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
         }
@@ -238,7 +237,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        public static string GetClientId(this Claim[] claims)
+        public static string GetClientId(this IEnumerable<Claim> claims)
         {
             return claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Aud)?.Value;
         }
@@ -290,7 +289,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        public static long GetExp(this Claim[] claims)
+        public static long GetExp(this IEnumerable<Claim> claims)
         {
             var exp = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp)?.Value;
             if (!string.IsNullOrEmpty(exp))

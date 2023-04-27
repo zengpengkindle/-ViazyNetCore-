@@ -20,7 +20,7 @@ namespace ViazyNetCore.Model
         /// <summary>
         /// 关联用户表
         /// </summary>
-        public string MemberId { get; set; }
+        public long MemberId { get; set; }
         /// <summary>
         /// openId
         /// </summary>

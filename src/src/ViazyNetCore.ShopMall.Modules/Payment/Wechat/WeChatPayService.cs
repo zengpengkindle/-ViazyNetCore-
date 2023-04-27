@@ -40,7 +40,7 @@ namespace ViazyNetCore.Modules.Payment
         /// </summary>
         /// <param name="entity">实体数据</param>
         /// <returns></returns>
-        public async Task<object> CreatePay(BillPayments entity, string userId)
+        public async Task<object> CreatePay(BillPayments entity, long userId)
         {
             var weChatPayUrl = AppSettingsConstVars.PayCallBackWeChatPayUrl;
             if (string.IsNullOrEmpty(weChatPayUrl))

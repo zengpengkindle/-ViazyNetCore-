@@ -9,7 +9,7 @@ namespace ViazyNetCore.Model
         /// <summary>
         /// 设置或获取一个值，表示主键。
         /// </summary>
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示账号。

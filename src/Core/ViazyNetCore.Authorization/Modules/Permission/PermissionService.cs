@@ -42,7 +42,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="ownerId">拥有者Id</param>
         /// <param name="ownerType">拥有者所属类别</param>
         /// <returns>返回roleName对应的权限设置</returns>
-        public async Task<IEnumerable<BmsOwnerPermission>> GetPermissionsInUserRole(string ownerId, OwnerType ownerType)
+        public async Task<IEnumerable<BmsOwnerPermission>> GetPermissionsInUserRole(long ownerId, OwnerType ownerType)
         {
             string cacheKey = GetCacheKey_GetPermissionsInUserRole(ownerId, ownerType);
             var permissionItemInUserRoles = this._cacheService.Get<List<BmsOwnerPermission>>(cacheKey);
@@ -62,7 +62,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="permissionItemKeys">待更新的权限项目规则集合</param>
         /// <param name="ownerId">拥有者Id</param>
         /// <param name="ownerType">拥有者所属类别</param>
-        public async Task UpdatePermissionsInUserRole(IEnumerable<string>? permissionItemKeys, string ownerId, OwnerType ownerType)
+        public async Task UpdatePermissionsInUserRole(IEnumerable<string>? permissionItemKeys, long ownerId, OwnerType ownerType)
         {
             using (var context = _uowm.Begin())
             {
@@ -248,7 +248,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns></returns>
-        public async Task<IEnumerable<BmsOwnerPermission>> ResolveUserPermission(string userId)
+        public async Task<IEnumerable<BmsOwnerPermission>> ResolveUserPermission(long userId)
         {
             IEnumerable<BmsOwnerPermission> permissions = new List<BmsOwnerPermission>();
             var user = await _userService.GetUser(userId);
@@ -256,7 +256,7 @@ namespace ViazyNetCore.Authorization.Modules
             if (user == null)
                 return permissions;
 
-            IList<string> roleIdsOfUser = await _roleService.GetRoleIdsOfUser(userId);
+            IList<long> roleIdsOfUser = await _roleService.GetRoleIdsOfUser(userId);
 
             //if(user.IsModerated)
             //    roleIdsOfUser.Add(RoleIds.Instance().ModeratedUser());
@@ -277,7 +277,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="currentUser">当前用户</param>
         /// <param name="permissionItemKey">权限项目标识</param>
         /// <returns>有权限操作返回true，否则返回false</returns>
-        public async Task<bool> Check(IUser<string> currentUser, string permissionItemKey)
+        public async Task<bool> Check(IUser<long> currentUser, string permissionItemKey)
         {
             if (currentUser == null)
                 return false;
@@ -298,7 +298,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="currentUser">当前用户</param>
         /// <param name="permissionItemKey">权限项目标识</param>
         /// <returns>有权限操作返回true，否则返回false</returns>
-        public async Task<bool> Check(IUser<string> currentUser, string[] permissionItemKeys)
+        public async Task<bool> Check(IUser<long> currentUser, string[] permissionItemKeys)
         {
             if (currentUser == null)
                 return false;
@@ -313,7 +313,7 @@ namespace ViazyNetCore.Authorization.Modules
             return resolvedUserPermission.Select(n => n.PermissionItemKey).Intersect(permissionItemKeys).Any();
         }
 
-        private string GetCacheKey_GetPermissionsInUserRole(string ownerId, OwnerType ownerType)
+        private string GetCacheKey_GetPermissionsInUserRole(long ownerId, OwnerType ownerType)
         {
             return string.Format("PermissionItemsInUserRole:RoleId:{0}:OwnerType:{1}", ownerId, ownerType);
         }

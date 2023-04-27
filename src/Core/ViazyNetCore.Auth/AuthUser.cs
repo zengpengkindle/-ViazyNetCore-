@@ -12,7 +12,7 @@ namespace ViazyNetCore.Auth
         /// <summary>
         /// 认证授权中心用户Key
         /// </summary>
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// ids4认证授权中心用户类型

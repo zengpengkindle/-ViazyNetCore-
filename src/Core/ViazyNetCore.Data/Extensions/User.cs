@@ -19,11 +19,11 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
         }
 
         private AuthUser? AuthUser => this._accessor.GetAuthUser();
-        public string Id
+        public long Id
         {
             get
             {
-                return this.AuthUser?.Id;
+                return this.AuthUser?.Id ?? 0;
             }
         }
         public string Username { get => this.AuthUser?.Username; }
@@ -32,5 +32,7 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
         public int IdentityType => this.AuthUser?.IdentityType ?? 0;
 
         public bool IsModerated => this.AuthUser?.IsModerated ?? false;
+
+        public long TenantId { get; set; }
     }
 }

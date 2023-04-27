@@ -25,6 +25,6 @@ namespace ViazyNetCore.Modules.ShopMall
 
     public interface IGetCartHanlder
     {
-        Task OnFindCartAsync(string memberId);
+        Task OnFindCartAsync(long memberId);
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization.Modules
 {
-    public class BmsIdentity : IUser<string>
+    public class BmsIdentity : IUser
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         public string Username { get; set; }
 

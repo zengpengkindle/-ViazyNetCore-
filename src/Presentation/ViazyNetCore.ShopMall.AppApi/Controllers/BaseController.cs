@@ -10,11 +10,11 @@ namespace ViazyNetCore.ShopMall.AppApi
     [Area("shopmall")]
     public class BaseController : ControllerBase
     {
-        public string MemberId
+        public long MemberId
         {
             get
             {
-                return this.HttpContext.User?.GetUserId() ?? "test_member";
+                return this.HttpContext.User?.GetUserId() ?? 0;
             }
         }
     }

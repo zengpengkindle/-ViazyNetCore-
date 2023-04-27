@@ -26,10 +26,10 @@ namespace ViazyNetCore.Authorization.Modules
             this._userRoleRepository = userRoleRepository;
         }
 
-        public async Task<List<string>> GetRoleIdsOfUser(string userId)
+        public async Task<List<long>> GetRoleIdsOfUser(long userId)
         {
             var cacheKeyUserInRole = GetCacheKey_GetRoleIdsOfUser(userId);
-            var roleIds = this._cacheService.Get<List<string>>(cacheKeyUserInRole);
+            var roleIds = this._cacheService.Get<List<long>>(cacheKeyUserInRole);
             if (roleIds == null)
             {
                 roleIds = await this._userRoleRepository.GetRoleIdsOfUser(userId);
@@ -39,13 +39,13 @@ namespace ViazyNetCore.Authorization.Modules
             return roleIds;
         }
 
-        public async Task<bool> IsUserInRoles(string userId, params string[] roleIds)
+        public async Task<bool> IsUserInRoles(long userId, params long[] roleIds)
         {
-            IEnumerable<string> userRoleIds = await GetRoleIdsOfUser(userId);
+            IEnumerable<long> userRoleIds = await GetRoleIdsOfUser(userId);
             return userRoleIds.Any(r => roleIds.Contains(r));
         }
 
-        public async Task<bool> IsSuperAdministrator(IUser<string> user)
+        public async Task<bool> IsSuperAdministrator(IUser<long> user)
         {
             if (user == null)
                 return false;
@@ -62,12 +62,12 @@ namespace ViazyNetCore.Authorization.Modules
         /// </summary>
         /// <param name="userId">用户ID</param>
         /// <param name="roleIds">角色id集合</param>
-        public async Task UpdateUserToRoles(string userId, List<string> roleIds)
+        public async Task UpdateUserToRoles(long userId, List<long> roleIds)
         {
             if (roleIds == null)
                 return;
 
-            IEnumerable<string> oldRoleNames = await GetRoleIdsOfUser(userId);
+            IEnumerable<long> oldRoleNames = await GetRoleIdsOfUser(userId);
             var nameIsChange = roleIds.Except(oldRoleNames).Count() > 0;
             if (nameIsChange)
             {
@@ -78,12 +78,12 @@ namespace ViazyNetCore.Authorization.Modules
             this._cacheService.Remove(cacheKeyUserInRole);
         }
 
-        private string GetCacheKey_GetRoleIdsOfUser(string userId)
+        private string GetCacheKey_GetRoleIdsOfUser(long userId)
         {
             return $"RoleIdsOfUser:UserId:{userId}";
         }
 
-        public Task<BmsRole> GetAsync(string roleId)
+        public Task<BmsRole> GetAsync(long roleId)
         {
             return this._roleRepository.GetAsync(roleId);
         }
@@ -102,22 +102,16 @@ namespace ViazyNetCore.Authorization.Modules
             return await this._roleRepository.GetAllAsync();
         }
 
-        public Task DeleteRoleAsync(string id)
+        public Task DeleteRoleAsync(long id)
         {
             return this._roleRepository.UpdateDiy.Set(p => p.Status == ComStatus.Deleted).Where(p => p.Id == id).ExecuteAffrowsAsync();
         }
 
         public Task UpdateAsync(BmsRole item)
         {
-            item.CreateTime = DateTime.Now;
-            item.ModifyTime = DateTime.Now;
-            if (item.Id.IsNull())
-            {
-                item.Id = Snowflake.NextIdString();
-            }
             return this._roleRepository.Orm.InsertOrUpdate<BmsRole>()
                 .SetSource(item)
-                .UpdateColumns(p => new { p.Name, p.ModifyTime, p.Status, p.ExtraData })
+                .UpdateColumns(p => new { p.Name, p.UpdateUserId, p.UpdateUserName, p.UpdateTime, p.Status, p.ExtraData })
                 .ExecuteAffrowsAsync();
         }
     }

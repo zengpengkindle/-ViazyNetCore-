@@ -16,7 +16,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers
         private readonly ILockProvider _lockProvider;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private string _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
+        private long _memberId => this._httpContextAccessor.HttpContext!.User.GetUserId();
 
         public RefundController(RefundService refundService, ILockProvider lockProvider, IHttpContextAccessor httpContextAccessor)
         {

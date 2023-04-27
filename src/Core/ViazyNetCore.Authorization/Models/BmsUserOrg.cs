@@ -19,7 +19,7 @@ namespace ViazyNetCore.Authorization.Models
         /// 设置或获取一个值，表示页面编号。
         /// </summary>
         [Required]
-        public string UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 是否主管

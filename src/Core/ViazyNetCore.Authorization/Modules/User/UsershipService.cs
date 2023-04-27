@@ -17,7 +17,7 @@ namespace ViazyNetCore.Authorization.Modules
             this._userRepository = userRepository;
         }
 
-        public Task ActivateUsers(IEnumerable<string> userIds, ComStatus status = ComStatus.Enabled)
+        public Task ActivateUsers(IEnumerable<long> userIds, ComStatus status = ComStatus.Enabled)
         {
             return this._userRepository.ActivateUsers(userIds, status);
         }
@@ -64,7 +64,7 @@ namespace ViazyNetCore.Authorization.Modules
         }
 
 
-        public async Task DeleteUser(string userId, string takeOverUserName, bool isTakeOver, bool deleteContent = false)
+        public async Task DeleteUser(long userId, string takeOverUserName, bool isTakeOver, bool deleteContent = false)
         {
             var user = await this.GetUserByUserIdAsync(userId);
             if (user == null)
@@ -72,7 +72,7 @@ namespace ViazyNetCore.Authorization.Modules
 
             if (isTakeOver)
             {
-                string takeOverUserId = await this._userRepository.GetUserIdByUserName(takeOverUserName);
+                var takeOverUserId = await this._userRepository.GetUserIdByUserName(takeOverUserName);
                 var takeOverUser = this.GetUserByUserIdAsync(takeOverUserId);
                 if (takeOverUser == null)
                     UserDeleteExceptions.InvalidTakeOverUsername();
@@ -106,7 +106,7 @@ namespace ViazyNetCore.Authorization.Modules
 
         public async Task<BmsUser> ValidateUser(string username, string password)
         {
-            string userId = await this._userRepository.GetUserIdByUserName(username);
+            var userId = await this._userRepository.GetUserIdByUserName(username);
 
             //var mobileRegex = new Regex("^1[3-9]\\d{9}$");
             //var emailRegex = new Regex("^([a-zA-Z0-9_.-]+)@([0-9A-Za-z.-]+).([a-zA-Z.]{2,6})$");
@@ -123,7 +123,7 @@ namespace ViazyNetCore.Authorization.Modules
             return loginUser;
         }
 
-        public Task<BmsUser> GetUserByUserIdAsync(string userId)
+        public Task<BmsUser> GetUserByUserIdAsync(long userId)
         {
             return this._userRepository.GetAsync(userId);
         }

@@ -416,7 +416,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <param name="remark"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task UpdateInStock(string stockId, int inStockNum, string remark, string userId)
+        public async Task UpdateInStock(string stockId, int inStockNum, string remark, long userId)
         {
             try
             {

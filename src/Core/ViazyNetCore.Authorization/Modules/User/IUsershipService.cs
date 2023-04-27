@@ -37,7 +37,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="takeOverUserName">用于接管删除用户时不能删除的内容(例如：用户创建的群组)</param>
         /// <param name="isTakeOver">是否接管被删除用户可被接管的内容</param>
         /// <returns><see cref="UserDeleteStatus"/></returns>
-        Task DeleteUser(string userId, string takeOverUserName, bool isTakeOver, bool deleteContent = false);
+        Task DeleteUser(long userId, string takeOverUserName, bool isTakeOver, bool deleteContent = false);
 
         /// <summary>
         /// 更新用户
@@ -49,7 +49,7 @@ namespace ViazyNetCore.Authorization.Modules
         /// 批量激活用户
         /// </summary>
         /// <param name="userIds">用户Id集合</param>
-        Task ActivateUsers(IEnumerable<string> userIds, ComStatus status = ComStatus.Enabled);
+        Task ActivateUsers(IEnumerable<long> userIds, ComStatus status = ComStatus.Enabled);
 
         ///	<summary>
         ///	更新密码（需要验证当前密码）

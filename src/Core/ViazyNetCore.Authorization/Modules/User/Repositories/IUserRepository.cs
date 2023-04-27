@@ -7,13 +7,13 @@ namespace ViazyNetCore.Modules
     /// 表示一个用户的服务仓储接口。
     /// </summary>
     [Injection]
-    public interface IUserRepository : IBaseRepository<BmsUser, string>
+    public interface IUserRepository : IBaseRepository<BmsUser, long>
     {
         /// <summary>
         /// 查询user账号是否存在
         /// </summary>
         /// <returns></returns>
-        Task<bool> UserExistAsync(string userName, string id);
+        Task<bool> UserExistAsync(string userName, long id);
 
         /// <summary>
         /// 根据BmsUser新增
@@ -36,14 +36,14 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>异步操作。</returns>
-        Task RemoveByIdAsync(string id);
+        Task RemoveByIdAsync(long id);
 
         /// <summary>
         /// 查找指定编号的模型。
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>模型。</returns>
-        Task<UserFindModel> FindByIdAsync(string id);
+        Task<UserFindModel> FindByIdAsync(long id);
 
         /// <summary>
         /// 查询所有模型。
@@ -66,14 +66,14 @@ namespace ViazyNetCore.Modules
         /// <param name="salt">密码盐。</param>
         /// <param name="password">密码。</param>
         /// <returns>重置成功返回 true 值，否则返回 false 值。</returns>
-        Task ModifyPasswordAsync(string password, Guid salt, string id);
+        Task ModifyPasswordAsync(string password, Guid salt, long id);
 
         /// <summary>
         /// 根据用户编号获取可用的用户账号信息
         /// </summary>
         /// <param name="id">用户编号</param>
         /// <returns></returns>
-        Task<BmsUser> GetEnabledUserByIdAsync(string id);
+        Task<BmsUser> GetEnabledUserByIdAsync(long id);
 
         ///// <summary>
         ///// 根据编号修改商户密码
@@ -89,7 +89,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">用户Id</param>
         /// <returns>true：已绑定</returns>
-        Task<bool> CheckUserBindGoogleAuthenticator(string id);
+        Task<bool> CheckUserBindGoogleAuthenticator(long id);
 
         /// <summary>
         /// 绑定谷歌验证码。
@@ -97,19 +97,19 @@ namespace ViazyNetCore.Modules
         /// <param name="id"></param>
         /// <param name="secretKey"></param>
         /// <returns></returns>
-        Task<bool> BindGoogleAuthenticator(string id, string secretKey);
+        Task<bool> BindGoogleAuthenticator(long id, string secretKey);
 
         /// <summary>
         /// 重置谷歌验证码
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<bool> ClearGoogleAuthenticator(string id);
+        Task<bool> ClearGoogleAuthenticator(long id);
 
         #region 判断
-        Task ActivateUsers(IEnumerable<string> userIds, ComStatus status);
+        Task ActivateUsers(IEnumerable<long> userIds, ComStatus status);
         Task<IUser> CreateUser(BmsUser user_object, bool ignoreDisallowedUsername);
-        Task<string> GetUserIdByUserName(string takeOverUserName);
+        Task<long> GetUserIdByUserName(string takeOverUserName);
         Task<bool> ResetPassword(BmsUser user, string storedPassword);
 
         #endregion

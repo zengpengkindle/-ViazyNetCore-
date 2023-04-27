@@ -3,17 +3,17 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个BmsUserRole。
     /// </summary>
-    public partial class BmsUserRole : EntityBase<string>
+    public partial class BmsUserRole : EntityBase<long>
     {
         /// <summary>
         /// 
         /// </summary>
-        public string UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string RoleId { get; set; }
+        public long RoleId { get; set; }
 
     }
 }

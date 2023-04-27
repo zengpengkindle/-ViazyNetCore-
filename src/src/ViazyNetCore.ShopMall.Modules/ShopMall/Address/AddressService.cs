@@ -44,7 +44,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="memberId"></param>
         /// <returns></returns>
-        public async Task<AddressModel> GetMemberDefaultAddress(string memberId)
+        public async Task<AddressModel> GetMemberDefaultAddress(long memberId)
         {
             if (this._fsql.Select<MemberAddress>().Any(p => p.MemberId == memberId && p.IsDefault))
             {
@@ -91,7 +91,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="addressId"></param>
         /// <returns></returns>
-        public async Task<List<AddressModel>> GetMemberAddress(string memberId)
+        public async Task<List<AddressModel>> GetMemberAddress(long memberId)
         {
             return await this._fsql.Select<MemberAddress>()
                 .Where(p => p.MemberId == memberId)
@@ -117,11 +117,10 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <param name="memberId"></param>
         /// <param name="address"></param>
         /// <returns></returns>
-        public async Task<string> AddAddress(string memberId, AddressModel address)
+        public async Task<string> AddAddress(long memberId, AddressModel address)
         {
             var memberAddress = new MemberAddress
             {
-                Id = Snowflake<MemberAddress>.NextIdString(),
                 ReceiverProvince = address.Province,
                 ReceiverCity = address.City,
                 ReceiverDistrict = address.County,
@@ -154,7 +153,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// </summary>
         /// <param name="addressId"></param>
         /// <returns></returns>
-        public async Task RemoveAddress(string memberId, string addressId)
+        public async Task RemoveAddress(long memberId, string addressId)
         {
             await this._fsql.Delete<MemberAddress>()
                .Where(p => p.Id == addressId && p.MemberId == memberId).ExecuteAffrowsAsync();
@@ -167,7 +166,7 @@ namespace ViazyNetCore.Modules.ShopMall
         /// <param name="addressId"></param>
         /// <param name="address"></param>
         /// <returns></returns>
-        public async Task UpdateAddress(string memberId, string addressId, AddressModel address)
+        public async Task UpdateAddress(long memberId, string addressId, AddressModel address)
         {
             var memberAddress = new MemberAddress
             {

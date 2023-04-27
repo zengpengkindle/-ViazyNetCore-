@@ -43,7 +43,6 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var user = new BmsUser()
                 {
-                    Id = Snowflake.NextIdString(),
                     Status = ComStatus.Enabled,
                     PasswordSalt = Guid.NewGuid(),
                     Username = "admin",

@@ -25,7 +25,7 @@ namespace ViazyNetCore.Authorization.Models
         /// <summary>
         /// 
         /// </summary>
-        public string OwnerId { get; set; }
+        public long OwnerId { get; set; }
 
         /// <summary>
         /// 设置或获取一个值，表示被授权对象类型（1用户,11角色）。

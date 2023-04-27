@@ -1,13 +1,13 @@
 ﻿namespace ViazyNetCore.Authorization.Modules.Repositories
 {
     [Injection]
-    public class UserRoleRepository : DefaultRepository<BmsUserRole, string>, IUserRoleRepository
+    public class UserRoleRepository : DefaultRepository<BmsUserRole, long>, IUserRoleRepository
     {
         public UserRoleRepository(IFreeSql fsql) : base(fsql)
         {
         }
 
-        public async Task UpdateUserToRoles(string userId, List<string> roleIds)
+        public async Task UpdateUserToRoles(long userId, List<long> roleIds)
         {
             var userRole = this.Select;
             await userRole.Where(p => p.UserId == userId).ToDelete().ExecuteAffrowsAsync();
@@ -15,7 +15,6 @@
             {
                 var userrole = new BmsUserRole()
                 {
-                    Id = Snowflake.NextIdString(),
                     UserId = userId,
                     RoleId = roleId
                 };
@@ -23,7 +22,7 @@
             }
         }
 
-        public async Task<List<string>?> GetRoleIdsOfUser(string userId)
+        public async Task<List<long>?> GetRoleIdsOfUser(long userId)
         {
             return await this.Select.From<BmsRole>().InnerJoin((ur, r) => ur.RoleId == r.Id)
                 .Where((ur, r) => ur.UserId == userId).WithTempQuery(p => p.t2.Id).ToListAsync();

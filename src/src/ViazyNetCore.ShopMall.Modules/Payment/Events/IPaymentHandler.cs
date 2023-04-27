@@ -21,7 +21,7 @@ namespace ViazyNetCore.Modules.Payment.Events
         /// </summary>
         public string OutTradeNo { get; set; }
 
-        public string MemberId { get; set; }
+        public long MemberId { get; set; }
         /// <summary>
         /// 商品的标题/交易标题/订单标题/订单关键字等。
         /// </summary>

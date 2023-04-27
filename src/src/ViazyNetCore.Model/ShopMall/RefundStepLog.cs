@@ -40,7 +40,7 @@ namespace ViazyNetCore.Model
         /// <summary>
         /// 处理人-（用户时为memberId 商家时为shopId）
         /// </summary>
-        public string HandleUserId { get; set; }
+        public long HandleUserId { get; set; }
 
         /// <summary>
         /// 处理人类型-0商家1用户

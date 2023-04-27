@@ -8,7 +8,7 @@ namespace ViazyNetCore.Modules
     /// 表示一个角色的服务仓储。
     /// </summary>
     [Injection]
-    public class RoleRepository : DefaultRepository<BmsRole, string>, IRoleRepository
+    public class RoleRepository : DefaultRepository<BmsRole, long>, IRoleRepository
     {
         public RoleRepository(IFreeSql fsql) : base(fsql)
         {
@@ -21,7 +21,7 @@ namespace ViazyNetCore.Modules
                  {
                      Id = p.Id,
                      CreateTime = p.CreateTime,
-                     ModifyTime = p.ModifyTime,
+                     UpdateTime = p.UpdateTime,
                      Name = p.Name,
                      Status = p.Status
                  }).ToPageAsync(pagination);

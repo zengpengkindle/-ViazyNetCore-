@@ -39,12 +39,12 @@ namespace ViazyNetCore.Modules
         /// <param name="model">模型。</param>
         /// <param name="randPwd">随机生成的密码,只有新增的时候用到</param>
         /// <returns>模型的编号。</returns>
-        public async Task<string> ManageAsync(UserModel model, string randPwd)
+        public async Task<long> ManageAsync(UserModel model, string randPwd)
         {
             if (await _userRepository.UserExistAsync(model.Username, model.Id))
                 throw new ApiException("用户账号已存在。");
 
-            if (model.Id.IsNull())
+            if (model.Id == 0)
             {
                 var password = DataSecurity.GenerateSaltedHash(randPwd.ToMd5(), out var salt);
                 var user = new BmsUser
@@ -88,7 +88,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>异步操作。</returns>
-        public Task RemoveAsync(string id)
+        public Task RemoveAsync(long id)
         {
             return _userRepository.RemoveByIdAsync(id);
         }
@@ -98,7 +98,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>模型。</returns>
-        public async Task<UserFindModel> FindAsync(string id)
+        public async Task<UserFindModel> FindAsync(long id)
         {
             var result = await _userRepository.FindByIdAsync(id);
 
@@ -114,12 +114,12 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<DateTime> FindModifyTimeAsync(string id)
+        public async Task<DateTime> FindModifyTimeAsync(long id)
         {
             return await this._userRepository.Where(o => o.Id == id).FirstAsync(o => o.ModifyTime);
         }
 
-        public Task<string> GetUsername(string id)
+        public Task<string> GetUsername(long id)
         {
             return _userRepository.Where(p => p.Id == id).WithTempQuery(p => p.Username).FirstAsync();
         }
@@ -162,7 +162,7 @@ namespace ViazyNetCore.Modules
                     this.GetByUsernameCache(args.Username, true);
                     return new BmsIdentity
                     {
-                        Id = user.Id.ToString(),
+                        Id = user.Id,
                         Username = user.Username,
                         Nickname = user.Nickname,
                         //RoleId = user.RoleId,
@@ -202,7 +202,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">用户编号。</param>
         /// <returns>重置成功返回 随机密码,否则抛出异常</returns>
-        public async Task<string> ResetPasswordAsync(string id, string randPwd)
+        public async Task<string> ResetPasswordAsync(long id, string randPwd)
         {
             var password = DataSecurity.GenerateSaltedHash(randPwd, out var salt);
             await _userRepository.ModifyPasswordAsync(password, salt, id);
@@ -216,7 +216,7 @@ namespace ViazyNetCore.Modules
         /// <param name="id">用户编号。</param>
         /// <param name="args">参数。</param>
         /// <returns>修改成功返回 true 值，否则返回 false 值。</returns>
-        public async Task<bool> ModifyPasswordAsync(string id, UserModifyPasswordArgs args)
+        public async Task<bool> ModifyPasswordAsync(long id, UserModifyPasswordArgs args)
         {
             var user = await _userRepository.GetEnabledUserByIdAsync(id);
 
@@ -236,7 +236,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="username">用户账号</param>
         /// <returns></returns>
-        public UserLoginCheck GetByUsernameCache(string username, bool state, string ip = null, string? userId = null)
+        public UserLoginCheck GetByUsernameCache(string username, bool state, string ip = null, long? userId = null)
         {
             var cacheKey = GetUsernameCacheKey(username);
             var result = this._cacheService.GetFromFirstLevel<UserLoginCheck>(cacheKey);
@@ -333,18 +333,18 @@ namespace ViazyNetCore.Modules
 
         #region 谷歌校验码
 
-        public Task<bool> CheckUserBindGoogleAuthenticator(string id)
+        public Task<bool> CheckUserBindGoogleAuthenticator(long id)
         {
             return this._userRepository.CheckUserBindGoogleAuthenticator(id);
         }
 
-        public Task<bool> BindGoogleAuthenticator(string id, string secretKey)
+        public Task<bool> BindGoogleAuthenticator(long id, string secretKey)
         {
             if (secretKey.IsNull()) throw new ApiException("secretKey can't be null");
             return this._userRepository.BindGoogleAuthenticator(id, secretKey);
         }
 
-        public Task<bool> ClearGoogleAuthenticator(string id)
+        public Task<bool> ClearGoogleAuthenticator(long id)
         {
             return this._userRepository.ClearGoogleAuthenticator(id);
         }
@@ -376,7 +376,7 @@ namespace ViazyNetCore.Modules
             return this._userRepository.Select.AnyAsync();
         }
 
-        public async Task<IUser<string>> GetUser(string userId)
+        public async Task<IUser<long>> GetUser(long userId)
         {
             return await this._userRepository.GetAsync(userId);
         }

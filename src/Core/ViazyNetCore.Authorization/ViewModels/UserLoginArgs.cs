@@ -32,7 +32,7 @@ namespace ViazyNetCore.Dtos
         /// <summary>
         /// 审核用户的userid
         /// </summary>
-        public string? Auditor { get; set; }
+        public long? Auditor { get; set; }
 
         ///// <summary>
         ////api上下文，用于记录日志
