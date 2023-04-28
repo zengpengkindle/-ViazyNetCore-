@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 12/04/2023 19:47:57
+ Date: 28/04/2023 09:17:25
 */
 
 SET NAMES utf8mb4;
@@ -40,21 +40,21 @@ CREATE TABLE `Areas`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `Credits`;
 CREATE TABLE `Credits`  (
-  `Id` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `CreditType` int(11) NULL DEFAULT NULL,
-  `Status` int(11) NULL DEFAULT NULL,
-  `Name` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `CreditKey` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `CreditType` int(11) NOT NULL,
+  `Status` int(11) NOT NULL,
+  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `CreditKey` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Exdata` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `CreateTime` datetime NULL DEFAULT NULL
+  `CreateTime` datetime(3) NOT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of Credits
 -- ----------------------------
-INSERT INTO `Credits` VALUES ('BRPYX25UVF286895', 1, 1, 'RMB', 'RMB', NULL, '2022-07-19 08:40:56');
-INSERT INTO `Credits` VALUES ('BRPYXKE4P1J46896', 2, 1, 'Cion', 'Cion', NULL, '2022-07-19 08:41:05');
-INSERT INTO `Credits` VALUES ('1FFGFI7BX4W4320', 2, 1, '积分', 'Cion2', NULL, '2023-03-12 10:38:47');
+INSERT INTO `Credits` VALUES ('BRPYX25UVF286895', 1, 1, 'RMB', 'RMB', NULL, '2022-07-19 08:40:56.000');
+INSERT INTO `Credits` VALUES ('BRPYXKE4P1J46896', 2, 1, 'Cion', 'Cion', NULL, '2022-07-19 08:41:05.000');
+INSERT INTO `Credits` VALUES ('1FFGFI7BX4W4320', 2, 1, '积分', 'Cion2', NULL, '2023-03-12 10:38:47.000');
 
 -- ----------------------------
 -- Table structure for Finance
@@ -82,9 +82,9 @@ CREATE TABLE `Finance`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `LogisticsCompany`;
 CREATE TABLE `LogisticsCompany`  (
-  `Id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `Code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `RegMailNo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -167,7 +167,7 @@ CREATE TABLE `MemberCapital`  (
 DROP TABLE IF EXISTS `MemberCar`;
 CREATE TABLE `MemberCar`  (
   `Id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `MemberId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `MemberId` bigint(50) NOT NULL,
   `ItemNum` int(11) NOT NULL,
   `TotalMoney` decimal(18, 4) NOT NULL,
   `TotalCredit1` decimal(18, 4) NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE `MemberCar`  (
 DROP TABLE IF EXISTS `MemberCarItem`;
 CREATE TABLE `MemberCarItem`  (
   `Id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `CarId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `CarId` bigint(50) NULL DEFAULT NULL,
   `ProductId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `SkuId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `ShopId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -218,9 +218,9 @@ CREATE TABLE `MemberCarItem`  (
 -- ----------------------------
 -- Records of MemberCarItem
 -- ----------------------------
-INSERT INTO `MemberCarItem` VALUES ('BRQRG6PBOL4W3800', 'test_member', '1FKHSRFF51C1848', NULL, '10000', NULL, '小羊咩咩', '', '/upload/public/image/2023/03/14/6381443119233469888795835.png', 12.0000, b'0', 0.0000, 0, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 4, 0, '2022-07-19 14:00:46', '2022-07-19 14:00:46', NULL, NULL);
-INSERT INTO `MemberCarItem` VALUES ('BRRRP7RCLGQO7015', NULL, '1FKIBOLF3281851', NULL, '10000', NULL, '【懿琪宝贝】TZ宝宝牛仔裤2022春季新款男女童裤子YB21KZ013', '', '/upload/public/image/2023/03/14/6381443119233469888795835.png', 30.0000, b'0', 0.0000, 0, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 1, 0, '2022-07-19 20:47:09', '2022-07-19 20:47:09', NULL, NULL);
-INSERT INTO `MemberCarItem` VALUES ('BRRRS0JTLMV40366', NULL, 'BRQITVPA39C05149', NULL, '10000', NULL, 'Test1', '', '/upload/public/image/2023/03/14/6381442979251715415542528.png', 30.0000, b'0', 0.0000, 0, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 2, 0, '2022-07-19 20:48:01', '2022-07-19 20:48:01', NULL, NULL);
+INSERT INTO `MemberCarItem` VALUES ('BRQRG6PBOL4W3800', 1, '1FKHSRFF51C1848', NULL, '10000', NULL, '小羊咩咩', '', '/upload/public/image/2023/03/14/6381443119233469888795835.png', 12.0000, b'0', 0.0000, 0, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 4, 0, '2022-07-19 14:00:46', '2022-07-19 14:00:46', NULL, NULL);
+INSERT INTO `MemberCarItem` VALUES ('BRRRP7RCLGQO7015', 0, '1FKIBOLF3281851', NULL, '10000', NULL, '【懿琪宝贝】TZ宝宝牛仔裤2022春季新款男女童裤子YB21KZ013', '', '/upload/public/image/2023/03/14/6381443119233469888795835.png', 30.0000, b'0', 0.0000, 0, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 1, 0, '2022-07-19 20:47:09', '2022-07-19 20:47:09', NULL, NULL);
+INSERT INTO `MemberCarItem` VALUES ('BRRRS0JTLMV40366', 2, 'BRQITVPA39C05149', NULL, '10000', NULL, 'Test1', '', '/upload/public/image/2023/03/14/6381442979251715415542528.png', 30.0000, b'0', 0.0000, 0, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 2, 0, '2022-07-19 20:48:01', '2022-07-19 20:48:01', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for MemberPayment
@@ -268,15 +268,15 @@ CREATE TABLE `Product`  (
   `FreightStep` int(11) NOT NULL,
   `FreightValue` decimal(10, 2) NOT NULL,
   `IsHidden` bit(1) NOT NULL,
-  `Status` smallint(6) NOT NULL,
+  `Status` int(11) NOT NULL,
   `StatusChangeTime` datetime(3) NOT NULL,
   `Image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `SubImage` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `OpenSpec` bit(1) NOT NULL,
-  `SkuTree` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `SkuTree` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
   `Detail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `CreateTime` datetime NOT NULL,
-  `ModifyTime` datetime NOT NULL,
+  `CreateTime` datetime(3) NOT NULL,
+  `ModifyTime` datetime(3) NOT NULL,
   `SearchContent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `HasOuter` bit(1) NOT NULL,
   `OuterType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -288,20 +288,20 @@ CREATE TABLE `Product`  (
 -- ----------------------------
 -- Records of Product
 -- ----------------------------
-INSERT INTO `Product` VALUES ('1FKHSRFF51C1848', NULL, NULL, '12001', '童鞋/婴儿鞋', '10000', '测试', NULL, '小羊咩咩', NULL, NULL, NULL, 10.00, 12.00, b'0', 0.00, 0, 0.00, b'0', 2, '2023-03-14 22:53:17.000', '/upload/public/image/2023/03/14/6381443119233469888795835.png', '', b'0', '[]', '<p>测试</p>', '2023-03-14 22:53:17', '2023-04-01 13:59:30', '小羊咩咩____', b'0', NULL, 4, NULL);
-INSERT INTO `Product` VALUES ('1FKIBOLF3281851', NULL, NULL, '11001', '奶茶/茶饮', '10000', '测试', NULL, '小羊咩咩没~~咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩', NULL, NULL, NULL, 96.00, 12.90, b'0', 0.00, 0, 0.00, b'0', 2, '2023-03-14 23:03:45.000', '/upload/public/image/2023/03/14/6381443164371038354913416.png', '', b'1', '[{\"K\":\"颜色\",\"V\":[{\"Id\":\"s10001\",\"Name\":\"红色\",\"ImgUrl\":\"/upload/public/image/2023/03/14/6381443183453456688369200.png\"},{\"Id\":\"s10002\",\"Name\":\"白色\",\"ImgUrl\":\"/upload/public/image/2023/03/14/6381443183707506325539155.png\"},{\"Id\":\"s10003\",\"Name\":\"绿色\",\"ImgUrl\":\"\"},{\"Id\":\"s10004\",\"Name\":\"粉色\",\"ImgUrl\":\"\"}],\"k_s\":\"s1\"}]', '<p><img src=\"/upload/public/image/2023/03/15/6381449259326860566568908.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"/upload/public/image/2023/04/06/6381639192399020791926411.webp\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"/upload/public/image/2023/04/06/6381639192405933975806809.webp\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"/upload/public/image/2023/04/06/6381639192408384257950677.webp\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2023-03-14 23:03:46', '2023-04-06 15:52:58', '小羊咩咩没~~咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩____', b'0', NULL, 4, NULL);
-INSERT INTO `Product` VALUES ('1H4OIPMG75S7641', NULL, NULL, '1GLWD6WZXC01548', '手机通讯', '10000', '测试', NULL, '迷你便携高颜值蓝牙无线耳机立体声只能触控式操作简约立体声耳机', NULL, NULL, NULL, 300.00, 290.00, b'0', 0.00, 0, 0.00, b'0', 2, '2023-04-11 22:44:09.578', '/upload/public/image/2023/04/11/6381684984115551305246234.png', '', b'0', '[]', '<p><img src=\"/upload/public/image/2023/04/11/6381684984786700333699273.webp\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2023-04-11 22:44:10', '2023-04-11 22:44:10', '迷你便携高颜值蓝牙无线耳机立体声只能触控式操作简约立体声耳机____', b'0', NULL, 4, NULL);
-INSERT INTO `Product` VALUES ('1H4OZC2R7SW2942', NULL, NULL, '1GLWG4RKT4W1554', '烹饪锅具', '10000', '测试', NULL, '简约餐盘耐热家用盘子菜盘套装多颜色简约餐盘耐热家用盘子', NULL, NULL, NULL, 200.00, 129.00, b'0', 0.00, 0, 0.00, b'0', 2, '2023-04-11 22:53:21.820', '/upload/public/image/2023/04/11/6381685038582121902066009.png', '/upload/public/image/2023/04/11/6381685038809388107425954.png,/upload/public/image/2023/04/11/6381685039134285997473193.png', b'1', '[{\"K\":\"颜色\",\"V\":[{\"Id\":\"s10001\",\"Name\":\"灰色\",\"ImgUrl\":\"/upload/public/image/2023/04/11/6381685037797091102348210.png\"},{\"Id\":\"s10002\",\"Name\":\"白色\",\"ImgUrl\":\"/upload/public/image/2023/04/11/6381685038102550322545719.png\"}],\"k_s\":\"s1\"}]', '<p><img src=\"/upload/public/image/2023/04/11/6381685039904593071489102.webp\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2023-04-11 22:53:22', '2023-04-11 22:53:22', '简约餐盘耐热家用盘子菜盘套装多颜色简约餐盘耐热家用盘子____', b'0', NULL, 4, NULL);
-INSERT INTO `Product` VALUES ('BRQITVPA39C05149', NULL, NULL, '3', '学习用品', '10000', '测试', '学习用品', 'Test1', NULL, NULL, NULL, 100.00, 30.00, b'0', 0.00, 0, 0.00, b'0', 1, '2022-07-19 12:24:09.000', '/upload/public/image/2023/03/14/6381442979251715415542528.png', '', b'0', '[]', '<p>测试<br></p>', '2022-07-19 12:24:09', '2023-03-25 12:17:42', 'Test1___学习用品_', b'0', '', 1, NULL);
+INSERT INTO `Product` VALUES ('1FKHSRFF51C1848', NULL, NULL, '12001', '童鞋/婴儿鞋', '10000', '测试', NULL, '小羊咩咩', NULL, NULL, NULL, 10.00, 12.00, b'0', 0.00, 0, 0.00, b'0', 2, '2023-03-14 22:53:17.000', '/upload/public/image/2023/03/14/6381443119233469888795835.png', '', b'0', '[]', '<p>测试</p>', '2023-03-14 22:53:17.000', '2023-04-01 13:59:30.000', '小羊咩咩____', b'0', NULL, 4, NULL);
+INSERT INTO `Product` VALUES ('1FKIBOLF3281851', NULL, NULL, '11001', '奶茶/茶饮', '10000', '测试', NULL, '小羊咩咩没~~咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩', NULL, NULL, NULL, 96.00, 12.90, b'0', 0.00, 0, 0.00, b'0', 2, '2023-03-14 23:03:45.000', '/upload/public/image/2023/03/14/6381443164371038354913416.png', '', b'1', '[{\"K\":\"颜色\",\"V\":[{\"Id\":\"s10001\",\"Name\":\"红色\",\"ImgUrl\":\"/upload/public/image/2023/03/14/6381443183453456688369200.png\"},{\"Id\":\"s10002\",\"Name\":\"白色\",\"ImgUrl\":\"/upload/public/image/2023/03/14/6381443183707506325539155.png\"},{\"Id\":\"s10003\",\"Name\":\"绿色\",\"ImgUrl\":\"\"},{\"Id\":\"s10004\",\"Name\":\"粉色\",\"ImgUrl\":\"\"}],\"k_s\":\"s1\"}]', '<p><img src=\"/upload/public/image/2023/03/15/6381449259326860566568908.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"/upload/public/image/2023/04/06/6381639192399020791926411.webp\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"/upload/public/image/2023/04/06/6381639192405933975806809.webp\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"/upload/public/image/2023/04/06/6381639192408384257950677.webp\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2023-03-14 23:03:46.000', '2023-04-06 15:52:58.000', '小羊咩咩没~~咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩____', b'0', NULL, 4, NULL);
+INSERT INTO `Product` VALUES ('1H4OIPMG75S7641', NULL, NULL, '1GLWD6WZXC01548', '手机通讯', '10000', '测试', NULL, '迷你便携高颜值蓝牙无线耳机立体声只能触控式操作简约立体声耳机', NULL, NULL, NULL, 300.00, 290.00, b'0', 0.00, 0, 0.00, b'0', 2, '2023-04-11 22:44:09.578', '/upload/public/image/2023/04/11/6381684984115551305246234.png', '', b'0', '[]', '<p><img src=\"/upload/public/image/2023/04/11/6381684984786700333699273.webp\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2023-04-11 22:44:10.000', '2023-04-11 22:44:10.000', '迷你便携高颜值蓝牙无线耳机立体声只能触控式操作简约立体声耳机____', b'0', NULL, 4, NULL);
+INSERT INTO `Product` VALUES ('1H4OZC2R7SW2942', NULL, NULL, '1GLWG4RKT4W1554', '烹饪锅具', '10000', '测试', NULL, '简约餐盘耐热家用盘子菜盘套装多颜色简约餐盘耐热家用盘子', NULL, NULL, NULL, 200.00, 129.00, b'0', 0.00, 0, 0.00, b'0', 2, '2023-04-11 22:53:21.820', '/upload/public/image/2023/04/11/6381685038582121902066009.png', '/upload/public/image/2023/04/11/6381685038809388107425954.png,/upload/public/image/2023/04/11/6381685039134285997473193.png', b'1', '[{\"K\":\"颜色\",\"V\":[{\"Id\":\"s10001\",\"Name\":\"灰色\",\"ImgUrl\":\"/upload/public/image/2023/04/11/6381685037797091102348210.png\"},{\"Id\":\"s10002\",\"Name\":\"白色\",\"ImgUrl\":\"/upload/public/image/2023/04/11/6381685038102550322545719.png\"}],\"k_s\":\"s1\"}]', '<p><img src=\"/upload/public/image/2023/04/11/6381685039904593071489102.webp\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2023-04-11 22:53:22.000', '2023-04-11 22:53:22.000', '简约餐盘耐热家用盘子菜盘套装多颜色简约餐盘耐热家用盘子____', b'0', NULL, 4, NULL);
+INSERT INTO `Product` VALUES ('BRQITVPA39C05149', NULL, NULL, '3', '学习用品', '10000', '测试', '学习用品', 'Test1', NULL, NULL, NULL, 100.00, 30.00, b'0', 0.00, 0, 0.00, b'0', 1, '2022-07-19 12:24:09.000', '/upload/public/image/2023/03/14/6381442979251715415542528.png', '', b'0', '[]', '<p>测试<br></p>', '2022-07-19 12:24:09.000', '2023-03-25 12:17:42.000', 'Test1___学习用品_', b'0', '', 1, NULL);
 
 -- ----------------------------
 -- Table structure for ProductBrand
 -- ----------------------------
 DROP TABLE IF EXISTS `ProductBrand`;
 CREATE TABLE `ProductBrand`  (
-  `Id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `IsHidden` bit(1) NOT NULL,
-  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Status` int(11) NOT NULL,
   `Sort` int(11) NOT NULL,
@@ -318,64 +318,64 @@ CREATE TABLE `ProductBrand`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `ProductCat`;
 CREATE TABLE `ProductCat`  (
-  `Id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `IsHidden` bit(1) NOT NULL,
   `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `ParentId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `ParentId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `IsParent` bit(1) NOT NULL,
   `Path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Sort` int(11) NOT NULL,
   `Status` int(11) NOT NULL,
   `Exdata` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `CreateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `CreateTime` datetime(3) NOT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ProductCat
 -- ----------------------------
-INSERT INTO `ProductCat` VALUES ('1', b'0', '酒水饮料', NULL, b'0', NULL, '/upload/public/image/2023/04/02/6381604066709757586487626.webp', 10, 1, NULL, '2023-04-02 14:02:04');
-INSERT INTO `ProductCat` VALUES ('11001', b'0', '奶茶/茶饮', '1', b'0', NULL, NULL, 1, 1, NULL, '2023-04-02 14:02:26');
-INSERT INTO `ProductCat` VALUES ('11002', b'0', '果汁/果醋', '1', b'0', NULL, NULL, 2, 1, NULL, '2023-04-02 14:02:41');
-INSERT INTO `ProductCat` VALUES ('11003', b'0', '啤酒', '1', b'0', NULL, NULL, 3, 1, NULL, '2023-04-02 14:02:52');
-INSERT INTO `ProductCat` VALUES ('11004', b'0', '冲调即饮咖啡', '1', b'0', NULL, NULL, 4, 1, NULL, '2023-04-02 14:03:12');
-INSERT INTO `ProductCat` VALUES ('12001', b'0', '童鞋/婴儿鞋', '2', b'0', NULL, NULL, 1, 1, NULL, NULL);
-INSERT INTO `ProductCat` VALUES ('12002', b'0', '童装/婴儿装', '2', b'0', NULL, NULL, 2, 1, NULL, NULL);
-INSERT INTO `ProductCat` VALUES ('12003', b'0', '孕妇装', '2', b'0', NULL, NULL, 3, 1, NULL, NULL);
-INSERT INTO `ProductCat` VALUES ('12004', b'0', '婴童用品', '2', b'0', NULL, NULL, 4, 1, NULL, NULL);
-INSERT INTO `ProductCat` VALUES ('12005', b'0', '婴童尿裤', '2', b'0', NULL, NULL, 5, 1, NULL, NULL);
-INSERT INTO `ProductCat` VALUES ('12006', b'0', '奶粉/辅食', '2', b'0', NULL, NULL, 6, 1, NULL, NULL);
-INSERT INTO `ProductCat` VALUES ('1GLLKE9Y16O9989', b'0', '卫生巾', '3', b'0', NULL, '', 0, 1, '', '2023-04-02 14:04:27');
-INSERT INTO `ProductCat` VALUES ('1GLVTLESUIO1536', b'0', '休闲食品', '', b'0', NULL, '/upload/public/image/2023/04/02/6381604069150375836821239.webp', 0, 1, '', '2023-04-02 13:58:14');
-INSERT INTO `ProductCat` VALUES ('1GLVULB64JK1537', b'0', '家电数码', '', b'0', NULL, '/upload/public/image/2023/04/02/6381604072611302879084898.jpg', 0, 1, '', '2023-04-02 13:58:47');
-INSERT INTO `ProductCat` VALUES ('1GLVW6CSEBK1538', b'0', '家居百货', '', b'0', NULL, '/upload/public/image/2023/04/02/6381604077867752601831433.webp', 0, 1, '', '2023-04-02 13:59:40');
-INSERT INTO `ProductCat` VALUES ('1GLVWS3QDTS1539', b'0', '粮油调味', '', b'0', NULL, '/upload/public/image/2023/04/02/6381604079882016843557567.jpg', 0, 1, '', '2023-04-02 14:00:00');
-INSERT INTO `ProductCat` VALUES ('1GLW33QFB0G1540', b'0', '功能/运动饮料', '1', b'0', NULL, '', 0, 1, '', '2023-04-02 14:03:30');
-INSERT INTO `ProductCat` VALUES ('1GLW5CXDHMO1541', b'0', '面部护理', '3', b'0', NULL, '', 0, 1, '', '2023-04-02 14:04:45');
-INSERT INTO `ProductCat` VALUES ('1GLW5QEOP6O1542', b'0', '沐浴清洁', '3', b'0', NULL, '', 0, 1, '', '2023-04-02 14:04:57');
-INSERT INTO `ProductCat` VALUES ('1GLW6XKLFUO1543', b'0', '纸品湿巾', '4', b'0', NULL, '', 0, 1, '', '2023-04-02 14:05:37');
-INSERT INTO `ProductCat` VALUES ('1GLW7ABSXHC1544', b'0', '清洁工具', '4', b'0', NULL, '', 0, 1, '', '2023-04-02 14:05:49');
-INSERT INTO `ProductCat` VALUES ('1GLWBVU9R401545', b'0', '饼干', '1GLVTLESUIO1536', b'0', NULL, '', 0, 1, '', '2023-04-02 14:08:21');
-INSERT INTO `ProductCat` VALUES ('1GLWC84FEKG1546', b'0', '糕点', '1GLVTLESUIO1536', b'0', NULL, '', 0, 1, '', '2023-04-02 14:08:33');
-INSERT INTO `ProductCat` VALUES ('1GLWCJCUQV41547', b'0', '果冻糕点', '1GLVTLESUIO1536', b'0', NULL, '', 0, 1, '', '2023-04-02 14:08:43');
-INSERT INTO `ProductCat` VALUES ('1GLWD6WZXC01548', b'0', '手机通讯', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:09:05');
-INSERT INTO `ProductCat` VALUES ('1GLWDOHWZ9C1549', b'0', '电脑电教', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:09:21');
-INSERT INTO `ProductCat` VALUES ('1GLWDZ3ZG5C1550', b'0', '大家电', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:09:31');
-INSERT INTO `ProductCat` VALUES ('1GLWEC3URUO1551', b'0', '电饭煲', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:09:43');
-INSERT INTO `ProductCat` VALUES ('1GLWF1AOKG01552', b'0', '厨用小电器', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:10:06');
-INSERT INTO `ProductCat` VALUES ('1GLWFRZ5RWG1553', b'0', '户外踏青', '1GLVW6CSEBK1538', b'0', NULL, '', 0, 1, '', '2023-04-02 14:10:31');
-INSERT INTO `ProductCat` VALUES ('1GLWG4RKT4W1554', b'0', '烹饪锅具', '1GLVW6CSEBK1538', b'0', NULL, '', 0, 1, '', '2023-04-02 14:10:42');
-INSERT INTO `ProductCat` VALUES ('1GLWGFMKY2O1555', b'0', '厨房配件', '1GLVW6CSEBK1538', b'0', NULL, '', 0, 1, '', '2023-04-02 14:10:52');
-INSERT INTO `ProductCat` VALUES ('1GLWGWCMWSG1556', b'0', '水具酒具', '1GLVW6CSEBK1538', b'0', NULL, '', 0, 1, '', '2023-04-02 14:11:08');
-INSERT INTO `ProductCat` VALUES ('1GLWHK33N9C1557', b'0', '调味汁', '1GLVWS3QDTS1539', b'0', NULL, '', 0, 1, '', '2023-04-02 14:11:30');
-INSERT INTO `ProductCat` VALUES ('1GLWI8G8HOG1558', b'0', '面条意面', '1GLVWS3QDTS1539', b'0', NULL, '', 0, 1, '', '2023-04-02 14:11:52');
-INSERT INTO `ProductCat` VALUES ('1GLWII7LHMO1559', b'0', '大米', '1GLVWS3QDTS1539', b'0', NULL, '', 0, 1, '', '2023-04-02 14:12:01');
-INSERT INTO `ProductCat` VALUES ('1GLWIQAR3B41560', b'0', '食用油', '1GLVWS3QDTS1539', b'0', NULL, '', 0, 1, '', '2023-04-02 14:12:09');
-INSERT INTO `ProductCat` VALUES ('2', b'0', '母婴玩具', NULL, b'0', NULL, '/upload/public/image/2023/04/02/6381604063939833675241483.webp', 1, 1, NULL, '2023-04-02 13:57:38');
-INSERT INTO `ProductCat` VALUES ('3', b'0', '个护美妆', NULL, b'0', NULL, '/upload/public/image/2023/04/02/6381604082137500894595001.webp', 2, 1, NULL, '2023-04-02 14:00:34');
-INSERT INTO `ProductCat` VALUES ('4', b'0', '纸品家清', NULL, b'0', NULL, '/upload/public/image/2023/04/02/6381604075845773944169860.webp', 3, 1, NULL, '2023-04-02 13:59:31');
-INSERT INTO `ProductCat` VALUES ('5', b'0', '生鲜', NULL, b'1', NULL, NULL, 4, 1, NULL, NULL);
+INSERT INTO `ProductCat` VALUES ('1', b'0', '酒水饮料', NULL, b'0', NULL, '/upload/public/image/2023/04/02/6381604066709757586487626.webp', 10, 1, NULL, '2023-04-02 14:02:04.000');
+INSERT INTO `ProductCat` VALUES ('11001', b'0', '奶茶/茶饮', '1', b'0', NULL, NULL, 1, 1, NULL, '2023-04-02 14:02:26.000');
+INSERT INTO `ProductCat` VALUES ('11002', b'0', '果汁/果醋', '1', b'0', NULL, NULL, 2, 1, NULL, '2023-04-02 14:02:41.000');
+INSERT INTO `ProductCat` VALUES ('11003', b'0', '啤酒', '1', b'0', NULL, NULL, 3, 1, NULL, '2023-04-02 14:02:52.000');
+INSERT INTO `ProductCat` VALUES ('11004', b'0', '冲调即饮咖啡', '1', b'0', NULL, NULL, 4, 1, NULL, '2023-04-02 14:03:12.000');
+INSERT INTO `ProductCat` VALUES ('12001', b'0', '童鞋/婴儿鞋', '2', b'0', NULL, NULL, 1, 1, NULL, '2023-04-02 14:03:12.000');
+INSERT INTO `ProductCat` VALUES ('12002', b'0', '童装/婴儿装', '2', b'0', NULL, NULL, 2, 1, NULL, '2023-04-02 14:03:12.000');
+INSERT INTO `ProductCat` VALUES ('12003', b'0', '孕妇装', '2', b'0', NULL, NULL, 3, 1, NULL, '2023-04-02 14:03:12.000');
+INSERT INTO `ProductCat` VALUES ('12004', b'0', '婴童用品', '2', b'0', NULL, NULL, 4, 1, NULL, '2023-04-02 14:03:12.000');
+INSERT INTO `ProductCat` VALUES ('12005', b'0', '婴童尿裤', '2', b'0', NULL, NULL, 5, 1, NULL, '2023-04-02 14:03:12.000');
+INSERT INTO `ProductCat` VALUES ('12006', b'0', '奶粉/辅食', '2', b'0', NULL, NULL, 6, 1, NULL, '2023-04-02 14:03:12.000');
+INSERT INTO `ProductCat` VALUES ('1GLLKE9Y16O9989', b'0', '卫生巾', '3', b'0', NULL, '', 0, 1, '', '2023-04-02 14:04:27.000');
+INSERT INTO `ProductCat` VALUES ('1GLVTLESUIO1536', b'0', '休闲食品', '', b'0', NULL, '/upload/public/image/2023/04/02/6381604069150375836821239.webp', 0, 1, '', '2023-04-02 13:58:14.000');
+INSERT INTO `ProductCat` VALUES ('1GLVULB64JK1537', b'0', '家电数码', '', b'0', NULL, '/upload/public/image/2023/04/02/6381604072611302879084898.jpg', 0, 1, '', '2023-04-02 13:58:47.000');
+INSERT INTO `ProductCat` VALUES ('1GLVW6CSEBK1538', b'0', '家居百货', '', b'0', NULL, '/upload/public/image/2023/04/02/6381604077867752601831433.webp', 0, 1, '', '2023-04-02 13:59:40.000');
+INSERT INTO `ProductCat` VALUES ('1GLVWS3QDTS1539', b'0', '粮油调味', '', b'0', NULL, '/upload/public/image/2023/04/02/6381604079882016843557567.jpg', 0, 1, '', '2023-04-02 14:00:00.000');
+INSERT INTO `ProductCat` VALUES ('1GLW33QFB0G1540', b'0', '功能/运动饮料', '1', b'0', NULL, '', 0, 1, '', '2023-04-02 14:03:30.000');
+INSERT INTO `ProductCat` VALUES ('1GLW5CXDHMO1541', b'0', '面部护理', '3', b'0', NULL, '', 0, 1, '', '2023-04-02 14:04:45.000');
+INSERT INTO `ProductCat` VALUES ('1GLW5QEOP6O1542', b'0', '沐浴清洁', '3', b'0', NULL, '', 0, 1, '', '2023-04-02 14:04:57.000');
+INSERT INTO `ProductCat` VALUES ('1GLW6XKLFUO1543', b'0', '纸品湿巾', '4', b'0', NULL, '', 0, 1, '', '2023-04-02 14:05:37.000');
+INSERT INTO `ProductCat` VALUES ('1GLW7ABSXHC1544', b'0', '清洁工具', '4', b'0', NULL, '', 0, 1, '', '2023-04-02 14:05:49.000');
+INSERT INTO `ProductCat` VALUES ('1GLWBVU9R401545', b'0', '饼干', '1GLVTLESUIO1536', b'0', NULL, '', 0, 1, '', '2023-04-02 14:08:21.000');
+INSERT INTO `ProductCat` VALUES ('1GLWC84FEKG1546', b'0', '糕点', '1GLVTLESUIO1536', b'0', NULL, '', 0, 1, '', '2023-04-02 14:08:33.000');
+INSERT INTO `ProductCat` VALUES ('1GLWCJCUQV41547', b'0', '果冻糕点', '1GLVTLESUIO1536', b'0', NULL, '', 0, 1, '', '2023-04-02 14:08:43.000');
+INSERT INTO `ProductCat` VALUES ('1GLWD6WZXC01548', b'0', '手机通讯', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:09:05.000');
+INSERT INTO `ProductCat` VALUES ('1GLWDOHWZ9C1549', b'0', '电脑电教', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:09:21.000');
+INSERT INTO `ProductCat` VALUES ('1GLWDZ3ZG5C1550', b'0', '大家电', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:09:31.000');
+INSERT INTO `ProductCat` VALUES ('1GLWEC3URUO1551', b'0', '电饭煲', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:09:43.000');
+INSERT INTO `ProductCat` VALUES ('1GLWF1AOKG01552', b'0', '厨用小电器', '1GLVULB64JK1537', b'0', NULL, '', 0, 1, '', '2023-04-02 14:10:06.000');
+INSERT INTO `ProductCat` VALUES ('1GLWFRZ5RWG1553', b'0', '户外踏青', '1GLVW6CSEBK1538', b'0', NULL, '', 0, 1, '', '2023-04-02 14:10:31.000');
+INSERT INTO `ProductCat` VALUES ('1GLWG4RKT4W1554', b'0', '烹饪锅具', '1GLVW6CSEBK1538', b'0', NULL, '', 0, 1, '', '2023-04-02 14:10:42.000');
+INSERT INTO `ProductCat` VALUES ('1GLWGFMKY2O1555', b'0', '厨房配件', '1GLVW6CSEBK1538', b'0', NULL, '', 0, 1, '', '2023-04-02 14:10:52.000');
+INSERT INTO `ProductCat` VALUES ('1GLWGWCMWSG1556', b'0', '水具酒具', '1GLVW6CSEBK1538', b'0', NULL, '', 0, 1, '', '2023-04-02 14:11:08.000');
+INSERT INTO `ProductCat` VALUES ('1GLWHK33N9C1557', b'0', '调味汁', '1GLVWS3QDTS1539', b'0', NULL, '', 0, 1, '', '2023-04-02 14:11:30.000');
+INSERT INTO `ProductCat` VALUES ('1GLWI8G8HOG1558', b'0', '面条意面', '1GLVWS3QDTS1539', b'0', NULL, '', 0, 1, '', '2023-04-02 14:11:52.000');
+INSERT INTO `ProductCat` VALUES ('1GLWII7LHMO1559', b'0', '大米', '1GLVWS3QDTS1539', b'0', NULL, '', 0, 1, '', '2023-04-02 14:12:01.000');
+INSERT INTO `ProductCat` VALUES ('1GLWIQAR3B41560', b'0', '食用油', '1GLVWS3QDTS1539', b'0', NULL, '', 0, 1, '', '2023-04-02 14:12:09.000');
+INSERT INTO `ProductCat` VALUES ('2', b'0', '母婴玩具', NULL, b'0', NULL, '/upload/public/image/2023/04/02/6381604063939833675241483.webp', 1, 1, NULL, '2023-04-02 13:57:38.000');
+INSERT INTO `ProductCat` VALUES ('3', b'0', '个护美妆', NULL, b'0', NULL, '/upload/public/image/2023/04/02/6381604082137500894595001.webp', 2, 1, NULL, '2023-04-02 14:00:34.000');
+INSERT INTO `ProductCat` VALUES ('4', b'0', '纸品家清', NULL, b'0', NULL, '/upload/public/image/2023/04/02/6381604075845773944169860.webp', 3, 1, NULL, '2023-04-02 13:59:31.000');
+INSERT INTO `ProductCat` VALUES ('5', b'0', '生鲜', NULL, b'1', NULL, NULL, 4, 1, NULL, '2023-04-02 14:03:12.000');
 
 -- ----------------------------
 -- Table structure for ProductLogistics
@@ -413,46 +413,46 @@ CREATE TABLE `ProductLogistics`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `ProductOuter`;
 CREATE TABLE `ProductOuter`  (
-  `Id` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `OuterName` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `OuterType` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `Status` int(11) NULL DEFAULT NULL,
+  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `OuterName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `OuterType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `Status` int(11) NOT NULL,
   `Description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `BeginTime` datetime NULL DEFAULT NULL,
-  `EndTime` datetime NULL DEFAULT NULL,
-  `CreateTime` datetime NULL DEFAULT NULL,
+  `BeginTime` datetime(3) NULL DEFAULT NULL,
+  `EndTime` datetime(3) NULL DEFAULT NULL,
+  `CreateTime` datetime(3) NOT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ProductOuter
 -- ----------------------------
-INSERT INTO `ProductOuter` VALUES ('1FG6RJE1W007965', '积分活动', 'Cion', 1, '积分活动', '2023-02-28 16:00:00', '2023-03-30 16:00:00', '2023-03-12 19:23:36');
-INSERT INTO `ProductOuter` VALUES ('BRQ02QMKMHVK6895', '营销商品', 'Marketing', 1, 'description', '2023-02-28 16:00:00', '2023-03-30 16:00:00', '2022-07-19 08:53:55');
+INSERT INTO `ProductOuter` VALUES ('1FG6RJE1W007965', '积分活动', 'Cion', 1, '积分活动', NULL, NULL, '2023-03-12 19:23:36.000');
+INSERT INTO `ProductOuter` VALUES ('BRQ02QMKMHVK6895', '营销商品', 'Marketing', 1, 'description', '2023-02-28 16:00:00.000', '2023-03-30 16:00:00.000', '2022-07-19 08:53:55.000');
 
 -- ----------------------------
 -- Table structure for ProductOuterSpecialCredit
 -- ----------------------------
 DROP TABLE IF EXISTS `ProductOuterSpecialCredit`;
 CREATE TABLE `ProductOuterSpecialCredit`  (
-  `Id` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `OuterType` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `CreditKey` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `ObjectKey` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `OuterType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `CreditKey` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `ObjectKey` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `ObjectName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `ComputeType` int(11) NULL DEFAULT NULL,
-  `Status` int(11) NULL DEFAULT NULL,
-  `FeeMoney` decimal(18, 4) NULL DEFAULT NULL,
-  `FeePercent` decimal(18, 4) NULL DEFAULT NULL,
+  `ComputeType` int(11) NOT NULL,
+  `Status` int(11) NOT NULL,
+  `FeeMoney` decimal(10, 2) NULL DEFAULT NULL,
+  `FeePercent` decimal(10, 2) NULL DEFAULT NULL,
   `Exdata` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `CreateTime` datetime NULL DEFAULT NULL,
+  `CreateTime` datetime(3) NOT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ProductOuterSpecialCredit
 -- ----------------------------
-INSERT INTO `ProductOuterSpecialCredit` VALUES ('BRQ0RTRZZ18G6895', 'Marketing', 'Cion', '3折', '3折', 4, 1, NULL, NULL, NULL, '2022-07-19 09:01:43');
+INSERT INTO `ProductOuterSpecialCredit` VALUES ('BRQ0RTRZZ18G6895', 'Marketing', 'Cion', '3折', '3折', 4, 1, NULL, NULL, NULL, '2022-07-19 09:01:43.000');
 
 -- ----------------------------
 -- Table structure for ProductOuterSpecialPrice
@@ -578,7 +578,7 @@ INSERT INTO `ProductStockUpdateLog` VALUES ('BRQIV6YYX1J45148', 'BRQITVPA39C0514
 DROP TABLE IF EXISTS `ProductTrade`;
 CREATE TABLE `ProductTrade`  (
   `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `MemberId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `MemberId` bigint(20) NOT NULL,
   `MemberName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `ShopId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `ShopName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -602,13 +602,13 @@ CREATE TABLE `ProductTrade`  (
   `LogisticsCode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `LogisticsCompany` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `LogisticsCost` decimal(10, 2) NULL DEFAULT NULL,
-  `PayMode` smallint(6) NOT NULL,
+  `PayMode` int(11) NOT NULL,
   `Message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `CreateTime` datetime(3) NOT NULL,
   `PayTime` datetime(3) NULL DEFAULT NULL,
   `ConsignTime` datetime(3) NULL DEFAULT NULL,
   `CompleteTime` datetime(3) NULL DEFAULT NULL,
-  `Status` smallint(6) NOT NULL,
+  `Status` int(11) NOT NULL,
   `StatusChangedTime` datetime(3) NOT NULL,
   `Exdata` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
@@ -617,12 +617,13 @@ CREATE TABLE `ProductTrade`  (
 -- ----------------------------
 -- Records of ProductTrade
 -- ----------------------------
-INSERT INTO `ProductTrade` VALUES ('1GZNK8LTJ7K4836', 'test_member', NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 25.00, 25.00, '福建省', '福州市', '鼓楼区', '测试地址', '林测试', '15980771111', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-09 10:37:50.919', NULL, NULL, NULL, -1, '2023-04-09 10:37:50.919', NULL);
-INSERT INTO `ProductTrade` VALUES ('1GZXREIBF5S4837', 'test_member', NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 12.00, 12.00, '福建省', '福州市', '鼓楼区', '', '卓XX', '18850020000', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-09 14:01:06.585', NULL, NULL, NULL, -1, '2023-04-09 14:01:06.585', NULL);
-INSERT INTO `ProductTrade` VALUES ('1H27NRVJ8SG6510', 'test_member', NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 12.00, 12.00, '福建省', '福州市', '鼓楼区', '', '卓XX', '18850020000', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-10 17:13:16.708', NULL, NULL, NULL, -1, '2023-04-10 17:13:16.708', NULL);
-INSERT INTO `ProductTrade` VALUES ('1H27NSBQ6GW6511', 'test_member', NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 12.00, 12.00, '福建省', '福州市', '鼓楼区', '', '卓XX', '18850020000', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-10 17:13:17.354', NULL, NULL, NULL, -1, '2023-04-10 17:13:17.354', NULL);
-INSERT INTO `ProductTrade` VALUES ('BRRU2JLSTL342314', 'a1234', 'member1', '10000', NULL, '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 30.00, 30.00, '福建省', '福州市', '鼓楼区', '测试地址', '林测试', '15980771111', NULL, NULL, NULL, NULL, 0, NULL, '2022-07-19 21:13:43.000', NULL, NULL, NULL, -1, '2022-07-19 21:13:43.000', NULL);
-INSERT INTO `ProductTrade` VALUES ('BRRU2JLSTL342315', 'a1234', 'member1', '10000', NULL, '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 30.00, 30.00, '福建省', '福州市', '闽侯县', '测试地址', '林测试', '15980771111', NULL, NULL, NULL, NULL, 0, NULL, '2022-07-19 21:13:43.000', NULL, NULL, NULL, 1, '2022-07-19 21:13:43.000', NULL);
+INSERT INTO `ProductTrade` VALUES ('1GZNK8LTJ7K4836', 1, NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 25.00, 25.00, '福建省', '福州市', '鼓楼区', '测试地址', '林测试', '15980771111', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-09 10:37:50.919', NULL, NULL, NULL, -1, '2023-04-09 10:37:50.919', NULL);
+INSERT INTO `ProductTrade` VALUES ('1GZXREIBF5S4837', 1, NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 12.00, 12.00, '福建省', '福州市', '鼓楼区', '', '卓XX', '18850020000', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-09 14:01:06.585', NULL, NULL, NULL, -1, '2023-04-09 14:01:06.585', NULL);
+INSERT INTO `ProductTrade` VALUES ('1H27NRVJ8SG6510', 1, NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 12.00, 12.00, '福建省', '福州市', '鼓楼区', '', '卓XX', '18850020000', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-10 17:13:16.708', NULL, NULL, NULL, -1, '2023-04-10 17:13:16.708', NULL);
+INSERT INTO `ProductTrade` VALUES ('1H27NSBQ6GW6511', 1, NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 12.00, 12.00, '福建省', '福州市', '鼓楼区', '', '卓XX', '18850020000', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-10 17:13:17.354', NULL, NULL, NULL, -1, '2023-04-10 17:13:17.354', NULL);
+INSERT INTO `ProductTrade` VALUES ('1H6T1MM4L6O9609', 1, NULL, '10000', '直营', '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 12.00, 12.00, '福建省', '福州市', '鼓楼区', '', '卓XX', '18850020000', NULL, NULL, NULL, NULL, 0, NULL, '2023-04-13 00:09:14.529', NULL, NULL, NULL, -1, '2023-04-13 00:09:14.529', NULL);
+INSERT INTO `ProductTrade` VALUES ('BRRU2JLSTL342314', 1, 'member1', '10000', NULL, '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 30.00, 30.00, '福建省', '福州市', '鼓楼区', '测试地址', '林测试', '15980771111', NULL, NULL, NULL, NULL, 0, NULL, '2022-07-19 21:13:43.000', NULL, NULL, NULL, -1, '2022-07-19 21:13:43.000', NULL);
+INSERT INTO `ProductTrade` VALUES ('BRRU2JLSTL342315', 1, 'member1', '10000', NULL, '', b'0', NULL, NULL, NULL, NULL, NULL, 0.00, 30.00, 30.00, '福建省', '福州市', '闽侯县', '测试地址', '林测试', '15980771111', NULL, NULL, NULL, NULL, 0, NULL, '2022-07-19 21:13:43.000', NULL, NULL, NULL, 1, '2022-07-19 21:13:43.000', NULL);
 
 -- ----------------------------
 -- Table structure for ProductTradeOrder
@@ -645,7 +646,7 @@ CREATE TABLE `ProductTradeOrder`  (
   `SkuText` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Num` int(11) NOT NULL,
   `Cost` decimal(10, 2) NOT NULL,
-  `RefundType` smallint(6) NOT NULL,
+  `RefundType` int(11) NOT NULL,
   `Price` decimal(10, 2) NOT NULL,
   `TotalMoney` decimal(10, 2) NOT NULL,
   `Exdata` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -660,6 +661,7 @@ INSERT INTO `ProductTradeOrder` VALUES ('1GZNK8VVXQ84837', b'0', NULL, '1GZNK8LT
 INSERT INTO `ProductTradeOrder` VALUES ('1GZXREM6HDS4838', b'0', NULL, '1GZXREIBF5S4837', '1FKHSRFF51C1848', NULL, NULL, '小羊咩咩', NULL, '/upload/public/image/2023/03/14/6381443119233469888795835.png', '', NULL, NULL, '', 1, 10.00, 4, 12.00, 12.00, NULL);
 INSERT INTO `ProductTradeOrder` VALUES ('1H27NRYHZY86510', b'0', NULL, '1H27NRVJ8SG6510', '1FKHSRFF51C1848', NULL, NULL, '小羊咩咩', NULL, '/upload/public/image/2023/03/14/6381443119233469888795835.png', '', NULL, NULL, '', 1, 10.00, 4, 12.00, 12.00, NULL);
 INSERT INTO `ProductTradeOrder` VALUES ('1H27NSECAIO6511', b'0', NULL, '1H27NSBQ6GW6511', '1FKHSRFF51C1848', NULL, NULL, '小羊咩咩', NULL, '/upload/public/image/2023/03/14/6381443119233469888795835.png', '', NULL, NULL, '', 1, 10.00, 4, 12.00, 12.00, NULL);
+INSERT INTO `ProductTradeOrder` VALUES ('1H6T1MQ59OG9609', b'0', NULL, '1H6T1MM4L6O9609', '1FKHSRFF51C1848', NULL, NULL, '小羊咩咩', NULL, '/upload/public/image/2023/03/14/6381443119233469888795835.png', '', NULL, NULL, '', 1, 10.00, 4, 12.00, 12.00, NULL);
 INSERT INTO `ProductTradeOrder` VALUES ('BRRU2JM0BA4G2314', b'0', NULL, 'BRRU2JLSTL342314', 'BRQITVPA39C05149', NULL, NULL, 'Test1', NULL, '/upload/public/image/2023/03/14/6381443119233469888795835.png', '', NULL, NULL, '', 1, 100.00, 1, 30.00, 30.00, NULL);
 INSERT INTO `ProductTradeOrder` VALUES ('BRRU2JM0BA4G2315', b'0', NULL, 'BRRU2JLSTL342315', 'BRQITVPA39C05149', NULL, NULL, 'Test1', NULL, '/upload/public/image/2023/03/14/6381443119233469888795835.png', '', NULL, NULL, '', 1, 100.00, 1, 30.00, 30.00, NULL);
 
@@ -702,7 +704,7 @@ CREATE TABLE `Shop`  (
   `Phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `AddressFH` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `AddressTH` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `OpenMode` smallint(6) NOT NULL,
+  `OpenMode` int(11) NOT NULL,
   `Intro` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Banner` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -724,17 +726,17 @@ INSERT INTO `Shop` VALUES ('10000', '直营', NULL, NULL, NULL, NULL, 0, NULL, N
 -- ----------------------------
 DROP TABLE IF EXISTS `ShopPage`;
 CREATE TABLE `ShopPage`  (
-  `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Id` bigint(20) NOT NULL,
   `Code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Layout` enum('Mobile','Pc') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Type` enum('Mobile','Pc') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `Status` smallint(6) NOT NULL,
+  `Status` int(11) NOT NULL,
   `CreateTime` datetime(3) NOT NULL,
   `ModifyTime` datetime(3) NOT NULL,
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ShopPage
@@ -746,14 +748,14 @@ INSERT INTO `ShopPage` VALUES (1, 'mobile_home', '首页', '', 'Mobile', 'Mobile
 -- ----------------------------
 DROP TABLE IF EXISTS `ShopPageItem`;
 CREATE TABLE `ShopPageItem`  (
-  `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Id` bigint(20) NOT NULL,
   `WidgetCode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `PageCode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `PositionId` int(11) NOT NULL,
   `Sort` int(11) NOT NULL,
-  `Parameters` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `Parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ShopPageItem
