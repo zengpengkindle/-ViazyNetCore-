@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 28/04/2023 09:17:00
+ Date: 28/04/2023 09:35:07
 */
 
 SET NAMES utf8mb4;
@@ -456,7 +456,7 @@ CREATE TABLE `OperationLog`  (
   `MerchantId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `LogLevel` int(11) NOT NULL,
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 346 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 347 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of OperationLog
@@ -806,6 +806,7 @@ INSERT INTO `OperationLog` VALUES (342, '127.0.0.1', '1', NULL, 1, '登录', '1'
 INSERT INTO `OperationLog` VALUES (343, '127.0.0.1', '1', NULL, 1, '修改用户', '1', '用户修改', '2023-04-27 10:36:04.850', '用户名：admin', NULL, 3);
 INSERT INTO `OperationLog` VALUES (344, '127.0.0.1', '1', NULL, 1, '登录', '1', 'Administrator', '2023-04-27 12:06:38.432', '登录用户：admin,登陆成功', NULL, 0);
 INSERT INTO `OperationLog` VALUES (345, '127.0.0.1', '1', NULL, 1, '登录', '1', 'Administrator', '2023-04-27 17:56:43.197', '登录用户：admin,登陆成功', NULL, 0);
+INSERT INTO `OperationLog` VALUES (346, '127.0.0.1', '1', NULL, 1, '登录', '1', 'Administrator', '2023-04-28 09:33:16.750', '登录用户：admin,登陆成功', NULL, 0);
 
 -- ----------------------------
 -- Table structure for TaskInfo
@@ -819,7 +820,6 @@ CREATE TABLE `TaskInfo`  (
   `AssemblyName` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务所在DLL对应的程序集名称',
   `ClassName` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务所在类',
   `Remark` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '任务描述',
-  `TriggerCount` int(11) NOT NULL COMMENT '并行触发数',
   `RunTimes` int(11) NOT NULL COMMENT '执行次数',
   `BeginTime` datetime(3) NULL DEFAULT NULL COMMENT '开始时间',
   `EndTime` datetime(3) NULL DEFAULT NULL COMMENT '结束时间',
@@ -836,12 +836,16 @@ CREATE TABLE `TaskInfo`  (
   `UpdateUserId` bigint(20) NULL DEFAULT NULL COMMENT '修改者Id',
   `UpdateUserName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改者',
   `UpdateTime` datetime(3) NULL DEFAULT NULL COMMENT '修改时间',
+  `TriggerCount` int(11) NOT NULL DEFAULT 0 COMMENT '并行触发数',
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of TaskInfo
 -- ----------------------------
+INSERT INTO `TaskInfo` VALUES (5440186032696895, 'test', 'testGroup', '10 * * * * ? *', 'ViazyNetCore.Manage.WebApi', 'ViazyNetCore.Manage.WebApi.Tasks.Job_Test', '【2023-04-21 20:24:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-21 20:24:11】【执行成功】(耗时:1.106秒)<br>【2023-04-21 20:23:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-21 20:23:10】【执行成功】(耗时:0.967秒)<br>【2023-04-20 10:33:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:33:10】【执行成功】(耗时:0.001秒)<br>【2023-04-20 10:32:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:32:10】【执行成功】(耗时:0秒)<br>【2023-04-20 10:31:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:31:10】【执行成功】(耗时:0.001秒)<br>【2023-04-20 10:30:12】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:30:14】【执行成功】(耗时:2.334秒)<br>【2023-04-20 10:02:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:02:10】【执行成功】(耗时:0.001秒)<br>【2023-04-20 10:01:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:01:11】【执行成功】(耗时:1.798秒)<br>【2023-04-19 23:52:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-19 23:52:10】【执行成功】(耗时:0秒)<br>【2023-04-19 23:51:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-19 23:51:10】【执行成功】(耗时:0秒)', 39, '2023-04-19 18:08:05.000', '2023-04-27 18:08:13.000', 1, 1, 0, 0, b'0', NULL, b'0', NULL, NULL, '2023-04-19 18:08:26.000', NULL, NULL, '2023-04-21 20:24:27.535', 0);
+INSERT INTO `TaskInfo` VALUES (5440186876735040, 'test', 'test', '', 'ViazyNetCore.Manage.WebApi', 'ViazyNetCore.Manage.WebApi.Tasks.Job_Test', '【2023-04-24 23:47:04】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:47:04】【执行成功】(耗时:0.187秒)<br>【2023-04-24 23:46:54】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:59】【执行成功】(耗时:5.362秒)<br>【2023-04-24 23:46:44】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:52】【执行成功】(耗时:8.365秒)<br>【2023-04-24 23:46:49】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:51】【执行成功】(耗时:2.486秒)<br>【2023-04-24 23:46:39】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:44】【执行成功】(耗时:5.466秒)<br>【2023-04-24 23:46:29】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:38】【执行成功】(耗时:8.898秒)<br>【2023-04-24 23:46:34】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:38】【执行成功】(耗时:3.74秒)<br>【2023-04-24 23:46:24】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:31】【执行成功】(耗时:7.578秒)<br>【2023-04-24 23:46:19】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:21】【执行成功】(耗时:2.321秒)<br>【2023-04-24 23:46:14】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:19】【执行成功】(耗时:5.023秒)', 5835, NULL, NULL, 0, 5, 0, 5834, b'1', '', b'0', NULL, NULL, '2023-04-19 18:31:05.438', NULL, NULL, '2023-04-24 23:47:04.836', 2);
+INSERT INTO `TaskInfo` VALUES (5443740109549120, 'MqTestModel1', 'MqTestModelGroup', '', 'ViazyNetCore.Manage.WebApi', 'ViazyNetCore.Manage.WebApi.Tasks.Job_RabbitMqTest', '【2023-04-21 11:32:10】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-21 11:38:53】【执行成功】(耗时:402.693秒)<br>【2023-04-20 20:08:33】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 20:09:52】【执行成功】(耗时:78.719秒)<br>【0001-01-01 00:00:00】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 19:52:48】【执行成功】(耗时:63817617168.128秒)<br>【0001-01-01 00:00:00】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 19:51:07】【执行成功】(耗时:63817617067.999秒)<br>【0001-01-01 00:00:00】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 19:43:56】【执行成功】(耗时:63817616636.433秒)<br>【0001-01-01 00:00:00】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 19:22:34】【执行成功】(耗时:63817615354.038秒)', 6, NULL, NULL, 0, 1, 0, 6, b'1', '', b'0', NULL, NULL, '2023-04-20 09:34:42.828', NULL, NULL, '2023-04-21 11:38:55.392', 0);
 
 -- ----------------------------
 -- Table structure for TasksLog
@@ -14065,44 +14069,5 @@ INSERT INTO `TasksLog` VALUES (5469740200778560, 5440186876735040, 2.486, b'1', 
 INSERT INTO `TasksLog` VALUES (5469740259498816, 5440186876735040, 8.365, b'1', '2023-04-24 23:46:44.398', '2023-04-24 23:46:52.763', '', NULL, NULL, NULL, NULL, '2023-04-24 23:46:52.976');
 INSERT INTO `TasksLog` VALUES (5469740720806720, 5440186876735040, 5.362, b'1', '2023-04-24 23:46:54.392', '2023-04-24 23:46:59.753', '', NULL, NULL, NULL, NULL, '2023-04-24 23:47:00.014');
 INSERT INTO `TasksLog` VALUES (5469741032758080, 5440186876735040, 0.187, b'1', '2023-04-24 23:47:04.389', '2023-04-24 23:47:04.576', '', NULL, NULL, NULL, NULL, '2023-04-24 23:47:04.775');
-
--- ----------------------------
--- Table structure for TasksQz
--- ----------------------------
-DROP TABLE IF EXISTS `TasksQz`;
-CREATE TABLE `TasksQz`  (
-  `Id` bigint(20) NOT NULL COMMENT '主键Id',
-  `Name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务名称',
-  `JobGroup` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务分组',
-  `Cron` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务运行时间表达式',
-  `AssemblyName` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务所在DLL对应的程序集名称',
-  `ClassName` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务所在类',
-  `Remark` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '任务描述',
-  `RunTimes` int(11) NOT NULL COMMENT '执行次数',
-  `BeginTime` datetime(3) NULL DEFAULT NULL COMMENT '开始时间',
-  `EndTime` datetime(3) NULL DEFAULT NULL COMMENT '结束时间',
-  `TriggerType` int(11) NOT NULL COMMENT '触发器类型（0、simple 1、cron）',
-  `IntervalSecond` int(11) NOT NULL COMMENT '执行间隔时间, 秒为单位',
-  `CycleRunTimes` int(11) NOT NULL COMMENT '循环执行次数',
-  `CycleHasRunTimes` int(11) NOT NULL COMMENT '已循环次数',
-  `IsStart` bit(1) NOT NULL COMMENT '是否启动',
-  `JobParams` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '执行传参',
-  `IsDeleted` bit(1) NULL DEFAULT NULL,
-  `CreateUserId` bigint(20) NULL DEFAULT NULL COMMENT '创建者Id',
-  `CreateUserName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建者',
-  `CreateTime` datetime(3) NULL DEFAULT NULL COMMENT '创建时间',
-  `UpdateUserId` bigint(20) NULL DEFAULT NULL COMMENT '修改者Id',
-  `UpdateUserName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改者',
-  `UpdateTime` datetime(3) NULL DEFAULT NULL COMMENT '修改时间',
-  `TriggerCount` int(11) NOT NULL DEFAULT 0 COMMENT '并行触发数',
-  PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of TasksQz
--- ----------------------------
-INSERT INTO `TasksQz` VALUES (5440186032696895, 'test', 'testGroup', '10 * * * * ? *', 'ViazyNetCore.Manage.WebApi', 'ViazyNetCore.Manage.WebApi.Tasks.Job_Test', '【2023-04-21 20:24:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-21 20:24:11】【执行成功】(耗时:1.106秒)<br>【2023-04-21 20:23:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-21 20:23:10】【执行成功】(耗时:0.967秒)<br>【2023-04-20 10:33:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:33:10】【执行成功】(耗时:0.001秒)<br>【2023-04-20 10:32:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:32:10】【执行成功】(耗时:0秒)<br>【2023-04-20 10:31:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:31:10】【执行成功】(耗时:0.001秒)<br>【2023-04-20 10:30:12】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:30:14】【执行成功】(耗时:2.334秒)<br>【2023-04-20 10:02:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:02:10】【执行成功】(耗时:0.001秒)<br>【2023-04-20 10:01:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-20 10:01:11】【执行成功】(耗时:1.798秒)<br>【2023-04-19 23:52:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-19 23:52:10】【执行成功】(耗时:0秒)<br>【2023-04-19 23:51:10】【执行开始】【Id：5440186032696895，组别：testGroup】，【2023-04-19 23:51:10】【执行成功】(耗时:0秒)', 39, '2023-04-19 18:08:05.000', '2023-04-27 18:08:13.000', 1, 1, 0, 0, b'0', NULL, b'0', NULL, NULL, '2023-04-19 18:08:26.000', NULL, NULL, '2023-04-21 20:24:27.535', 0);
-INSERT INTO `TasksQz` VALUES (5440186876735040, 'test', 'test', '', 'ViazyNetCore.Manage.WebApi', 'ViazyNetCore.Manage.WebApi.Tasks.Job_Test', '【2023-04-24 23:47:04】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:47:04】【执行成功】(耗时:0.187秒)<br>【2023-04-24 23:46:54】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:59】【执行成功】(耗时:5.362秒)<br>【2023-04-24 23:46:44】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:52】【执行成功】(耗时:8.365秒)<br>【2023-04-24 23:46:49】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:51】【执行成功】(耗时:2.486秒)<br>【2023-04-24 23:46:39】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:44】【执行成功】(耗时:5.466秒)<br>【2023-04-24 23:46:29】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:38】【执行成功】(耗时:8.898秒)<br>【2023-04-24 23:46:34】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:38】【执行成功】(耗时:3.74秒)<br>【2023-04-24 23:46:24】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:31】【执行成功】(耗时:7.578秒)<br>【2023-04-24 23:46:19】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:21】【执行成功】(耗时:2.321秒)<br>【2023-04-24 23:46:14】【执行开始】【Id：5440186876735040，组别：test】，【2023-04-24 23:46:19】【执行成功】(耗时:5.023秒)', 5835, NULL, NULL, 0, 5, 0, 5834, b'1', '', b'0', NULL, NULL, '2023-04-19 18:31:05.438', NULL, NULL, '2023-04-24 23:47:04.836', 2);
-INSERT INTO `TasksQz` VALUES (5443740109549120, 'MqTestModel1', 'MqTestModelGroup', '', 'ViazyNetCore.Manage.WebApi', 'ViazyNetCore.Manage.WebApi.Tasks.Job_RabbitMqTest', '【2023-04-21 11:32:10】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-21 11:38:53】【执行成功】(耗时:402.693秒)<br>【2023-04-20 20:08:33】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 20:09:52】【执行成功】(耗时:78.719秒)<br>【0001-01-01 00:00:00】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 19:52:48】【执行成功】(耗时:63817617168.128秒)<br>【0001-01-01 00:00:00】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 19:51:07】【执行成功】(耗时:63817617067.999秒)<br>【0001-01-01 00:00:00】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 19:43:56】【执行成功】(耗时:63817616636.433秒)<br>【0001-01-01 00:00:00】【执行开始】【Id：5443740109549120，组别：MqTestModelGroup】，【2023-04-20 19:22:34】【执行成功】(耗时:63817615354.038秒)', 6, NULL, NULL, 0, 1, 0, 6, b'1', '', b'0', NULL, NULL, '2023-04-20 09:34:42.828', NULL, NULL, '2023-04-21 11:38:55.392', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
