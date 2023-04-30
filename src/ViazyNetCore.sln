@@ -89,6 +89,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.TaskScheduler.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Crm.Modules", "src\ViazyNetCore.Crm.Modules\ViazyNetCore.Crm.Modules.csproj", "{182892A4-0AFB-4AED-A7A5-FC1E837C4145}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.OpenIddict", "Core\ViazyNetCore.OpenIddict\ViazyNetCore.OpenIddict.csproj", "{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -227,6 +229,10 @@ Global
 		{182892A4-0AFB-4AED-A7A5-FC1E837C4145}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{182892A4-0AFB-4AED-A7A5-FC1E837C4145}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{182892A4-0AFB-4AED-A7A5-FC1E837C4145}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -266,6 +272,7 @@ Global
 		{31B69BF7-913C-495D-B642-4C2BD7C39E3A} = {CE2CCA46-921A-4321-B277-430F0A52F499}
 		{3B888AA5-F8D1-48F4-A66C-0A67FDF79F93} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{182892A4-0AFB-4AED-A7A5-FC1E837C4145} = {987C4986-66FA-4984-90E6-76B9CD4C73E4}
+		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}
