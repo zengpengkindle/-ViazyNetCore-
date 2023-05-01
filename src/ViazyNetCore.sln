@@ -87,9 +87,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essensoft.Paylink.WeChatPay
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.TaskScheduler.RabbitMQ", "Infrastructure\ViazyNetCore.TaskScheduler.RabbitMQ\ViazyNetCore.TaskScheduler.RabbitMQ.csproj", "{3B888AA5-F8D1-48F4-A66C-0A67FDF79F93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Crm.Modules", "src\ViazyNetCore.Crm.Modules\ViazyNetCore.Crm.Modules.csproj", "{182892A4-0AFB-4AED-A7A5-FC1E837C4145}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Crm.Modules", "src\ViazyNetCore.Crm.Modules\ViazyNetCore.Crm.Modules.csproj", "{182892A4-0AFB-4AED-A7A5-FC1E837C4145}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.OpenIddict", "Core\ViazyNetCore.OpenIddict\ViazyNetCore.OpenIddict.csproj", "{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.OpenIddict", "Core\ViazyNetCore.OpenIddict\ViazyNetCore.OpenIddict.csproj", "{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Oauth.Server", "Presentation\ViazyNetCore.Oauth.Server\ViazyNetCore.Oauth.Server.csproj", "{0FEA6960-CBE4-4B62-A86E-70782B029527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -233,6 +235,10 @@ Global
 		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FEA6960-CBE4-4B62-A86E-70782B029527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FEA6960-CBE4-4B62-A86E-70782B029527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FEA6960-CBE4-4B62-A86E-70782B029527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FEA6960-CBE4-4B62-A86E-70782B029527}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -273,6 +279,7 @@ Global
 		{3B888AA5-F8D1-48F4-A66C-0A67FDF79F93} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{182892A4-0AFB-4AED-A7A5-FC1E837C4145} = {987C4986-66FA-4984-90E6-76B9CD4C73E4}
 		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
+		{0FEA6960-CBE4-4B62-A86E-70782B029527} = {57CCA8FF-D37C-4F0E-91CB-C0B155DB5861}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

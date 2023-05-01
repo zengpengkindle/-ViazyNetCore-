@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +10,11 @@ namespace System
 {
     public static class XTypeExtensions
     {
+        public static string GetFullNameWithAssemblyName(this Type type)
+        {
+            return type.FullName + ", " + type.Assembly.GetName().Name;
+        }
+
         /// <summary>
         /// 返回一个类型的默认值。
         /// </summary>
@@ -29,6 +35,37 @@ namespace System
             return typeInfo.IsValueType && !(typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
                 ? Activator.CreateInstance(type)
                 : null;
+        }
+
+
+        /// <summary>
+        /// 确定是否可以将此类型的实例分配给
+        /// 实例 <typeparamref name="TTarget"></typeparamref>.
+        ///
+        /// Internally uses <see cref="Type.IsAssignableFrom"/>.
+        /// </summary>
+        /// <typeparam name="TTarget">Target type</typeparam> (as reverse).
+        public static bool IsAssignableTo<TTarget>([NotNull] this Type type)
+        {
+            Check.NotNull(type, nameof(type));
+
+            return type.IsAssignableTo(typeof(TTarget));
+        }
+
+        /// <summary>
+        /// 确定是否可以将此类型的实例分配给
+        /// 实例 <paramref name="targetType"></paramref>.
+        ///
+        /// Internally uses <see cref="Type.IsAssignableFrom"/> (as reverse).
+        /// </summary>
+        /// <param name="type">this type</param>
+        /// <param name="targetType">Target type</param>
+        public static bool IsAssignableTo([NotNull] this Type type, [NotNull] Type targetType)
+        {
+            Check.NotNull(type, nameof(type));
+            Check.NotNull(targetType, nameof(targetType));
+
+            return targetType.IsAssignableFrom(type);
         }
 
         /// <summary>

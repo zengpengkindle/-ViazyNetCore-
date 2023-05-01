@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="OpenIddict" Version="4.2.0" />
     <PackageReference Include="OpenIddict.AspNetCore" Version="4.2.0" />
-    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="4.2.0" />
     <PackageReference Include="OpenIddict.Quartz" Version="4.2.0" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ViazyNetCore.Authorization\ViazyNetCore.Authorization.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
   </ItemGroup>
 
 </Project>

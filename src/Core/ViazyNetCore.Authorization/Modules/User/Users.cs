@@ -12,12 +12,14 @@ namespace ViazyNetCore.Authorization.Models
 
         public string? ExtraData { get; set; }
 
-        [Column(IsIgnore =true)]
+        [Column(IsIgnore = true)]
         public bool IsModerated => false;
 
         public string GoogleKey { get; internal set; }
 
         [Column(IsIgnore = true)]
-        AuthUserType IUser<long>.IdentityType =>  AuthUserType.Member;
+        public AuthUserType IdentityType { get; set; } = AuthUserType.Normal;
+
+        public long TenantId { get; set; }
     }
 }

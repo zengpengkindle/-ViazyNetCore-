@@ -1,12 +1,110 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
-using Quartz;
-using static OpenIddict.Abstractions.OpenIddictConstants;
+using OpenIddict.Abstractions;
+using OpenIddict.Validation.AspNetCore;
+using ViazyNetCore.OpenIddict.AspNetCore;
+using ViazyNetCore.OpenIddict.Domain;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class OpenIddictSteup
-    {
+    {   
+        public static void AddOpenIddictServer(this IServiceCollection services)
+        {
+            services.AddSingleton<OpenIddictClaimDestinationsManager>();
+
+            services.AddScoped<IOpenIddictApplicationRepository, OpenIddictApplicationRepository>();
+            services.AddScoped<IOpenIddictAuthorizationRepository, OpenIddictAuthorizationRepository>();
+            services.AddScoped<IOpenIddictScopeRepository, OpenIddictScopeRepository>();
+            services.AddScoped<IOpenIddictTokenRepository, OpenIddictTokenRepository>();
+
+            var openIddictBuilder = services.AddOpenIddict()
+             .AddServer(builder =>
+             {
+                 builder
+                   .SetAuthorizationEndpointUris("connect/authorize", "connect/authorize/callback")
+                   // .well-known/oauth-authorization-server
+                   // .well-known/openid-configuration
+                   //.SetConfigurationEndpointUris()
+                   // .well-known/jwks
+                   //.SetCryptographyEndpointUris()
+                   .SetDeviceEndpointUris("device")
+                   .SetIntrospectionEndpointUris("connect/introspect")
+                   .SetLogoutEndpointUris("connect/logout")
+                   .SetRevocationEndpointUris("connect/revocat")
+                   .SetTokenEndpointUris("connect/token")
+                   .SetUserinfoEndpointUris("connect/userinfo")
+                   .SetVerificationEndpointUris("connect/verify");
+
+                 builder
+                     .AllowAuthorizationCodeFlow()
+                     .AllowHybridFlow()
+                     .AllowImplicitFlow()
+                     .AllowPasswordFlow()
+                     .AllowClientCredentialsFlow()
+                     .AllowRefreshTokenFlow()
+                     .AllowDeviceCodeFlow()
+                     .AllowNoneFlow();
+
+                 builder.RegisterScopes(new[]
+                      {
+                            OpenIddictConstants.Scopes.OpenId,
+                            OpenIddictConstants.Scopes.Email,
+                            OpenIddictConstants.Scopes.Profile,
+                            OpenIddictConstants.Scopes.Phone,
+                            OpenIddictConstants.Scopes.Roles,
+                            OpenIddictConstants.Scopes.Address,
+                            OpenIddictConstants.Scopes.OfflineAccess
+                        });
+
+                 builder.UseAspNetCore()
+                   .EnableAuthorizationEndpointPassthrough()
+                   .EnableTokenEndpointPassthrough()
+                   .EnableUserinfoEndpointPassthrough()
+                   .EnableLogoutEndpointPassthrough()
+                   .EnableVerificationEndpointPassthrough()
+                   .EnableStatusCodePagesIntegration();
+             })
+             .AddCore(builder => {
+
+                 builder
+                     .SetDefaultApplicationEntity<OpenIddictApplicationDto>()
+                     .SetDefaultAuthorizationEntity<OpenIddictAuthorizationDto>()
+                     .SetDefaultScopeEntity<OpenIddictScopeDto>()
+                     .SetDefaultTokenEntity<OpenIddictTokenDto>();
+                 builder
+                   .AddApplicationStore<OpenIddictApplicationStore>()
+                   .AddAuthorizationStore<OpenIddictAuthorizationStore>()
+                   .AddScopeStore<OpenIddictScopeStore>()
+                   .AddTokenStore<OpenIddictTokenStore>();
+
+                 builder.ReplaceApplicationManager(typeof(ApplicationManager));
+                 //builder.ReplaceAuthorizationManager(typeof(AuthorizationManager));
+                 //builder.ReplaceScopeManager(typeof(ScopeManager));
+                 //builder.ReplaceTokenManager(typeof(TokenManager));
+             });
+
+
+        }
+
+        public static IApplicationBuilder UseViazyOpenIddictValidation(this IApplicationBuilder app, string schema = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
+        {
+            return app.Use(async (ctx, next) =>
+            {
+                if (ctx.User.Identity?.IsAuthenticated != true)
+                {
+                    var result = await ctx.AuthenticateAsync(schema);
+                    if (result.Succeeded && result.Principal != null)
+                    {
+                        ctx.User = result.Principal;
+                    }
+                }
+
+                await next();
+            });
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -66,7 +164,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AllowRefreshTokenFlow()
 
 
-                    .RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles)
+                    .RegisterScopes(OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile, OpenIddictConstants.Scopes.Roles)
 
                     //提供给API校验Jwt令牌使用是配置
                     .AddEncryptionKey(new SymmetricSecurityKey(
@@ -78,7 +176,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     .RequireProofKeyForCodeExchange()
                     .Configure(options =>
                     {
-                        options.CodeChallengeMethods.Add(CodeChallengeMethods.Plain);
+                        options.CodeChallengeMethods.Add(OpenIddictConstants.CodeChallengeMethods.Plain);
                     })
                     //配置 启用通过后的后续处理
                     .UseAspNetCore().EnableStatusCodePagesIntegration()

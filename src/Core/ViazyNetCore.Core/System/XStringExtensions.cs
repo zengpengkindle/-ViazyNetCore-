@@ -144,6 +144,15 @@ namespace System
         /// <param name="input">当前字符串。</param>
         /// <returns>如果字符串为 null、空 或 空白，将返回 true，否则返回 false。</returns>
         public static bool IsNull(this string? input)
+            => string.IsNullOrEmpty(input);
+
+
+        /// <summary>
+        /// 判定当前字符串是否是一个空的字符串。
+        /// </summary>
+        /// <param name="input">当前字符串。</param>
+        /// <returns>如果字符串为 null、空 或 空白，将返回 true，否则返回 false。</returns>
+        public static bool IsNullOrWhiteSpace(this string? input)
             => string.IsNullOrWhiteSpace(input);
 
         /// <summary>
@@ -152,6 +161,13 @@ namespace System
         /// <param name="input">当前字符串。</param>
         /// <returns>如果字符串为 null、空 或 空白，将返回 true，否则返回 false。</returns>
         public static bool IsNotNull(this string? input)
+            => !string.IsNullOrEmpty(input);
+        /// <summary>
+        /// 判定当前字符串是否不是一个空的字符串。
+        /// </summary>
+        /// <param name="input">当前字符串。</param>
+        /// <returns>如果字符串为 null、空 或 空白，将返回 true，否则返回 false。</returns>
+        public static bool IsNotNullOrWhiteSpace(this string? input)
             => !string.IsNullOrWhiteSpace(input);
 
         /// <summary>
