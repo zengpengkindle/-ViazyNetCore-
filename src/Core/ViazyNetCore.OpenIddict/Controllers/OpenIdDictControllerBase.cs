@@ -16,6 +16,7 @@ using IdentityUser = ViazyNetCore.OpenIddict.Domain.IdentityUser;
 
 namespace ViazyNetCore.OpenIddict.Controllers
 {
+    [ControllerGroup("openiddict")]
     public class OpenIdDictControllerBase : Controller
     {
         protected SignInManager<IdentityUser> SignInManager { get; }

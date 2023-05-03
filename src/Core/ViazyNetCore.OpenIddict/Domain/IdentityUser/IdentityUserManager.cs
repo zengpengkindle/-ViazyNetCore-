@@ -31,5 +31,10 @@ namespace ViazyNetCore.OpenIddict.Domain
             var user = await this.Store.FindByIdAsync(id.ToString(), CancellationToken);
             return user;
         }
+
+        public Task<bool> ShouldPeriodicallyChangePasswordAsync(IdentityUser user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

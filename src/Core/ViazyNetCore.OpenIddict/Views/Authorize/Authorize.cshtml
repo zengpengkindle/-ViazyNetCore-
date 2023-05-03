@@ -1,0 +1,18 @@
+﻿@using Microsoft.Extensions.Primitives
+@using ViazyNetCore.OpenIddict.AspNetCore;
+@model AuthorizeViewModel
+
+<div class="jumbotron">
+
+    <form method="post" action="~/connect/authorize/callback">
+        @Html.AntiForgeryToken()
+        @* Flow the request parameters so they can be received by the Accept/Reject actions: *@
+        @foreach(var parameter in Context.Request.HasFormContentType ? (IEnumerable<KeyValuePair<string, StringValues>>)Context.Request.Form : Context.Request.Query)
+        {
+            <input type="hidden" name="@parameter.Key" value="@parameter.Value" />
+        }
+
+        <input class="btn btn-primary" name="accept" type="submit" value="Accept" />
+        <input class="btn btn-danger ms-1" name="deny" type="submit" value="Deny" />
+    </form>
+</div>

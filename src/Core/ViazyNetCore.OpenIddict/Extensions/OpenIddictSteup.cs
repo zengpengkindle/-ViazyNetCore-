@@ -1,16 +1,22 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Validation.AspNetCore;
 using ViazyNetCore.OpenIddict.AspNetCore;
+using ViazyNetCore.OpenIddict.AspNetCore.ExtensionGrantTypes;
 using ViazyNetCore.OpenIddict.Domain;
+using ViazyNetCore.OpenIddict;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Security.Principal;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class OpenIddictSteup
     {   
-        public static void AddOpenIddictServer(this IServiceCollection services)
+        public static OpenIddictBuilder AddOpenIddictServer(this IServiceCollection services)
         {
             services.AddSingleton<OpenIddictClaimDestinationsManager>();
 
@@ -65,6 +71,31 @@ namespace Microsoft.Extensions.DependencyInjection
                    .EnableLogoutEndpointPassthrough()
                    .EnableVerificationEndpointPassthrough()
                    .EnableStatusCodePagesIntegration();
+
+                 //builder.AddDevelopmentEncryptionCertificate();
+
+                 using (var algorithm = RSA.Create(keySizeInBits: 2048))
+                 {
+                     var subject = new X500DistinguishedName("CN=Fabrikam Encryption Certificate");
+                     var request = new CertificateRequest(subject, algorithm, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                     request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature, critical: true));
+                     var certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(2));
+                     builder.AddSigningCertificate(certificate);
+                 }
+
+                 using (var algorithm = RSA.Create(keySizeInBits: 2048))
+                 {
+                     var subject = new X500DistinguishedName("CN=Fabrikam Signing Certificate");
+                     var request = new CertificateRequest(subject, algorithm, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                     request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyEncipherment, critical: true));
+                     var certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(2));
+                     builder.AddEncryptionCertificate(certificate);
+                 }
+
+                 builder.Configure(openIddictServerOptions =>
+                 {
+                     openIddictServerOptions.GrantTypes.Add(MyTokenExtensionGrant.ExtensionGrantName);
+                 });
              })
              .AddCore(builder => {
 
@@ -85,7 +116,45 @@ namespace Microsoft.Extensions.DependencyInjection
                  //builder.ReplaceTokenManager(typeof(TokenManager));
              });
 
+            openIddictBuilder.AddValidation(options =>
+            {
+                options.UseLocalServer();
+                //强制授权条目验证 出于性能原因，OpenIddict 3.0在接收API请求时默认不检查授权条目的状态:即使附加的授权被撤销
+                //，访问令牌也被认为是有效的
+                options.EnableAuthorizationEntryValidation();
+                options.UseAspNetCore();
+            });
 
+            return openIddictBuilder;
+        }
+
+        public static void ConfigureOpenIddictServices(this IServiceCollection services)
+        {
+            VaizyClaimTypes.UserId = OpenIddictConstants.Claims.Subject;
+            VaizyClaimTypes.Role = OpenIddictConstants.Claims.Role;
+            VaizyClaimTypes.UserName = OpenIddictConstants.Claims.PreferredUsername;
+            VaizyClaimTypes.Name = OpenIddictConstants.Claims.GivenName;
+            VaizyClaimTypes.SurName = OpenIddictConstants.Claims.FamilyName;
+            VaizyClaimTypes.PhoneNumber = OpenIddictConstants.Claims.PhoneNumber;
+            VaizyClaimTypes.PhoneNumberVerified = OpenIddictConstants.Claims.PhoneNumberVerified;
+            VaizyClaimTypes.Email = OpenIddictConstants.Claims.Email;
+            VaizyClaimTypes.EmailVerified = OpenIddictConstants.Claims.EmailVerified;
+            VaizyClaimTypes.ClientId = OpenIddictConstants.Claims.ClientId;
+
+            services.AddOpenIddictServer();
+
+            services.Configure<OpenIddictOptions>(options =>
+            {
+                options.DbKey = "master";
+            });
+            services.Configure<OpenIddictClaimDestinationsOptions>(options =>
+            {
+                options.ClaimDestinationsProvider.Add<DefaultOpenIddictClaimDestinationsProvider>();
+            });
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.ViewLocationFormats.Add("/Views/{1}/{0}.cshtml");
+            });
         }
 
         public static IApplicationBuilder UseViazyOpenIddictValidation(this IApplicationBuilder app, string schema = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)

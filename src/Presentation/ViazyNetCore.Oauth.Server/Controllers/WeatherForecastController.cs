@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ViazyNetCore.Oauth.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [ControllerGroup("openiddict")]
+    [Authorize]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

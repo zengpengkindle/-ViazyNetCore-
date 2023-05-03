@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Authorize\Authorize.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Authorize\Authorize.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="OpenIddict" Version="4.2.0" />
     <PackageReference Include="OpenIddict.AspNetCore" Version="4.2.0" />
