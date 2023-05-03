@@ -116,7 +116,7 @@ namespace ViazyNetCore.Formatter.Excel
                 {
                     foreach (IXLCell cell in row.CellsUsed())
                     {
-                        dt.Columns.Add(cell.Value?.ToString());
+                        dt.Columns.Add(cell.Value.ToString());
                     }
                     firstRow = false;
                 }
