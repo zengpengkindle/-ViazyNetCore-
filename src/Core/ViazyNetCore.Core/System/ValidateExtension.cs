@@ -183,8 +183,10 @@ namespace System
         /// </summary>
         /// <param name="inputData">输入字符串</param>
         /// <returns></returns>
-        public static bool IsEmail(this string inputData)
+        public static bool IsEmail(this string? inputData)
         {
+            if(inputData.IsNull())
+                return false;
             Match m = RegEmail.Match(inputData);
             return m.Success;
         }

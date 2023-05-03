@@ -21,7 +21,7 @@ namespace ViazyNetCore.TaskScheduler
             this.Logger = logger;
         }
 
-        protected override async Task RunJob(IJobExecutionContext jobContext)
+        protected override async Task ExecuteJob(IJobExecutionContext jobContext)
         {
             using var context = this.Bus.Context;
             await context.SubscribeAsync<TBody>((ss, ee) => this.OnSubscribe(context, ee, jobContext.CancellationToken)

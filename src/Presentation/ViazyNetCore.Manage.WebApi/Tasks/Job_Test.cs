@@ -18,7 +18,7 @@ namespace ViazyNetCore.Manage.WebApi.Tasks
             this._bus = bus;
         }
 
-        protected override async Task RunJob(IJobExecutionContext context)
+        protected override async Task ExecuteJob(IJobExecutionContext context)
         {
             await this._bus.PublishAsync(new MqTestModel());
             await Task.Delay(FastRandom.Instance.Next(10000));
