@@ -11,17 +11,31 @@ namespace ViazyNetCore.OpenIddict.Domain
     {
         public Task<string> GetPasswordHashAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            return Task.FromResult(user.Password);
         }
 
         public Task<bool> HasPasswordAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            return Task.FromResult(user.Password != null);
         }
 
         public Task SetPasswordHashAsync(IdentityUser user, string passwordHash, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            user.Password = passwordHash;
+
+            return Task.CompletedTask;
         }
     }
 }

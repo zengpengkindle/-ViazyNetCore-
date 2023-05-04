@@ -1,15 +1,7 @@
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using ViazyNetCore.Auth.Jwt;
-using ViazyNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using OpenIddict.Validation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Configuration;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using Matty.Server;
+using Microsoft.Extensions.DependencyInjection;
+using ViazyNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureLogging(logging =>
@@ -26,12 +18,22 @@ builder.Configuration.ConfigBuild(builder.Environment);
 builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
 
 builder.Services.AddHostedService<Worker>();
-var keyclockSection = builder.Configuration.GetSection("Keycloak");
+
+builder.Services.AddOpenIddictIdentity(options => {
+    options.Password = new Microsoft.AspNetCore.Identity.PasswordOptions
+    {
+         RequireDigit=false,
+    };
+});
 builder.Services.ConfigureOpenIddictServices();
 
 
 builder.Services.AddControllers();
-
+var ServiceAssemblies = new Assembly?[]
+{
+    RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules")
+};
+builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 var autoMapperIoc = new Assembly?[]
 {
     RuntimeHelper.GetAssembly("ViazyNetCore.OpenIddict")

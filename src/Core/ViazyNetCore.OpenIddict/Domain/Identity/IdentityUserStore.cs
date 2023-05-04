@@ -17,17 +17,19 @@ namespace ViazyNetCore.OpenIddict.Domain
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserService _userService;
+        private readonly IServiceProvider _serviceProvider;
         private readonly IMapper _mapper;
 
         public IdentityUserStore(IUserRepository userRepository
             , IUserService userService
+            , IServiceProvider serviceProvider
             , IMapper mapper)
         {
             this._userRepository = userRepository;
             this._userService = userService;
+            this._serviceProvider = serviceProvider;
             this._mapper = mapper;
         }
-
 
         public async Task<IdentityResult> CreateAsync(IdentityUser user, CancellationToken cancellationToken)
         {
@@ -53,7 +55,6 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public async Task<IdentityUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
@@ -71,32 +72,58 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         public Task<string> GetNormalizedUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            return Task.FromResult(user.Nickname);
         }
 
         public Task<string> GetUserIdAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            return Task.FromResult(user.Id.ToString());
         }
 
         public Task<string> GetUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            return Task.FromResult(user.Username);
         }
 
         public Task SetNormalizedUserNameAsync(IdentityUser user, string normalizedName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            user.Nickname = normalizedName;
+
+            return Task.CompletedTask;
         }
 
         public Task SetUserNameAsync(IdentityUser user, string userName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            user.Username = userName;
+
+            return Task.CompletedTask;
         }
 
-        public Task<IdentityResult> UpdateAsync(IdentityUser user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            await this._userRepository.UpdateAsync(user);
+            return IdentityResult.Success;
         }
     }
 }

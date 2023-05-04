@@ -36,5 +36,10 @@ namespace ViazyNetCore.OpenIddict.Domain
         {
             throw new NotImplementedException();
         }
+
+        public override Task<bool> CheckPasswordAsync(IdentityUser user, string password)
+        {
+            return base.CheckPasswordAsync(user, password);
+        }
     }
 }
