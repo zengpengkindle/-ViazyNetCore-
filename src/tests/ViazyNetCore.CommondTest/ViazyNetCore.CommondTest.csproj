@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.RabbitMQ\ViazyNetCore.RabbitMQ.csproj" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.MQueue;
 using System.Tests;
+using IdentityModel.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -162,5 +163,57 @@ CommandMethodFactory.Create("MessageBus")
         }
         var items = f.Connections.SelectMany(c => c.Channels.Where(c => c.IsBusy).Select(c => new { c.Id, c.Reason, c.LastActiveTime })).ToArray();
         m.WriteTable(items);
+    })
+    .AddAsync("授权测试",async m => {
+
+
+    using var client = new HttpClient();
+
+    const string username = "admin";
+    const string password = "1q2w3E*";
+    const string server = "https://localhost:7119/";
+    const string clientId = "VaizyApp";
+    const string clientSecret = "1q2w3e*";
+        try
+        {
+
+            // Retrieve the OpenIddict server configuration document containing the endpoint URLs.
+            var configuration = await client.GetDiscoveryDocumentAsync(server);
+            if (configuration.IsError)
+            {
+                throw new Exception($"An error occurred while retrieving the configuration document: {configuration.Error}");
+            }
+
+            var passwordTokenRequest = new PasswordTokenRequest
+            {
+                Address = configuration.TokenEndpoint,
+                ClientId = clientId,
+                ClientSecret = clientSecret,
+                UserName = username,
+                Password = password,
+                Scope = "profile roles email phone offline_access",
+            };
+            passwordTokenRequest.Headers.Add("__tenant", "Default");
+            var passwordTokenResponse = await client.RequestPasswordTokenAsync(passwordTokenRequest);
+
+            if (passwordTokenResponse.IsError)
+            {
+                throw new Exception(passwordTokenResponse.Error);
+            }
+
+            Console.WriteLine("Access token: {0}", passwordTokenResponse.AccessToken);
+            Console.WriteLine();
+            Console.WriteLine("Refresh token: {0}", passwordTokenResponse.RefreshToken);
+            Console.WriteLine();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine("+-------------------------------------------------------------------+");
+            Console.WriteLine(exception.Message);
+            Console.WriteLine(exception.InnerException?.Message);
+            Console.WriteLine(" - Make sure you started the authorization server.");
+            Console.WriteLine("+-------------------------------------------------------------------+");
+            Console.ReadLine();
+        }
     })
     .Run();
