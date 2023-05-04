@@ -3,6 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using OpenIddict.Validation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Configuration;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Matty.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureLogging(logging =>
@@ -17,16 +24,13 @@ builder.WebHost.ConfigureLogging(logging =>
 // Add services to the container.
 builder.Configuration.ConfigBuild(builder.Environment);
 builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
-builder.Services.AddControllers();
 
+builder.Services.AddHostedService<Worker>();
+var keyclockSection = builder.Configuration.GetSection("Keycloak");
 builder.Services.ConfigureOpenIddictServices();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.Authority = "https://localhost:7119";
-        options.Audience = "APIResource";
-    });
+
+builder.Services.AddControllers();
 
 var autoMapperIoc = new Assembly?[]
 {
@@ -55,8 +59,8 @@ app.UseFreeSql();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
+//app.UseOpenIddictValidation();
 app.UseAuthorization(); 
-app.UseViazyOpenIddictValidation(JwtBearerDefaults.AuthenticationScheme);
 
 //app.UseSwagger();
 //app.UseSwaggerUI();

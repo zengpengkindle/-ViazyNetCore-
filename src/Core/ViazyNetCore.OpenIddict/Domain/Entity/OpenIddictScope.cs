@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreeSql.DataAnnotations;
 
 namespace ViazyNetCore.OpenIddict.Domain.Entity
 {
@@ -18,6 +19,7 @@ namespace ViazyNetCore.OpenIddict.Domain.Entity
         /// Gets or sets the localized public descriptions associated
         /// with the current scope, serialized as a JSON object.
         /// </summary>
+        [Column(StringLength = -2)]
         public virtual string Descriptions { get; set; }
 
         /// <summary>
@@ -41,12 +43,14 @@ namespace ViazyNetCore.OpenIddict.Domain.Entity
         /// Gets or sets the additional properties serialized as a JSON object,
         /// or <c>null</c> if no bag was associated with the current scope.
         /// </summary>
+        [Column(StringLength = -2)]
         public virtual string Properties { get; set; }
 
         /// <summary>
         /// Gets or sets the resources associated with the
         /// current scope, serialized as a JSON array.
         /// </summary>
+        [Column(StringLength = -2)]
         public virtual string Resources { get; set; }
     }
 }

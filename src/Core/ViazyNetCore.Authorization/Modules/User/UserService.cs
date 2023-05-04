@@ -381,7 +381,10 @@ namespace ViazyNetCore.Modules
             return await this._userRepository.GetAsync(userId);
         }
 
-
+        public async Task<IUser<long>> GetUserByUserName(string username)
+        {
+            return await this._userRepository.GetUserByUserName(username);
+        }
         #endregion
 
     }

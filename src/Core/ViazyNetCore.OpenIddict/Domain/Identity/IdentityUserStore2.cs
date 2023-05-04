@@ -14,7 +14,7 @@ using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.OpenIddict.Domain
 {
-    public class IdentityUserStore :
+    public class IdentityUserStore2 :
         IUserLoginStore<IdentityUser>,
         IUserRoleStore<IdentityUser>,
         IUserClaimStore<IdentityUser>,
@@ -39,7 +39,7 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         private IdentityErrorDescriber ErrorDescriber => new IdentityErrorDescriber();
 
-        public IdentityUserStore(IUserRepository userRepository
+        public IdentityUserStore2(IUserRepository userRepository
             , IUserService userService
             , RoleService roleService
             , IOrgRepository orgRepository

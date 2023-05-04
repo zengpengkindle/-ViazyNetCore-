@@ -11,11 +11,16 @@ using ViazyNetCore.OpenIddict.Domain;
 using ViazyNetCore.OpenIddict;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Security.Principal;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Hosting;
+using OpenIddict.Client;
+using static OpenIddict.Abstractions.OpenIddictConstants;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class OpenIddictSteup
-    {   
+    {
         public static OpenIddictBuilder AddOpenIddictServer(this IServiceCollection services)
         {
             services.AddSingleton<OpenIddictClaimDestinationsManager>();
@@ -97,7 +102,8 @@ namespace Microsoft.Extensions.DependencyInjection
                      openIddictServerOptions.GrantTypes.Add(MyTokenExtensionGrant.ExtensionGrantName);
                  });
              })
-             .AddCore(builder => {
+             .AddCore(builder =>
+             {
 
                  builder
                      .SetDefaultApplicationEntity<OpenIddictApplicationDto>()
@@ -128,7 +134,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return openIddictBuilder;
         }
 
-        public static void ConfigureOpenIddictServices(this IServiceCollection services)
+        public static OpenIddictBuilder ConfigureOpenIddictServices(this IServiceCollection services)
         {
             VaizyClaimTypes.UserId = OpenIddictConstants.Claims.Subject;
             VaizyClaimTypes.Role = OpenIddictConstants.Claims.Role;
@@ -141,7 +147,7 @@ namespace Microsoft.Extensions.DependencyInjection
             VaizyClaimTypes.EmailVerified = OpenIddictConstants.Claims.EmailVerified;
             VaizyClaimTypes.ClientId = OpenIddictConstants.Claims.ClientId;
 
-            services.AddOpenIddictServer();
+           var builder= services.AddOpenIddictServer();
 
             services.Configure<OpenIddictOptions>(options =>
             {
@@ -155,9 +161,10 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.ViewLocationFormats.Add("/Views/{1}/{0}.cshtml");
             });
+            return builder;
         }
 
-        public static IApplicationBuilder UseViazyOpenIddictValidation(this IApplicationBuilder app, string schema = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
+        public static IApplicationBuilder UseOpenIddictValidation(this IApplicationBuilder app, string schema = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
         {
             return app.Use(async (ctx, next) =>
             {
@@ -279,6 +286,50 @@ namespace Microsoft.Extensions.DependencyInjection
                 });
 
             return services;
+        }
+
+        public static OpenIddictBuilder AddOpenIddictClient(this OpenIddictBuilder services, Assembly assembly)
+        {
+            var builder = services.AddClient(options =>
+             {
+                 // Note: this sample uses the code flow, but you can enable the other flows if necessary.
+                 options.AllowAuthorizationCodeFlow();
+
+                 // Register the signing and encryption credentials used to protect
+                 // sensitive data like the state tokens produced by OpenIddict.
+                 options.AddDevelopmentEncryptionCertificate()
+                        .AddDevelopmentSigningCertificate();
+
+                 // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
+                 options.UseAspNetCore()
+                        .EnableStatusCodePagesIntegration()
+                        .EnableRedirectionEndpointPassthrough()
+                        .EnablePostLogoutRedirectionEndpointPassthrough();
+
+                 // Register the System.Net.Http integration and use the identity of the current
+                 // assembly as a more specific user agent, which can be useful when dealing with
+                 // providers that use the user agent as a way to throttle requests (e.g Reddit).
+                 options.UseSystemNetHttp()
+                        .SetProductInformation(assembly);
+
+                 // Add a client registration matching the client application definition in the server project.
+                 options.AddRegistration(new OpenIddictClientRegistration
+                 {
+                     Issuer = new Uri("https://localhost:7119/", UriKind.Absolute),
+
+                     ClientId = "client",
+                     ClientSecret = "901564A5-E7FE-42CB-B10D-61EF6A8F3654",
+                     Scopes = { Scopes.Email, Scopes.Profile },
+
+                     // Note: to mitigate mix-up attacks, it's recommended to use a unique redirection endpoint
+                     // URI per provider, unless all the registered providers support returning a special "iss"
+                     // parameter containing their URL as part of authorization responses. For more information,
+                     // see https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-4.4.
+                     RedirectUri = new Uri("callback/login", UriKind.Relative),
+                     PostLogoutRedirectUri = new Uri("callback/logout", UriKind.Relative)
+                 });
+             });
+            return builder;
         }
     }
 }

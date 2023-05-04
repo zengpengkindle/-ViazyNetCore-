@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreeSql.DataAnnotations;
 
 namespace ViazyNetCore.OpenIddict.Domain.Entity
 {
@@ -33,6 +34,7 @@ namespace ViazyNetCore.OpenIddict.Domain.Entity
         /// Note: this property is only used for reference tokens
         /// and may be encrypted for security reasons.
         /// </summary>
+        [Column(StringLength = -2)]
         public virtual string Payload { get; set; }
 
         /// <summary>
