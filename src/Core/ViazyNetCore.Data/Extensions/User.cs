@@ -18,7 +18,7 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
             this._accessor = accessor;
         }
 
-        private AuthUser? AuthUser => this._accessor.GetAuthUser();
+        private AuthUser? AuthUser => this._accessor?.GetAuthUser();
         public long Id
         {
             get

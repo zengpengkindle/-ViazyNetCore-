@@ -19,6 +19,7 @@ public partial class TokenController : OpenIdDictControllerBase
     public TokenController(SignInManager<Domain.IdentityUser> signInManager
         , ILogger<TokenController> logger
         , IOptions<IdentityOptions> options
+        , IOptions<ViazyIdentityOptions> identityOptions
         , IOpenIddictApplicationManager applicationManager
         , IOpenIddictAuthorizationManager authorizationManager
         , OpenIddictClaimDestinationsManager openIddictClaimDestinationsManager
@@ -29,12 +30,12 @@ public partial class TokenController : OpenIdDictControllerBase
         : base(signInManager, applicationManager, authorizationManager, openIddictClaimDestinationsManager, userManager, scopeManager, tokenManager)
     {
         this.Logger = logger;
-        this.IdentityOptions = options;
+        this.IdentityOptions = identityOptions;
         this.ServiceScopeFactory = serviceScopeFactory;
     }
 
     public ILogger<TokenController> Logger { get; }
-    public IOptions<IdentityOptions> IdentityOptions { get; }
+    public IOptions<ViazyIdentityOptions> IdentityOptions { get; }
 
     [HttpGet, HttpPost, Produces("application/json")]
     public virtual async Task<IActionResult> HandleAsync()

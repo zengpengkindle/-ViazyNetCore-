@@ -8,22 +8,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.Authorization;
 using ViazyNetCore.Authorization.Repositories;
 using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.OpenIddict.Domain
 {
-    public class IdentityUserManager: UserManager<IdentityUser>
+    public class IdentityUserManager : UserManager<IdentityUser>
     {
+        private readonly ViazyIdentityOptions _identityOptions;
+        private readonly IUserService _userService;
+
         public IdentityUserManager(IdentityUserStore store
             , IOptions<IdentityOptions> optionsAccessor
+            , IOptions<ViazyIdentityOptions> identityOptions
             , IPasswordHasher<IdentityUser> passwordHasher
             , IEnumerable<IUserValidator<IdentityUser>> userValidators
             , IEnumerable<IPasswordValidator<IdentityUser>> passwordValidators
             , ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors
+            , IUserService userService
             , IServiceProvider services, ILogger<UserManager<IdentityUser>> logger)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
+            this._identityOptions = identityOptions.Value;
+            this._userService = userService;
         }
 
         public async Task<IdentityUser> GetByIdAsync(long id)
@@ -34,12 +43,16 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         public Task<bool> ShouldPeriodicallyChangePasswordAsync(IdentityUser user)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(false);
         }
 
         public override Task<bool> CheckPasswordAsync(IdentityUser user, string password)
         {
-            return base.CheckPasswordAsync(user, password);
+            if (UserPasswordHelper.CheckPassword(password, user.Password, user.PasswordSalt, this._identityOptions.UserPasswordFormat))
+            {
+                return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
         }
     }
 }

@@ -32,9 +32,9 @@ public partial class TokenController
 
                 Domain.IdentityUser user = null;
 
-                //if (AbpIdentityOptions.Value.ExternalLoginProviders.Any())
+                //if (IdentityOptions.Value.ExternalLoginProviders.Any())
                 //{
-                //    foreach (var externalLoginProviderInfo in AbpIdentityOptions.Value.ExternalLoginProviders.Values)
+                //    foreach (var externalLoginProviderInfo in IdentityOptions.Value.ExternalLoginProviders.Values)
                 //    {
                 //        var externalLoginProvider = (IExternalLoginProvider)scope.ServiceProvider
                 //            .GetRequiredService(externalLoginProviderInfo.Type);

@@ -17,18 +17,18 @@ namespace ViazyNetCore.Modules
         public const int LOGIN_MAXCOUNT = 5;
         public const double LOGIN_TIME = 30;
         private readonly IUserRepository _userRepository;
-        private readonly IEventBus _eventBus;
+        //private readonly IEventBus _eventBus;
         private readonly ICacheService _cacheService;
         private readonly IUserOrgRepository _userOrgRepository;
         private readonly UserOption _userOption;
 
         public UserService(IUserRepository userRepository
-            , IEventBus eventBus, ICacheService cacheService, IOptions<UserOption> options
+            , ICacheService cacheService, IOptions<UserOption> options
             , IUserOrgRepository userOrgRepository)
         {
             this._cacheService = cacheService;
             this._userOrgRepository = userOrgRepository;
-            this._eventBus = eventBus;
+            //this._eventBus = eventBus;
             this._userRepository = userRepository;
             this._userOption = options.Value;
 

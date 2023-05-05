@@ -9,7 +9,7 @@ using ViazyNetCore.CommondTest;
 
 var data = new Dictionary<string, string>()
             {
-                { "MQueue:ConnectionStrings:Default", "host=127.0.0.1:5673;vhost=test;user=guest;password=guest;name=Aoite.RabbitMQ.Shell"}
+                { "MQueue:ConnectionStrings:Default", "host=47.98.34.91;Port=5672;virtualHost=caesar;username=ytt;password=mqEeIzfAYNmr2hfFsVK"}
                 ,{ "MQueue:Options:ChannelInactiveSeconds", "15"}
             };
 
@@ -170,7 +170,7 @@ CommandMethodFactory.Create("MessageBus")
     using var client = new HttpClient();
 
     const string username = "admin";
-    const string password = "1q2w3E*";
+    const string password = "admin123";
     const string server = "https://localhost:7119/";
     const string clientId = "VaizyApp";
     const string clientSecret = "1q2w3e*";
@@ -213,7 +213,6 @@ CommandMethodFactory.Create("MessageBus")
             Console.WriteLine(exception.InnerException?.Message);
             Console.WriteLine(" - Make sure you started the authorization server.");
             Console.WriteLine("+-------------------------------------------------------------------+");
-            Console.ReadLine();
         }
     })
     .Run();

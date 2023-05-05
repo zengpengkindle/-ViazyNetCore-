@@ -40,6 +40,10 @@ namespace Microsoft.AspNetCore.Http
             var tokenValue = token.ToString();
             if (string.IsNullOrEmpty(tokenValue))
                 return null;
+
+            if (tokenValue.StartsWith("Basic")) 
+                return null;
+
             var rawToken = tokenValue.Replace("Bearer ", "").Replace("bearer", "");
             Claim[] claims;
             try

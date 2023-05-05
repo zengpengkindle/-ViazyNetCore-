@@ -2,6 +2,7 @@ using System.Reflection;
 using Matty.Server;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore;
+using ViazyNetCore.Caching.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureLogging(logging =>
@@ -16,6 +17,7 @@ builder.WebHost.ConfigureLogging(logging =>
 // Add services to the container.
 builder.Configuration.ConfigBuild(builder.Environment);
 builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
+builder.Services.AddRumtimeCacheService();
 
 builder.Services.AddHostedService<Worker>();
 
@@ -31,12 +33,13 @@ builder.Services.ConfigureOpenIddictServices();
 builder.Services.AddControllers();
 var ServiceAssemblies = new Assembly?[]
 {
-    RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules")
+    RuntimeHelper.GetAssembly("ViazyNetCore.Authorization")
 };
 builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 var autoMapperIoc = new Assembly?[]
 {
-    RuntimeHelper.GetAssembly("ViazyNetCore.OpenIddict")
+    RuntimeHelper.GetAssembly("ViazyNetCore.OpenIddict"),
+    RuntimeHelper.GetAssembly("ViazyNetCore.Authorization")
 };
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMultiTenancy();

@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Core\ViazyNetCore.Authorization\ViazyNetCore.Authorization.csproj" />
 		<ProjectReference Include="..\..\Core\ViazyNetCore.OpenIddict\ViazyNetCore.OpenIddict.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />
 	</ItemGroup>
