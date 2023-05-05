@@ -16,16 +16,19 @@ namespace ViazyNetCore.OpenIddict.Domain
         : IUserStore<IdentityUser>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IdentityUserClaimRepository _userClaimRepository;
         private readonly IUserService _userService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMapper _mapper;
 
         public IdentityUserStore(IUserRepository userRepository
+            , IdentityUserClaimRepository userClaimRepository
             , IUserService userService
             , IServiceProvider serviceProvider
             , IMapper mapper)
         {
             this._userRepository = userRepository;
+            this._userClaimRepository = userClaimRepository;
             this._userService = userService;
             this._serviceProvider = serviceProvider;
             this._mapper = mapper;

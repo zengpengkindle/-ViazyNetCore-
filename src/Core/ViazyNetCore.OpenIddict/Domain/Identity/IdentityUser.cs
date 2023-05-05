@@ -16,13 +16,12 @@ namespace ViazyNetCore.OpenIddict.Domain
         public bool TwoFactorEnabled { get; set; }
         public string SecurityStamp { get; internal set; }
 
-
-        public virtual ICollection<IdentityUserToken> Tokens { get; protected set; }
+        public virtual ICollection<IdentityUserToken> Tokens { get; protected set; } = new List<IdentityUserToken>();
 
         /// <summary>
         /// Navigation property for the claims this user possesses.
         /// </summary>
-        public virtual ICollection<IdentityUserClaim> Claims { get; protected set; }
+        public virtual ICollection<IdentityUserClaim> Claims { get; protected set; } = new List<IdentityUserClaim>();
 
         public virtual void SetToken(string loginProvider, string name, string value)
         {
@@ -54,7 +53,6 @@ namespace ViazyNetCore.OpenIddict.Domain
         public virtual void AddClaim(Claim claim)
         {
             Check.NotNull(claim, nameof(claim));
-
             Claims.Add(new IdentityUserClaim(Id, claim, TenantId));
         }
         public virtual void ReplaceClaim([NotNull] Claim claim, [NotNull] Claim newClaim)

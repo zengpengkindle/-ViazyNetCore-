@@ -10,11 +10,12 @@ namespace ViazyNetCore.OpenIddict.Domain
 {
     public class IdentityClaim : EntityUpdate<long>
     {
+        protected IdentityClaim() { }
 
-        public IdentityClaim(Claim claim,long tenantId) : this(claim.Type, claim.Value, tenantId)
+        public IdentityClaim(Claim claim, long tenantId) : this(claim.Type, claim.Value, tenantId)
         {
         }
-        protected internal IdentityClaim(string claimType, string claimValue,long tenantId)
+        protected internal IdentityClaim(string claimType, string claimValue, long tenantId)
         {
             Check.NotNull(claimType, nameof(claimType));
 
@@ -55,7 +56,11 @@ namespace ViazyNetCore.OpenIddict.Domain
     public class IdentityUserClaim : IdentityClaim
     {
         public long UserId { get; set; }
-        public IdentityUserClaim(long userId, Claim claim,long tenantId) : base(claim, tenantId)
+        public IdentityUserClaim() 
+        {
+        }
+
+        public IdentityUserClaim(long userId, Claim claim, long tenantId) : base(claim, tenantId)
         {
             this.UserId = userId;
         }

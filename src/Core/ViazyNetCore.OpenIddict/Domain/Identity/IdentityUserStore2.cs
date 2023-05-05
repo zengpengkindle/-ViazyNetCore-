@@ -14,6 +14,7 @@ using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.OpenIddict.Domain
 {
+    [Obsolete]
     public class IdentityUserStore2 :
         IUserLoginStore<IdentityUser>,
         IUserRoleStore<IdentityUser>,

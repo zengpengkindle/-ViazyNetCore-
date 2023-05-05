@@ -153,10 +153,14 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.DbKey = "master";
             });
+
+            services.AddScoped<DefaultOpenIddictClaimDestinationsProvider>();
             services.Configure<OpenIddictClaimDestinationsOptions>(options =>
             {
                 options.ClaimDestinationsProvider.Add<DefaultOpenIddictClaimDestinationsProvider>();
             });
+
+
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.ViewLocationFormats.Add("/Views/{1}/{0}.cshtml");

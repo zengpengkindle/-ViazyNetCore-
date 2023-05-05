@@ -30,7 +30,8 @@ namespace ViazyNetCore.OpenIddict.Domain
             cancellationToken.ThrowIfCancellationRequested();
 
             Check.NotNull(user, nameof(user));
-
+            var claims = await this._userClaimRepository.GetUserClaim(user.Id);
+            user.AddClaims(claims.Select(c => c.ToClaim()));
             //await UserRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
 
             return user.Claims.Select(c => c.ToClaim()).ToList();

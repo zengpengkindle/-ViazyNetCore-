@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IdentityUserManager>();
             services.TryAddScoped(typeof(UserManager<ViazyNetCore.OpenIddict.Domain.IdentityUser>), provider => provider.GetService(typeof(IdentityUserManager)));
 
+            services.TryAddScoped<IdentityUserClaimRepository>();
             //services.TryAddScoped<SignInManager>();
             //services.TryAddScoped(typeof(SignInManager<ViazyNetCore.OpenIddict.Domain.IdentityUser>), provider => provider.GetService(typeof(SignInManager)));
 
