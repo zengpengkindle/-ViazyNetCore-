@@ -10,20 +10,9 @@ using Newtonsoft.Json;
 namespace ViazyNetCore.Authorization.Models
 {
     /// <summary>
-    /// 租户接口
-    /// </summary>
-    public interface ITenant
-    {
-        /// <summary>
-        /// 租户Id
-        /// </summary>
-        long? TenantId { get; set; }
-    }
-
-    /// <summary>
     /// 实体租户
     /// </summary>
-    public class EntityTenantBase<TKey> : EntityBase, ITenant
+    public class EntityTenantBase<TKey> : Entity<TKey>, ITenant
     {
         /// <summary>
         /// 租户Id
@@ -31,7 +20,7 @@ namespace ViazyNetCore.Authorization.Models
         [Description("租户Id")]
         [Column(Position = 2, CanUpdate = false)]
         [JsonProperty(Order = -20)]
-        public virtual long? TenantId { get; set; }
+        public virtual long TenantId { get; set; }
     }
 
     /// <summary>

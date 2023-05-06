@@ -269,7 +269,7 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         public virtual async IAsyncEnumerable<OpenIddictScopeDto> ListAsync(int? count, int? offset, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
-            var scopes = await this._scopeRepository.Select.Skip(offset??0).Take(count??0).ToListAsync( cancellationToken);
+            var scopes = await this._scopeRepository.Select.Skip(offset??0).Take(count??int.MaxValue).ToListAsync( cancellationToken);
             foreach (var scope in scopes)
             {
                 var scopeDto = this._mapper.Map<OpenIddictScope, OpenIddictScopeDto>(scope);

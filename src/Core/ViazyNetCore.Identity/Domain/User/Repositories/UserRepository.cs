@@ -1,5 +1,4 @@
-﻿using ViazyNetCore.Authorization.Dtos;
-using ViazyNetCore.Authorization.Modules;
+﻿using ViazyNetCore.Authorization.Modules;
 
 namespace ViazyNetCore.Modules
 {

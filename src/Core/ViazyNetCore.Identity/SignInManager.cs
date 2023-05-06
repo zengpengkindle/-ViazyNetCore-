@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -33,11 +34,11 @@ namespace ViazyNetCore.OpenIddict.Domain
         schemes,
         confirmation)
         {
-            AbpOptions = options.Value;
+            IdentityOptions = options.Value;
             _identityUserManager = userManager;
         }
 
-        public ViazyIdentityOptions AbpOptions { get; }
+        public ViazyIdentityOptions IdentityOptions { get; }
 
         private readonly IdentityUserManager _identityUserManager;
 
@@ -48,7 +49,7 @@ namespace ViazyNetCore.OpenIddict.Domain
             bool isPersistent,
             bool lockoutOnFailure)
         {
-            foreach (var externalLoginProviderInfo in AbpOptions.ExternalLoginProviders.Values)
+            foreach (var externalLoginProviderInfo in IdentityOptions.ExternalLoginProviders.Values)
             {
                 var externalLoginProvider = (IExternalLoginProvider)Context.RequestServices
                     .GetRequiredService(externalLoginProviderInfo.Type);
@@ -106,6 +107,13 @@ namespace ViazyNetCore.OpenIddict.Domain
             }
 
             return await base.PreSignInCheck(user);
+        }
+
+        public override async Task<ClaimsPrincipal> CreateUserPrincipalAsync(IdentityUser user)
+        {
+            var claimsPrincipal = await base.CreateUserPrincipalAsync(user);
+
+            return claimsPrincipal;
         }
     }
 }

@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization.Models
 {
-    public class BmsUserOrg : EntityBase
+    public class BmsUserOrg : Entity<long>
     {
         /// <summary>
-        /// 设置或获取一个值，表示角色编号。
+        /// 设置或获取一个值，表示部门编号。
         /// </summary>
         [Required]
         public long OrgId { get; set; }
 
         /// <summary>
-        /// 设置或获取一个值，表示页面编号。
+        /// 设置或获取一个值，表示用户编号。
         /// </summary>
         [Required]
         public long UserId { get; set; }

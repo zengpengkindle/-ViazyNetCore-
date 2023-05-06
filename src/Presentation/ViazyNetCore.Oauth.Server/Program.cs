@@ -1,6 +1,9 @@
 using System.Reflection;
 using Matty.Server;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
+using OpenIddict.Validation.AspNetCore;
 using ViazyNetCore;
 using ViazyNetCore.Caching.DependencyInjection;
 
@@ -20,6 +23,14 @@ builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
 builder.Services.AddRumtimeCacheService();
 
 builder.Services.AddHostedService<Worker>();
+
+builder.Services.AddAuthentication(options =>
+{
+    //options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
+    // options.RequireAuthenticatedSignIn = true;
+
+});
 
 builder.Services.AddOpenIddictIdentity(options => {
     options.Password = new Microsoft.AspNetCore.Identity.PasswordOptions
@@ -64,7 +75,7 @@ app.UseFreeSql();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
-//app.UseOpenIddictValidation();
+app.UseOpenIddictValidation();
 app.UseAuthorization(); 
 
 //app.UseSwagger();

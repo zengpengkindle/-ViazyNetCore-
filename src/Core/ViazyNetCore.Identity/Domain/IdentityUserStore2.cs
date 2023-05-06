@@ -31,7 +31,7 @@ namespace ViazyNetCore.OpenIddict.Domain
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserService _userService;
-        private readonly RoleService _roleService;
+        //private readonly RoleService _roleService;
         private readonly IOrgRepository _orgRepository;
         private readonly IMapper _mapper;
         private const string InternalLoginProvider = "[AspNetUserStore]";
@@ -42,13 +42,13 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         public IdentityUserStore2(IUserRepository userRepository
             , IUserService userService
-            , RoleService roleService
+            //, RoleService roleService
             , IOrgRepository orgRepository
             , IMapper mapper)
         {
             this._userRepository = userRepository;
             this._userService = userService;
-            this._roleService = roleService;
+            //this._roleService = roleService;
             this._orgRepository = orgRepository;
             this._mapper = mapper;
         }

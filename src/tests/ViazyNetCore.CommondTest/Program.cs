@@ -1,11 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.MQueue;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Tests;
 using IdentityModel.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ViazyNetCore.CommondTest;
+using static IdentityModel.OidcConstants;
 
 var data = new Dictionary<string, string>()
             {
@@ -34,6 +37,13 @@ bus.Manager.Error += (ss, ee) =>
 
 var cancellationTokenSource = new CancellationTokenSource();
 
+
+const string username = "admin";
+const string password = "admin123";
+const string server = "https://localhost:7119/";
+const string clientId = "VaizyApp";
+const string clientSecret = "1q2w3e*";
+string accessToken = null;
 CommandMethodFactory.Create("MessageBus")
     .Add("发布", m =>
     {
@@ -164,16 +174,8 @@ CommandMethodFactory.Create("MessageBus")
         var items = f.Connections.SelectMany(c => c.Channels.Where(c => c.IsBusy).Select(c => new { c.Id, c.Reason, c.LastActiveTime })).ToArray();
         m.WriteTable(items);
     })
-    .AddAsync("授权测试",async m => {
-
-
-    using var client = new HttpClient();
-
-    const string username = "admin";
-    const string password = "admin123";
-    const string server = "https://localhost:7119/";
-    const string clientId = "VaizyApp";
-    const string clientSecret = "1q2w3e*";
+    .AddAsync("登录授权",async m => {
+        using var client = new HttpClient();
         try
         {
 
@@ -198,13 +200,15 @@ CommandMethodFactory.Create("MessageBus")
 
             if (passwordTokenResponse.IsError)
             {
+                Console.WriteLine("Exception: {0}", configuration.Raw);
                 throw new Exception(passwordTokenResponse.Error);
             }
-
+            accessToken = passwordTokenResponse.AccessToken;
             Console.WriteLine("Access token: {0}", passwordTokenResponse.AccessToken);
             Console.WriteLine();
             Console.WriteLine("Refresh token: {0}", passwordTokenResponse.RefreshToken);
             Console.WriteLine();
+            m.WriteInfo(JSON.Stringify(passwordTokenResponse));
         }
         catch (Exception exception)
         {
@@ -215,4 +219,20 @@ CommandMethodFactory.Create("MessageBus")
             Console.WriteLine("+-------------------------------------------------------------------+");
         }
     })
+    .AddAsync("接口测试",async m => {
+        using var client = new HttpClient();
+        var resource = await GetResourceAsync(client, accessToken);
+        Console.WriteLine($" - API response: {resource}");
+    })
     .Run();
+
+static async Task<string> GetResourceAsync(HttpClient client, string token)
+{
+    using var request = new HttpRequestMessage(HttpMethod.Get, $"{server}weatherForecast");
+    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+    using var response = await client.SendAsync(request);
+    response.EnsureSuccessStatusCode();
+
+    return await response.Content.ReadAsStringAsync();
+}

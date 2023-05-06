@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Authorization;
-using ViazyNetCore.Authorization.Repositories;
 using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.OpenIddict.Domain

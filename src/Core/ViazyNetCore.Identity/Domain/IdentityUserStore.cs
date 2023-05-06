@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Authorization.Repositories;
 using ViazyNetCore.Data.FreeSql.Extensions;
+using ViazyNetCore.Identity.Domain.User.Repositories;
 using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.OpenIddict.Domain

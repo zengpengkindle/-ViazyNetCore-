@@ -24,6 +24,7 @@ namespace ViazyNetCore.Oauth.Server.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            var claims = this.User.Claims;
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

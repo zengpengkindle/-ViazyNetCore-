@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using ViazyNetCore.Modules;
-using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace ViazyNetCore.OpenIddict.Domain
 {
@@ -33,17 +32,18 @@ namespace ViazyNetCore.OpenIddict.Domain
             var claims = await this._userClaimRepository.GetUserClaim(user.Id);
             user.AddClaims(claims.Select(c => c.ToClaim()));
             //await UserRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
-
+            user.AddClaim(new Claim(VaizyClaimTypes.Subject, user.Id.ToString()));
+            user.AddClaims(claims.Select(c => c.ToClaim()));
             return user.Claims.Select(c => c.ToClaim()).ToList();
         }
 
         public async Task<IList<IdentityUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
         {
-            //cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
-            //Check.NotNull(claim, nameof(claim));
+            Check.NotNull(claim, nameof(claim));
 
-            //return await this._userRepository.GetListByClaimAsync(claim, cancellationToken: cancellationToken);
+            //return await this._userClaimRepository.GetListByClaimAsync(claim, cancellationToken: cancellationToken);
             throw new NotImplementedException();
         }
 

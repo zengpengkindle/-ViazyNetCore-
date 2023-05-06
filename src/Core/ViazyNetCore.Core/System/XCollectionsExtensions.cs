@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -248,6 +249,22 @@ namespace System
 
                 return list;
             }
+        }
+
+        /// <summary>
+        /// 添加一个对象，当对象不存在时。
+        /// </summary>
+        public static bool AddIfNotContains<T>([NotNull] this ICollection<T> source, T item)
+        {
+            Check.NotNull(source, nameof(source));
+
+            if (source.Contains(item))
+            {
+                return false;
+            }
+
+            source.Add(item);
+            return true;
         }
     }
 }

@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using ViazyNetCore.Authorization.Models;
-using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace ViazyNetCore.OpenIddict.Domain
 {
