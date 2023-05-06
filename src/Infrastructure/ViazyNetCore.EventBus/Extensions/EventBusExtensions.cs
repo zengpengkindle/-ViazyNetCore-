@@ -32,8 +32,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if(services is null)
                 throw new ArgumentNullException(nameof(services));
-            services.AddSingleton<IEventStore, MemoryEventStore>();
-            services.AddScoped<IEventBus, EventBus>();
+            services.TryAddSingleton<IEventStore, MemoryEventStore>();
+            services.TryAddScoped<IEventBus, EventBus>();
 
             return new EventBusServiceCollection(services);
         }
@@ -93,6 +93,17 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             return builder;
+        }
+
+        public static void UseEventBusWithStore(this IServiceProvider serviceProvider, Assembly[] assemblies)
+        {
+            var eventStore = serviceProvider.GetService<IEventStore>();
+            if (eventStore is null)
+                throw new InvalidOperationException("Can't found EventBus.");
+            foreach (var assembly in assemblies)
+            {
+                eventStore.RegisterAllEventHandlerFromAssembly(assembly);
+            }
         }
     }
 }

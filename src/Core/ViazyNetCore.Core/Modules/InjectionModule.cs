@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ViazyNetCore.Modules;
 
 namespace ViazyNetCore
 {
     public class InjectionModule :
         IInjectionModule,
         IPostConfigureServices,
-        IPreConfigureServices
+        IPreConfigureServices,
+        IOnApplicationInitialization
     {
         private ServiceConfigurationContext? _serviceConfigurationContext;
         protected internal ServiceConfigurationContext ServiceConfigurationContext
@@ -30,11 +33,13 @@ namespace ViazyNetCore
             internal set => _serviceConfigurationContext = value;
         }
 
-        public void ConfigureServices(ServiceConfigurationContext context)
+        public virtual bool SkipAutoServiceRegistration { get; }
+
+        public virtual void ConfigureServices(ServiceConfigurationContext context)
         {
         }
 
-        public Task ConfigureServicesAsync(ServiceConfigurationContext context)
+        public virtual Task ConfigureServicesAsync(ServiceConfigurationContext context)
         {
             ConfigureServices(context);
             return Task.CompletedTask;
@@ -129,6 +134,18 @@ namespace ViazyNetCore
             where TOptions : class
         {
             ServiceConfigurationContext.Services.PostConfigureAll(configureOptions);
+        }
+        #endregion
+        #region Application Initialization
+
+        public virtual Task OnApplicationInitializationAsync([NotNull] ApplicationInitializationContext context)
+        {
+            OnApplicationInitialization(context);
+            return Task.CompletedTask;
+        }
+
+        public virtual void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
+        {
         }
         #endregion
     }

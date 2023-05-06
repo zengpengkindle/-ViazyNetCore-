@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using ViazyNetCore;
 using ViazyNetCore.Auth;
+using ViazyNetCore.Identity;
 using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.Authorization.Modules

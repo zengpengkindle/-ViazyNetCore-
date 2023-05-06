@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Auth;
 
-namespace ViazyNetCore.Authorization
+namespace ViazyNetCore.Identity
 {
     public class UserOption
     {

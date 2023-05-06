@@ -5,6 +5,7 @@ using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Auth;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Authorization.Repositories;
+using ViazyNetCore.Identity;
 
 namespace ViazyNetCore.Modules
 {

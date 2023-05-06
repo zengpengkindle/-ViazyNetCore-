@@ -10,6 +10,8 @@ using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.DI;
+using ViazyNetCore.Identity;
+using ViazyNetCore.Modules;
 using ViazyNetCore.Modules.Internal;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
@@ -28,13 +30,10 @@ builder.WebHost.ConfigureLogging(logging =>
 builder.Configuration.ConfigBuild(builder.Environment);
 
 // Add services to the container.
-var ServiceAssemblies = new Assembly?[]
-{
-    RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules"),
-    RuntimeHelper.GetAssembly("ViazyNetCore.Authorization")
-};
+
 var autoMapperIoc = new Assembly?[]
 {
+    RuntimeHelper.GetAssembly("ViazyNetCore.Identity"),
     RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules"),
     RuntimeHelper.GetAssembly("ViazyNetCore.Manage.WebApi")
 };
@@ -51,7 +50,14 @@ builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AllowNullCollections = true;
 }, autoMapperIoc);
+
+
 builder.Services.AddSingleton(new AppSettingsHelper());
+
+await builder.Services.AddApplicationAsync<AspNetCoreModule>();
+await builder.Services.AddApplicationAsync<AuthorizationModule>();
+await builder.Services.AddApplicationAsync<IdentityApplicationModule>();
+await builder.Services.AddApplicationAsync<ShopMallAppliactionModule>();
 
 builder.Services.AddControllers(options =>
 {
@@ -61,10 +67,10 @@ builder.Services.AddControllers(options =>
 {
     options.SerializerSettings.InitializeDefault();
 })
-.AddApplicationPart(typeof(UserOption).Assembly)
+.AddApplicationPart(typeof(AuthorizationModule).Assembly)
 .AddApplicationPart(typeof(JobSetup).Assembly);
 
-builder.Services.AddAuthorizationController();
+//builder.Services.AddAuthorizationController();
 
 //builder.Services.AddCustomApiVersioning();
 ;
@@ -87,8 +93,7 @@ builder.Services.AddApiDescriptor(option =>
     option.ServiceName = "BMS";
 });
 //- 添加自动依赖注入
-builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
-builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
+//builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 
 builder.Services.AddMQueue();
 builder.Services.AddJobSetup();
@@ -134,13 +139,13 @@ builder.Services.AddResponseCompression();
 
 
 var app = builder.Build();
+app.InitializeApplication();
 app.UseFreeSql();
 app.UseHttpsRedirection();
 //app.UseDynamicController();
 app.UseStaticFiles();
 app.UseStoreProvider();
 app.UseRouting();
-app.UseEventBusWithStore(ServiceAssemblies);
 // Configure the HTTP response wrapper.
 app.UseApiResponseWrapper(option =>
 {

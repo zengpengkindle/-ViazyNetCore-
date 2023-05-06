@@ -15,7 +15,7 @@ public static class ClaimsIdentityExtensions
     {
         Check.NotNull(principal, nameof(principal));
 
-        var userIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.UserId);
+        var userIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.UserId);
         if (userIdOrNull == null || userIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -35,7 +35,7 @@ public static class ClaimsIdentityExtensions
 
         var claimsIdentity = identity as ClaimsIdentity;
 
-        var userIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.UserId);
+        var userIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.UserId);
         if (userIdOrNull == null || userIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -53,7 +53,7 @@ public static class ClaimsIdentityExtensions
     {
         Check.NotNull(principal, nameof(principal));
 
-        var tenantIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.TenantId);
+        var tenantIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.TenantId);
         if (tenantIdOrNull == null || tenantIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -73,7 +73,7 @@ public static class ClaimsIdentityExtensions
 
         var claimsIdentity = identity as ClaimsIdentity;
 
-        var tenantIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.TenantId);
+        var tenantIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.TenantId);
         if (tenantIdOrNull == null || tenantIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -91,7 +91,7 @@ public static class ClaimsIdentityExtensions
     {
         Check.NotNull(principal, nameof(principal));
 
-        var clientIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.ClientId);
+        var clientIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.ClientId);
         if (clientIdOrNull == null || clientIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -106,7 +106,7 @@ public static class ClaimsIdentityExtensions
 
         var claimsIdentity = identity as ClaimsIdentity;
 
-        var clientIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type ==VaizyClaimTypes.ClientId);
+        var clientIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type ==ViazyClaimTypes.ClientId);
         if (clientIdOrNull == null || clientIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -119,7 +119,7 @@ public static class ClaimsIdentityExtensions
     {
         Check.NotNull(principal, nameof(principal));
 
-        var editionIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.EditionId);
+        var editionIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.EditionId);
         if (editionIdOrNull == null || editionIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -139,7 +139,7 @@ public static class ClaimsIdentityExtensions
 
         var claimsIdentity = identity as ClaimsIdentity;
 
-        var editionIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.EditionId);
+        var editionIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.EditionId);
         if (editionIdOrNull == null || editionIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -157,7 +157,7 @@ public static class ClaimsIdentityExtensions
     {
         Check.NotNull(principal, nameof(principal));
 
-        var impersonatorTenantIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.ImpersonatorTenantId);
+        var impersonatorTenantIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.ImpersonatorTenantId);
         if (impersonatorTenantIdOrNull == null || impersonatorTenantIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -177,7 +177,7 @@ public static class ClaimsIdentityExtensions
 
         var claimsIdentity = identity as ClaimsIdentity;
 
-        var impersonatorTenantIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.ImpersonatorTenantId);
+        var impersonatorTenantIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.ImpersonatorTenantId);
         if (impersonatorTenantIdOrNull == null || impersonatorTenantIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -195,7 +195,7 @@ public static class ClaimsIdentityExtensions
     {
         Check.NotNull(principal, nameof(principal));
 
-        var impersonatorUserIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.ImpersonatorUserId);
+        var impersonatorUserIdOrNull = principal.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.ImpersonatorUserId);
         if (impersonatorUserIdOrNull == null || impersonatorUserIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;
@@ -215,7 +215,7 @@ public static class ClaimsIdentityExtensions
 
         var claimsIdentity = identity as ClaimsIdentity;
 
-        var impersonatorUserIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == VaizyClaimTypes.ImpersonatorUserId);
+        var impersonatorUserIdOrNull = claimsIdentity?.Claims?.FirstOrDefault(c => c.Type == ViazyClaimTypes.ImpersonatorUserId);
         if (impersonatorUserIdOrNull == null || impersonatorUserIdOrNull.Value.IsNullOrWhiteSpace())
         {
             return null;

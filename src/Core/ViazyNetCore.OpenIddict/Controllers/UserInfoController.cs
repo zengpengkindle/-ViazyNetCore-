@@ -66,7 +66,7 @@ public class UserInfoController : OpenIdDictControllerBase
 
         if (User.HasScope(OpenIddictConstants.Scopes.Profile))
         {
-            claims[VaizyClaimTypes.TenantId] = user.TenantId;
+            claims[ViazyClaimTypes.TenantId] = user.TenantId;
             claims[OpenIddictConstants.Claims.PreferredUsername] = user.Username;
             claims[OpenIddictConstants.Claims.GivenName] = user.Nickname;
         }

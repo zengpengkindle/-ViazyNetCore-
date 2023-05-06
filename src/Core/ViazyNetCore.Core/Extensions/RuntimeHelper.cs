@@ -105,6 +105,21 @@ namespace ViazyNetCore
 
 
         /// <summary>
+        /// 获取指定项目程序集下所有类。
+        /// </summary>
+        /// <returns></returns>
+        public static IList<Type> GetTypesByAssembly(Assembly assembly)
+        {
+            var list = new List<Type>();
+            var typeInfos = assembly.DefinedTypes;
+            foreach (var typeInfo in typeInfos)
+            {
+                list.Add(typeInfo.AsType());
+            }
+            return list;
+        }
+
+        /// <summary>
         /// 获取具有指定引用类型项目程序集下所有类。
         /// </summary>
         /// <returns></returns>

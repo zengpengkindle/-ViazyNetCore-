@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Options
+namespace ViazyNetCore
 {
     public class PreConfigureActionList<TOptions> : List<Action<TOptions>>
     {

@@ -10,6 +10,7 @@ using ViazyNetCore.OpenIddict.Domain;
 
 namespace ViazyNetCore.Identity.Domain.User.Repositories
 {
+    [Injection]
     public class IdentityUserClaimRepository : DefaultRepository<IdentityUserClaim, long>
     {
         public IdentityUserClaimRepository(IFreeSql fsql) : base(fsql)

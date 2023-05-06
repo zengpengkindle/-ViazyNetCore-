@@ -24,7 +24,7 @@ namespace ViazyNetCore.OpenIddict.AspNetCore
 
             foreach (var claim in context.Claims)
             {
-                if (claim.Type == VaizyClaimTypes.TenantId)
+                if (claim.Type == ViazyClaimTypes.TenantId)
                 {
                     claim.SetDestinations(OpenIddictConstants.Destinations.AccessToken, OpenIddictConstants.Destinations.IdentityToken);
                     continue;

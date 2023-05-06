@@ -11,7 +11,7 @@ using ViazyNetCore.Manage.WebApi.Tasks;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class JobSetup
+    public static class TestJobSetup
     {
         public static void AddJobTaskSetup(this IServiceCollection services)
         {

@@ -136,16 +136,16 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static OpenIddictBuilder ConfigureOpenIddictServices(this IServiceCollection services)
         {
-            VaizyClaimTypes.UserId = OpenIddictConstants.Claims.Subject;
-            VaizyClaimTypes.Role = OpenIddictConstants.Claims.Role;
-            VaizyClaimTypes.UserName = OpenIddictConstants.Claims.PreferredUsername;
-            VaizyClaimTypes.Name = OpenIddictConstants.Claims.GivenName;
-            VaizyClaimTypes.SurName = OpenIddictConstants.Claims.FamilyName;
-            VaizyClaimTypes.PhoneNumber = OpenIddictConstants.Claims.PhoneNumber;
-            VaizyClaimTypes.PhoneNumberVerified = OpenIddictConstants.Claims.PhoneNumberVerified;
-            VaizyClaimTypes.Email = OpenIddictConstants.Claims.Email;
-            VaizyClaimTypes.EmailVerified = OpenIddictConstants.Claims.EmailVerified;
-            VaizyClaimTypes.ClientId = OpenIddictConstants.Claims.ClientId;
+            ViazyClaimTypes.UserId = OpenIddictConstants.Claims.Subject;
+            ViazyClaimTypes.Role = OpenIddictConstants.Claims.Role;
+            ViazyClaimTypes.UserName = OpenIddictConstants.Claims.PreferredUsername;
+            ViazyClaimTypes.Name = OpenIddictConstants.Claims.GivenName;
+            ViazyClaimTypes.SurName = OpenIddictConstants.Claims.FamilyName;
+            ViazyClaimTypes.PhoneNumber = OpenIddictConstants.Claims.PhoneNumber;
+            ViazyClaimTypes.PhoneNumberVerified = OpenIddictConstants.Claims.PhoneNumberVerified;
+            ViazyClaimTypes.Email = OpenIddictConstants.Claims.Email;
+            ViazyClaimTypes.EmailVerified = OpenIddictConstants.Claims.EmailVerified;
+            ViazyClaimTypes.ClientId = OpenIddictConstants.Claims.ClientId;
 
            var builder= services.AddOpenIddictServer();
 

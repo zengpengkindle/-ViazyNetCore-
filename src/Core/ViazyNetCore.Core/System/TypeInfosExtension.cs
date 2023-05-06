@@ -349,5 +349,9 @@ namespace System
             var returnType = method.ReturnType;
             return isAsync ? (returnType.GenericTypeArguments.FirstOrDefault() ?? typeof(void)) : returnType;
         }
+        public static bool IsIn<T>(this T item, params T[] list)
+        {
+            return list.Contains(item);
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace ViazyNetCore.OpenIddict.Domain
             var claims = await this._userClaimRepository.GetUserClaim(user.Id);
             user.AddClaims(claims.Select(c => c.ToClaim()));
             //await UserRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
-            user.AddClaim(new Claim(VaizyClaimTypes.Subject, user.Id.ToString()));
+            user.AddClaim(new Claim(IdentityClaimTypes.Subject, user.Id.ToString()));
             user.AddClaims(claims.Select(c => c.ToClaim()));
             return user.Claims.Select(c => c.ToClaim()).ToList();
         }

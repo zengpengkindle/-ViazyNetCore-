@@ -38,5 +38,14 @@ namespace ViazyNetCore
         {
             this.ServiceTypes = types ?? Array.Empty<Type>();
         }
+
+        /// <summary>
+        /// 初始化一个 <see cref="InjectionAttribute"/> 类的新实例。
+        /// </summary>
+        /// <param name="types">服务类型列表。</param>
+        public InjectionAttribute()
+        {
+            this.ServiceTypes = Array.Empty<Type>();
+        }
     }
 }
