@@ -46,7 +46,7 @@ builder.Services.AddJwtAuthentication(option =>
 builder.Services.AddSingleton(new AppSettingsHelper());
 
 // Add application to the container.
-await builder.Services.AddApplicationAsync<CrmApplicationModule>();
+await builder.Services.AddApplicationAsync<BmsApplicationModule>();
 
 //builder.Services.AddCustomApiVersioning();
 

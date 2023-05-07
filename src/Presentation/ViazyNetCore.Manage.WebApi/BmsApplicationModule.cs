@@ -20,7 +20,7 @@ namespace ViazyNetCore.Manage.WebApi
         , typeof(IdentityModule)
         , typeof(ShopMallAppliactionModule)
         )]
-    public class CrmApplicationModule : InjectionModule
+    public class BmsApplicationModule : InjectionModule
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)
         {
