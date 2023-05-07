@@ -48,14 +48,17 @@ namespace ViazyNetCore.DependencyInjection
 
             //services.AddTransient(typeof(ISimpleStateCheckerManager<>), typeof(SimpleStateCheckerManager<>));
 
+            services.TryAddTransient<OnPreApplicationInitializationModuleLifecycleContributor>();
             services.TryAddTransient<OnApplicationInitializationModuleLifecycleContributor>();
+            services.TryAddTransient<OnPostApplicationInitializationModuleLifecycleContributor>();
+            services.TryAddTransient<OnApplicationShutdownModuleLifecycleContributor>();
 
             services.Configure<ModuleLifecycleOptions>(options =>
             {
-                //options.Contributors.Add<OnPreApplicationInitializationModuleLifecycleContributor>();
+                options.Contributors.AddIfNotContains(typeof(OnPreApplicationInitializationModuleLifecycleContributor));
                 options.Contributors.AddIfNotContains(typeof(OnApplicationInitializationModuleLifecycleContributor));
-                //options.Contributors.Add<OnPostApplicationInitializationModuleLifecycleContributor>();
-                //options.Contributors.Add<OnApplicationShutdownModuleLifecycleContributor>();
+                options.Contributors.AddIfNotContains(typeof(OnPostApplicationInitializationModuleLifecycleContributor));
+                options.Contributors.AddIfNotContains(typeof(OnApplicationShutdownModuleLifecycleContributor));
             });
         }
     }

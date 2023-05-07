@@ -16,7 +16,10 @@ namespace ViazyNetCore
         IInjectionModule,
         IPostConfigureServices,
         IPreConfigureServices,
-        IOnApplicationInitialization
+        IOnApplicationInitialization,
+        IOnApplicationShutdown,
+        IOnPreApplicationInitialization,
+        IOnPostApplicationInitialization
     {
         private ServiceConfigurationContext? _serviceConfigurationContext;
         protected internal ServiceConfigurationContext ServiceConfigurationContext
@@ -145,6 +148,36 @@ namespace ViazyNetCore
         }
 
         public virtual void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
+        {
+        }
+
+        public virtual Task OnApplicationShutdownAsync([NotNull] ApplicationShutdownContext context)
+        {
+            OnApplicationShutdown(context);
+            return Task.CompletedTask;
+        }
+
+        public virtual void OnApplicationShutdown([NotNull] ApplicationShutdownContext context)
+        {
+        }
+
+        public virtual Task OnPreApplicationInitializationAsync([NotNull] ApplicationInitializationContext context)
+        {
+            OnPreApplicationInitialization(context);
+            return Task.CompletedTask;
+        }
+
+        public virtual void OnPreApplicationInitialization([NotNull] ApplicationInitializationContext context)
+        {
+        }
+
+        public virtual Task OnPostApplicationInitializationAsync([NotNull] ApplicationInitializationContext context)
+        {
+            OnPostApplicationInitialization(context);
+            return Task.CompletedTask;
+        }
+
+        public virtual void OnPostApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {
         }
         #endregion
