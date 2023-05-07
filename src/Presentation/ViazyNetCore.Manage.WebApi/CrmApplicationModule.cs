@@ -4,8 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore;
 using Newtonsoft.Json;
+using ViazyNetCore.AspNetCore;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.DI;
 using ViazyNetCore.Identity;
@@ -14,7 +15,7 @@ using ViazyNetCore.Modules;
 namespace ViazyNetCore.Manage.WebApi
 {
     [DependsOn(typeof(AutoMapperModule)
-        , typeof(AspNetCoreModule)
+        , typeof(AspNetCoreMvcModule)
         , typeof(AuthorizationModule)
         , typeof(IdentityModule)
         , typeof(ShopMallAppliactionModule)

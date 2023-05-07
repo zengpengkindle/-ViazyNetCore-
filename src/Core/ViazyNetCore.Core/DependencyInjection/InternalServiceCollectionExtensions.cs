@@ -49,7 +49,6 @@ namespace ViazyNetCore.DependencyInjection
             //services.AddTransient(typeof(ISimpleStateCheckerManager<>), typeof(SimpleStateCheckerManager<>));
 
             services.TryAddTransient<OnApplicationInitializationModuleLifecycleContributor>();
-            services.AddObjectAccessor<IApplicationBuilder>();
 
             services.Configure<ModuleLifecycleOptions>(options =>
             {
