@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\Core\ViazyNetCore.AttachmentProvider\ViazyNetCore.AttachmentProvider.csproj" />
     <ProjectReference Include="..\..\Core\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
     <ProjectReference Include="..\..\Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.AspNetCore\ViazyNetCore.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Formatter.Response\ViazyNetCore.Formatter.Response.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />

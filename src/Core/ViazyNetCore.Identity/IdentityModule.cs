@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Identity
 {
-    public class IdentityApplicationModule : InjectionModule
+    public class IdentityModule : InjectionModule
     {
-        public IdentityApplicationModule()
+        public IdentityModule()
         {
         }
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            Configure<AutoMapperOptions>(options => options.AddMaps<IdentityModule>());
         }
     }
 }

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.AutoMapper\ViazyNetCore.AutoMapper.csproj" />
     <ProjectReference Include="..\..\sdks\payment\Essensoft.AspNetCore.Payment.Alipay\Essensoft.AspNetCore.Payment.Alipay.csproj" />
     <ProjectReference Include="..\..\sdks\payment\Essensoft.Paylink.WeChatPay\Essensoft.Paylink.WeChatPay.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />

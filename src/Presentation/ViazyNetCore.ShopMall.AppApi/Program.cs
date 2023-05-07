@@ -1,16 +1,10 @@
 using System.Providers;
-using System.Reflection;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Newtonsoft.Json;
 using NLog.Web;
-using ViazyNetCore;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
-using ViazyNetCore.DI;
 using ViazyNetCore.Modules.Internal;
+using ViazyNetCore.ShopMall.AppApi;
 using ViazyNetCore.ShopMall.AppApi.Extensions;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
@@ -28,14 +22,9 @@ builder.WebHost.ConfigureLogging(logging =>
 builder.Configuration.ConfigBuild(builder.Environment);
 
 // Add services to the container.
-var ServiceAssemblies = new Assembly?[]
-{
-    RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules")
-};
-var autoMapperIoc = new Assembly?[] {
-        RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules"),
-        RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.AppApi")
-    };
+
+await builder.Services.AddApplicationAsync<ShopMallApiApplicationModule>();
+
 builder.Services.AddJwtAuthentication(option =>
 {
     var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
@@ -45,26 +34,10 @@ builder.Services.AddJwtAuthentication(option =>
     option.AppName = optionJson.AppName;
     option.UseDistributedCache = true;
 });
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AllowNullCollections = true;
-}, autoMapperIoc);
+
 builder.Services.AddSingleton(new AppSettingsHelper());
 
-builder.Services.AddControllers(options =>
-{
-    options.Conventions.Add(new DynamicControllerGroupConvention());
-}).AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.InitializeDefault();
-});
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-
-
 builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
-builder.Services.AddEventBus();
 // Redis 分布式缓存注入
 //builder.Services.AddRedisDistributedHashCache(options =>
 //{
@@ -75,8 +48,6 @@ builder.Services.AddSenparc(builder.Configuration);
 
 //- 添加自动依赖注入
 builder.Services.AddSingleton(sp => LockProvider.Default);
-builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
-builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
 builder.Services.AddShopMall();
 builder.Services.AddSwagger(option =>
 {
@@ -105,7 +76,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/upload"
 });
 app.UseRouting();
-app.UseEventBusWithStore(ServiceAssemblies);
 // Configure the HTTP response wrapper.
 app.UseApiResponseWrapper(option =>
 {

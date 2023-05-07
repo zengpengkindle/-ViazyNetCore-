@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.DI;
+using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.Authorization
 {
+    [DependsOn(typeof(EventBusModule))]
     public class AuthorizationModule : InjectionModule
     {
         public AuthorizationModule()
@@ -18,8 +21,9 @@ namespace ViazyNetCore.Authorization
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            PreConfigure<MvcOptions>(options =>
+            Configure<MvcOptions>(options =>
             {
+                options.Filters.Add<PermissionFilter>();
             });
             context.Services.AddDynamicController(options =>
             {
@@ -30,6 +34,11 @@ namespace ViazyNetCore.Authorization
         public override void PreConfigureServices(ServiceConfigurationContext context)
         {
             base.PreConfigureServices(context);
+        }
+
+        public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
+        {
+            context.ServiceProvider.UseEventBusWithStore(new[] { typeof(AuthorizationModule).Assembly });
         }
     }
 }

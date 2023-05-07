@@ -11,7 +11,7 @@ namespace ViazyNetCore.Modules
 {
     public class ApplicationWithExternalServiceProvider : ApplicationBase, IApplicationWithExternalServiceProvider
     {
-        public ApplicationWithExternalServiceProvider([NotNull] Type startupModuleType, [NotNull] IServiceCollection services, Action<ApplicationCreationOptions> optionsAction) 
+        public ApplicationWithExternalServiceProvider([NotNull] Type startupModuleType, [NotNull] IServiceCollection services, Action<ApplicationCreationOptions>? optionsAction) 
             : base(startupModuleType, services, optionsAction)
         {
             services.AddSingleton<IApplicationWithExternalServiceProvider>(this);

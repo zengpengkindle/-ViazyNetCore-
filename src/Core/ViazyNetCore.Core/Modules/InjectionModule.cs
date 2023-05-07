@@ -78,7 +78,7 @@ namespace ViazyNetCore
 
         public virtual Task PreConfigureServicesAsync(ServiceConfigurationContext context)
         {
-            PostConfigureServices(context);
+            PreConfigureServices(context);
             return Task.CompletedTask;
         }
 

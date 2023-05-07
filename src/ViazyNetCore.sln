@@ -93,7 +93,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.OpenIddict", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Oauth.Server", "Presentation\ViazyNetCore.Oauth.Server\ViazyNetCore.Oauth.Server.csproj", "{0FEA6960-CBE4-4B62-A86E-70782B029527}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Identity", "Core\ViazyNetCore.Identity\ViazyNetCore.Identity.csproj", "{16181C34-14CB-4CE0-B425-14CFB92863ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Identity", "Core\ViazyNetCore.Identity\ViazyNetCore.Identity.csproj", "{16181C34-14CB-4CE0-B425-14CFB92863ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.AutoMapper", "Infrastructure\ViazyNetCore.AutoMapper\ViazyNetCore.AutoMapper.csproj", "{F9D4A84C-DF78-408C-95BA-693962FD7849}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.AspNetCore", "Infrastructure\ViazyNetCore.AspNetCore\ViazyNetCore.AspNetCore.csproj", "{D49D17F2-B7CD-420E-B877-B529B34F4D4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -245,6 +249,14 @@ Global
 		{16181C34-14CB-4CE0-B425-14CFB92863ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16181C34-14CB-4CE0-B425-14CFB92863ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16181C34-14CB-4CE0-B425-14CFB92863ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D4A84C-DF78-408C-95BA-693962FD7849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D4A84C-DF78-408C-95BA-693962FD7849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D4A84C-DF78-408C-95BA-693962FD7849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D4A84C-DF78-408C-95BA-693962FD7849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D49D17F2-B7CD-420E-B877-B529B34F4D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D49D17F2-B7CD-420E-B877-B529B34F4D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D49D17F2-B7CD-420E-B877-B529B34F4D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D49D17F2-B7CD-420E-B877-B529B34F4D4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -287,6 +299,8 @@ Global
 		{6E0D3B67-1027-4182-BFB3-8725F5EBF8BF} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
 		{0FEA6960-CBE4-4B62-A86E-70782B029527} = {57CCA8FF-D37C-4F0E-91CB-C0B155DB5861}
 		{16181C34-14CB-4CE0-B425-14CFB92863ED} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
+		{F9D4A84C-DF78-408C-95BA-693962FD7849} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{D49D17F2-B7CD-420E-B877-B529B34F4D4B} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

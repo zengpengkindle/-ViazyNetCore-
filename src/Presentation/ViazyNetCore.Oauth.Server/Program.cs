@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Validation.AspNetCore;
 using ViazyNetCore;
 using ViazyNetCore.Caching.DependencyInjection;
+using ViazyNetCore.Oauth.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureLogging(logging =>
@@ -24,42 +25,12 @@ builder.Services.AddRumtimeCacheService();
 
 builder.Services.AddHostedService<Worker>();
 
-builder.Services.AddAuthentication(options =>
-{
-    //options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
-    // options.RequireAuthenticatedSignIn = true;
-
-});
-
-builder.Services.AddOpenIddictIdentity(options => {
-    options.Password = new Microsoft.AspNetCore.Identity.PasswordOptions
-    {
-         RequireDigit=false,
-    };
-});
-builder.Services.ConfigureOpenIddictServices();
-
+await builder.Services.AddApplicationAsync<OauthServerApplicationModule>();
 
 builder.Services.AddControllers();
-var ServiceAssemblies = new Assembly?[]
-{
-    RuntimeHelper.GetAssembly("ViazyNetCore.Authorization")
-};
-builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
-var autoMapperIoc = new Assembly?[]
-{
-    RuntimeHelper.GetAssembly("ViazyNetCore.OpenIddict"),
-    RuntimeHelper.GetAssembly("ViazyNetCore.Authorization")
-};
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMultiTenancy();
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AllowNullCollections = true;
-}, autoMapperIoc);
 
-builder.Services.AddSwaggerGen();
 builder.Services.AddSwagger(option =>
 {
     option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
@@ -72,7 +43,7 @@ builder.Services.AddSwagger(option =>
 });
 var app = builder.Build();
 app.UseFreeSql();
-
+app.InitializeApplication();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseOpenIddictValidation();

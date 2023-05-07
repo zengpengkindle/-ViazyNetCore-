@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -48,6 +49,7 @@ namespace ViazyNetCore.DependencyInjection
             //services.AddTransient(typeof(ISimpleStateCheckerManager<>), typeof(SimpleStateCheckerManager<>));
 
             services.TryAddTransient<OnApplicationInitializationModuleLifecycleContributor>();
+            services.AddObjectAccessor<IApplicationBuilder>();
 
             services.Configure<ModuleLifecycleOptions>(options =>
             {

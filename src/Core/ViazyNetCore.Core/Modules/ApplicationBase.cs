@@ -31,7 +31,7 @@ namespace ViazyNetCore.Modules
         internal ApplicationBase(
             [NotNull] Type startupModuleType,
             [NotNull] IServiceCollection services,
-            Action<ApplicationCreationOptions> optionsAction)
+            Action<ApplicationCreationOptions>? optionsAction)
         {
             Check.NotNull(startupModuleType, nameof(startupModuleType));
             Check.NotNull(services, nameof(services));

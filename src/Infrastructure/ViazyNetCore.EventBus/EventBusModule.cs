@@ -5,22 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using ViazyNetCore.Modules;
 
-namespace ViazyNetCore.Modules
+namespace ViazyNetCore
 {
-    [DependsOn(typeof(EventBusModule))]
-    public class ShopMallAppliactionModule : InjectionModule
+    public class EventBusModule : InjectionModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            Configure<AutoMapperOptions>(options => options.AddMaps<ShopMallAppliactionModule>());
             context.Services.AddEventBus();
-            context.Services.RegisterEventHanldersDependencies(new[] { typeof(ShopMallAppliactionModule).Assembly }, ServiceLifetime.Scoped);
         }
 
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {
-            context.ServiceProvider.UseEventBusWithStore(new[] { typeof(ShopMallAppliactionModule).Assembly });
         }
     }
 }

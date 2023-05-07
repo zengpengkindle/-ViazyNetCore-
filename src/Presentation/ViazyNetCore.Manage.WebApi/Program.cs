@@ -7,10 +7,12 @@ using ViazyNetCore;
 using ViazyNetCore.AttachmentProvider;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.DI;
 using ViazyNetCore.Identity;
+using ViazyNetCore.Manage.WebApi;
 using ViazyNetCore.Modules;
 using ViazyNetCore.Modules.Internal;
 
@@ -29,14 +31,7 @@ builder.WebHost.ConfigureLogging(logging =>
 
 builder.Configuration.ConfigBuild(builder.Environment);
 
-// Add services to the container.
 
-var autoMapperIoc = new Assembly?[]
-{
-    RuntimeHelper.GetAssembly("ViazyNetCore.Identity"),
-    RuntimeHelper.GetAssembly("ViazyNetCore.ShopMall.Modules"),
-    RuntimeHelper.GetAssembly("ViazyNetCore.Manage.WebApi")
-};
 builder.Services.AddJwtAuthentication(option =>
 {
     var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
@@ -46,40 +41,16 @@ builder.Services.AddJwtAuthentication(option =>
     option.AppName = optionJson.AppName;
     option.UseDistributedCache = true;
 });
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AllowNullCollections = true;
-}, autoMapperIoc);
 
 
 builder.Services.AddSingleton(new AppSettingsHelper());
 
-await builder.Services.AddApplicationAsync<AspNetCoreModule>();
-await builder.Services.AddApplicationAsync<AuthorizationModule>();
-await builder.Services.AddApplicationAsync<IdentityApplicationModule>();
-await builder.Services.AddApplicationAsync<ShopMallAppliactionModule>();
-
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<PermissionFilter>();
-    options.Conventions.Add(new DynamicControllerGroupConvention());
-}).AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.InitializeDefault();
-})
-.AddApplicationPart(typeof(AuthorizationModule).Assembly)
-.AddApplicationPart(typeof(JobSetup).Assembly);
-
-//builder.Services.AddAuthorizationController();
+// Add application to the container.
+await builder.Services.AddApplicationAsync<CrmApplicationModule>();
 
 //builder.Services.AddCustomApiVersioning();
-;
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-
 
 builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
-builder.Services.AddEventBus();
 // Redis 分布式缓存注入
 //builder.Services.AddRedisDistributedHashCache(options =>
 //{
@@ -92,12 +63,8 @@ builder.Services.AddApiDescriptor(option =>
     option.CachePrefix = "Viazy";
     option.ServiceName = "BMS";
 });
-//- 添加自动依赖注入
-//builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
 
-builder.Services.AddMQueue();
-builder.Services.AddJobSetup();
-builder.Services.AddJobTaskSetup();
+//- 添加自动依赖注入
 
 builder.Services.AddLocalStoreProvider(options =>
 {
