@@ -5,14 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Core;
 using ViazyNetCore.MultiTenancy;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ViazyNetCore.MultiTenancy
 {
+    [Injection]
     public class CurrentTenant : ICurrentTenant
     {
         public virtual bool IsAvailable => Id.HasValue;
 
-        public virtual long? Id => _currentTenantAccessor.Current?.TenantId;
+        public virtual int? Id => _currentTenantAccessor.Current?.TenantId;
 
         public string Name => _currentTenantAccessor.Current?.Name;
 
@@ -23,12 +25,12 @@ namespace ViazyNetCore.MultiTenancy
             _currentTenantAccessor = currentTenantAccessor;
         }
 
-        public IDisposable Change(long? id, string name = null)
+        public IDisposable Change(int? id, string name = null)
         {
             return SetCurrent(id, name);
         }
 
-        private IDisposable SetCurrent(long? tenantId, string name = null)
+        private IDisposable SetCurrent(int? tenantId, string name = null)
         {
             var parentScope = _currentTenantAccessor.Current;
             _currentTenantAccessor.Current = new BasicTenantInfo(tenantId, name);
@@ -38,4 +40,25 @@ namespace ViazyNetCore.MultiTenancy
             });
         }
     }
+
+    //public class NullCurrentTenant : ICurrentTenant
+    //{
+    //    public bool IsAvailable { get; }
+
+    //    public int? Id { get; set; }
+
+    //    public string Name { get; set; }
+
+    //    public NullCurrentTenant(int? id, string name = null)
+    //    {
+    //        this.Id = id;
+    //        this.Name = name;
+    //        this.IsAvailable = true;
+    //    }
+
+    //    public IDisposable Change(int? id, string name = null)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

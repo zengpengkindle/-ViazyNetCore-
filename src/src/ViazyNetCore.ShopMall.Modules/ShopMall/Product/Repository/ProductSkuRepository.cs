@@ -1,6 +1,6 @@
 ﻿using ViazyNetCore;
 
-namespace Caesar.Modules.Repository
+namespace ViazyNetCore.Modules.Repository
 {
     /// <summary>
     /// 表示一个商品规格仓储

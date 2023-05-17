@@ -15,6 +15,9 @@ namespace ViazyNetCore.AspNetCore
         {
             var services = context.Services;
             services.AddObjectAccessor<IApplicationBuilder>();
+
+            services.AddHttpContextAccessor();
+            //services.AddScoped<ICurrentUser, HttpContextCurrentUser>();
         }
     }
 }
