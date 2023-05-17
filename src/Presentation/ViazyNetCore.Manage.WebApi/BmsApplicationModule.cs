@@ -32,6 +32,7 @@ namespace ViazyNetCore.Manage.WebApi
         }
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            Configure<AutoMapperOptions>(options => options.AddMaps<BmsApplicationModule>());
             context.Services.AddMQueue();
             context.Services.AddJobSetup();
             context.Services.AddJobTaskSetup();
