@@ -23,5 +23,7 @@ namespace ViazyNetCore.Authorization.Modules
 
         public bool BindGoogleAuth { get; internal set; }
         public List<string> Permissions { get; internal set; }
+
+        public long TenantId { get; set; }
     }
 }

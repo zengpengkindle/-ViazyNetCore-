@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.AutoMapper\ViazyNetCore.AutoMapper.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.MultiTenancy\ViazyNetCore.MultiTenancy.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
   </ItemGroup>

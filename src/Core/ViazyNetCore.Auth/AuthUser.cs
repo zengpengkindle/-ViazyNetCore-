@@ -44,5 +44,7 @@ namespace ViazyNetCore.Auth
         public AuthUserType IdentityType { get; set; }
 
         public bool IsModerated => false;
+
+        public long TenantId { get; set; }
     }
 }

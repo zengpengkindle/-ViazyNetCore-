@@ -15,11 +15,11 @@ namespace ViazyNetCore.MultiTenancy
 
         public override Task ResolveAsync(ITenantResolveContext context)
         {
-            var currentUser = context.ServiceProvider.GetRequiredService<ICurrentUser>();
-            if (currentUser.IsAuthenticated)
+            var currentUser = context.ServiceProvider.GetRequiredService<IUser>();
+            if (currentUser.Id > 0)
             {
                 context.Handled = true;
-                context.TenantIdOrName = currentUser.TenantId?.ToString();
+                context.TenantIdOrName = currentUser.TenantId.ToString();
             }
 
             return Task.CompletedTask;

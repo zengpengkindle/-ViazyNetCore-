@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViazyNetCore.Formatter.Response.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Attributes;
-
 namespace ViazyNetCore.MultiTenancy
 {
     [Injection(Lifetime = ServiceLifetime.Transient)]
@@ -37,16 +34,16 @@ namespace ViazyNetCore.MultiTenancy
 
                 if (tenant == null)
                 {
-                    throw new BusinessException(
-                        code: 10001,
+                    throw new ApiException(
+                        statusCode: 10001,
                         message: "Tenant not found!"
                     );
                 }
 
                 if (!tenant.IsActive)
                 {
-                    throw new BusinessException(
-                        code: 10002,
+                    throw new ApiException(
+                        statusCode: 10002,
                         message: "Tenant not active!"
                     );
                 }

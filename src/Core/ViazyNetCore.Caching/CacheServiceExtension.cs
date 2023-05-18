@@ -1,15 +1,15 @@
 ﻿namespace ViazyNetCore.Caching
 {
-    public static class CacheExtension
+    public static class CacheServiceExtension
     {
-        public static T Get<T>(this ICache cache, string cacheKey, Func<T> action, TimeSpan expiresIn)
+        public static T Get<T>(this ICacheService cache, string cacheKey, Func<T> action, CachingExpirationType cachingExpirationType)
         {
             var result = cache.Get<T>(cacheKey);
             if (result == null)
             {
                 result = action();
                 if (result != null)
-                    cache.Set(cacheKey, result, expiresIn);
+                    cache.Set(cacheKey, result, cachingExpirationType);
             }
             return result;
         }
@@ -21,19 +21,19 @@
         /// <param name="cacheKey"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static T Get<T>(this ICache cache, string cacheKey, Func<T> action)
+        public static T Get<T>(this ICacheService cache, string cacheKey, Func<T> action)
         {
             var result = cache.Get<T>(cacheKey);
             if (result == null)
             {
                 result = action();
                 if (result != null)
-                    cache.Set(cacheKey, result, new TimeSpan(0, 0, 86400));
+                    cache.Set(cacheKey, result, CachingExpirationType.Invariable);
             }
             return result;
         }
 
-        public static async Task<T> GetAsync<T>(this ICache cache, string cacheKey, Func<Task<T>> action, TimeSpan expiresIn)
+        public static async Task<T> GetAsync<T>(this ICacheService cache, string cacheKey, Func<Task<T>> action, CachingExpirationType cachingExpirationType)
         {
             var result = cache.Get<T>(cacheKey);
             if (result == null)
@@ -42,11 +42,10 @@
                 if (tresult != null)
                     result = await tresult;
                 if (result != null)
-                    cache.Set(cacheKey, result, expiresIn);
+                    cache.Set(cacheKey, result, cachingExpirationType);
             }
             return result;
         }
-
         /// <summary>
         /// 永久储存的缓存
         /// </summary>
@@ -55,19 +54,16 @@
         /// <param name="cacheKey"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static async Task<T> GetAsync<T>(this ICache cache, string cacheKey, Func<Task<T>> action)
+        public static async Task<T> GetAsync<T>(this ICacheService cache, string cacheKey, Func<Task<T>> action)
         {
             var result = cache.Get<T>(cacheKey);
             if (result == null)
             {
-                using (GA.Lock(cacheKey, TimeSpan.FromSeconds(30)))
-                {
-                    Task<T> tresult = action();
-                    if (tresult != null)
-                        result = await tresult;
-                    if (result != null)
-                        cache.Set(cacheKey, result, new TimeSpan(0, 0, 86400));
-                }
+                Task<T> tresult = action();
+                if (tresult != null)
+                    result = await tresult;
+                if (result != null)
+                    cache.Set(cacheKey, result, CachingExpirationType.Invariable);
             }
             return result;
         }

@@ -14,6 +14,8 @@ namespace ViazyNetCore
         /// 是否被管制
         /// </summary>
         bool IsModerated { get; }
+
+        public long TenantId { get; }
     }
 
     public interface IUser : IUser<long>
