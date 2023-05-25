@@ -125,7 +125,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure<SwaggerConfig>(option => { });
             services.AddSwaggerGen().AddSwaggerGenNewtonsoftSupport();
             services.AddOptions<SwaggerGenOptions>()
-                .Configure<IOptions<SwaggerConfig>, IApiVersionDescriptionProvider>((options, swaggerConfigOption, service) =>
+                .Configure<IOptions<SwaggerConfig>>((options, swaggerConfigOption) =>
                 {
                     var swaggerConfig = swaggerConfigOption.Value;
                     options.DocInclusionPredicate((docName, apiDescription) =>
