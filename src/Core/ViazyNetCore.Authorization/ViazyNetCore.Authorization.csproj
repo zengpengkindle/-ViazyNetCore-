@@ -11,6 +11,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Identity\ViazyNetCore.Identity.csproj" />

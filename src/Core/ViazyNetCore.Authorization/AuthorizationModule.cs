@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.DI;
 using ViazyNetCore.Modules;
+using ViazyNetCore.Swagger;
 
 namespace ViazyNetCore.Authorization
 {
@@ -24,6 +25,16 @@ namespace ViazyNetCore.Authorization
             Configure<MvcOptions>(options =>
             {
                 options.Filters.Add<PermissionFilter>();
+            });
+            Configure<SwaggerConfig>(options =>
+            {
+                options.Projects.Add(new ProjectConfig
+                {
+                    Code = "admin",
+                    Description = "后台管理",
+                    Name = "ViazyNetCore",
+                    Version = "v2.0",
+                });
             });
             context.Services.AddDynamicController(options =>
             {

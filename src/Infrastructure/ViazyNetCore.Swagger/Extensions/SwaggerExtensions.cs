@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -117,6 +118,100 @@ namespace Microsoft.Extensions.DependencyInjection
                 #endregion
 
             }).AddSwaggerGenNewtonsoftSupport();
+        }
+
+        public static void AddSwagger(this IServiceCollection services)
+        {
+            services.Configure<SwaggerConfig>(option => { });
+            services.AddSwaggerGen().AddSwaggerGenNewtonsoftSupport();
+            services.AddOptions<SwaggerGenOptions>()
+                .Configure<IOptions<SwaggerConfig>, IApiVersionDescriptionProvider>((options, swaggerConfigOption, service) =>
+                {
+                    var swaggerConfig = swaggerConfigOption.Value;
+                    options.DocInclusionPredicate((docName, apiDescription) =>
+                    {
+                        var nonGroup = false;
+                        var groupNames = new List<string>();
+                        var dynamicApiAttribute = apiDescription.ActionDescriptor.EndpointMetadata.FirstOrDefault(x => x is DynamicApiAttribute);
+                        if (dynamicApiAttribute != null)
+                        {
+                            var dynamicApi = dynamicApiAttribute as DynamicApiAttribute;
+                            if (dynamicApi?.GroupNames?.Length > 0)
+                            {
+                                groupNames.AddRange(dynamicApi.GroupNames);
+                            }
+                        }
+                        var controllerGroupAttributes = apiDescription.ActionDescriptor.EndpointMetadata.FirstOrDefault(x => x is ControllerGroupAttribute);
+                        if (controllerGroupAttributes is ControllerGroupAttribute controllerGroup)
+                        {
+                            if (controllerGroup.GroupNames?.Length > 0)
+                            {
+                                groupNames.AddRange(controllerGroup.GroupNames);
+                            }
+                            nonGroup = controllerGroup.NonGroup;
+                        }
+
+                        return docName == apiDescription.GroupName || groupNames.Any(a => a == docName) || nonGroup;
+                    });
+
+                    //options.ResolveConflictingActions(apiDescription => apiDescription.First());
+
+                    foreach (var project in swaggerConfig.Projects)
+                    {
+                        options.SwaggerDoc(project.Code.ToLower(), new OpenApiInfo
+                        {
+                            Title = project.Name,
+                            Version = project.Version,
+                            Description = project.Description
+                        });
+                    }
+
+                    options.SchemaFilter<AutoRestSchemaFilter>();
+                    var dir = new DirectoryInfo(AppContext.BaseDirectory);
+                    var files = dir.GetFiles("*.xml", SearchOption.TopDirectoryOnly);
+                    foreach (var file in files)
+                    {
+                        options.IncludeXmlComments(file.FullName, true);
+                    }
+                    if (swaggerConfig.EnableEnumSchemaFilter)
+                    {
+                        options.DocumentFilter<SwaggerEnumFilter>();
+                    }
+                    // 启用 SwaggerResponse 备注
+                    options.EnableAnnotations();
+                    options.CustomOperationIds(apiDesc =>
+                    {
+                        if (apiDesc.ActionDescriptor is ControllerActionDescriptor controllerAction)
+                            return controllerAction.ControllerName.Replace("Controller", "") + controllerAction.ActionName;
+                        else
+                            return string.Empty;
+                    });
+
+                    #region Jwt Authentication
+
+                    var securityScheme = new OpenApiSecurityScheme
+                    {
+                        Name = "JWT Authorization",
+                        Description = "Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer",
+                        BearerFormat = "JWT",
+                        Reference = new OpenApiReference
+                        {
+                            Id = AUTHENTICATION_SCHEME,
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    };
+
+                    options.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {securityScheme, Array.Empty<string>()}
+                });
+
+                    #endregion
+                });
         }
 
         public static void UseSwaggerAndUI(this WebApplication app)

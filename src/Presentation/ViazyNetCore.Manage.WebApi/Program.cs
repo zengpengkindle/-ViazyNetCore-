@@ -75,31 +75,6 @@ builder.Services.AddLocalStoreProvider(options =>
 });
 builder.Services.AddSingleton(sp => LockProvider.Default);
 builder.Services.AddShopMall();
-builder.Services.AddSwagger(option =>
-{
-    option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
-    {
-        Code = "admin",
-        Description = "后台管理",
-        Name = "ViazyNetCore",
-        Version = "v2.0",
-    });
-    option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
-    {
-        Code = "shopmall",
-        Description = "ShopMall",
-        Name = "ShopMall",
-        Version = "v1",
-    });
-
-    option.Projects.Add(new ViazyNetCore.Swagger.ProjectConfig
-    {
-        Code = "task",
-        Description = "TaskJob",
-        Name = "TaskJob",
-        Version = "v1",
-    });
-});
 
 builder.Services.AddHealthChecks();
 builder.Services.AddResponseCompression();
