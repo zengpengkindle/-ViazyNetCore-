@@ -21,6 +21,7 @@ namespace ViazyNetCore.Manage.WebApi
             PreConfigure<AppOptions>(options =>
             {
                 options.ApplicationParts.Add(typeof(AuthorizationModule).Assembly);
+                options.ApplicationParts.Add(typeof(ShopMallManageModule).Assembly);
                 options.ApplicationParts.Add(typeof(JobSetup).Assembly);
             });
         }

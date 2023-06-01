@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 
-namespace ViazyNetCore.Manage.WebApi.Mapper
+namespace ViazyNetCore.ShopMall.Manage.Application.Mapper
 {
     public class ProdcutCatProfile : Profile
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Manage.WebApi.Controllers.Crm
+namespace ViazyNetCore.Crm.Manage.Application.Controllers
 {
-    public class CrmContractController
+    public class CrmBusinessController : BaseController
     {
 
     }

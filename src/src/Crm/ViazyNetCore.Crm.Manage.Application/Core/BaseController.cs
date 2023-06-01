@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ViazyNetCore.ShopMall.Manage.Application.Controllers
+namespace ViazyNetCore.Crm.Manage.Application.Controllers
 {
     [ApiController]
-    [Area("shopmall")]
+    [Area("crm")]
     [Authorize]
     public class BaseController
     {
