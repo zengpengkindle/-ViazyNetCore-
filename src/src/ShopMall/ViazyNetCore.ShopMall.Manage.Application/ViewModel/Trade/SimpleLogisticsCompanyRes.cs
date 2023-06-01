@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ViazyNetCore.ShopMall.Manage.Application.Controllers
 {
-    [ApiController]
-    [Area("shopmall")]
-    [Authorize]
-    public class BaseController
+    public class SimpleLogisticsCompanyRes
     {
-
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
     }
 }

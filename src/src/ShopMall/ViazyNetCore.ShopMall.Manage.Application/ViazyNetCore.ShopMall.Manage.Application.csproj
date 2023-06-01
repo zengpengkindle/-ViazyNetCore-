@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\ViazyNetCore.AttachmentProvider\ViazyNetCore.AttachmentProvider.csproj" />
+    <ProjectReference Include="..\..\..\Core\ViazyNetCore.Authorization\ViazyNetCore.Authorization.csproj" />
+    <ProjectReference Include="..\..\..\Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
+    <ProjectReference Include="..\..\ViazyNetCore.ShopMall.Modules\ViazyNetCore.ShopMall.Modules.csproj" />
+  </ItemGroup>
+
+</Project>

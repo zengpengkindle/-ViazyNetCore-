@@ -44,6 +44,7 @@
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.TaskScheduler.RabbitMQ\ViazyNetCore.TaskScheduler.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.TaskScheduler\ViazyNetCore.TaskScheduler.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Web.DevServer\ViazyNetCore.Web.DevServer.csproj" />
+    <ProjectReference Include="..\..\src\ShopMall\ViazyNetCore.ShopMall.Manage.Application\ViazyNetCore.ShopMall.Manage.Application.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.ShopMall.Modules\ViazyNetCore.ShopMall.Modules.csproj" />
   </ItemGroup>

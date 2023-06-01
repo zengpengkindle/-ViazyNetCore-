@@ -3,6 +3,7 @@ using ViazyNetCore.AspNetCore;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Modules;
+using ViazyNetCore.ShopMall.Manage.Application;
 using ViazyNetCore.Swagger;
 
 namespace ViazyNetCore.Manage.WebApi
@@ -11,7 +12,7 @@ namespace ViazyNetCore.Manage.WebApi
         , typeof(AspNetCoreMvcModule)
         , typeof(AuthorizationModule)
         , typeof(IdentityModule)
-        , typeof(ShopMallAppliactionModule)
+        , typeof(ShopMallManageModule)
         )]
     public class BmsApplicationModule : InjectionModule
     {
