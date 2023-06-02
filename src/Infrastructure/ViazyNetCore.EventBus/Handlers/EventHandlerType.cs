@@ -13,8 +13,12 @@ namespace ViazyNetCore
         /// </summary>
         Trigger = 1,
         /// <summary>
+        /// 触发模式
+        /// </summary>
+        TriggerAsync = 2,
+        /// <summary>
         /// 消息模式
         /// </summary>
-        Topic = 2
+        Topic = 10
     }
 }

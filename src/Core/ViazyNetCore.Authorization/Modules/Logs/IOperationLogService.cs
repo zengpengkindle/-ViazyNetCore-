@@ -22,8 +22,8 @@ namespace ViazyNetCore.Authorization.Modules
         /// <param name="objectName">操作对象名称</param>
         /// <param name="descripation">描述</param>
         /// <returns></returns>
-        bool AddOperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName, string descripation);
-        bool AddOperationLog(OperationLog operationLog);
+        Task<bool> AddOperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName, string descripation);
+        Task<bool> AddOperationLog(OperationLog operationLog);
         PageData<OperationLog> GetOperationLog(int page, int limit, OperationLogSearchType searchType = OperationLogSearchType.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information);
         PageData<OperationLog> GetOperationLog(DateTime beginTime, DateTime endTime, int page, int limit, OperationLogSearchType searchType = OperationLogSearchType.Default, string keyword = "", LogRecordLevel logRecordLevel = LogRecordLevel.Information);
 

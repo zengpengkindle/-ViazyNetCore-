@@ -9,31 +9,41 @@ using ViazyNetCore.Handlers;
 
 namespace ViazyNetCore
 {
-    public class MemoryEventStore : IEventStore
+    public class MemoryEventStore
     {
         /// <summary>
         /// 定义锁对象
         /// </summary>
         private static readonly object LockObj = new object();
 
-        private readonly ConcurrentDictionary<Type, List<Type>> _eventAndHandlerMapping;
+        protected ConcurrentDictionary<Type, List<IEventHandlerFactory>> HandlerFactories { get; }
+        protected ConcurrentDictionary<Type, List<Type>> _eventAndHandlerMapping = new ConcurrentDictionary<Type, List<Type>>();
 
         public MemoryEventStore()
         {
-            this._eventAndHandlerMapping = new ConcurrentDictionary<Type, List<Type>>();
+            this.HandlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
         }
+
+        public IDisposable Subscribe(Type eventType, IEventHandlerFactory factory)
+        {
+            GetOrCreateHandlerFactories(eventType)
+                .Locking(factories =>
+                {
+                    if (!factory.IsInFactories(factories))
+                    {
+                        factories.Add(factory);
+                    }
+                }
+                );
+
+            return new EventHandlerFactoryUnregistrar(this, eventType, factory);
+        }
+
         public void AddRegister<T, TH>() where T : IEventData where TH : IEventHandler
         {
             this.AddRegister(typeof(T), typeof(TH));
         }
 
-
-        public void AddActionRegister<T>(Action<T> action) where T : IEventData
-        {
-            var actionHandler = new ActionEventHandler<T>(action);
-
-            this.AddRegister(typeof(T), actionHandler.GetType());
-        }
 
         public void AddRegister(Type eventData, Type eventHandler)
         {
@@ -59,27 +69,9 @@ namespace ViazyNetCore
             this.RemoveRegister(typeof(T), handlerToRemove);
         }
 
-        public void RemoveActionRegister<T>(Action<T> action) where T : IEventData
+        public void Unsubscribe(Type eventType, IEventHandlerFactory factory)
         {
-            var actionHandler = new ActionEventHandler<T>(action);
-            var handlerToRemove = FindRegisterToRemove(typeof(T), actionHandler.GetType());
-            if (handlerToRemove == null) return;
-            this.RemoveRegister(typeof(T), handlerToRemove);
-        }
-
-        public void RemoveRegister(Type eventData, Type eventHandler)
-        {
-            if (eventHandler != null)
-            {
-                lock (LockObj)
-                {
-                    this._eventAndHandlerMapping[eventData].Remove(eventHandler);
-                    if (!this._eventAndHandlerMapping[eventData].Any())
-                    {
-                        this._eventAndHandlerMapping.TryRemove(eventData, out var _);
-                    }
-                }
-            }
+            GetOrCreateHandlerFactories(eventType).Locking(factories => factories.Remove(factory));
         }
 
         private Type? FindRegisterToRemove(Type eventData, Type eventHandler)
@@ -170,14 +162,6 @@ namespace ViazyNetCore
             {
                 if (typeof(IEventHandler).IsAssignableFrom(type))//判断当前类型是否实现了IEventHandler接口
                 {
-                    var handlerInterface = type.GetInterface("IEventHandler`1");//获取该类实现的泛型接口
-                    if (handlerInterface != null)
-                    {
-                        var eventDataType = handlerInterface.GetGenericArguments()[0]; // 获取泛型接口指定的参数类型
-
-                        this.AddRegister(eventDataType, type);
-                    }
-
                     var handlerAsyncInterface = type.GetInterface("IEventHandlerAsync`1");//获取该类实现的泛型接口
                     if (handlerAsyncInterface != null)
                     {
@@ -203,6 +187,54 @@ namespace ViazyNetCore
                     this.RegisterModule((IEventModuls)type);
                 }
             }
+        }
+
+
+
+        public void RemoveActionRegister<T>(Action<T> action) where T : IEventData
+        {
+            var actionHandler = new ActionEventHandlerAsync<T>(action);
+            var handlerToRemove = FindRegisterToRemove(typeof(T), actionHandler.GetType());
+            if (handlerToRemove == null) return;
+            this.RemoveRegister(typeof(T), handlerToRemove);
+        }
+
+
+        public void RemoveRegister(Type eventData, Type eventHandler)
+        {
+            if (eventHandler != null)
+            {
+                lock (LockObj)
+                {
+                    this._eventAndHandlerMapping[eventData].Remove(eventHandler);
+                    if (!this._eventAndHandlerMapping[eventData].Any())
+                    {
+                        this._eventAndHandlerMapping.TryRemove(eventData, out var _);
+                    }
+                }
+            }
+        }
+
+        private List<IEventHandlerFactory> GetOrCreateHandlerFactories(Type eventType)
+        {
+            return HandlerFactories.GetOrAdd(eventType, (type) => new List<IEventHandlerFactory>());
+        }
+
+        private static bool ShouldTriggerEventForHandler(Type targetEventType, Type handlerEventType)
+        {
+            //Should trigger same type
+            if (handlerEventType == targetEventType)
+            {
+                return true;
+            }
+
+            //Should trigger for inherited types
+            if (handlerEventType.IsAssignableFrom(targetEventType))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -14,7 +14,6 @@ namespace ViazyNetCore.Modules
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             Configure<AutoMapperOptions>(options => options.AddMaps<CrmModulesModule>());
-            context.Services.AddEventBus();
             context.Services.RegisterEventHanldersDependencies(new[] { typeof(CrmModulesModule).Assembly }, ServiceLifetime.Scoped);
         }
 

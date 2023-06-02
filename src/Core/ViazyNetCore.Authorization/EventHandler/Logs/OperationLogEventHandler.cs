@@ -5,7 +5,7 @@ using ViazyNetCore.Authorization.Modules;
 namespace ViazyNetCore.Modules.EventHandler
 {
     [InjectionHanlder]
-    public class OperationLogEventHandler : IEventHandler<OperationLogEventData>
+    public class OperationLogEventHandler : IEventHandlerAsync<OperationLogEventData>
     {
         private readonly IOperationLogService _logService;
         private readonly IHttpContextAccessor? _httpContextAccessor;
@@ -17,7 +17,7 @@ namespace ViazyNetCore.Modules.EventHandler
             this._httpContextAccessor = httpContextAccessor;
             this._authUser = this._httpContextAccessor?.HttpContext?.GetAuthUser();
         }
-        public void HandleEvent(OperationLogEventData eventData)
+        public async Task HandleEventAsync(OperationLogEventData eventData)
         {
             if (eventData != null && eventData.Data != null)
             {
@@ -32,7 +32,7 @@ namespace ViazyNetCore.Modules.EventHandler
                 {
                     eventData.Data.OperatorIP = this._httpContextAccessor.HttpContext?.GetRequestIP();
                 }
-                this._logService.AddOperationLog(eventData.Data);
+                await this._logService.AddOperationLog(eventData.Data);
             }
         }
     }

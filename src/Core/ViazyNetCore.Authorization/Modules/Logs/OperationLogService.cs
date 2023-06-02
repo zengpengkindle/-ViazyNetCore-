@@ -24,13 +24,13 @@ namespace ViazyNetCore.Authorization.Modules
                 throw new Exception("OperateUserId can not be null!");
             return true;
         }
-        public bool AddOperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName, string descripation)
+        public Task<bool> AddOperationLog(string operatorIp, string operateUserId, string operatorNickname, OperatorType operatorType, string operationType, string objectId, string objectName, string descripation)
         {
             OperationLog log = new OperationLog(operatorIp, operateUserId, operatorNickname, operatorType, operationType, objectId, objectName, descripation);
-            return AddOperationLog(log);
+            return this.AddOperationLog(log);
         }
 
-        public bool AddOperationLog(OperationLog operationLog)
+        public async Task<bool> AddOperationLog(OperationLog operationLog)
         {
             //截取长度，防止异常
             if (operationLog.Description.IsNotNull() && operationLog.Description.Length > 1000)
@@ -38,7 +38,7 @@ namespace ViazyNetCore.Authorization.Modules
 
             if (CheckArgs(operationLog))
             {
-                _repository.Insert(operationLog);
+                await _repository.InsertAsync(operationLog);
                 return true;
             }
             else
