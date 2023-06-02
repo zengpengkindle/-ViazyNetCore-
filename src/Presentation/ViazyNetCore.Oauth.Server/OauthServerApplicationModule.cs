@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenIddict.Validation.AspNetCore;
+using ViazyNetCore.AspNetCore;
 using ViazyNetCore.Authorization;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Identity;
@@ -13,6 +14,7 @@ namespace ViazyNetCore.Oauth.Server
 {
     [DependsOn(typeof(AutoMapperModule),
         typeof(OpenIddictModule),
+        typeof(AspNetCoreModule),
         typeof(AuthorizationModule))]
     public class OauthServerApplicationModule : InjectionModule
     {
