@@ -5,18 +5,23 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using ViazyNetCore.Handlers;
+using ViazyNetCore.EventBus.Distributed;
+using System.Runtime.CompilerServices;
 
 namespace ViazyNetCore
 {
-    public class EventBus : IEventBus
+    public class DefaultEventBus : IEventBus
     {
         private readonly IEventStore _eventStore;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public EventBus(IEventStore eventStore, IServiceScopeFactory serviceScopeFactory)
+        public IEventHandlerInvoker EventHandlerInvoker { get; }
+
+        public DefaultEventBus(IEventStore eventStore, IServiceScopeFactory serviceScopeFactory, IEventHandlerInvoker eventHandlerInvoker)
         {
             this._eventStore = eventStore;
             this._serviceScopeFactory = serviceScopeFactory;
+            this.EventHandlerInvoker = eventHandlerInvoker;
         }
 
         public void Publish<TEventData>(TEventData @event) where TEventData : IEventData
@@ -34,19 +39,19 @@ namespace ViazyNetCore
             if (@event is null) throw new ArgumentNullException(nameof(@event));
             //if(@event.EventSource is null) throw new ArgumentNullException(nameof(@event.EventSource));
 
-            if (this._eventStore.HasRegisterForEvent<TEventData>())
-            {
-                var eventHanlderTypes = this._eventStore.GetHandlersForEvent<TEventData>().ToList();
+            //if (this._eventStore.HasSubscribeForEvent<TEventData>())
+            //{
+            //    var eventHanlderTypes = this._eventStore.GetHandlersForEvent<TEventData>().ToList();
 
-                foreach (var handlerType in eventHanlderTypes)
-                {
-                    ////同步方法
-                    //this.TriggerHandler(handlerType, @event);
+            //    foreach (var handlerType in eventHanlderTypes)
+            //    {
+            //        ////同步方法
+            //        //this.TriggerHandler(handlerType, @event);
 
-                    await this.TriggerHandlerAsync(handlerType, @event);
-                };
-            }
-
+            //        await this.TriggerHandlerAsync(handlerType, @event);
+            //    };
+            //}
+            await this._eventStore.PublishToEventBusAsync(typeof(TEventData), @event);
         }
 
         public async Task PublishAsync<TEventData>(Type eventHandlerType, TEventData @event) where TEventData : IEventData
@@ -54,18 +59,19 @@ namespace ViazyNetCore
             if (@event is null) throw new ArgumentNullException(nameof(@event));
             //if(@event.EventSource is null) throw new ArgumentNullException(nameof(@event.EventSource));
 
-            if (this._eventStore.HasRegisterForEvent<TEventData>())
-            {
-                var eventHanlderTypes = this._eventStore.GetHandlersForEvent<TEventData>().ToList();
+            //if (this._eventStore.HasSubscribeForEvent<TEventData>())
+            //{
+            //    var eventHanlderTypes = this._eventStore.GetHandlersForEvent<TEventData>().ToList();
 
-                //触发指定EventHandler
-                if (eventHandlerType != null) eventHanlderTypes = eventHanlderTypes.Where(o => o == eventHandlerType).ToList();
+            //    //触发指定EventHandler
+            //    if (eventHandlerType != null) eventHanlderTypes = eventHanlderTypes.Where(o => o == eventHandlerType).ToList();
 
-                foreach (var handlerType in eventHanlderTypes)
-                {
-                    await this.TriggerHandlerAsync(handlerType, @event);
-                };
-            }
+            //    foreach (var handlerType in eventHanlderTypes)
+            //    {
+            //        await this.TriggerHandlerAsync(handlerType, @event);
+            //    };
+            //}
+            await this._eventStore.PublishToEventBusAsync(eventHandlerType, @event);
 
         }
 

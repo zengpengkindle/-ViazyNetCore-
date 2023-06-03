@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using ViazyNetCore.EventBus;
 using ViazyNetCore.Handlers;
 
 namespace ViazyNetCore
@@ -12,12 +15,89 @@ namespace ViazyNetCore
     public class LocalEventStore : EventStoreBase
     {
         protected ConcurrentDictionary<Type, List<IEventHandlerFactory>> HandlerFactories { get; }
-        public LocalEventStore(IEventStore eventStore, IServiceScopeFactory serviceScopeFactory) : base(serviceScopeFactory)
+        public LocalEventStore(IServiceScopeFactory serviceScopeFactory, IEventHandlerInvoker eventHandlerInvoker)
+            : base(serviceScopeFactory, eventHandlerInvoker)
         {
             this.HandlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
         }
 
-        protected IEnumerable<EventTypeWithEventHandlerFactories> GetHandlerFactories(Type eventType)
+        public override IEnumerable<Type> GetHandlersForEvent<T>()
+        {
+            return GetHandlersForEvent(typeof(T));
+        }
+
+        public override IEnumerable<Type> GetHandlersForEvent(Type eventType)
+        {
+            return GetOrCreateHandlerFactories(eventType).Select(p => p.GetHandler().GetType());
+        }
+
+        public override bool HasSubscribeForEvent<T>()
+        {
+            return HasSubscribeForEvent(typeof(T));
+        }
+
+        public override bool HasSubscribeForEvent(Type eventType)
+        {
+            return GetOrCreateHandlerFactories(eventType).Any();
+        }
+
+        public override void Unsubscribe<T, TH>()
+        {
+            var handlerToRemove = FindSubscribeToRemove(typeof(T), typeof(TH));
+            if (handlerToRemove == null) return;
+            this.Unsubscribe(typeof(T), handlerToRemove);
+        }
+
+        public override void Unsubscribe(Type eventType, IEventHandler eventHandler)
+        {
+            var handlerToRemove = FindSubscribeToRemove(eventType, eventHandler.GetType());
+            if (handlerToRemove == null) return;
+            this.Unsubscribe(eventType, handlerToRemove);
+        }
+
+        public override IDisposable Subscribe(Type eventType, IEventHandlerFactory factory)
+        {
+            GetOrCreateHandlerFactories(eventType)
+                .Locking(factories =>
+                {
+                    if (!factory.IsInFactories(factories))
+                    {
+                        factories.Add(factory);
+                    }
+                }
+                );
+
+            return new EventHandlerFactoryUnregistrar(this, eventType, factory);
+        }
+
+        public override void Unsubscribe(Type eventType, IEventHandlerFactory factory)
+        {
+            GetOrCreateHandlerFactories(eventType).Locking(factories => factories.Remove(factory));
+        }
+
+        public override void Unsubscribe<T>(Func<T, Task> action)
+        {
+            var actionHandler = new ActionEventHandlerAsync<T>(action);
+            var handlerToRemove = FindSubscribeToRemove(typeof(T), actionHandler.GetType());
+            if (handlerToRemove == null) return;
+            this.Unsubscribe(typeof(T), handlerToRemove);
+        }
+
+        private IEventHandlerFactory? FindSubscribeToRemove(Type eventType, Type eventHandlerType)
+        {
+            if (!HasSubscribeForEvent(eventType))
+            {
+                return null;
+            }
+            return this.GetOrCreateHandlerFactories(eventType).FirstOrDefault(eh => eh.GetHandler().EventHandler.GetType() == eventHandlerType);
+        }
+
+        private List<IEventHandlerFactory> GetOrCreateHandlerFactories(Type eventType)
+        {
+            return HandlerFactories.GetOrAdd(eventType, (type) => new List<IEventHandlerFactory>());
+        }
+
+        public override IEnumerable<EventTypeWithEventHandlerFactories> GetHandlerFactories(Type eventType)
         {
             var handlerFactoryList = new List<EventTypeWithEventHandlerFactories>();
 
@@ -27,11 +107,6 @@ namespace ViazyNetCore
             }
 
             return handlerFactoryList.ToArray();
-        }
-
-        private List<IEventHandlerFactory> GetOrCreateHandlerFactories(Type eventType)
-        {
-            return HandlerFactories.GetOrAdd(eventType, (type) => new List<IEventHandlerFactory>());
         }
 
         private static bool ShouldTriggerEventForHandler(Type targetEventType, Type handlerEventType)
@@ -51,64 +126,9 @@ namespace ViazyNetCore
             return false;
         }
 
-        public override IEnumerable<Type> GetHandlersForEvent<T>()
+        public override async Task PublishToEventBusAsync(Type baseEventType, object eventData)
         {
-            return GetHandlersForEvent(typeof(T));
+            await TriggerHandlersAsync(baseEventType, eventData);
         }
-
-        public override IEnumerable<Type> GetHandlersForEvent(Type eventData)
-        {
-            return GetOrCreateHandlerFactories(eventData).Select(p => p.GetHandler().GetType());
-        }
-
-        public override bool HasRegisterForEvent<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool HasRegisterForEvent(Type eventData)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void RemoveRegister<T, TH>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void RemoveRegister(Type eventData, IEventHandler eventHandler)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IDisposable Subscribe(Type eventType, IEventHandlerFactory factory)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Unsubscribe(Type eventType, IEventHandlerFactory factory)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void RemoveActionRegister<T>(Func<T, Task> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        #region Inner Class
-        protected class EventTypeWithEventHandlerFactories
-        {
-            public Type EventType { get; }
-
-            public List<IEventHandlerFactory> EventHandlerFactories { get; }
-
-            public EventTypeWithEventHandlerFactories(Type eventType, List<IEventHandlerFactory> eventHandlerFactories)
-            {
-                EventType = eventType;
-                EventHandlerFactories = eventHandlerFactories;
-            }
-        }
-        #endregion
     }
 }

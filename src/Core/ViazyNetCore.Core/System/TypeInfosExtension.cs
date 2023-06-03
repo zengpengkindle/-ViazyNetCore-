@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -352,6 +355,30 @@ namespace System
         public static bool IsIn<T>(this T item, params T[] list)
         {
             return list.Contains(item);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T As<T>(this object obj)
+    where T : class
+        {
+            return (T)obj;
+        }
+
+        /// <summary>
+        /// Converts given object to a value type using <see cref="Convert.ChangeType(object,System.Type)"/> method.
+        /// </summary>
+        /// <param name="obj">Object to be converted</param>
+        /// <typeparam name="T">Type of the target object</typeparam>
+        /// <returns>Converted object</returns>
+        public static T To<T>(this object obj)
+            where T : struct
+        {
+            if (typeof(T) == typeof(Guid))
+            {
+                return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(obj.ToString());
+            }
+
+            return (T)Convert.ChangeType(obj, typeof(T), CultureInfo.InvariantCulture);
         }
     }
 }

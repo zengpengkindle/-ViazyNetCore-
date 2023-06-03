@@ -30,10 +30,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合。</returns>
         public static IEventBusServiceCollection AddEventBus(this IServiceCollection services)
         {
-            if(services is null)
+            if (services is null)
                 throw new ArgumentNullException(nameof(services));
-            services.TryAddSingleton<IEventStore, MemoryEventStore>();
-            services.TryAddScoped<IEventBus, EventBus>();
+            services.TryAddSingleton<IEventStore, LocalEventStore>();
+            services.TryAddSingleton<IEventHandlerInvoker, EventHandlerInvoker>();
+            services.TryAddScoped<IEventBus, DefaultEventBus>();
 
             return new EventBusServiceCollection(services);
         }
@@ -49,12 +50,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection RegisterEventHanldersDependencies(this IServiceCollection services, Assembly?[] assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
         {
-            foreach(var assembly in assemblies)
+            foreach (var assembly in assemblies)
             {
                 if (assembly == null) continue;
-                foreach(var t in assembly.DefinedTypes)
+                foreach (var t in assembly.DefinedTypes)
                 {
-                    if(t.IsAbstract) continue;
+                    if (t.IsAbstract) continue;
                     AddEventHanlder(services, t, serviceLifetime);
                 }
             }
@@ -64,30 +65,29 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static void AddEventHanlder(IServiceCollection services, TypeInfo type, ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
         {
-            if(type.IsAbstract) return;
+            if (type.IsAbstract) return;
             var serviceType = type.GetInterface($"I{type.Name}");
             var attr = (serviceType ?? type).GetAttribute<InjectionHanlderAttribute>();
 
-            if(attr is null) return;
+            if (attr is null) return;
 
-            var handlerInterface = type.GetInterface("IEventHandler`1");
             var handlerInterfaceAsync = type.GetInterface("IEventHandlerAsync`1");
-            if(handlerInterface == null && handlerInterfaceAsync == null) return;
+            if (handlerInterfaceAsync == null) return;
 
-            if(handlerInterface != null)
-                services.TryAdd(ServiceDescriptor.Describe(handlerInterface, type, serviceLifetime));
-
-            if(handlerInterfaceAsync != null)
+            if (handlerInterfaceAsync != null)
+            {
                 services.TryAdd(ServiceDescriptor.Describe(handlerInterfaceAsync, type, serviceLifetime));
+                services.TryAdd(ServiceDescriptor.Describe(type, type, serviceLifetime));
+            }
         }
 
         public static IApplicationBuilder UseEventBusWithStore(this IApplicationBuilder builder, Assembly[] assemblies)
         {
             var services = builder.ApplicationServices;
             var eventStore = services.GetService<IEventStore>();
-            if(eventStore is null)
+            if (eventStore is null)
                 throw new InvalidOperationException("Can't found EventBus.");
-            foreach(var assembly in assemblies)
+            foreach (var assembly in assemblies)
             {
                 eventStore.RegisterAllEventHandlerFromAssembly(assembly);
             }
