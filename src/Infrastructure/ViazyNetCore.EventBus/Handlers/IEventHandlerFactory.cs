@@ -8,6 +8,7 @@ namespace ViazyNetCore.Handlers
 {
     public interface IEventHandlerFactory
     {
+        Type HandlerType { get; }
         /// <summary>
         /// Gets an event handler.
         /// </summary>

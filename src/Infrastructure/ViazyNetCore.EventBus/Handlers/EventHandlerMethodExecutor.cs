@@ -17,22 +17,22 @@ namespace ViazyNetCore
     public class LocalEventHandlerMethodExecutor<TEvent> : IEventHandlerMethodExecutor
         where TEvent : IEventData
     {
-        public EventHandlerMethodExecutorAsync ExecutorAsync => (target, parameter) => target.As<IEventHandlerAsync<TEvent>>().HandleEventAsync((TEvent)parameter);
+        public EventHandlerMethodExecutorAsync ExecutorAsync => (target, parameter) => target.As<ILocalEventHandler<TEvent>>().HandleEventAsync((TEvent)parameter);
 
         public Task ExecuteAsync(IEventHandler target, TEvent parameters)
         {
-            return ExecutorAsync(target, parameters);
+            return this.ExecutorAsync(target, parameters);
         }
     }
 
     public class DistributedEventHandlerMethodExecutor<TEvent> : IEventHandlerMethodExecutor
         where TEvent : IEventData
     {
-        public EventHandlerMethodExecutorAsync ExecutorAsync => (target, parameter) => target.As<IEventHandlerAsync<TEvent>>().HandleEventAsync((TEvent)parameter);
+        public EventHandlerMethodExecutorAsync ExecutorAsync => (target, parameter) => target.As<IDistributedEventHandler<TEvent>>().HandleEventAsync((TEvent)parameter);
 
         public Task ExecuteAsync(IEventHandler target, TEvent parameters)
         {
-            return ExecutorAsync(target, parameters);
+            return this.ExecutorAsync(target, parameters);
         }
     }
 

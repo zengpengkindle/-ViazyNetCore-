@@ -5,7 +5,7 @@ using ViazyNetCore.Authorization.Modules;
 namespace ViazyNetCore.Modules.EventHandler
 {
     [InjectionHanlder]
-    public class OperationLogEventHandler : IEventHandlerAsync<OperationLogEventData>
+    public class OperationLogEventHandler : ILocalEventHandler<OperationLogEventData>
     {
         private readonly IOperationLogService _logService;
         private readonly IHttpContextAccessor? _httpContextAccessor;

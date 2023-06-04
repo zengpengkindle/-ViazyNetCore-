@@ -53,6 +53,17 @@ namespace System
         {
             return JsonConvert.DeserializeObject(text, type, serializerSettings ?? SerializerSettings);
         }
+        /// <summary>
+        /// 将值序列化。
+        /// </summary>
+        /// <param name="value">要转换的值。</param>
+        /// <param name="indented">是否包含缩进。</param>
+        /// <param name="serializerSettings">序列化配置。</param>
+        /// <returns>一个 JSON 字符串。</returns>
+        public static byte[] Serialize(object value, bool indented = false, JsonSerializerSettings? serializerSettings = null)
+        {
+            return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value, indented ? Formatting.Indented : Formatting.None, serializerSettings ?? SerializerSettings));
+        }
 
         /// <summary>
         /// 解析 JSON 字符串，指定类型 <typeparamref name="T"/> 构造由字符串描述的值或对象。

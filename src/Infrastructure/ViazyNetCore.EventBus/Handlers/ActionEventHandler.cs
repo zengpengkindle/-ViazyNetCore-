@@ -10,7 +10,7 @@ namespace ViazyNetCore.Handlers
     /// 支持Action的事件处理器
     /// </summary>
     /// <typeparam name="TEventData"></typeparam>
-    public class ActionEventHandlerAsync<TEvent> : IEventHandlerAsync<TEvent> where TEvent : IEventData
+    public class ActionEventHandlerAsync<TEvent> : ILocalEventHandler<TEvent> where TEvent : IEventData
     {
         /// <summary>
         /// 定义Action的引用，并通过构造函数传参初始化

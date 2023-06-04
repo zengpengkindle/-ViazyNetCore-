@@ -26,21 +26,21 @@ namespace ViazyNetCore
             this.EventHandlerInvoker = eventHandlerInvoker;
         }
 
-        public void Subscribe<TEvent>(Func<TEvent, Task> action) where TEvent : IEventData
+        public IDisposable Subscribe<TEvent>(Func<TEvent, Task> action) where TEvent : IEventData
         {
-            Subscribe(typeof(TEvent), new ActionEventHandlerAsync<TEvent>(action));
+            return Subscribe(typeof(TEvent), new ActionEventHandlerAsync<TEvent>(action));
         }
 
-        public void Subscribe<T, TH>()
+        public IDisposable Subscribe<T, TH>()
             where T : IEventData
             where TH : IEventHandler, new()
         {
-            Subscribe(typeof(T), new TransientEventHandlerFactory<TH>());
+            return Subscribe(typeof(T), new TransientEventHandlerFactory<TH>());
         }
 
-        public void Subscribe(Type eventData, IEventHandler eventHandler)
+        public IDisposable Subscribe(Type eventData, IEventHandler eventHandler)
         {
-            Subscribe(eventData, new SingleInstanceHandlerFactory(eventHandler));
+            return Subscribe(eventData, new SingleInstanceHandlerFactory(eventHandler));
         }
 
         public abstract IEnumerable<Type> GetHandlersForEvent<T>() where T : IEventData;
@@ -57,7 +57,7 @@ namespace ViazyNetCore
             {
                 if (typeof(IEventHandler).IsAssignableFrom(type))//判断当前类型是否实现了IEventHandler接口
                 {
-                    var handlerAsyncInterface = type.GetInterface("IEventHandlerAsync`1");//获取该类实现的泛型接口
+                    var handlerAsyncInterface = type.GetInterface("ILocalEventHandler`1");//获取该类实现的泛型接口
                     if (handlerAsyncInterface != null)
                     {
                         var eventAsycnDataType = handlerAsyncInterface.GetGenericArguments()[0]; // 获取泛型接口指定的参数类型

@@ -14,6 +14,8 @@ namespace ViazyNetCore
         /// </summary>
         public IEventHandler HandlerInstance { get; }
 
+        public Type HandlerType { get; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -21,6 +23,7 @@ namespace ViazyNetCore
         public SingleInstanceHandlerFactory(IEventHandler handler)
         {
             HandlerInstance = handler;
+            this.HandlerType = handler.GetType();
         }
 
         public IEventHandlerDisposeWrapper GetHandler()

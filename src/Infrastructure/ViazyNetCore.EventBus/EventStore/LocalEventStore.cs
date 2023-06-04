@@ -12,13 +12,33 @@ using ViazyNetCore.Handlers;
 
 namespace ViazyNetCore
 {
-    public class LocalEventStore : EventStoreBase
+    public class LocalEventStore : EventStoreBase, ILocalEventStore
     {
         protected ConcurrentDictionary<Type, List<IEventHandlerFactory>> HandlerFactories { get; }
         public LocalEventStore(IServiceScopeFactory serviceScopeFactory, IEventHandlerInvoker eventHandlerInvoker)
             : base(serviceScopeFactory, eventHandlerInvoker)
         {
             this.HandlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
+        }
+
+        public IDisposable Subscribe<TEvent>(ILocalEventHandler<TEvent> handler) where TEvent : IEventData
+        {
+            return Subscribe(typeof(TEvent), handler);
+        }
+
+        public override IDisposable Subscribe(Type eventType, IEventHandlerFactory factory)
+        {
+            GetOrCreateHandlerFactories(eventType)
+                .Locking(factories =>
+                {
+                    if (!factory.IsInFactories(factories))
+                    {
+                        factories.Add(factory);
+                    }
+                }
+                );
+
+            return new EventHandlerFactoryUnregistrar(this, eventType, factory);
         }
 
         public override IEnumerable<Type> GetHandlersForEvent<T>()
@@ -28,7 +48,7 @@ namespace ViazyNetCore
 
         public override IEnumerable<Type> GetHandlersForEvent(Type eventType)
         {
-            return GetOrCreateHandlerFactories(eventType).Select(p => p.GetHandler().GetType());
+            return GetOrCreateHandlerFactories(eventType).Select(p => p.HandlerType);
         }
 
         public override bool HasSubscribeForEvent<T>()
@@ -53,21 +73,6 @@ namespace ViazyNetCore
             var handlerToRemove = FindSubscribeToRemove(eventType, eventHandler.GetType());
             if (handlerToRemove == null) return;
             this.Unsubscribe(eventType, handlerToRemove);
-        }
-
-        public override IDisposable Subscribe(Type eventType, IEventHandlerFactory factory)
-        {
-            GetOrCreateHandlerFactories(eventType)
-                .Locking(factories =>
-                {
-                    if (!factory.IsInFactories(factories))
-                    {
-                        factories.Add(factory);
-                    }
-                }
-                );
-
-            return new EventHandlerFactoryUnregistrar(this, eventType, factory);
         }
 
         public override void Unsubscribe(Type eventType, IEventHandlerFactory factory)

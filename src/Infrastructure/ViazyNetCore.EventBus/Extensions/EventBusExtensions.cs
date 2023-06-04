@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ViazyNetCore;
+using ViazyNetCore.EventBus.Distributed;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -32,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
-            services.TryAddSingleton<IEventStore, LocalEventStore>();
+            services.TryAddSingleton<ILocalEventStore, LocalEventStore>();
             services.TryAddSingleton<IEventHandlerInvoker, EventHandlerInvoker>();
             services.TryAddScoped<IEventBus, DefaultEventBus>();
 
@@ -71,7 +72,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             if (attr is null) return;
 
-            var handlerInterfaceAsync = type.GetInterface("IEventHandlerAsync`1");
+            var handlerInterfaceAsync = type.GetInterface("ILocalEventHandler`1");
             if (handlerInterfaceAsync == null) return;
 
             if (handlerInterfaceAsync != null)
@@ -84,7 +85,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IApplicationBuilder UseEventBusWithStore(this IApplicationBuilder builder, Assembly[] assemblies)
         {
             var services = builder.ApplicationServices;
-            var eventStore = services.GetService<IEventStore>();
+            var eventStore = services.GetService<ILocalEventStore>();
             if (eventStore is null)
                 throw new InvalidOperationException("Can't found EventBus.");
             foreach (var assembly in assemblies)
@@ -97,7 +98,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void UseEventBusWithStore(this IServiceProvider serviceProvider, Assembly[] assemblies)
         {
-            var eventStore = serviceProvider.GetService<IEventStore>();
+            var eventStore = serviceProvider.GetService<ILocalEventStore>();
             if (eventStore is null)
                 throw new InvalidOperationException("Can't found EventBus.");
             foreach (var assembly in assemblies)

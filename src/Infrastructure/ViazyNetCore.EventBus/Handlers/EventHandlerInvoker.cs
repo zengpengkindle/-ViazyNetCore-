@@ -23,15 +23,15 @@ namespace ViazyNetCore
             {
                 var item = new EventHandlerInvokerCacheItem();
 
-                if (typeof(IEventHandlerAsync<>).MakeGenericType(eventType).IsInstanceOfType(eventHandler))
+                if (typeof(ILocalEventHandler<>).MakeGenericType(eventType).IsInstanceOfType(eventHandler))
                 {
                     item.Local = (IEventHandlerMethodExecutor)Activator.CreateInstance(typeof(LocalEventHandlerMethodExecutor<>).MakeGenericType(eventType));
                 }
 
-                //if (typeof(IDistributedEventHandler<>).MakeGenericType(eventType).IsInstanceOfType(eventHandler))
-                //{
-                //    item.Distributed = (IEventHandlerMethodExecutor)Activator.CreateInstance(typeof(DistributedEventHandlerMethodExecutor<>).MakeGenericType(eventType));
-                //}
+                if (typeof(IDistributedEventHandler<>).MakeGenericType(eventType).IsInstanceOfType(eventHandler))
+                {
+                    item.Distributed = (IEventHandlerMethodExecutor)Activator.CreateInstance(typeof(DistributedEventHandlerMethodExecutor<>).MakeGenericType(eventType));
+                }
 
                 return item;
             });

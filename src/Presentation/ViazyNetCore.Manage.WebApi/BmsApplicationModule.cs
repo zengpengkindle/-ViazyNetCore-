@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.AspNetCore;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Identity;
@@ -13,6 +14,7 @@ namespace ViazyNetCore.Manage.WebApi
         , typeof(AuthorizationModule)
         , typeof(IdentityModule)
         , typeof(ShopMallManageModule)
+        , typeof(RabbitMQEventBusModule)
         )]
     public class BmsApplicationModule : InjectionModule
     {
@@ -52,6 +54,8 @@ namespace ViazyNetCore.Manage.WebApi
                 });
             });
             context.Services.AddSwagger();
+
+            context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
         }
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {

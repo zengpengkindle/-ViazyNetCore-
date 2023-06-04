@@ -13,9 +13,9 @@ namespace ViazyNetCore
     {
         IDisposable Subscribe(Type eventType, IEventHandlerFactory factory);
 
-        void Subscribe<T, TH>() where T : IEventData where TH : IEventHandler, new();
-        void Subscribe(Type eventType, IEventHandler eventHandler);
-        void Subscribe<TEvent>(Func<TEvent, Task> action) where TEvent : IEventData;
+        IDisposable Subscribe<T, TH>() where T : IEventData where TH : IEventHandler, new();
+        IDisposable Subscribe(Type eventType, IEventHandler eventHandler);
+        IDisposable Subscribe<TEvent>(Func<TEvent, Task> action) where TEvent : IEventData;
 
         void Unsubscribe<T, TH>() where T : IEventData where TH : IEventHandler, new();
         void Unsubscribe<T>(Func<T, Task> action) where T : IEventData;

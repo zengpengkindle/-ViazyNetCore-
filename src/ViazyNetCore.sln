@@ -107,13 +107,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Manage.WebApiT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShopMall", "ShopMall", "{06CAB1A8-07F5-4FCA-B04A-D963B83072E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.ShopMall.Manage.Application", "src\ShopMall\ViazyNetCore.ShopMall.Manage.Application\ViazyNetCore.ShopMall.Manage.Application.csproj", "{802618D9-73A3-438B-9591-429C453472F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.ShopMall.Manage.Application", "src\ShopMall\ViazyNetCore.ShopMall.Manage.Application\ViazyNetCore.ShopMall.Manage.Application.csproj", "{802618D9-73A3-438B-9591-429C453472F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crm", "Crm", "{A4889656-1612-4C60-A463-AFBC613C0AF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Crm.Manage.Application", "src\Crm\ViazyNetCore.Crm.Manage.Application\ViazyNetCore.Crm.Manage.Application.csproj", "{AFDACCC3-782E-4EE3-B978-3FAB113026F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Crm.Manage.Application", "src\Crm\ViazyNetCore.Crm.Manage.Application\ViazyNetCore.Crm.Manage.Application.csproj", "{AFDACCC3-782E-4EE3-B978-3FAB113026F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Oauth.ConsoleClient", "Presentation\ViazyNetCore.Oauth.ConsoleClient\ViazyNetCore.Oauth.ConsoleClient.csproj", "{599D24F6-A2A1-4AC5-88C1-FF859459B66C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Oauth.ConsoleClient", "Presentation\ViazyNetCore.Oauth.ConsoleClient\ViazyNetCore.Oauth.ConsoleClient.csproj", "{599D24F6-A2A1-4AC5-88C1-FF859459B66C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.EventBus.RabbitMQ", "Infrastructure\ViazyNetCore.EventBus.RabbitMQ\ViazyNetCore.EventBus.RabbitMQ.csproj", "{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -297,6 +299,10 @@ Global
 		{599D24F6-A2A1-4AC5-88C1-FF859459B66C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{599D24F6-A2A1-4AC5-88C1-FF859459B66C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{599D24F6-A2A1-4AC5-88C1-FF859459B66C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -349,6 +355,7 @@ Global
 		{A4889656-1612-4C60-A463-AFBC613C0AF8} = {987C4986-66FA-4984-90E6-76B9CD4C73E4}
 		{AFDACCC3-782E-4EE3-B978-3FAB113026F3} = {A4889656-1612-4C60-A463-AFBC613C0AF8}
 		{599D24F6-A2A1-4AC5-88C1-FF859459B66C} = {57CCA8FF-D37C-4F0E-91CB-C0B155DB5861}
+		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}
