@@ -24,6 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton(jwtOption);
 
             services.AddSingleton<TokenProvider>();
+            services.AddSingleton<CustomJwtBearerEvents>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -31,12 +32,10 @@ namespace Microsoft.Extensions.DependencyInjection
             }).AddJwtBearer(options =>
             {
                 var provider = services.BuildServiceProvider();
-                var tokenProvider = provider.GetRequiredService<TokenProvider>();
-                var jwtConfig = provider.GetRequiredService<JwtOption>();
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Secret)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOption.Secret)),
                     ValidateLifetime = true,
                     ValidateIssuer = false,
                     ValidateAudience = false,
@@ -44,17 +43,18 @@ namespace Microsoft.Extensions.DependencyInjection
                     ClockSkew = TimeSpan.FromMinutes(1)
                 };
 
-                options.Events = new JwtBearerEvents()
-                {
-                    OnTokenValidated = context =>
-                    {
-                        if (context.SecurityToken is JwtSecurityToken securityToken)
-                            return tokenProvider.ValidToken(securityToken);
-                        else
-                            throw new UnauthorizedAccessException();
-                    }
+                //options.Events = new JwtBearerEvents()
+                //{
+                //    OnTokenValidated = context =>
+                //    {
+                //        if (context.SecurityToken is JwtSecurityToken securityToken)
+                //            return tokenProvider.ValidToken(securityToken);
+                //        else
+                //            throw new UnauthorizedAccessException();
+                //    }
 
-                };
+                //};
+                options.EventsType = typeof(CustomJwtBearerEvents);
             });
         }
     }

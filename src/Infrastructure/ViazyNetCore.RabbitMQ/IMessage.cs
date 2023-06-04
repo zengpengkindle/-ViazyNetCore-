@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.MQueue.Declares;
+using ViazyNetCore;
 
 namespace System.MQueue
 {
