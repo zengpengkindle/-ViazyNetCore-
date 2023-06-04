@@ -1,32 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using ViazyNetCore.Configuration;
 
 namespace ViazyNetCore.Redis
 {
     public class RedisCacheManager
     {
-        private readonly string _redisConnenctionString;
+        private readonly RedisCacheOptions _options;
+        private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(1, 1);
 
-        public volatile Lazy<ConnectionMultiplexer> RedisConnection;
+        public volatile Lazy<IConnectionMultiplexer> RedisConnection;
 
-        private readonly object _redisConnectionLock = new object();
-
-        public RedisCacheManager()
+        public RedisCacheManager(IOptions<RedisCacheOptions> optionsAccessor)
         {
-            string redisConfiguration = AppSettingsConstVars.RedisConfigConnectionString;//获取连接字符串
-
-            if (string.IsNullOrWhiteSpace(redisConfiguration))
-            {
-                throw new ArgumentException("redis config is empty", nameof(redisConfiguration));
-            }
-            _redisConnenctionString = redisConfiguration;
-
-            RedisConnection = new Lazy<ConnectionMultiplexer>(this.GetRedisConnection());
+            this._options = optionsAccessor.Value;
+            RedisConnection = new Lazy<IConnectionMultiplexer>(this.GetRedisConnection());
         }
 
         /// <summary>
@@ -34,7 +22,7 @@ namespace ViazyNetCore.Redis
         /// 通过双if 夹lock的方式，实现单例模式
         /// </summary>
         /// <returns></returns>
-        private ConnectionMultiplexer GetRedisConnection()
+        private IConnectionMultiplexer GetRedisConnection()
         {
             //如果已经连接实例，直接返回
             if (RedisConnection.Value != null && RedisConnection.Value.IsConnected)
@@ -42,22 +30,40 @@ namespace ViazyNetCore.Redis
                 return RedisConnection.Value;
             }
             //加锁，防止异步编程中，出现单例无效的问题
-            lock (_redisConnectionLock)
+            _connectionLock.Wait();
+            try
             {
                 if (RedisConnection.Value != null)
                 {
                     //释放redis连接
-                    this.RedisConnection.Value.Dispose();
+                    return this.RedisConnection.Value;
                 }
-                try
+
+                if (_options.ConnectionMultiplexerFactory == null)
                 {
-                    return ConnectionMultiplexer.Connect(_redisConnenctionString);
+                    if (_options.ConfigurationOptions != null)
+                    {
+                        return ConnectionMultiplexer.Connect(_options.ConfigurationOptions);
+                    }
+                    else
+                    {
+                        return ConnectionMultiplexer.Connect(_options.Configuration);
+                    }
                 }
-                catch (Exception)
+                else
                 {
-                    throw new Exception("Redis服务未启用，请开启该服务，并且请注意端口号，Redis默认使用6379端口号。");
+                    return _options.ConnectionMultiplexerFactory!().GetAwaiter().GetResult();
                 }
             }
+            finally
+            {
+                _connectionLock.Release();
+            }
+        }
+
+        private IDatabase GetDatabase()
+        {
+            return this.RedisConnection.Value.GetDatabase();
         }
 
         /// <summary>
@@ -67,7 +73,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public bool Exists(string key)
         {
-            return RedisConnection.Value.GetDatabase().KeyExists(key);
+            return this.GetDatabase().KeyExists(key);
         }
 
         /// <summary>
@@ -84,11 +90,11 @@ namespace ViazyNetCore.Redis
                 //序列化，将object值生成RedisValue
                 if (expiresIn > 0)
                 {
-                    return RedisConnection.Value.GetDatabase().StringSet(key, JSON.Stringify(value), TimeSpan.FromMinutes(expiresIn));
+                    return this.GetDatabase().StringSet(key, JSON.Stringify(value), TimeSpan.FromMinutes(expiresIn));
                 }
                 else
                 {
-                    return RedisConnection.Value.GetDatabase().StringSet(key, JSON.Stringify(value));
+                    return this.GetDatabase().StringSet(key, JSON.Stringify(value));
                 }
             }
             return false;
@@ -101,7 +107,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public void Remove(string key)
         {
-            RedisConnection.Value.GetDatabase().KeyDelete(key);
+            this.GetDatabase().KeyDelete(key);
         }
 
         /// <summary>
@@ -112,7 +118,7 @@ namespace ViazyNetCore.Redis
         {
             foreach (var key in keys)
             {
-                RedisConnection.Value.GetDatabase().KeyDelete(key);
+                this.GetDatabase().KeyDelete(key);
             }
 
         }
@@ -124,7 +130,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public T? Get<T>(string key)
         {
-            var value = RedisConnection.Value.GetDatabase().StringGet(key);
+            var value = this.GetDatabase().StringGet(key);
             if (value.HasValue)
             {
                 //需要用的反序列化，将Redis存储的Byte[]，进行反序列化
@@ -136,7 +142,7 @@ namespace ViazyNetCore.Redis
 
         public string? Get(string key)
         {
-            return RedisConnection.Value.GetDatabase().StringGet(key);
+            return this.GetDatabase().StringGet(key);
         }
 
         public IDictionary<string, object> GetAll(IEnumerable<string> keys)
@@ -145,19 +151,19 @@ namespace ViazyNetCore.Redis
                 throw new ArgumentNullException(nameof(keys));
             var dict = new Dictionary<string, object>();
 
-            keys.ToList().ForEach(item => dict.Add(item, RedisConnection.Value.GetDatabase().StringGet(item)));
+            keys.ToList().ForEach(item => dict.Add(item, this.GetDatabase().StringGet(item)));
             return dict;
 
         }
 
         public void RemoveCacheAll()
         {
-            foreach (var endPoint in GetRedisConnection().GetEndPoints())
+            foreach (var endPoint in this.RedisConnection.Value.GetEndPoints())
             {
-                var server = GetRedisConnection().GetServer(endPoint);
+                var server = this.RedisConnection.Value.GetServer(endPoint);
                 foreach (var key in server.Keys())
                 {
-                    RedisConnection.Value.GetDatabase().KeyDelete(key);
+                    this.GetDatabase().KeyDelete(key);
                 }
             }
         }
@@ -166,10 +172,10 @@ namespace ViazyNetCore.Redis
         {
             var script = "return redis.call('keys',@pattern)";
             var prepared = LuaScript.Prepare(script);
-            var redisResult = RedisConnection.Value.GetDatabase().ScriptEvaluate(prepared, new { pattern });
+            var redisResult = this.GetDatabase().ScriptEvaluate(prepared, new { pattern });
             if (!redisResult.IsNull)
             {
-                RedisConnection.Value.GetDatabase().KeyDelete((RedisKey[])redisResult); //删除一组key
+                this.GetDatabase().KeyDelete((RedisKey[])redisResult); //删除一组key
             }
         }
 
@@ -178,12 +184,12 @@ namespace ViazyNetCore.Redis
             var list = new List<string>();
             var script = "return redis.call('keys',@pattern)";
             var prepared = LuaScript.Prepare(script);
-            var redisResult = RedisConnection.Value.GetDatabase().ScriptEvaluate(prepared, new { pattern });
+            var redisResult = this.GetDatabase().ScriptEvaluate(prepared, new { pattern });
             if (!redisResult.IsNull)
             {
                 foreach (var key in (RedisKey[])redisResult!)
                 {
-                    var cacheKey = this.RedisConnection.Value.GetDatabase().StringGet(key);
+                    var cacheKey = this.GetDatabase().StringGet(key);
                     if (cacheKey != RedisValue.Null)
                         list.Add(cacheKey!);
                 }

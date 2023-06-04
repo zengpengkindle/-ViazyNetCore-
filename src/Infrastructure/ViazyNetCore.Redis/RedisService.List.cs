@@ -18,7 +18,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<RedisValue[]> ListRangeAsync(string redisKey)
         {
-            return await _database.ListRangeAsync(redisKey);
+            return await this.GetDatabase().ListRangeAsync(redisKey);
         }
 
         public async Task<List<T?>> ListRangeAsync<T>(string redisKey)
@@ -33,7 +33,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<IEnumerable<string>> ListRangeAsync(string redisKey, int db = -1)
         {
-            var result = await _database.ListRangeAsync(redisKey);
+            var result = await this.GetDatabase().ListRangeAsync(redisKey);
             return result.Select(o => o.ToString());
         }
 
@@ -46,7 +46,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<IEnumerable<string>> ListRangeAsync(string redisKey, int start, int stop)
         {
-            var result = await _database.ListRangeAsync(redisKey, start, stop);
+            var result = await this.GetDatabase().ListRangeAsync(redisKey, start, stop);
             return result.Select(o => o.ToString());
         }
 
@@ -58,7 +58,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<long> ListLeftPushAsync(string redisKey, string redisValue)
         {
-            return await _database.ListLeftPushAsync(redisKey, redisValue);
+            return await this.GetDatabase().ListLeftPushAsync(redisKey, redisValue);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<long> ListRightPushAsync(string redisKey, string redisValue)
         {
-            return await _database.ListRightPushAsync(redisKey, redisValue);
+            return await this.GetDatabase().ListRightPushAsync(redisKey, redisValue);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace ViazyNetCore.Redis
             {
                 redislist.Add(item);
             }
-            return await _database.ListRightPushAsync(redisKey, redislist.ToArray());
+            return await this.GetDatabase().ListRightPushAsync(redisKey, redislist.ToArray());
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<T?> ListLeftPopAsync<T>(string redisKey) where T : class
         {
-            var cacheValue = await _database.ListLeftPopAsync(redisKey);
+            var cacheValue = await this.GetDatabase().ListLeftPopAsync(redisKey);
             if (string.IsNullOrEmpty(cacheValue)) return null;
             var res = JsonConvert.DeserializeObject<T>(cacheValue!);
             return res;
@@ -109,7 +109,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<T?> ListRightPopAsync<T>(string redisKey) where T : class
         {
-            var cacheValue = await _database.ListRightPopAsync(redisKey);
+            var cacheValue = await this.GetDatabase().ListRightPopAsync(redisKey);
             if (string.IsNullOrEmpty(cacheValue)) return null;
             var res = JsonConvert.DeserializeObject<T>(cacheValue!);
             return res;
@@ -122,7 +122,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<string?> ListLeftPopAsync(string redisKey)
         {
-            return await _database.ListLeftPopAsync(redisKey);
+            return await this.GetDatabase().ListLeftPopAsync(redisKey);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<string?> ListRightPopAsync(string redisKey)
         {
-            return await _database.ListRightPopAsync(redisKey);
+            return await this.GetDatabase().ListRightPopAsync(redisKey);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<long> ListLengthAsync(string redisKey)
         {
-            return await _database.ListLengthAsync(redisKey);
+            return await this.GetDatabase().ListLengthAsync(redisKey);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace ViazyNetCore.Redis
         /// <returns></returns>
         public async Task<long> ListDelRangeAsync(string redisKey, string redisValue, long type = 0)
         {
-            return await _database.ListRemoveAsync(redisKey, redisValue, type);
+            return await this.GetDatabase().ListRemoveAsync(redisKey, redisValue, type);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace ViazyNetCore.Redis
         /// <param name="redisKey"></param>
         public async Task ListClearAsync(string redisKey)
         {
-            await _database.ListTrimAsync(redisKey, 1, 0);
+            await this.GetDatabase().ListTrimAsync(redisKey, 1, 0);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace ViazyNetCore.Redis
         /// <param name="score">分数</param>
         public async Task SortedSetAddAsync(string redisKey, string redisValue, double score)
         {
-            await _database.SortedSetAddAsync(redisKey, redisValue, score);
+            await this.GetDatabase().SortedSetAddAsync(redisKey, redisValue, score);
         }
     }
 }

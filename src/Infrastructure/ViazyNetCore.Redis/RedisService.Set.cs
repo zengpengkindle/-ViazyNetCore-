@@ -13,18 +13,18 @@ namespace ViazyNetCore.Redis
     {
         public Task<bool> HashSetAsync(string redisKey, string key, string value)
         {
-            return this._database.HashSetAsync(redisKey, key, value);
+            return this.GetDatabase().HashSetAsync(redisKey, key, value);
         }
 
         public Task<bool> HashSetAsync<T>(string redisKey, string key, T value)
         {
             var redisValue = JsonConvert.SerializeObject(value);
-            return this._database.HashSetAsync(redisKey, key, redisValue);
+            return this.GetDatabase().HashSetAsync(redisKey, key, redisValue);
         }
 
         public async Task<T?> HashGetAsync<T>(string redisKey, string key)
         {
-            var value = await this._database.HashGetAsync(redisKey, key);
+            var value = await this.GetDatabase().HashGetAsync(redisKey, key);
             if (value == RedisValue.Null)
             {
                 return default;
