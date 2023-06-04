@@ -1,4 +1,4 @@
-﻿namespace System
+﻿namespace ViazyNetCore
 {
     /// <summary>
     /// 表示一个消息的特性。

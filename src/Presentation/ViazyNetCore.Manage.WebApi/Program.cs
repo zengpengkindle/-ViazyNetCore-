@@ -1,19 +1,10 @@
 using System.Providers;
-using System.Reflection;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using NLog.Web;
-using ViazyNetCore;
 using ViazyNetCore.AttachmentProvider;
 using ViazyNetCore.Auth.Jwt;
-using ViazyNetCore.Authorization.Modules;
-using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
-using ViazyNetCore.DI;
-using ViazyNetCore.Identity;
 using ViazyNetCore.Manage.WebApi;
-using ViazyNetCore.Modules;
 using ViazyNetCore.Modules.Internal;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();

@@ -21,7 +21,7 @@ namespace ViazyNetCore.EventBus.Distributed
         public override async Task PublishAsync<TEventData>(Type eventHandlerType, TEventData @event)
         {
             await base.PublishAsync(eventHandlerType, @event);
-            if (eventHandlerType.GetCustomAttribute<EventNameAttribute>() != null)
+            if (eventHandlerType.GetCustomAttribute<MessageAttribute>() != null)
                 await this._distributedEventStore.PublishAsync(eventHandlerType, @event);
         }
     }
