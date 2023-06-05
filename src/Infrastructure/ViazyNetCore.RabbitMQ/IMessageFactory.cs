@@ -26,6 +26,13 @@ namespace System.MQueue
         /// <typeparam name="TBody">实体的数据类型。</typeparam>
         /// <returns>消息。</returns>
         IMessage Get<TBody>();
+
+        /// <summary>
+        /// 获取指定实体的消息。
+        /// </summary>
+        /// <typeparam name="type">实体的数据类型。</typeparam>
+        /// <returns>消息。</returns>
+        IMessage Get(Type type);
     }
 
     class DefaultMessageFactory : IMessageFactory
@@ -39,7 +46,7 @@ namespace System.MQueue
 
         public virtual IMessageFactory Set(IMessage message)
         {
-            if(message is null)
+            if (message is null)
             {
                 throw new ArgumentNullException(nameof(message));
             }
@@ -50,7 +57,7 @@ namespace System.MQueue
 
         public virtual IMessage? Get(string id)
         {
-            if(id is null)
+            if (id is null)
             {
                 throw new ArgumentNullException(nameof(id));
             }
@@ -61,6 +68,11 @@ namespace System.MQueue
         public virtual IMessage Get<TBody>()
         {
             return this.Messages.GetOrAdd("Typed#" + typeof(TBody).FullName, key => new TypedMessage(typeof(TBody)));
+        }
+
+        public virtual IMessage Get(Type type)
+        {
+            return this.Messages.GetOrAdd("Typed#" + type.FullName, key => new TypedMessage(type));
         }
     }
 

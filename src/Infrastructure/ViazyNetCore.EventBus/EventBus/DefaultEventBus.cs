@@ -23,26 +23,26 @@ namespace ViazyNetCore
             this.EventHandlerInvoker = eventHandlerInvoker;
         }
 
-        public void Publish<TEventData>(TEventData @event) where TEventData : IEventData
+        public void Publish<TEventData>(TEventData eventData) where TEventData : IEventData
         {
-            this.PublishAsync(@event).ConfigureAwait(false).GetAwaiter().GetResult();
+            this.PublishAsync(eventData).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public void Publish<TEventData>(Type eventHandlerType, TEventData @event) where TEventData : IEventData
+        public void Publish<TEventData>(Type eventHandlerType, TEventData eventData) where TEventData : IEventData
         {
-            this.PublishAsync(eventHandlerType, @event).ConfigureAwait(false).GetAwaiter().GetResult();
+            this.PublishAsync(eventHandlerType, eventData).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public async Task PublishAsync<TEventData>(TEventData @event) where TEventData : IEventData
+        public async Task PublishAsync<TEventData>(TEventData eventData) where TEventData : IEventData
         {
-            if (@event is null) throw new ArgumentNullException(nameof(@event));
-            await this.PublishAsync(typeof(TEventData), @event);
+            if (eventData is null) throw new ArgumentNullException(nameof(eventData));
+            await this.PublishAsync(typeof(TEventData), eventData);
         }
 
-        public virtual async Task PublishAsync<TEventData>(Type eventHandlerType, TEventData @event) where TEventData : IEventData
+        public virtual async Task PublishAsync<TEventData>(Type eventHandlerType, TEventData eventData) where TEventData : IEventData
         {
-            if (@event is null) throw new ArgumentNullException(nameof(@event));
-            await this._localEventStore.PublishToEventBusAsync(eventHandlerType, @event);
+            if (eventData is null) throw new ArgumentNullException(nameof(eventData));
+            await this._localEventStore.PublishToEventBusAsync(eventHandlerType, eventData);
         }
     }
 }

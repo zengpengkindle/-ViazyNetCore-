@@ -94,7 +94,7 @@ namespace ViazyNetCore
             {
                 return null;
             }
-            return this.GetOrCreateHandlerFactories(eventType).FirstOrDefault(eh => eh.GetHandler().EventHandler.GetType() == eventHandlerType);
+            return this.GetOrCreateHandlerFactories(eventType).FirstOrDefault(eh => eh.HandlerType == eventHandlerType);
         }
 
         private List<IEventHandlerFactory> GetOrCreateHandlerFactories(Type eventType)
