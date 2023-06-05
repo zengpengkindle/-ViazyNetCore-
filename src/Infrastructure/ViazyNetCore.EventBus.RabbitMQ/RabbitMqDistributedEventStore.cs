@@ -79,7 +79,7 @@ namespace ViazyNetCore.EventBus.RabbitMQ
         public override async Task PublishToEventBusAsync(Type eventType, object eventData)
         {
             using var context = _messageBus.Context;
-            await context.PublishAsync(eventData);
+            await context.PublishAsync(eventType, eventData);
         }
 
         public override IDisposable Subscribe(Type eventType, IEventHandlerFactory factory)

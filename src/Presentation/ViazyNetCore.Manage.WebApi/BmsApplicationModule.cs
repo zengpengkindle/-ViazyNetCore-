@@ -55,7 +55,7 @@ namespace ViazyNetCore.Manage.WebApi
             });
             context.Services.AddSwagger();
 
-            context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
+            //context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
         }
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {

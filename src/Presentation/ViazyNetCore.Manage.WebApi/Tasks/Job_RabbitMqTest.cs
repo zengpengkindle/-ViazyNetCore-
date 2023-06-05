@@ -22,19 +22,17 @@ namespace ViazyNetCore.Manage.WebApi.Tasks
 
         public override SubscribeOptions SubscribeOptions => new() { };
 
-        public async Task HandleEventAsync(MqTestModel eventData)
+        public Task HandleEventAsync(MqTestModel eventData)
         {
-            using var context = this.Bus.Context;
-            await context.SubscribeAsync<MqTestModel>((ss, ee) => this.OnSubscribe(context, ee, CancellationToken.None)
-            , this.SubscribeOptions
-            , cancellationToken: CancellationToken.None);
+            Console.Out.WriteLine(JSON.Stringify(eventData));
+            return Task.CompletedTask;
         }
 
-        protected override Task OnSubscribe(IMessageBusContext context, SubscribeEventArgs<MqTestModel> args, CancellationToken cancellationToken)
+        protected override async Task OnSubscribe(IMessageBusContext context, SubscribeEventArgs<MqTestModel> args, CancellationToken cancellationToken)
         {
             Console.Out.WriteLine("cancellationToken:{0}", cancellationToken.IsCancellationRequested);
-            Console.Out.WriteLine(JSON.Stringify(args.Body));
-            return Task.CompletedTask;
+            //Console.Out.WriteLine(JSON.Stringify(args.Body));
+            await HandleEventAsync(args.Body);
         }
     }
 }

@@ -46,6 +46,15 @@ namespace System.MQueue
         /// <returns>异步任务。</returns>
         Task PublishAsync<TBody>(TBody body, PublishOptions? options = null, CancellationToken cancellationToken = default);
         /// <summary>
+        /// 发布消息。
+        /// </summary>
+        /// <typeparam name="TBody">实体的数据类型。</typeparam>
+        /// <param name="body">实体。</param>
+        /// <param name="options">发布选项。</param>
+        /// <param name="cancellationToken">取消标识。</param>
+        /// <returns>异步任务。</returns>
+        Task PublishAsync(Type type, object body, PublishOptions? options = null, CancellationToken cancellationToken = default);
+        /// <summary>
         /// 订阅消息。
         /// </summary>
         /// <typeparam name="TBody">实体的数据类型。</typeparam>
@@ -98,18 +107,29 @@ namespace System.MQueue
 
         protected virtual IMessage GetMessage<TBody>()
         {
-            var message = this._messageFactory.Get<TBody>();
-            if (message is null) throw new InvalidOperationException($"The type '{typeof(TBody).FullName}' is not declare message type.");
+            return GetMessage(typeof(TBody));
+        }
+
+        protected virtual IMessage GetMessage(Type type)
+        {
+            var message = this._messageFactory.Get(type);
+            if (message is null) throw new InvalidOperationException($"The type '{type.FullName}' is not declare message type.");
             return message;
         }
 
         public virtual Task PublishAsync<TBody>(TBody body, PublishOptions? options = null, CancellationToken cancellationToken = default)
         {
-            if (body is null) throw new ArgumentNullException(nameof(body));
+            Check.NotNull(body, nameof(body));
+            return PublishAsync(typeof(TBody), body, options, cancellationToken);
+        }
+
+        public virtual Task PublishAsync(Type type, object body, PublishOptions? options = null, CancellationToken cancellationToken = default)
+        {
+            Check.NotNull(type, nameof(type));
 
             this.ThrowIfDisposed();
 
-            return this.CallAsync<Task>(this.GetMessage<TBody>(), async (channelProxy, message) =>
+            return this.CallAsync<Task>(this.GetMessage(type), async (channelProxy, message) =>
             {
                 var channel = channelProxy.Channel.MustBe();
                 var properties = CreatePublishPropertie(channel, options);
