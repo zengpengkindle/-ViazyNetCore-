@@ -23,6 +23,7 @@ namespace ViazyNetCore.Redis
             _logger = logger;
             RedisConnection = new Lazy<IConnectionMultiplexer>(this.GetRedisConnection());
         }
+
         /// <summary>
         /// 获取Redis Connection
         /// </summary>
@@ -34,7 +35,6 @@ namespace ViazyNetCore.Redis
             {
                 return RedisConnection.Value;
             }
-            //加锁，防止异步编程中，出现单例无效的问题
             _connectionLock.Wait();
             try
             {
