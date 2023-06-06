@@ -22,13 +22,7 @@ namespace System
         /// <returns>转换后byte数组</returns>
         public static byte[] Object2Bytes(this object obj)
         {
-            byte[] buff;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                JsonSerializer.Serialize(ms, obj, DEFAULT_JsonSerializerOptions);
-                buff = ms.GetBuffer();
-            }
-            return buff;
+            return JSON.Serialize(obj);
         }
 
         /// <summary>
@@ -38,28 +32,17 @@ namespace System
         /// <returns>转换完成后的对象</returns>
         public static T? Bytes2Object<T>(this byte[] buff)
         {
-            T? obj;
-            using (MemoryStream ms = new MemoryStream(buff))
-            {
-                obj = JsonSerializer.Deserialize<T>(ms, DEFAULT_JsonSerializerOptions);
-            }
-            return obj;
+            return JSON.Deserialize<T>(buff);
         }
-
 
         /// <summary>
         /// 将byte数组转换成对象
         /// </summary>
         /// <param name="buff">被转换byte数组</param>
         /// <returns>转换完成后的对象</returns>
-        public static object? Bytes2Object(this byte[] buff,Type type)
+        public static object? Bytes2Object(this byte[] buff, Type type)
         {
-            object? obj;
-            using (MemoryStream ms = new MemoryStream(buff))
-            {
-                obj = JsonSerializer.Deserialize(ms, type, DEFAULT_JsonSerializerOptions);
-            }
-            return obj;
+            return JSON.Deserialize(buff, type);
         }
     }
 }

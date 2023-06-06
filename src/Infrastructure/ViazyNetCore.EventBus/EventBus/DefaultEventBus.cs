@@ -28,9 +28,9 @@ namespace ViazyNetCore
             this.PublishAsync(eventData).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public void Publish<TEventData>(Type eventHandlerType, TEventData eventData) where TEventData : IEventData
+        public void Publish(Type eventType, object eventData)
         {
-            this.PublishAsync(eventHandlerType, eventData).ConfigureAwait(false).GetAwaiter().GetResult();
+            this.PublishAsync(eventType, eventData).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         public async Task PublishAsync<TEventData>(TEventData eventData) where TEventData : IEventData
@@ -39,10 +39,10 @@ namespace ViazyNetCore
             await this.PublishAsync(typeof(TEventData), eventData);
         }
 
-        public virtual async Task PublishAsync<TEventData>(Type eventHandlerType, TEventData eventData) where TEventData : IEventData
+        public virtual async Task PublishAsync(Type eventType, object eventData)
         {
             if (eventData is null) throw new ArgumentNullException(nameof(eventData));
-            await this._localEventStore.PublishToEventBusAsync(eventHandlerType, eventData);
+            await this._localEventStore.PublishToEventBusAsync(eventType, eventData);
         }
     }
 }

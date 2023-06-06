@@ -18,16 +18,8 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static void AddRedisDistributedHashCache(this IServiceCollection services, Action<RedisCacheOptions> options)
         {
-
-            if (services == null)
-            {
-                throw new ArgumentNullException("services");
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException("setupAction");
-            }
+            Check.NotNull(services, nameof(IServiceCollection));
+            Check.NotNull(options, nameof(RedisCacheOptions));
 
             services.AddOptions();
             services.Configure(options);
@@ -39,10 +31,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void AddRedisCacheSetup(this IServiceCollection services, Action<RedisCacheOptions> options)
         {
-            services.Configure(options);
-            if (services == null) throw new ArgumentNullException(nameof(services));
+            Check.NotNull(services, nameof(IServiceCollection));
 
-            services.AddTransient<IRedisCache, RedisService>();
+            services.Configure(options);
+            services.AddSingleton<IRedisCache, RedisService>();
 
         }
     }

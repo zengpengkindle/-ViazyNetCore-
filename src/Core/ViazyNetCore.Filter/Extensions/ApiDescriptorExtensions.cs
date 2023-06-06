@@ -18,14 +18,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddApiDescriptor(this IServiceCollection service, Action<ApiDescriptorOptions> action)
         {
-            var options = new ApiDescriptorOptions();
-            action.Invoke(options);
-            if (string.IsNullOrEmpty(options.CachePrefix))
-                throw new OpenApiException("Cache prefix is ​​required");
-            if (string.IsNullOrEmpty(options.ServiceName))
-                throw new OpenApiException("Service name is required");
-
-            service.AddSingleton(options);
+            service.AddOptions();
+            service.Configure(action);
 
             if (service.All(c => c.ServiceType != typeof(IMemoryCache)))
                 service.AddMemoryCache();

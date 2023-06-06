@@ -8,10 +8,11 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using ViazyNetCore.Caching;
 
 namespace ViazyNetCore.Redis
 {
-    public class DefaultRedisCache : RedisCache
+    public class DefaultRedisCache : RedisCache, IDistributedHashCache
     {
         protected static readonly string AbsoluteExpirationKey;
         protected static readonly string SlidingExpirationKey;
@@ -104,6 +105,66 @@ namespace ViazyNetCore.Redis
         private string GetSetScript()
         {
             return SetScriptField?.GetValue(this).ToString();
+        }
+
+        public byte[]? HashGet(string key, string field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<byte[]?> HashGetAsync(string key, string field, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T? HashGet<T>(string key, string field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T?> HashGetAsync<T>(string key, string field, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HashRemove(string key, string field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task HashRemoveAsync(string key, string field, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HashSet(string key, string field, byte[]? value, DistributedCacheEntryOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task HashSetAsync(string key, string field, byte[]? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HashSetAll(string key, object? value, DistributedCacheEntryOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task HashSetAllAsync(string key, object? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T? HashGetAll<T>(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T?> HashGetAllAsync<T>(string key)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -56,29 +56,29 @@ namespace Microsoft.Extensions.DependencyInjection
             }
         }
 
-        public static IApplicationBuilder UseDistributedEventBusWithStore(this IApplicationBuilder builder, Assembly[] assemblies)
-        {
-            var services = builder.ApplicationServices;
-            var eventStore = services.GetService<IDistributedEventStore>();
-            if (eventStore is null)
-                throw new InvalidOperationException("Can't found EventBus.");
-            foreach (var assembly in assemblies)
-            {
-                eventStore.RegisterAllEventHandlerFromAssembly(assembly);
-            }
+        //public static IApplicationBuilder UseDistributedEventBusWithStore(this IApplicationBuilder builder, Assembly[] assemblies)
+        //{
+        //    var services = builder.ApplicationServices;
+        //    var eventStore = services.GetService<IDistributedEventStore>();
+        //    if (eventStore is null)
+        //        throw new InvalidOperationException("Can't found EventBus.");
+        //    foreach (var assembly in assemblies)
+        //    {
+        //        eventStore.RegisterAllEventHandlerFromAssembly(assembly);
+        //    }
 
-            return builder;
-        }
+        //    return builder;
+        //}
 
-        public static void UseDistributedEventBusWithStore(this IServiceProvider serviceProvider, Assembly[] assemblies)
-        {
-            var eventStore = serviceProvider.GetService<IDistributedEventStore>();
-            if (eventStore is null)
-                throw new InvalidOperationException("Can't found EventBus.");
-            foreach (var assembly in assemblies)
-            {
-                eventStore.RegisterAllEventHandlerFromAssembly(assembly);
-            }
-        }
+        //public static void UseDistributedEventBusWithStore(this IServiceProvider serviceProvider, Assembly[] assemblies)
+        //{
+        //    var eventStore = serviceProvider.GetService<IDistributedEventStore>();
+        //    if (eventStore is null)
+        //        throw new InvalidOperationException("Can't found EventBus.");
+        //    foreach (var assembly in assemblies)
+        //    {
+        //        eventStore.RegisterAllEventHandlerFromAssembly(assembly);
+        //    }
+        //}
     }
 }

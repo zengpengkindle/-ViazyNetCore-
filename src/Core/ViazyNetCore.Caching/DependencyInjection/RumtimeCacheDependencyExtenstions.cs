@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.DependencyInjection;
+using ViazyNetCore.Caching;
 
-namespace ViazyNetCore.Caching.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class RumtimeCacheDependencyExtenstions
     {

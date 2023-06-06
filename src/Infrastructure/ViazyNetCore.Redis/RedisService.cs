@@ -121,5 +121,57 @@ namespace ViazyNetCore.Redis
                 return default;
             }
         }
+
+        public IDictionary<string, object> GetAll(IEnumerable<string> keys)
+        {
+            if (keys == null)
+                throw new ArgumentNullException(nameof(keys));
+            var dict = new Dictionary<string, object>();
+
+            keys.ToList().ForEach(item => dict.Add(item, this.GetDatabase().StringGet(item)));
+            return dict;
+
+        }
+
+        public void RemoveCacheAll()
+        {
+            foreach (var endPoint in this.RedisConnection.Value.GetEndPoints())
+            {
+                var server = this.RedisConnection.Value.GetServer(endPoint);
+                foreach (var key in server.Keys())
+                {
+                    this.GetDatabase().KeyDelete(key);
+                }
+            }
+        }
+
+        public void RemoveCacheRegex(string pattern)
+        {
+            var script = "return redis.call('keys',@pattern)";
+            var prepared = LuaScript.Prepare(script);
+            var redisResult = this.GetDatabase().ScriptEvaluate(prepared, new { pattern });
+            if (!redisResult.IsNull)
+            {
+                this.GetDatabase().KeyDelete((RedisKey[])redisResult); //删除一组key
+            }
+        }
+
+        public IList<string> SearchCacheRegex(string pattern)
+        {
+            var list = new List<string>();
+            var script = "return redis.call('keys',@pattern)";
+            var prepared = LuaScript.Prepare(script);
+            var redisResult = this.GetDatabase().ScriptEvaluate(prepared, new { pattern });
+            if (!redisResult.IsNull)
+            {
+                foreach (var key in (RedisKey[])redisResult!)
+                {
+                    var cacheKey = this.GetDatabase().StringGet(key);
+                    if (cacheKey != RedisValue.Null)
+                        list.Add(cacheKey!);
+                }
+            }
+            return list;
+        }
     }
 }
