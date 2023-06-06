@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -32,15 +33,14 @@ namespace ViazyNetCore.Caching
 
         public MemoryDistributedHashCache(IOptions<MemoryDistributedCacheOptions> optionsAccessor)
         {
-            if (optionsAccessor is null)
-                throw new ArgumentNullException(nameof(optionsAccessor));
+            Check.NotNull(optionsAccessor, nameof(optionsAccessor));
 
             this._memCache = new MemoryCache(optionsAccessor.Value);
         }
 
         public byte[]? Get(string key)
         {
-            if (key is null) throw new ArgumentNullException(nameof(key));
+            Check.NotNull(key, nameof(key));
 
             var item = this._memCache.Get(key) as CacheItem;
             return item?.Data;
@@ -48,7 +48,7 @@ namespace ViazyNetCore.Caching
 
         public Task<byte[]?> GetAsync(string key, CancellationToken token = default)
         {
-            if (key is null) throw new ArgumentNullException(nameof(key));
+            Check.NotNull(key, nameof(key));
 
             return Task.FromResult(this.Get(key));
         }
@@ -64,9 +64,9 @@ namespace ViazyNetCore.Caching
 
         public void Set(string key, byte[]? value, DistributedCacheEntryOptions options)
         {
-            if (key is null) throw new ArgumentNullException(nameof(key));
-            if (value is null) throw new ArgumentNullException(nameof(value));
-            if (options is null) throw new ArgumentNullException(nameof(options));
+            Check.NotNull(key, nameof(key));
+            Check.NotNull(value, nameof(value));
+            Check.NotNull(options, nameof(options));
 
             this._memCache.Set(key, new CacheItem(value), ParseOptions(options, value));
         }
@@ -79,7 +79,7 @@ namespace ViazyNetCore.Caching
 
         public void Refresh(string key)
         {
-            if (key is null) throw new ArgumentNullException(nameof(key));
+            Check.NotNull(key, nameof(key));
             this._memCache.TryGetValue(key, out _);
         }
 
@@ -91,7 +91,7 @@ namespace ViazyNetCore.Caching
 
         public void Remove(string key)
         {
-            if (key is null) throw new ArgumentNullException(nameof(key));
+            Check.NotNull(key, nameof(key));
 
             this._memCache.Remove(key);
         }
@@ -104,8 +104,9 @@ namespace ViazyNetCore.Caching
 
         public byte[]? HashGet(string key, string field)
         {
-            if (key is null) throw new ArgumentNullException(nameof(key));
-            if (field is null) throw new ArgumentNullException(nameof(field));
+            Check.NotNull(key, nameof(key));
+            Check.NotNull(field, nameof(field));
+
             if (this._memCache.Get(key) is CacheItem item && item.Fields.TryGetValue(field, out var value)) return value;
 
             return null;
@@ -130,14 +131,10 @@ namespace ViazyNetCore.Caching
 
         public void HashSet(string key, string field, byte[]? value, DistributedCacheEntryOptions options)
         {
-            if (key is null)
-                throw new ArgumentNullException(nameof(key));
-            if (field is null)
-                throw new ArgumentNullException(nameof(field));
-            if (value is null)
-                throw new ArgumentNullException(nameof(value));
-            if (options is null)
-                throw new ArgumentNullException(nameof(options));
+            Check.NotNull(key, nameof(key));
+            Check.NotNull(field, nameof(field));
+            Check.NotNull(value, nameof(value));
+            Check.NotNull(options, nameof(options));
 
             if (!(this._memCache.TryGetValue(key, out var v) && v is CacheItem item))
             {
@@ -156,12 +153,9 @@ namespace ViazyNetCore.Caching
 
         public void HashSetAll(string key, object? value, DistributedCacheEntryOptions options)
         {
-            if (key is null)
-                throw new ArgumentNullException(nameof(key));
-            if (value is null)
-                throw new ArgumentNullException(nameof(value));
-            if (options is null)
-                throw new ArgumentNullException(nameof(options));
+            Check.NotNull(key, nameof(key));
+            Check.NotNull(value, nameof(value));
+            Check.NotNull(options, nameof(options));
 
             Dictionary<string, byte[]> dict;
             if (value is System.Collections.IDictionary d)
