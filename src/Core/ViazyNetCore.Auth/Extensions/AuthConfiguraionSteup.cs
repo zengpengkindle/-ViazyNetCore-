@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ViazyNetCore.Auth.Jwt;
 
@@ -21,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }
             var jwtOption = new JwtOption();
             jwtOptions.Invoke(jwtOption);
-            services.AddSingleton(jwtOption);
+            services.Configure<JwtOption>(jwtOptions);
 
             services.AddSingleton<TokenProvider>();
             services.AddSingleton<CustomJwtBearerEvents>();
@@ -31,7 +32,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                var provider = services.BuildServiceProvider();
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = false,
@@ -43,17 +43,34 @@ namespace Microsoft.Extensions.DependencyInjection
                     ClockSkew = TimeSpan.FromMinutes(1)
                 };
 
-                //options.Events = new JwtBearerEvents()
-                //{
-                //    OnTokenValidated = context =>
-                //    {
-                //        if (context.SecurityToken is JwtSecurityToken securityToken)
-                //            return tokenProvider.ValidToken(securityToken);
-                //        else
-                //            throw new UnauthorizedAccessException();
-                //    }
+                options.EventsType = typeof(CustomJwtBearerEvents);
+            });
+        }
 
-                //};
+        public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<JwtOption>(configuration);
+            var jwtOption = configuration.Get<JwtOption>();
+
+            services.AddSingleton<TokenProvider>();
+            services.AddSingleton<CustomJwtBearerEvents>();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOption.Secret)),
+                    ValidateLifetime = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireAudience = false,
+                    ClockSkew = TimeSpan.FromMinutes(1)
+                };
+
                 options.EventsType = typeof(CustomJwtBearerEvents);
             });
         }

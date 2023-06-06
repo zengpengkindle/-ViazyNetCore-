@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace System
 {
@@ -94,7 +95,7 @@ namespace System
         /// <returns>转换后的值。</returns>
         public static T? ToObject<T>(this JObject element)
         {
-            if(element is null) throw new ArgumentNullException(nameof(element));
+            if (element is null) throw new ArgumentNullException(nameof(element));
             return element.ToObject<T>();
         }
 
@@ -106,9 +107,21 @@ namespace System
         /// <returns>转换后的值。</returns>
         public static object? ToObject(this JObject element, Type type)
         {
-            if(element is null) throw new ArgumentNullException(nameof(element));
-            if(type is null) throw new ArgumentNullException(nameof(type));
+            if (element is null) throw new ArgumentNullException(nameof(element));
+            if (type is null) throw new ArgumentNullException(nameof(type));
             return element.ToObject(type);
+        }
+
+        public static T? Deserialize<T>(byte[] buffer, JsonSerializerSettings? serializerSettings = null)
+        {
+            var text = Encoding.UTF8.GetString(buffer);
+            return JsonConvert.DeserializeObject<T>(text, serializerSettings ?? SerializerSettings);
+        }
+
+        public static object? Deserialize(byte[] buffer, Type type, JsonSerializerSettings? serializerSettings = null)
+        {
+            var text = Encoding.UTF8.GetString(buffer);
+            return JsonConvert.DeserializeObject(text, type, serializerSettings ?? SerializerSettings);
         }
     }
 }

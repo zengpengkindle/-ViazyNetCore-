@@ -16,9 +16,9 @@ namespace System
         /// </summary>
 #pragma warning disable CA2211 // 非常量字段应当不可见
         public static TimeSpan DefaultLockTimeout = TimeSpan.FromSeconds(15);
+#pragma warning restore CA2211 // 非常量字段应当不可见
 
         public static DateTime Now => DateTime.Now;
-#pragma warning restore CA2211 // 非常量字段应当不可见
 
         internal static void TimeoutError(string key, TimeSpan timeout)
         {

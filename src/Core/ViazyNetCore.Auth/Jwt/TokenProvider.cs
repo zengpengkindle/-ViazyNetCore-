@@ -14,9 +14,9 @@ namespace ViazyNetCore.Auth.Jwt
         private readonly JwtOption _option;
         private readonly IDistributedHashCache? _cacheService;
 
-        public TokenProvider(JwtOption option, IServiceProvider serviceProvider)
+        public TokenProvider(IOptions<JwtOption> option, IServiceProvider serviceProvider)
         {
-            this._option = option;
+            this._option = option.Value;
             this._cacheService = serviceProvider.GetService<IDistributedHashCache>();
         }
 

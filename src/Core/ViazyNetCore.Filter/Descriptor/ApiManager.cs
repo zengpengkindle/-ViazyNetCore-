@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace ViazyNetCore.Filter.Descriptor
 {
@@ -45,11 +46,11 @@ namespace ViazyNetCore.Filter.Descriptor
         /// <param name="cache"></param>
         /// <param name="actionDescriptorCollectionProvider"></param>
         /// <param name="options"></param>
-        public ApiManager(IMemoryCache cache, IActionDescriptorCollectionProvider actionDescriptorCollectionProvider, ApiDescriptorOptions options)
+        public ApiManager(IMemoryCache cache, IActionDescriptorCollectionProvider actionDescriptorCollectionProvider, IOptions<ApiDescriptorOptions> options)
         {
             _cache = cache;
             _actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
-            _options = options;
+            _options = options.Value;
         }
 
         /// <summary>

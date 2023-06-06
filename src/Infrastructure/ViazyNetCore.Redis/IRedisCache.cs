@@ -37,5 +37,12 @@ namespace ViazyNetCore.Redis
         /// <param name="score">分数</param>
         Task SortedSetAddAsync(string redisKey, string redisValue, double score);
 
+        IDictionary<string, object> GetAll(IEnumerable<string> keys);
+
+        void RemoveCacheAll();
+
+        void RemoveCacheRegex(string pattern);
+
+        IList<string> SearchCacheRegex(string pattern);
     }
 }

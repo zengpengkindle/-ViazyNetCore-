@@ -14,11 +14,11 @@ namespace ViazyNetCore
         /// </summary>
         /// <typeparam name="TEventData"></typeparam>
         /// <param name="event"></param>
-        void Publish<TEventData>(TEventData @event) where TEventData : IEventData;
-        void Publish<TEventData>(Type eventHandlerType, TEventData @event) where TEventData : IEventData;
+        void Publish<TEventData>(TEventData eventData) where TEventData : IEventData;
+        void Publish(Type eventType, object eventData);
 
-        Task PublishAsync<TEventData>(TEventData @event) where TEventData : IEventData;
-        Task PublishAsync<TEventData>(Type eventHandlerType, TEventData @event) where TEventData : IEventData;
+        Task PublishAsync<TEventData>(TEventData eventData) where TEventData : IEventData;
+        Task PublishAsync(Type eventType, object eventData);
 
     }
 }

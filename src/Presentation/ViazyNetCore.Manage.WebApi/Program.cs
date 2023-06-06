@@ -2,7 +2,6 @@ using System.Providers;
 using NLog.Web;
 using ViazyNetCore.AttachmentProvider;
 using ViazyNetCore.Auth.Jwt;
-using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.Manage.WebApi;
 using ViazyNetCore.Modules.Internal;
@@ -21,7 +20,6 @@ builder.WebHost.ConfigureLogging(logging =>
 .UseNLog();
 
 builder.Configuration.ConfigBuild(builder.Environment);
-
 
 builder.Services.AddJwtAuthentication(option =>
 {
@@ -42,12 +40,10 @@ await builder.Services.AddApplicationAsync<BmsApplicationModule>();
 //builder.Services.AddCustomApiVersioning();
 
 builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
-// Redis 分布式缓存注入
-//builder.Services.AddRedisDistributedHashCache(options =>
-//{
-//    options.Configuration = AppSettingsConstVars.RedisConfigConnectionString;
-//});
-builder.Services.AddRumtimeCacheService();
+
+builder.Services.AddCaching()
+    .UseDistributedMemoryCache()
+    ;
 
 builder.Services.AddApiDescriptor(option =>
 {
@@ -65,7 +61,6 @@ builder.Services.AddLocalStoreProvider(options =>
     options.MediaTypes = new List<MediaType> { MediaType.Image };
 });
 builder.Services.AddSingleton(sp => LockProvider.Default);
-builder.Services.AddShopMall();
 
 builder.Services.AddHealthChecks();
 builder.Services.AddResponseCompression();
