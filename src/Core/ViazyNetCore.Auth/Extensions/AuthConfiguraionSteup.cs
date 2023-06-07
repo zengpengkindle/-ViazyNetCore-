@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }
             var jwtOption = new JwtOption();
             jwtOptions.Invoke(jwtOption);
-            services.Configure<JwtOption>(jwtOptions);
+            services.Configure(jwtOptions);
 
             services.AddSingleton<TokenProvider>();
             services.AddSingleton<CustomJwtBearerEvents>();
@@ -49,8 +49,15 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<JwtOption>(configuration);
-            var jwtOption = configuration.Get<JwtOption>();
+            var jwtConfig = configuration.GetSection("Jwt");
+            services.Configure<JwtOption>(jwtConfig);
+            services.Configure<JwtOption>(options =>
+            {
+                if (options.AppName.IsNull())
+                {
+                    options.AppName = "ViazyNetCore App";
+                }
+            });
 
             services.AddSingleton<TokenProvider>();
             services.AddSingleton<CustomJwtBearerEvents>();
@@ -63,7 +70,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOption.Secret)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig["Secret"])),
                     ValidateLifetime = true,
                     ValidateIssuer = false,
                     ValidateAudience = false,

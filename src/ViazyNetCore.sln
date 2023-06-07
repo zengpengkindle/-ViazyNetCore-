@@ -115,7 +115,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Crm.Manage.App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Oauth.ConsoleClient", "Presentation\ViazyNetCore.Oauth.ConsoleClient\ViazyNetCore.Oauth.ConsoleClient.csproj", "{599D24F6-A2A1-4AC5-88C1-FF859459B66C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.EventBus.RabbitMQ", "Infrastructure\ViazyNetCore.EventBus.RabbitMQ\ViazyNetCore.EventBus.RabbitMQ.csproj", "{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.EventBus.RabbitMQ", "Infrastructure\ViazyNetCore.EventBus.RabbitMQ\ViazyNetCore.EventBus.RabbitMQ.csproj", "{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.ShopMall.Manage.ApplicationTest", "tests\ViazyNetCore.ShopMall.Manage.ApplicationTest\ViazyNetCore.ShopMall.Manage.ApplicationTest.csproj", "{33D0A636-E412-46E6-BFD1-7105921B569C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -303,6 +305,10 @@ Global
 		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33D0A636-E412-46E6-BFD1-7105921B569C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33D0A636-E412-46E6-BFD1-7105921B569C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33D0A636-E412-46E6-BFD1-7105921B569C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33D0A636-E412-46E6-BFD1-7105921B569C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -356,6 +362,7 @@ Global
 		{AFDACCC3-782E-4EE3-B978-3FAB113026F3} = {A4889656-1612-4C60-A463-AFBC613C0AF8}
 		{599D24F6-A2A1-4AC5-88C1-FF859459B66C} = {57CCA8FF-D37C-4F0E-91CB-C0B155DB5861}
 		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{33D0A636-E412-46E6-BFD1-7105921B569C} = {3699B480-8954-45C1-AD64-53542BDD6AEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

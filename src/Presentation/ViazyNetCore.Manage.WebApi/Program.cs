@@ -20,20 +20,10 @@ builder.WebHost.ConfigureLogging(logging =>
 .UseNLog();
 
 builder.Configuration.ConfigBuild(builder.Environment);
-
-builder.Services.AddJwtAuthentication(option =>
-{
-    var optionJson = builder.Configuration.GetSection("Jwt").Get<JwtOption>();
-    option.Secret = optionJson.Secret;
-    option.ExpiresIn = optionJson.ExpiresIn;
-    option.Issuer = optionJson.Issuer;
-    option.AppName = optionJson.AppName;
-    option.UseDistributedCache = true;
-});
-
-
 builder.Services.AddSingleton(new AppSettingsHelper());
+builder.Services.ReplaceConfiguration(builder.Configuration);
 
+builder.Services.AddJwtAuthentication(builder.Configuration);
 // Add application to the container.
 await builder.Services.AddApplicationAsync<BmsApplicationModule>();
 

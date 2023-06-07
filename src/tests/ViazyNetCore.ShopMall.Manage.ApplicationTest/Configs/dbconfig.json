@@ -1,0 +1,8 @@
+{
+	"dbConfig": {
+		"key": "master",
+		"Type": "MySql",
+		"UseEnumInt": true,
+		"ConnectionString":""
+	}
+}
