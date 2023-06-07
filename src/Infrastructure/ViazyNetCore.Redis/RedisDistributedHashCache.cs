@@ -10,6 +10,7 @@ using ViazyNetCore.Caching;
 
 namespace ViazyNetCore.Redis
 {
+    [Obsolete]
     public class RedisDistributedHashCache : RedisCache, IDistributedHashCache
     {
         private readonly RedisCacheOptions _options;

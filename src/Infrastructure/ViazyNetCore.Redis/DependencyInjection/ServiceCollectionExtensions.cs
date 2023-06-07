@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Services.AddStackExchangeRedisCache(setupAction);
             services.Services.AddSingleton<IRedisCache, RedisService>();
 
-            services.UseDistributedCache<RedisDistributedHashCache>();
+            services.UseDistributedCache<DefaultRedisCache>();
 
             return services;
         }

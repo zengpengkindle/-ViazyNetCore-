@@ -23,5 +23,7 @@
         /// </summary>
         /// <value>当没有设置值时，将根据输入类型自动队列。</value>
         public string? Queue { get; set; }
+
+        public string? RouterKey { get; set; }
     }
 }

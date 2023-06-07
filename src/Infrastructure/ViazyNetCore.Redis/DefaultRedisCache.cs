@@ -74,6 +74,7 @@ namespace ViazyNetCore.Redis
             }
 
             ConnectMethod.Invoke(this, Array.Empty<object>());
+            GetRedisDatabase();
         }
 
         protected virtual async Task ConnectAsync(CancellationToken token = default)
@@ -84,6 +85,7 @@ namespace ViazyNetCore.Redis
             }
 
             await (Task)ConnectAsyncMethod.Invoke(this, new object[] { token });
+            GetRedisDatabase();
         }
 
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using ViazyNetCore;
 using ViazyNetCore.AttachmentProvider;
 using ViazyNetCore.AttachmentProvider.Hosts;
@@ -41,15 +42,13 @@ public static class AttachmentStartup
     /// <returns></returns>
     public static IServiceCollection AddLocalStoreProvider(this IServiceCollection services, Action<LocalStoreOption> options = null)
     {
+        services.Configure(options);
         services.TryAddSingleton<IPathFormatter, DefaultPathFormatter>();
         services.TryAddSingleton<IStoreProvider>(sp =>
         {
             var storeProvider = sp.CreateInstance<StoreProvider>();
-            var localStoreOption = new LocalStoreOption();
-            if(options != null)
-                options.Invoke(localStoreOption);
-
-            if(localStoreOption.StoreRootPath is null)
+            var localStoreOption = sp.GetRequiredService<IOptions<LocalStoreOption>>().Value;
+            if (localStoreOption.StoreRootPath is null)
                 throw new NotImplementedException("StoreRootPath can't be Null");
             //
             var root = sp.GetRequiredService<IWebHostEnvironment>().ContentRootFileProvider.GetDirectoryInfo(localStoreOption.StoreRootPath, true);
@@ -78,7 +77,7 @@ public static class AttachmentStartup
         services.TryAddSingleton<IStoreProvider>(sp =>
         {
             var storeProvider = sp.CreateInstance<StoreProvider>();
-            if(action != null)
+            if (action != null)
                 action.Invoke(storeProvider);
             else
             {
@@ -102,10 +101,10 @@ public static class AttachmentStartup
     public static void UseStoreProvider(this IApplicationBuilder app)
     {
         var storeProvider = app.ApplicationServices.GetRequiredService<IStoreProvider>();
-        if(storeProvider.LocalStoreHost != null)
+        if (storeProvider.LocalStoreHost != null)
         {
             var storeOptions = storeProvider.LocalStoreHost.Options as LocalStoreOptions;
-            if(storeOptions.ServerUrl != null)
+            if (storeOptions.ServerUrl != null)
             {
                 app.UseStaticFiles(new StaticFileOptions
                 {

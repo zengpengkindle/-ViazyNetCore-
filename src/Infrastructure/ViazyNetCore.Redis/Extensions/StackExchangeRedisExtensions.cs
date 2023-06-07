@@ -25,8 +25,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure(options);
 
             services.AddSingleton<IRedisCache, RedisService>();
-            services.AddSingleton<IDistributedCache, RedisDistributedHashCache>();
-            services.AddSingleton<IDistributedHashCache, RedisDistributedHashCache>();
+            services.AddSingleton<IDistributedCache, DefaultRedisCache>();
+            services.AddSingleton<IDistributedHashCache, DefaultRedisCache>();
         }
 
         public static void AddRedisCacheSetup(this IServiceCollection services, Action<RedisCacheOptions> options)

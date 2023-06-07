@@ -25,7 +25,6 @@ namespace System.MQueue
         /// 获取队列名称。
         /// </summary>
         string Queue { get; }
-
         /// <summary>
         /// 生成队列。
         /// </summary>
@@ -79,7 +78,6 @@ namespace System.MQueue
             this.Id = id;
             this.Queue = queue.IsNull() ? id + ".Queue" : queue;
             this.Exchange = exchange.IsNull() ? id + ".Exchange" : exchange;
-
         }
 
         private IQueueDeclare? _queue;
