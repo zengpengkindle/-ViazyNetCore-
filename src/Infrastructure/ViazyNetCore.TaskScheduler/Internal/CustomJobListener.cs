@@ -51,7 +51,7 @@ namespace ViazyNetCore.TaskScheduler
             {
                 JobDataMap triggerPars = context.Trigger.JobDataMap;
                 triggerPars.Add("#Trigger:BeginTime", DateTime.Now.ToJsTime());
-                Console.WriteLine("this is JobToBeExecuted");
+                Console.WriteLine("{0} is JobToBeExecuted", context.JobDetail.Key.Group);
             });
         }
 

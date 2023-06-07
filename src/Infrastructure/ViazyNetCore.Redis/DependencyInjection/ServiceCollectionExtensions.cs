@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
@@ -17,25 +18,9 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.Services.AddStackExchangeRedisCache(setupAction);
             services.Services.AddSingleton<IRedisCache, RedisService>();
-            services.Services.Replace(ServiceDescriptor.Singleton(typeof(IDistributedCache), typeof(RedisDistributedHashCache)));
-            services.Services.Replace(ServiceDescriptor.Singleton(typeof(IDistributedHashCache), typeof(RedisDistributedHashCache)));
-            services.Services.Replace(ServiceDescriptor.Singleton<ICacheService>(sp =>
-            {
-                var localCache = sp.GetService<RuntimeMemoryCache>()!;
-                var distributedCache = sp.GetService<IDistributedCache>();
-                bool enableDistributedCache = false;
-                ICache cache;
-                if (distributedCache != null)
-                {
-                    enableDistributedCache = true;
-                    cache = new RuntimeDistributedCacheCache(distributedCache);
-                }
-                else
-                {
-                    cache = localCache;
-                }
-                return new DefaultCacheService(cache, localCache, 1, enableDistributedCache);
-            }));
+
+            services.UseDistributedCache<RedisDistributedHashCache>();
+
             return services;
         }
     }

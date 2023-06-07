@@ -16,12 +16,14 @@ namespace ViazyNetCore.Redis
         private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(1, 1);
 
         public volatile Lazy<IConnectionMultiplexer> RedisConnection;
+        private IConnectionMultiplexer _redisConnection;
         private readonly ILogger<RedisService> _logger;
 
         public RedisService(ILogger<RedisService> logger, IOptions<RedisCacheOptions> optionsAccessor)
         {
-            _logger = logger;
-            RedisConnection = new Lazy<IConnectionMultiplexer>(this.GetRedisConnection());
+            this._logger = logger;
+            this._options = optionsAccessor.Value;
+            this.RedisConnection = new Lazy<IConnectionMultiplexer>(this.GetRedisConnection());
         }
 
         /// <summary>
@@ -31,34 +33,35 @@ namespace ViazyNetCore.Redis
         private IConnectionMultiplexer GetRedisConnection()
         {
             //如果已经连接实例，直接返回
-            if (RedisConnection.Value != null && RedisConnection.Value.IsConnected)
+            if (_redisConnection != null && _redisConnection.IsConnected)
             {
-                return RedisConnection.Value;
+                return _redisConnection;
             }
             _connectionLock.Wait();
             try
             {
-                if (RedisConnection.Value != null)
+                if (_redisConnection != null)
                 {
                     //释放redis连接
-                    return this.RedisConnection.Value;
+                    return _redisConnection;
                 }
 
                 if (_options.ConnectionMultiplexerFactory == null)
                 {
                     if (_options.ConfigurationOptions != null)
                     {
-                        return ConnectionMultiplexer.Connect(_options.ConfigurationOptions);
+                        _redisConnection = ConnectionMultiplexer.Connect(_options.ConfigurationOptions);
                     }
                     else
                     {
-                        return ConnectionMultiplexer.Connect(_options.Configuration);
+                        _redisConnection = ConnectionMultiplexer.Connect(_options.Configuration);
                     }
                 }
                 else
                 {
-                    return _options.ConnectionMultiplexerFactory!().GetAwaiter().GetResult();
+                    _redisConnection = _options.ConnectionMultiplexerFactory!().GetAwaiter().GetResult();
                 }
+                return _redisConnection;
             }
             finally
             {

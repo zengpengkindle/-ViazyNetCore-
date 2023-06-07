@@ -26,33 +26,31 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
-        public static ICachingBuilder UseDistributedMemoryCache(this ICachingBuilder builder)
+        public static ICachingBuilder UseDistributedMemoryCache(this ICachingBuilder builder, Action<DistributedCacheOptions>? options = null)
         {
-            return builder.UseDistributedCache<MemoryDistributedHashCache>();
+            return builder.UseDistributedCache<MemoryDistributedHashCache>(options);
         }
 
-        public static ICachingBuilder UseDistributedCache<T>(this ICachingBuilder builder) where T : class, IDistributedHashCache
+        public static ICachingBuilder UseDistributedCache<T>(this ICachingBuilder builder, Action<DistributedCacheOptions>? options = null) where T : class, IDistributedHashCache
+        {
+            var option = new DistributedCacheOptions();
+            options?.Invoke(option);
+
+            builder.UseDistributedCache<T>(provider =>
+            new DefaultCacheService(
+                new RuntimeDistributedCacheCache(provider.GetRequiredService<IDistributedCache>()!),
+                provider.GetRequiredService<RuntimeMemoryCache>(),
+                option.CacheExpirationFactor,
+                option.EnableDistributedCache));
+            return builder;
+        }
+
+        public static ICachingBuilder UseDistributedCache<T>(this ICachingBuilder builder, Func<IServiceProvider, ICacheService> factory) where T : class, IDistributedHashCache
         {
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSingleton<IDistributedCache, T>();
             builder.Services.AddSingleton<IDistributedHashCache, T>();
-            builder.Services.Replace(ServiceDescriptor.Singleton<ICacheService>(sp =>
-            {
-                var localCache = sp.GetService<RuntimeMemoryCache>()!;
-                var distributedCache = sp.GetService<IDistributedCache>();
-                bool enableDistributedCache = false;
-                ICache cache;
-                if (distributedCache != null)
-                {
-                    enableDistributedCache = true;
-                    cache = new RuntimeDistributedCacheCache(distributedCache);
-                }
-                else
-                {
-                    cache = localCache;
-                }
-                return new DefaultCacheService(cache, localCache, 1, enableDistributedCache);
-            }));
+            builder.Services.Replace(ServiceDescriptor.Singleton(sp => factory(sp)));
             return builder;
         }
     }

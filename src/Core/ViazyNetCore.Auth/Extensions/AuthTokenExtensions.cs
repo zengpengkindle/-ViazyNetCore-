@@ -347,17 +347,11 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        private static IEnumerable<Claim> Claims(this HttpRequest request)
+        private static IEnumerable<Claim>? Claims(this HttpRequest request)
         {
             try
             {
-                var headerCode = request.Headers["Authorization"];
-                if (string.IsNullOrEmpty(headerCode))
-                    return new List<Claim>();
-
-                var code = headerCode.ToString().Replace("Bearer ", "");
-                // 这里从 jwt token 里解析出用户id，默认认为已经通过权限验证了
-                return new JwtSecurityTokenHandler().ReadJwtToken(code)?.Claims;
+                return request.HttpContext?.User.Claims;
             }
             catch (Exception ex)
             {

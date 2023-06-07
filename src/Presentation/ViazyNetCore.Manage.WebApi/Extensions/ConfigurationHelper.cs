@@ -27,6 +27,11 @@ namespace Microsoft.AspNetCore.Builder
             {
                 configurationManager.AddJsonFile($"./Configs/rabbitmq.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
             }
+            configurationManager.AddJsonFile("./Configs/redis.json", optional: true, reloadOnChange: true);
+            if (env.EnvironmentName.IsNotNull())
+            {
+                configurationManager.AddJsonFile($"./Configs/redis.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+            }
 
             configurationManager.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             if (env.EnvironmentName.IsNotNull())

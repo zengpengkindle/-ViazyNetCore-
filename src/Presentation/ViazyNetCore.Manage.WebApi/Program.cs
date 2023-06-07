@@ -1,5 +1,7 @@
 using System.Providers;
+using Microsoft.Extensions.Configuration;
 using NLog.Web;
+using ViazyNetCore;
 using ViazyNetCore.AttachmentProvider;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Configuration;
@@ -33,6 +35,19 @@ builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
 
 builder.Services.AddCaching()
     .UseDistributedMemoryCache()
+    //.UseStackExchangeRedisCaching(options =>
+    //{
+    //    var redisConfig = builder.Configuration.GetSection("Redis").Get<RedisConfig>();
+
+    //    options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+    //    {
+    //        EndPoints =
+    //        {
+    //            { redisConfig.Host, redisConfig.Port }
+    //        },
+    //        Password = redisConfig.Password,
+    //    };
+    //})
     ;
 
 builder.Services.AddApiDescriptor(option =>

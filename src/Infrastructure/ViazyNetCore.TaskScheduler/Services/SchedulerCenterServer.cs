@@ -10,6 +10,7 @@ using Quartz.Impl;
 using Quartz.Spi;
 using Quartz;
 using System.Threading;
+using FreeScheduler;
 
 namespace ViazyNetCore.TaskScheduler
 {
@@ -33,13 +34,13 @@ namespace ViazyNetCore.TaskScheduler
                     { "quartz.serializer.type", "binary" },
                 };
             var factory = new StdSchedulerFactory(collection);
-            var scheduler = factory.GetScheduler().GetAwaiter().GetResult();
+            var scheduler = AsyncHelper.RunSync(() => factory.GetScheduler());
             scheduler.ListenerManager.AddSchedulerListener(new CustomSchedulerListener());
             scheduler.ListenerManager.AddJobListener(new CustomJobListener(this._serviceProvider));
             return scheduler;
         }
 
-        private Task<IScheduler> GetSchedulerAsync(string groupName)
+        private async Task<IScheduler> GetSchedulerAsync(string groupName)
         {
             // 从Factory中获取Scheduler实例
             NameValueCollection collection = new NameValueCollection
@@ -48,7 +49,10 @@ namespace ViazyNetCore.TaskScheduler
                     { "quartz.scheduler.instanceName",groupName}
                 };
             var factory = new StdSchedulerFactory(collection);
-            return factory.GetScheduler(groupName);
+            var scheduler = await factory.GetScheduler(groupName);
+            scheduler.ListenerManager.AddSchedulerListener(new CustomSchedulerListener());
+            scheduler.ListenerManager.AddJobListener(new CustomJobListener(this._serviceProvider));
+            return scheduler;
         }
 
         /// <summary>

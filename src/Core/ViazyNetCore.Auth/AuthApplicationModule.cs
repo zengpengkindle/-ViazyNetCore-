@@ -9,16 +9,10 @@ namespace ViazyNetCore.Auth
 {
     public class AuthApplicationModule : InjectionModule
     {
-        public AuthApplicationModule()
-        {
-
-        }
-
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            context.Services.AddJwtAuthentication(options =>
-            {
-            });
+            var configuration = context.Services.GetConfiguration();
+            context.Services.AddJwtAuthentication(configuration);
         }
     }
 }

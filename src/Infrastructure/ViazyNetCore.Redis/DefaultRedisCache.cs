@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 using ViazyNetCore.Caching;
 
@@ -85,12 +86,6 @@ namespace ViazyNetCore.Redis
             await (Task)ConnectAsyncMethod.Invoke(this, new object[] { token });
         }
 
-        protected virtual DateTimeOffset? GetAbsoluteExpiration(
-            DateTimeOffset creationTime,
-            DistributedCacheEntryOptions options)
-        {
-            return (DateTimeOffset?)GetAbsoluteExpirationMethod.Invoke(null, new object[] { creationTime, options });
-        }
 
         private IDatabase GetRedisDatabase()
         {
@@ -109,62 +104,207 @@ namespace ViazyNetCore.Redis
 
         public byte[]? HashGet(string key, string field)
         {
-            throw new NotImplementedException();
+            Connect();
+            return this._redisDatabase.HashGet(key, field);
         }
 
-        public Task<byte[]?> HashGetAsync(string key, string field, CancellationToken token = default)
+        public async Task<byte[]?> HashGetAsync(string key, string field, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            await ConnectAsync().ConfigureAwait(false);
+            return await this._redisDatabase.HashGetAsync(key, field);
         }
 
         public T? HashGet<T>(string key, string field)
         {
-            throw new NotImplementedException();
+            Connect();
+            var value = this._redisDatabase.HashGet(key, field);
+            if (value == RedisValue.Null)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<T>(value!);
         }
 
-        public Task<T?> HashGetAsync<T>(string key, string field, CancellationToken token = default)
+        public async Task<T?> HashGetAsync<T>(string key, string field, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            await ConnectAsync().ConfigureAwait(false);
+            var value = await this._redisDatabase.HashGetAsync(key, field);
+            if (value == RedisValue.Null)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<T>(value!);
         }
 
         public void HashRemove(string key, string field)
         {
-            throw new NotImplementedException();
+            Connect();
+            this._redisDatabase.HashDelete(key, field);
         }
 
-        public Task HashRemoveAsync(string key, string field, CancellationToken token = default)
+        public async Task HashRemoveAsync(string key, string field, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            await ConnectAsync().ConfigureAwait(false);
+            await this._redisDatabase.HashDeleteAsync(key, field);
         }
 
         public void HashSet(string key, string field, byte[]? value, DistributedCacheEntryOptions options)
         {
-            throw new NotImplementedException();
+            Connect();
+            this._redisDatabase.HashSet(key, field, value);
+
+            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+            DateTimeOffset? absoluteExpiration = GetAbsoluteExpiration(utcNow, options);
+            var expirationSeconds = GetExpirationInSeconds(utcNow, absoluteExpiration, options);
+            this._redisDatabase.KeyExpire(key, expirationSeconds == null ? null : TimeSpan.FromSeconds(expirationSeconds.Value));
         }
 
-        public Task HashSetAsync(string key, string field, byte[]? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        public async Task HashSetAsync(string key, string field, byte[]? value, DistributedCacheEntryOptions options, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            await ConnectAsync().ConfigureAwait(false);
+            await this._redisDatabase.HashSetAsync(key, field, value);
+
+            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+            DateTimeOffset? absoluteExpiration = GetAbsoluteExpiration(utcNow, options);
+            var expirationSeconds = GetExpirationInSeconds(utcNow, absoluteExpiration, options);
+            await this._redisDatabase.KeyExpireAsync(key, expirationSeconds == null ? null : TimeSpan.FromSeconds(expirationSeconds.Value));
         }
 
         public void HashSetAll(string key, object? value, DistributedCacheEntryOptions options)
         {
-            throw new NotImplementedException();
+            Check.NotNull(key, nameof(key));
+            Check.NotNull(value, nameof(value));
+            Check.NotNull(options, nameof(options));
+
+            Dictionary<string, byte[]> dict;
+            if (value is System.Collections.IDictionary d)
+            {
+                dict = new Dictionary<string, byte[]>(d.Count);
+                foreach (System.Collections.DictionaryEntry item in d)
+                {
+                    dict.Add(Convert.ToString(item.Key).MustBe(), item.Value?.Object2Bytes() ?? Array.Empty<byte>());
+                }
+            }
+            else
+            {
+                var typeMapper = TypeMapper.Create(value.GetType());
+                dict = new Dictionary<string, byte[]>(typeMapper.Count);
+                foreach (var propertyMapper in typeMapper.Properties)
+                {
+                    dict.Add(propertyMapper.Name, propertyMapper.GetValue(value).Object2Bytes());
+                }
+            }
+
+            foreach (var item in dict)
+            {
+                this.HashSet(key, item.Key, item.Value, options);
+            }
+            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+            DateTimeOffset? absoluteExpiration = GetAbsoluteExpiration(utcNow, options);
+            var expirationSeconds = GetExpirationInSeconds(utcNow, absoluteExpiration, options);
+            this._redisDatabase.KeyExpire(key, expirationSeconds == null ? null : TimeSpan.FromSeconds(expirationSeconds.Value));
         }
 
-        public Task HashSetAllAsync(string key, object? value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        public async Task HashSetAllAsync(string key, object? value, DistributedCacheEntryOptions options, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            Check.NotNull(key, nameof(key));
+            Check.NotNull(value, nameof(value));
+            Check.NotNull(options, nameof(options));
+
+            Dictionary<string, byte[]> dict;
+            if (value is System.Collections.IDictionary d)
+            {
+                dict = new Dictionary<string, byte[]>(d.Count);
+                foreach (System.Collections.DictionaryEntry item in d)
+                {
+                    dict.Add(Convert.ToString(item.Key).MustBe(), item.Value?.Object2Bytes() ?? Array.Empty<byte>());
+                }
+            }
+            else
+            {
+                var typeMapper = TypeMapper.Create(value.GetType());
+                dict = new Dictionary<string, byte[]>(typeMapper.Count);
+                foreach (var propertyMapper in typeMapper.Properties)
+                {
+                    dict.Add(propertyMapper.Name, propertyMapper.GetValue(value).Object2Bytes());
+                }
+            }
+
+            foreach (var item in dict)
+            {
+                await this.HashSetAsync(key, item.Key, item.Value, options);
+            }
+            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+            DateTimeOffset? absoluteExpiration = GetAbsoluteExpiration(utcNow, options);
+            var expirationSeconds = GetExpirationInSeconds(utcNow, absoluteExpiration, options);
+            await this._redisDatabase.KeyExpireAsync(key, expirationSeconds == null ? null : TimeSpan.FromSeconds(expirationSeconds.Value));
         }
 
         public T? HashGetAll<T>(string key)
         {
-            throw new NotImplementedException();
+            Connect();
+            var value = this._redisDatabase.StringGet(key);
+            if (value == RedisValue.Null)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<T>(value!);
         }
 
-        public Task<T?> HashGetAllAsync<T>(string key)
+        public async Task<T?> HashGetAllAsync<T>(string key)
         {
-            throw new NotImplementedException();
+            await ConnectAsync().ConfigureAwait(false);
+            var value = await this._redisDatabase.StringGetAsync(key);
+            if (value == RedisValue.Null)
+            {
+                return default;
+            }
+            return JsonConvert.DeserializeObject<T>(value!);
         }
+
+        private static double? GetExpirationInSeconds(DateTimeOffset creationTime, DateTimeOffset? absoluteExpiration, DistributedCacheEntryOptions options)
+        {
+            if (absoluteExpiration.HasValue && options.SlidingExpiration.HasValue)
+            {
+                return (double)Math.Min((absoluteExpiration.Value - creationTime).TotalSeconds, options.SlidingExpiration.Value.TotalSeconds);
+            }
+
+            if (absoluteExpiration.HasValue)
+            {
+                return (double)(absoluteExpiration.Value - creationTime).TotalSeconds;
+            }
+
+            if (options.SlidingExpiration.HasValue)
+            {
+                return (double)options.SlidingExpiration.Value.TotalSeconds;
+            }
+
+            return null;
+        }
+
+        private static DateTimeOffset? GetAbsoluteExpiration(DateTimeOffset creationTime, DistributedCacheEntryOptions options)
+        {
+            if (options.AbsoluteExpiration.HasValue && options.AbsoluteExpiration <= creationTime)
+            {
+                throw new ArgumentOutOfRangeException("AbsoluteExpiration", options.AbsoluteExpiration.Value, "The absolute expiration value must be in the future.");
+            }
+
+            if (options.AbsoluteExpirationRelativeToNow.HasValue)
+            {
+                DateTimeOffset value = creationTime;
+                TimeSpan? absoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow;
+                return value + absoluteExpirationRelativeToNow;
+            }
+
+            return options.AbsoluteExpiration;
+        }
+
+
+        //protected virtual DateTimeOffset? GetAbsoluteExpiration(
+        //    DateTimeOffset creationTime,
+        //    DistributedCacheEntryOptions options)
+        //{
+        //    return (DateTimeOffset?)GetAbsoluteExpirationMethod.Invoke(null, new object[] { creationTime, options });
+        //}
     }
 }
