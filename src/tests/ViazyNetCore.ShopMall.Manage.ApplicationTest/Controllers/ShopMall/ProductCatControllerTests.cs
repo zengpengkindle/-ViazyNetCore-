@@ -22,7 +22,7 @@ namespace ViazyNetCore.ShopMall.Manage.Application.Controllers.ShopMall.Tests
         {
             this._serviceProvider = serviceProvider;
             this._httpContextAccessor = httpContextAccessor;
-            this._productCatController = new ProductCatController(mapper, productCatService);
+            this._productCatController = serviceProvider.CreateInstance<ProductCatController>();
             this._productCatController.ControllerContext = new ControllerContext()
             {
                 HttpContext = _httpContextAccessor.HttpContext
