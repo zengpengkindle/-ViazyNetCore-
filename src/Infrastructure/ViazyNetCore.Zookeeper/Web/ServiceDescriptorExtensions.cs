@@ -117,9 +117,9 @@ namespace ViazyNetCore.Zookeeper.Web
         /// </summary>
         /// <param name="descriptor">服务描述符。</param>
         /// <returns>服务描述符。</returns>
-        public static string AuthType(this ServiceDescriptor descriptor)
+        public static AuthorizationType AuthType(this ServiceDescriptor descriptor)
         {
-            return descriptor.GetMetadata("AuthType", "");
+            return descriptor.GetMetadata("AuthType", AuthorizationType.Unkown);
         }
 
 
