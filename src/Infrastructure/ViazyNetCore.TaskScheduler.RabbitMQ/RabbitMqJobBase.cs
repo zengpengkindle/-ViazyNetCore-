@@ -13,7 +13,7 @@ namespace ViazyNetCore.TaskScheduler
         /// <summary>
         /// 获取或设置一个值，表示订阅选项。
         /// </summary>
-        public abstract SubscribeOptions SubscribeOptions { get; }
+        public virtual SubscribeOptions SubscribeOptions { get; } = new SubscribeOptions();
 
         protected RabbitMqJobBase(IMessageBus bus, ILogger logger, IServiceProvider serviceProvider) : base(serviceProvider)
         {
