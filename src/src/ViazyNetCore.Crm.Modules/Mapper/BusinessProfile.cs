@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using ViazyNetCore.Model.Crm;
+using ViazyNetCore.Crm.Model;
 using ViazyNetCore.Modules.Models;
 
 namespace ViazyNetCore.Modules.Mapper

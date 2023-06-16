@@ -9,8 +9,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.AutoMapper\ViazyNetCore.AutoMapper.csproj" />
+		<ProjectReference Include="..\Crm\ViazyNetCore.Crm.Model\ViazyNetCore.Crm.Model.csproj" />
 		<ProjectReference Include="..\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
 		<ProjectReference Include="..\ViazyNetCore.Domain\ViazyNetCore.Domain.csproj" />
-		<ProjectReference Include="..\ViazyNetCore.Model\ViazyNetCore.Model.csproj" />
 	</ItemGroup>
 </Project>

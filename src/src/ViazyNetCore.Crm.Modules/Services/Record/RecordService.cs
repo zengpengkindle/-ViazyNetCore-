@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViazyNetCore.Model.Crm;
+using ViazyNetCore.Crm.Model;
 using ViazyNetCore.Modules.Repository;
 
 namespace ViazyNetCore.Modules

@@ -121,7 +121,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.ShopMall.Manag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Zookeeper", "Infrastructure\ViazyNetCore.Zookeeper\ViazyNetCore.Zookeeper.csproj", "{0FE7960F-D10C-47F5-A397-E9221815B48B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VizayNetCore.RemoteService", "Infrastructure\VizayNetCore.RemoteService\VizayNetCore.RemoteService.csproj", "{8F21E3F9-409B-4860-8F29-8CA1112F90E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VizayNetCore.RemoteService", "Infrastructure\VizayNetCore.RemoteService\VizayNetCore.RemoteService.csproj", "{8F21E3F9-409B-4860-8F29-8CA1112F90E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Crm.Model", "src\Crm\ViazyNetCore.Crm.Model\ViazyNetCore.Crm.Model.csproj", "{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -321,6 +323,10 @@ Global
 		{8F21E3F9-409B-4860-8F29-8CA1112F90E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F21E3F9-409B-4860-8F29-8CA1112F90E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F21E3F9-409B-4860-8F29-8CA1112F90E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -377,6 +383,7 @@ Global
 		{33D0A636-E412-46E6-BFD1-7105921B569C} = {3699B480-8954-45C1-AD64-53542BDD6AEC}
 		{0FE7960F-D10C-47F5-A397-E9221815B48B} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{8F21E3F9-409B-4860-8F29-8CA1112F90E6} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B} = {A4889656-1612-4C60-A463-AFBC613C0AF8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

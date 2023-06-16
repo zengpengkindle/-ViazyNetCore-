@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreeSql;
-using ViazyNetCore.Model.Crm;
+using ViazyNetCore.Crm.Model;
 
 namespace ViazyNetCore.Modules.Repository
 {
