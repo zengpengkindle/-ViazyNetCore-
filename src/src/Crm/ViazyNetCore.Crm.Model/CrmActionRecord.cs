@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FreeSql.Aop;
 
-namespace ViazyNetCore.Model.Crm
+namespace ViazyNetCore.Crm.Model
 {
     /// <summary>
     /// oa操作记录表

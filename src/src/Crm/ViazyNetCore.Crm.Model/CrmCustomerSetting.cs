@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Model.Crm
+namespace ViazyNetCore.Crm.Model
 {
     /// <summary>
     /// 员工拥有以及锁定客户数限制

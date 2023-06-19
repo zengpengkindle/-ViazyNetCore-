@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Model.Crm
+namespace ViazyNetCore.Crm.Model
 {
     public class CrmBusinessProduct : EntityUpdate
     {
