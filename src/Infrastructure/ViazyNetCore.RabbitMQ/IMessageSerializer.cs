@@ -1,7 +1,7 @@
 ﻿using System.Text;
 
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 定义一个消息序列化工具。

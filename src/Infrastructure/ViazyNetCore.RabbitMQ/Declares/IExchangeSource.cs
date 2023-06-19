@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace System.MQueue.Declares
+namespace ViazyNetCore.RabbitMQ.Declares
 {
     /// <summary>
     /// 定义一个交换机来源。

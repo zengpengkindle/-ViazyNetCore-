@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 定义一个消息工厂。

@@ -4,7 +4,7 @@ using System.Linq;
 
 using Microsoft.Extensions.Configuration;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     class ConfigurationMessageManager : MessageManagerBase
     {

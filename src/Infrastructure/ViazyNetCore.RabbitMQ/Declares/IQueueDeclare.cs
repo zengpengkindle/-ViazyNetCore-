@@ -1,4 +1,4 @@
-﻿namespace System.MQueue.Declares
+﻿namespace ViazyNetCore.RabbitMQ.Declares
 {
     /// <summary>
     /// 定义一个队列的声明。

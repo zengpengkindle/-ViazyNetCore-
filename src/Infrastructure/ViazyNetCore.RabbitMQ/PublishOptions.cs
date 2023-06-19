@@ -1,7 +1,7 @@
 ﻿
 using RabbitMQ.Client;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 表示一个发布的选项。
@@ -29,7 +29,7 @@ namespace System.MQueue
         /// <summary>
         /// 获取或设置一个值，表示是否强制消费。
         /// </summary>
-        /// <value>设置为 <see langword="true"/> 值时，如果交换机根据自身类型和消息 <see cref="RouterKey"/> 无法找到一个符合条件的队列，那么会调用 <see cref="RabbitMQ.Client.IModel.BasicReturn"/> 方法将消息返回给生产者；当设置为 <see langword="false"/> 值时，出现上述情形会直接将消息扔掉。</value>
+        /// <value>设置为 <see langword="true"/> 值时，如果交换机根据自身类型和消息 <see cref="RouterKey"/> 无法找到一个符合条件的队列，那么会调用 <see cref="global::RabbitMQ.Client.IModel.BasicReturn"/> 方法将消息返回给生产者；当设置为 <see langword="false"/> 值时，出现上述情形会直接将消息扔掉。</value>
         public bool Mandatory { get; set; }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace System.MQueue
         /// <summary>
         /// 获取或设置一个值，表示是否强制消费。
         /// </summary>
-        /// <value>设置为 <see langword="true"/> 值时，如果交换机根据自身类型和消息路由无法找到一个符合条件的队列，那么会调用 <see cref="RabbitMQ.Client.IModel.BasicReturn"/> 方法将消息返回给生产者；当设置为 <see langword="false"/> 值时，出现上述情形会直接将消息扔掉。</value>
+        /// <value>设置为 <see langword="true"/> 值时，如果交换机根据自身类型和消息路由无法找到一个符合条件的队列，那么会调用 <see cref="global::RabbitMQ.Client.IModel.BasicReturn"/> 方法将消息返回给生产者；当设置为 <see langword="false"/> 值时，出现上述情形会直接将消息扔掉。</value>
         public bool Mandatory { get; set; }
     }
 }

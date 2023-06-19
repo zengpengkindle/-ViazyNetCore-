@@ -1,4 +1,4 @@
-﻿namespace System.MQueue
+﻿namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 定义一个消息总线上下文。

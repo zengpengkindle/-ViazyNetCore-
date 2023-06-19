@@ -1,4 +1,4 @@
-﻿namespace System.MQueue
+﻿namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 表示一个消息的配置。

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using RabbitMQ.Client;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 定义一个连接代理工厂。

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Quartz;
-using System.MQueue;
+using ViazyNetCore.RabbitMQ;
 
 namespace ViazyNetCore.TaskScheduler
 {

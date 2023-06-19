@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using System.MQueue;
-using System.MQueue.Declares;
+using ViazyNetCore.RabbitMQ;
+using ViazyNetCore.RabbitMQ.Declares;
 
 using RabbitMQ.Client;
 using System.Threading;
@@ -26,9 +26,9 @@ namespace System
             if (exception is TimeoutException) return false;
             if (exception is ObjectDisposedException) return false;
             //- 连接被关闭
-            if (exception is RabbitMQ.Client.Exceptions.AlreadyClosedException) return false;
-            if (exception is RabbitMQ.Client.Exceptions.BrokerUnreachableException) return false;
-            if (exception is RabbitMQ.Client.Exceptions.RabbitMQClientException) return false;
+            if (exception is global::RabbitMQ.Client.Exceptions.AlreadyClosedException) return false;
+            if (exception is global::RabbitMQ.Client.Exceptions.BrokerUnreachableException) return false;
+            if (exception is global::RabbitMQ.Client.Exceptions.RabbitMQClientException) return false;
 
             return true;
         }

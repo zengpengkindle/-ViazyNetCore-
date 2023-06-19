@@ -1,4 +1,4 @@
-﻿using System.MQueue;
+﻿using ViazyNetCore.RabbitMQ;
 using Quartz;
 using ViazyNetCore.TaskScheduler;
 

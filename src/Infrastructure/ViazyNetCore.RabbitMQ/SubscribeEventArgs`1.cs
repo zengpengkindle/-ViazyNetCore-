@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 表示消息订阅的事件参数。

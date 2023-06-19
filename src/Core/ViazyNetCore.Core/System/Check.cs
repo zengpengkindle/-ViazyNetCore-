@@ -348,4 +348,13 @@ public static class Check
 
         return value.Value;
     }
+
+    public static void CheckCondition(Func<bool> condition, string parameterName)
+    {
+        if (condition.Invoke())
+        {
+            throw new ArgumentException($"{parameterName} is null!");
+        }
+    }
+
 }

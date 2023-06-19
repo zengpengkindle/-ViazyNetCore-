@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using System.MQueue;
+using ViazyNetCore.RabbitMQ;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.EventBus.Distributed;

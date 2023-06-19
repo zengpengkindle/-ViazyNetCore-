@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using org.apache.zookeeper;
-using ViazyNetCore.Zookeeper.Web;
 using Level = Microsoft.Extensions.Logging.LogLevel;
 
 namespace ViazyNetCore.Zookeeper.Implementation
@@ -59,7 +52,7 @@ namespace ViazyNetCore.Zookeeper.Implementation
             {
                 if (_logger.IsEnabled(Level.Warning))
                     _logger.LogWarning($"找不到可用的注册中心地址。");
-                return default(ValueTuple<ManualResetEvent, ZooKeeper>);
+                return default;
             }
 
             var vt = _zookeeperAddressSelector.SelectAsync(new AddressSelectContext

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 
 using System;
-using System.MQueue;
+using ViazyNetCore.RabbitMQ;
 using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.Hosting

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 定义一个核心的消息总线。
@@ -186,7 +186,7 @@ namespace System.MQueue
 
                     var consumer = new EventingBasicConsumer(channel);
                     const string HEADER_REDELIVERED_COUNT = "redelivered_count";
-                    consumer.Received += async (model, ea) =>
+                    consumer.Received += async (object? model, BasicDeliverEventArgs ea) =>
                     {
                         var redeliveredCount = ea.BasicProperties.Headers is not null && ea.BasicProperties.Headers.TryGetValue(HEADER_REDELIVERED_COUNT, out var obj) && obj is int count ? count : 0;
                         if (redeliveredCount > 0) ea.Redelivered = true;
@@ -250,11 +250,11 @@ namespace System.MQueue
                             }
                         }
                     };
-                    consumer.Shutdown += (ss, ee) =>
+                    consumer.Shutdown += (object? ss, ShutdownEventArgs ee) =>
                     {
                         if (!completionSource.Task.IsCanceled)
                         {
-                            completionSource.TrySetException(new RabbitMQ.Client.Exceptions.ConnectFailureException($"Message consumer is shutdown <{ee.ReplyCode}> {ee.ReplyText}", null));
+                            completionSource.TrySetException(new global::RabbitMQ.Client.Exceptions.ConnectFailureException($"Message consumer is shutdown <{ee.ReplyCode}> {ee.ReplyText}", null));
                         }
                     };
 

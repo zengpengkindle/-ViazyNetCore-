@@ -1,5 +1,5 @@
-﻿using System.MQueue;
-using System.MQueue.Declares;
+﻿using ViazyNetCore.RabbitMQ;
+using ViazyNetCore.RabbitMQ.Declares;
 using RabbitMQ.Client;
 
 namespace System

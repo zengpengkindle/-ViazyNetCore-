@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
 
-using System.MQueue.Declares;
+using ViazyNetCore.RabbitMQ.Declares;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 定义一个声明工厂。

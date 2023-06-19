@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using System.MQueue.Declares;
+using ViazyNetCore.RabbitMQ.Declares;
 using ViazyNetCore;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 定义一个消息。

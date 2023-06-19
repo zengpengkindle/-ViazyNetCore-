@@ -2,7 +2,7 @@
 
 using RabbitMQ.Client;
 
-namespace System.MQueue
+namespace ViazyNetCore.RabbitMQ
 {
     /// <summary>
     /// 定义一个通道代理。

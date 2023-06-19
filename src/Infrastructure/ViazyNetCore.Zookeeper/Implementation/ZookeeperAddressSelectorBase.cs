@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ViazyNetCore.Zookeeper.Web;
-
-namespace ViazyNetCore.Zookeeper.Implementation
+﻿namespace ViazyNetCore.Zookeeper.Implementation
 {
     public abstract class ZookeeperAddressSelectorBase : IZookeeperAddressSelector
     {
