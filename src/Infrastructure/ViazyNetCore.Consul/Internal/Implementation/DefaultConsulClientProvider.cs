@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Consul;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ViazyNetCore.Consul.Configurations;
 using ViazyNetCore.Consul.Selectors;
 using Level = Microsoft.Extensions.Logging.LogLevel;
@@ -23,10 +24,10 @@ namespace ViazyNetCore.Consul.Implementation
         private readonly ConcurrentDictionary<AddressModel, ConsulClient> _consulClients = new
             ConcurrentDictionary<AddressModel, ConsulClient>();
 
-        public DefaultConsulClientProvider(ConfigInfo config, IHealthCheckService healthCheckService, IConsulAddressSelector consulAddressSelector,
+        public DefaultConsulClientProvider(IOptions<ConfigInfo> config, IHealthCheckService healthCheckService, IConsulAddressSelector consulAddressSelector,
             ILogger<DefaultConsulClientProvider> logger)
         {
-            _config = config;
+            _config = config.Value;
             _healthCheckService = healthCheckService;
             _consulAddressSelector = consulAddressSelector;
             _logger = logger;

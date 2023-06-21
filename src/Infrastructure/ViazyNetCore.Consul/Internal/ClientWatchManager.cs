@@ -1,0 +1,71 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using ViazyNetCore.Consul.Configurations;
+using ViazyNetCore.Consul.Internal.WatchProvider;
+
+namespace ViazyNetCore.Consul.Internal
+{
+    public class ClientWatchManager : IClientWatchManager
+    {
+        internal Dictionary<string, HashSet<Watcher>> dataWatches =
+            new Dictionary<string, HashSet<Watcher>>();
+        private readonly Timer _timer;
+        private readonly ILogger<ClientWatchManager> _logger;
+
+        public ClientWatchManager(ILogger<ClientWatchManager> logger, ConfigInfo config)
+        {
+            var timeSpan = TimeSpan.FromSeconds(config.WatchInterval);
+            _logger = logger;
+            _timer = new Timer(async s =>
+            {
+                await Watching();
+            }, null, timeSpan, timeSpan);
+        }
+
+        public Dictionary<string, HashSet<Watcher>> DataWatches
+        {
+            get
+            {
+                return dataWatches;
+            }
+            set
+            {
+                dataWatches = value;
+            }
+        }
+
+        private HashSet<Watcher> Materialize()
+        {
+            HashSet<Watcher> result = new HashSet<Watcher>();
+            lock (dataWatches)
+            {
+                foreach (HashSet<Watcher> ws in dataWatches.Values)
+                {
+                    result.UnionWith(ws);
+                }
+            }
+            return result;
+        }
+
+        private async Task Watching()
+        {
+            try
+            {
+                var watches = Materialize();
+                foreach (var watch in watches)
+                {
+                    await watch.Process();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (_logger.IsEnabled(LogLevel.Error))
+                    _logger.LogError($"message:{ex.Message},Source:{ex.Source},Trace:{ex.StackTrace}");
+            }
+        }
+    }
+}

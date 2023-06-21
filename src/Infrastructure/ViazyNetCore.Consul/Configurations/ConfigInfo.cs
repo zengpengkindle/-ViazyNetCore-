@@ -14,13 +14,13 @@ namespace ViazyNetCore.Consul.Configurations
         /// <param name="routePath">路由路径配置路径</param>
         /// <param name="subscriberPath">订阅者配置路径</param>
         /// <param name="cachePath">缓存中心配置路径</param>
-        public ConfigInfo(string connectionString,string routePath = "services/serviceRoutes/",
+        public ConfigInfo(string connectionString, string routePath = "services/serviceRoutes/",
              string subscriberPath = "services/serviceSubscribers/",
             string commandPath = "services/serviceCommands/",
-            string cachePath="services/serviceCaches/",
+            string cachePath = "services/serviceCaches/",
             string mqttRoutePath = "services/mqttServiceRoutes/",
-            bool reloadOnChange=false, bool enableChildrenMonitor = false) :
-            this(connectionString, TimeSpan.FromSeconds(20), 0, routePath, subscriberPath,commandPath, cachePath, mqttRoutePath, reloadOnChange, enableChildrenMonitor)
+            bool reloadOnChange = false, bool enableChildrenMonitor = false) :
+            this(connectionString, TimeSpan.FromSeconds(20), 0, routePath, subscriberPath, commandPath, cachePath, mqttRoutePath, reloadOnChange, enableChildrenMonitor)
         {
         }
 
@@ -38,9 +38,9 @@ namespace ViazyNetCore.Consul.Configurations
             string routePath = "services/serviceRoutes/",
              string subscriberPath = "services/serviceSubscribers/",
             string commandPath = "services/serviceCommands/",
-            string cachePath= "services/serviceCaches/",
-            string mqttRoutePath= "services/mqttServiceRoutes/",
-            bool reloadOnChange=false, bool enableChildrenMonitor = false)
+            string cachePath = "services/serviceCaches/",
+            string mqttRoutePath = "services/mqttServiceRoutes/",
+            bool reloadOnChange = false, bool enableChildrenMonitor = false)
         {
             CachePath = cachePath;
             ReloadOnChange = reloadOnChange;
@@ -54,16 +54,16 @@ namespace ViazyNetCore.Consul.Configurations
             if (!string.IsNullOrEmpty(connectionString))
             {
                 var addresses = connectionString.Split(",");
-                if (addresses.Length > 1)
+                if (addresses != null && addresses.Length > 1)
                 {
-                    Addresses = addresses.Select(p => ConvertAddressModel(p));
+                    Addresses = addresses.Select(p => this.ConvertAddressModel(p)!);
                 }
                 else
                 {
-                    var address = ConvertAddressModel(connectionString);
-                    if (address !=null)
-                    { 
-                        var ipAddress=address as IpAddressModel;
+                    var address = this.ConvertAddressModel(connectionString);
+                    if (address != null)
+                    {
+                        var ipAddress = address as IpAddressModel;
                         Host = ipAddress.Ip;
                         Port = ipAddress.Port;
                     }
@@ -110,7 +110,6 @@ namespace ViazyNetCore.Consul.Configurations
         /// </summary>
         public string RoutePath { get; set; }
 
-
         /// <summary>
         /// Mqtt路由配置路径。
         /// </summary>
@@ -132,7 +131,7 @@ namespace ViazyNetCore.Consul.Configurations
         /// </summary>
         public TimeSpan SessionTimeout { get; set; }
 
-        public AddressModel ConvertAddressModel(string connection)
+        public AddressModel? ConvertAddressModel(string connection)
         {
             var address = connection.Split(":");
             if (address.Length > 1)
