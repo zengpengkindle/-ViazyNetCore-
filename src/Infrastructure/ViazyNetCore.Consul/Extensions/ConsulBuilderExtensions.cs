@@ -53,39 +53,40 @@ public static class ConsulBuilderExtensions
 
     public static IApplicationBuilder UseConsul(this IApplicationBuilder app)
     {
+
         //获取consul配置实例
         var consulConfig = app.ApplicationServices.GetRequiredService<IOptions<ConfigInfo>>().Value;
         //获取应用程序声明周期事件
         var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
-        var consulClient = new ConsulClient(c =>
-        {
-            //consul服务注册地址
-            c.Address = new Uri(consulConfig.ConsulAddress);
-        });
+        //var consulClient = new ConsulClient(c =>
+        //{
+        //    //consul服务注册地址
+        //    c.Address = new Uri(consulConfig.ConsulAddress);
+        //});
 
-        //服务注册配置
-        var registration = new AgentServiceRegistration()
-        {
-            ID = Guid.NewGuid().ToString(),
-            Name = consulConfig.Addresses,//服务名称
-            Address = consulConfig.Host,//服务IP
-            Port = consulConfig.Port,//服务端口
-            Check = new AgentServiceCheck()
-            {
-                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),//服务启动后多久注册服务
-                Interval = TimeSpan.FromSeconds(10),//健康检查时间间隔
-                HTTP = $"http://{consulConfig.Host}:{consulConfig.Port}{consulConfig.HealthCheck}",//健康检查地址
-                Timeout = TimeSpan.FromSeconds(5)//超时时间
-            }
-        };
+        ////服务注册配置
+        //var registration = new AgentServiceRegistration()
+        //{
+        //    ID = Guid.NewGuid().ToString(),
+        //    Name = consulConfig.Addresses,//服务名称
+        //    Address = consulConfig.Host,//服务IP
+        //    Port = consulConfig.Port,//服务端口
+        //    Check = new AgentServiceCheck()
+        //    {
+        //        DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),//服务启动后多久注册服务
+        //        Interval = TimeSpan.FromSeconds(10),//健康检查时间间隔
+        //        HTTP = $"http://{consulConfig.Host}:{consulConfig.Port}{consulConfig.HealthCheck}",//健康检查地址
+        //        Timeout = TimeSpan.FromSeconds(5)//超时时间
+        //    }
+        //};
 
         //服务注册
-        consulClient.Agent.ServiceRegister(registration).Wait();
-
-        //应用程序结束时  取消注册
+        //consulClient.Agent.ServiceRegister(registration).Wait();
+        var serviceSubscribeManager = app.ApplicationServices.GetRequiredService<IServiceSubscribeManager>();
+        ////应用程序结束时  取消注册
         lifetime.ApplicationStopping.Register(() =>
         {
-            consulClient.Agent.ServiceDeregister(registration.ID).Wait();
+            serviceSubscribeManager.ClearAsync().Wait();
         });
 
         return app;

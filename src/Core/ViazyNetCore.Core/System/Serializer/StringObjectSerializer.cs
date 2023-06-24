@@ -49,6 +49,11 @@ namespace ViazyNetCore
             return _serializer.Deserialize(content.ToString(), type);
         }
 
+        public object Deserialize(byte[] value, Type type)
+        {
+            return _serializer.Deserialize(value, type);
+        }
+
         #endregion Implementation of ISerializer<object>
     }
 }

@@ -22,6 +22,14 @@ namespace ViazyNetCore
         /// <summary>
         /// 反序列化。
         /// </summary>
+        /// <param name="value">序列化的内容。</param>
+        /// <param name="type">对象类型。</param>
+        /// <returns>一个对象实例。</returns>
+        object Deserialize(byte[] value, Type type);
+
+        /// <summary>
+        /// 反序列化。
+        /// </summary>
         /// <param name="content">序列化的内容。</param>
         /// <param name="type">对象类型。</param>
         /// <returns>一个对象实例。</returns>

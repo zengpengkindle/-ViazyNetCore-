@@ -29,7 +29,12 @@ namespace ViazyNetCore
         /// <returns>一个对象实例。</returns>
         public object Deserialize(string content, Type type)
         {
-            return JsonConvert.DeserializeObject(content, type);
+            return JSON.Parse(content, type);
+        }
+
+        public object Deserialize(byte[] value, Type type)
+        {
+            return JSON.Deserialize(value, type);
         }
 
         #endregion Implementation of ISerializer<string>
