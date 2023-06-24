@@ -27,7 +27,7 @@ public static class ConsulBuilderExtensions
         services.Configure(options);
 
         services.AddSingleton<ISerializer<byte[]>, StringByteArraySerializer>();
-        services.AddSingleton<ISerializer<string>, JsonSerializer>();
+        services.AddSingleton<ISerializer<string>, ViazyNetCore.Serializer.JsonSerializer>();
         services.AddSingleton<IHealthCheckService, ConsulHealthCheckService>();
         services.AddSingleton<IClientWatchManager, ClientWatchManager>();
         services.AddSingleton<IConsulAddressSelector, ConsulRandomAddressSelector>();

@@ -34,10 +34,9 @@ namespace ViazyNetCore.RabbitMQ
             this._threadLocalContent = new Local<IMessageBusContext>(() => new DefaultMessageBusContext(this, channelPool, messageFactory, messageSerializer));
         }
 
-        [System.Diagnostics.DebuggerBrowsable(Diagnostics.DebuggerBrowsableState.Never)]
         public IMessageBusContext Context => this._threadLocalContent.Value;
 
-        [System.Diagnostics.DebuggerBrowsable(Diagnostics.DebuggerBrowsableState.Never)]
+        //[System.Diagnostics.DebuggerBrowsable(Diagnostics.DebuggerBrowsableState.Never)]
         public IMessageBusContext ContextTransaction => this._threadLocalContent.Value.OpenTransaction();
 
         public bool IsContextCreated => this._threadLocalContent.IsValueCreated;

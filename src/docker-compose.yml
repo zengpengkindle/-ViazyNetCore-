@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  viazynetcore.manage.webapi:
+    image: ${DOCKER_REGISTRY-}viazynetcoremanagewebapi
+    build:
+      context: .
+      dockerfile: Presentation/ViazyNetCore.Manage.WebApi/Dockerfile

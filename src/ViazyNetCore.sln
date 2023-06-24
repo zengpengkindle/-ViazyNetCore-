@@ -133,6 +133,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{1707
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Dapr", "Infrastructure\ViazyNetCore.Dapr\ViazyNetCore.Dapr.csproj", "{C84BA451-6177-4A5D-B609-177EEEC9809B}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E2F14D01-7E40-4F2E-9E10-B7DC23917532}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -347,6 +349,10 @@ Global
 		{C84BA451-6177-4A5D-B609-177EEEC9809B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C84BA451-6177-4A5D-B609-177EEEC9809B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C84BA451-6177-4A5D-B609-177EEEC9809B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2F14D01-7E40-4F2E-9E10-B7DC23917532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2F14D01-7E40-4F2E-9E10-B7DC23917532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2F14D01-7E40-4F2E-9E10-B7DC23917532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2F14D01-7E40-4F2E-9E10-B7DC23917532}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

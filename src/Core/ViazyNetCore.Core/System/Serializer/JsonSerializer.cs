@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ViazyNetCore
+namespace ViazyNetCore.Serializer
 {
     public class JsonSerializer : ISerializer<string>
     {

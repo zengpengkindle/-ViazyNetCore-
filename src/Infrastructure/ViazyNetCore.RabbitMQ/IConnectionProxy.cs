@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-
+using System;
 using RabbitMQ.Client;
 
 namespace ViazyNetCore.RabbitMQ
@@ -113,7 +113,7 @@ namespace ViazyNetCore.RabbitMQ
 
         public bool IsOpen => this.Connection?.IsOpen == true;
 
-        public long UsageChannelCount => Threading.Interlocked.Read(ref this._channelUsageTimes);
+        public long UsageChannelCount => Interlocked.Read(ref this._channelUsageTimes);
 
         public long BusyCount => this._channels.Values.Count(c => c.IsBusy);
 
@@ -127,12 +127,12 @@ namespace ViazyNetCore.RabbitMQ
 
         public long IncrementChannel()
         {
-            return Threading.Interlocked.Increment(ref this._channelUsageTimes);
+            return Interlocked.Increment(ref this._channelUsageTimes);
         }
 
         public long DecrementChannel()
         {
-            return Threading.Interlocked.Decrement(ref this._channelUsageTimes);
+            return Interlocked.Decrement(ref this._channelUsageTimes);
         }
 
         private IChannelProxy? CreateChennel(bool autoNext)
@@ -173,7 +173,7 @@ namespace ViazyNetCore.RabbitMQ
                         this._channels.TryAdd(channel.Id, channel);
                         if(!autoNext && (this.ChannelCount - this.UsageChannelCount) < 2)
                         {
-                            Threading.Tasks.Task.Factory.StartNew(() => this.CreateChennel(true));
+                            Task.Factory.StartNew(() => this.CreateChennel(true));
                         }
                         if(autoNext) channel.TryFree();
                         return channel;

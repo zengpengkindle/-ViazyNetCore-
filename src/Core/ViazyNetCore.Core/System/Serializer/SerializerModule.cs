@@ -11,7 +11,7 @@ namespace ViazyNetCore
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            context.Services.AddSingleton<ISerializer<string>, JsonSerializer>();
+            context.Services.AddSingleton<ISerializer<string>, Serializer.JsonSerializer>();
             context.Services.AddSingleton<ISerializer<byte[]>, StringByteArraySerializer>();
         }
     }
