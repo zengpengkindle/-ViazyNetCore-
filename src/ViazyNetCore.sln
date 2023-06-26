@@ -131,9 +131,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Gateway", "Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{1707BB04-9E6A-4B4C-8489-B42606D02168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Dapr", "Infrastructure\ViazyNetCore.Dapr\ViazyNetCore.Dapr.csproj", "{C84BA451-6177-4A5D-B609-177EEEC9809B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Dapr", "Infrastructure\ViazyNetCore.Dapr\ViazyNetCore.Dapr.csproj", "{C84BA451-6177-4A5D-B609-177EEEC9809B}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E2F14D01-7E40-4F2E-9E10-B7DC23917532}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Http.Client", "Infrastructure\ViazyNetCore.Http.Client\ViazyNetCore.Http.Client.csproj", "{3E31F767-B528-4DF1-A68B-3BE6B08D8253}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.RemoteServices", "Infrastructure\ViazyNetCore.RemoteServices\ViazyNetCore.RemoteServices.csproj", "{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Castle", "Infrastructure\ViazyNetCore.Castle\ViazyNetCore.Castle.csproj", "{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -353,6 +359,18 @@ Global
 		{E2F14D01-7E40-4F2E-9E10-B7DC23917532}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2F14D01-7E40-4F2E-9E10-B7DC23917532}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2F14D01-7E40-4F2E-9E10-B7DC23917532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E31F767-B528-4DF1-A68B-3BE6B08D8253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E31F767-B528-4DF1-A68B-3BE6B08D8253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E31F767-B528-4DF1-A68B-3BE6B08D8253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E31F767-B528-4DF1-A68B-3BE6B08D8253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -414,6 +432,9 @@ Global
 		{A57290BD-170E-46AB-AE16-00FD258EF216} = {1707BB04-9E6A-4B4C-8489-B42606D02168}
 		{1707BB04-9E6A-4B4C-8489-B42606D02168} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{C84BA451-6177-4A5D-B609-177EEEC9809B} = {1707BB04-9E6A-4B4C-8489-B42606D02168}
+		{3E31F767-B528-4DF1-A68B-3BE6B08D8253} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Validation.AspNetCore;
 using ViazyNetCore;
-using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Oauth.Server;
 
 var builder = WebApplication.CreateBuilder(args);
