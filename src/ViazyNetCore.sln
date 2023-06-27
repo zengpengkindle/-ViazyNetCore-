@@ -121,8 +121,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.ShopMall.Manag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Zookeeper", "Infrastructure\ViazyNetCore.Zookeeper\ViazyNetCore.Zookeeper.csproj", "{0FE7960F-D10C-47F5-A397-E9221815B48B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VizayNetCore.RemoteService", "Infrastructure\VizayNetCore.RemoteService\VizayNetCore.RemoteService.csproj", "{8F21E3F9-409B-4860-8F29-8CA1112F90E6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Crm.Model", "src\Crm\ViazyNetCore.Crm.Model\ViazyNetCore.Crm.Model.csproj", "{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Consul", "Infrastructure\ViazyNetCore.Consul\ViazyNetCore.Consul.csproj", "{CD4BD4C3-506B-416D-8464-605B90DAC201}"
@@ -135,11 +133,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Dapr", "Infras
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E2F14D01-7E40-4F2E-9E10-B7DC23917532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Http.Client", "Infrastructure\ViazyNetCore.Http.Client\ViazyNetCore.Http.Client.csproj", "{3E31F767-B528-4DF1-A68B-3BE6B08D8253}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Http.Client", "Infrastructure\ViazyNetCore.Http.Client\ViazyNetCore.Http.Client.csproj", "{3E31F767-B528-4DF1-A68B-3BE6B08D8253}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.RemoteServices", "Infrastructure\ViazyNetCore.RemoteServices\ViazyNetCore.RemoteServices.csproj", "{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.RemoteServices", "Infrastructure\ViazyNetCore.RemoteServices\ViazyNetCore.RemoteServices.csproj", "{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Castle", "Infrastructure\ViazyNetCore.Castle\ViazyNetCore.Castle.csproj", "{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Castle", "Infrastructure\ViazyNetCore.Castle\ViazyNetCore.Castle.csproj", "{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -335,10 +333,6 @@ Global
 		{0FE7960F-D10C-47F5-A397-E9221815B48B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FE7960F-D10C-47F5-A397-E9221815B48B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FE7960F-D10C-47F5-A397-E9221815B48B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F21E3F9-409B-4860-8F29-8CA1112F90E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F21E3F9-409B-4860-8F29-8CA1112F90E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F21E3F9-409B-4860-8F29-8CA1112F90E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F21E3F9-409B-4860-8F29-8CA1112F90E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -426,7 +420,6 @@ Global
 		{EAAA9F56-EC4B-49E8-85D9-6C8926E4D1A8} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{33D0A636-E412-46E6-BFD1-7105921B569C} = {3699B480-8954-45C1-AD64-53542BDD6AEC}
 		{0FE7960F-D10C-47F5-A397-E9221815B48B} = {1707BB04-9E6A-4B4C-8489-B42606D02168}
-		{8F21E3F9-409B-4860-8F29-8CA1112F90E6} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{62FF3755-1EEF-4BA9-9249-D4EA3016A38B} = {A4889656-1612-4C60-A463-AFBC613C0AF8}
 		{CD4BD4C3-506B-416D-8464-605B90DAC201} = {1707BB04-9E6A-4B4C-8489-B42606D02168}
 		{A57290BD-170E-46AB-AE16-00FD258EF216} = {1707BB04-9E6A-4B4C-8489-B42606D02168}
