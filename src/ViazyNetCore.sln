@@ -139,6 +139,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.RemoteServices
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Castle", "Infrastructure\ViazyNetCore.Castle\ViazyNetCore.Castle.csproj", "{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.AspNetCore.Mvc.Dapr", "Infrastructure\ViazyNetCore.AspNetCore.Mvc.Dapr\ViazyNetCore.AspNetCore.Mvc.Dapr.csproj", "{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -365,6 +367,10 @@ Global
 		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -428,6 +434,7 @@ Global
 		{3E31F767-B528-4DF1-A68B-3BE6B08D8253} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}
