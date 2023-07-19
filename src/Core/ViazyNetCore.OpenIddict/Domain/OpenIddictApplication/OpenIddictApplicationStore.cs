@@ -15,12 +15,10 @@ using FreeSql;
 using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using ViazyNetCore.Data.FreeSql;
-using ViazyNetCore.OpenIddict.Domain.Dtos;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ViazyNetCore.OpenIddict.Domain
 {
-    public class OpenIddictApplicationStore : IOpenIddictApplicationStore<OpenIddictApplicationDto>
+    public class OpenIddictApplicationStore : IOpenIdApplicationStore
     {
         private readonly IOpenIddictApplicationRepository _applicationRepository;
         private readonly IOpenIddictTokenRepository _tokenRepository;
@@ -114,17 +112,27 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         public ValueTask<string?> GetClientIdAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken)
         {
+            Check.NotNull(application, nameof(application));
             return new ValueTask<string?>(application.ClientId);
         }
 
         public ValueTask<string?> GetClientSecretAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken)
         {
+            Check.NotNull(application, nameof(application));
             return new ValueTask<string?>(application.ClientSecret);
         }
 
         public ValueTask<string?> GetClientTypeAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken)
         {
+            Check.NotNull(application, nameof(application));
             return new ValueTask<string?>(application.Type);
+        }
+
+        public ValueTask<string> GetClientUriAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken = default)
+        {
+            Check.NotNull(application, nameof(application));
+
+            return new ValueTask<string>(application.ClientUri);
         }
 
         public ValueTask<string?> GetConsentTypeAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken)
@@ -165,6 +173,13 @@ namespace ViazyNetCore.OpenIddict.Domain
         public ValueTask<string?> GetIdAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken)
         {
             return new ValueTask<string?>((application.Id).ToString());
+        }
+
+        public ValueTask<string> GetLogoUriAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken = default)
+        {
+            Check.NotNull(application, nameof(application));
+
+            return new ValueTask<string>(application.LogoUri);
         }
 
         public ValueTask<ImmutableArray<string>> GetPermissionsAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken)

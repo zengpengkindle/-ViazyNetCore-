@@ -117,9 +117,9 @@ namespace Microsoft.Extensions.DependencyInjection
                    .AddTokenStore<OpenIddictTokenStore>();
 
                  builder.ReplaceApplicationManager(typeof(ApplicationManager));
-                 //builder.ReplaceAuthorizationManager(typeof(AuthorizationManager));
-                 //builder.ReplaceScopeManager(typeof(ScopeManager));
-                 //builder.ReplaceTokenManager(typeof(TokenManager));
+                 builder.ReplaceAuthorizationManager(typeof(AuthorizationManager));
+                 builder.ReplaceScopeManager(typeof(ScopeManager));
+                 builder.ReplaceTokenManager(typeof(TokenManager));
              });
 
             openIddictBuilder.AddValidation(options =>

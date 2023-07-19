@@ -139,7 +139,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.RemoteServices
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Castle", "Infrastructure\ViazyNetCore.Castle\ViazyNetCore.Castle.csproj", "{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.AspNetCore.Mvc.Dapr", "Infrastructure\ViazyNetCore.AspNetCore.Mvc.Dapr\ViazyNetCore.AspNetCore.Mvc.Dapr.csproj", "{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.AspNetCore.Mvc.Dapr", "Infrastructure\ViazyNetCore.AspNetCore.Mvc.Dapr\ViazyNetCore.AspNetCore.Mvc.Dapr.csproj", "{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
