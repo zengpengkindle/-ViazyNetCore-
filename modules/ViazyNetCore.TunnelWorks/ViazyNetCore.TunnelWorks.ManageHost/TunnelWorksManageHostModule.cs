@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,9 @@ using ViazyNetCore.Auth;
 using ViazyNetCore.Authorization;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Identity;
+using ViazyNetCore.Modules;
 using ViazyNetCore.Swagger;
+using ViazyNetCore.TunnelWorks.ManageHost.Middlewares;
 
 namespace ViazyNetCore.TunnelWorks.ManageHost
 {
@@ -27,6 +30,7 @@ namespace ViazyNetCore.TunnelWorks.ManageHost
                 options.ApplicationParts.Add(typeof(AuthorizationModule).Assembly);
             });
         }
+
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             Configure<AutoMapperOptions>(options => options.AddMaps<TunnelWorksManageHostModule>());
@@ -36,7 +40,13 @@ namespace ViazyNetCore.TunnelWorks.ManageHost
             });
             context.Services.AddSwagger();
 
-            //context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
+        }
+
+        public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
+        {
+            var app = context.GetApplicationBuilder();
+
+            app.UseMiddleware<MultiTenancyMiddleware>();
         }
     }
 }
