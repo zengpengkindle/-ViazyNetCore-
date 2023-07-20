@@ -1,5 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System.RabbitMQ;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Tests;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ViazyNetCore.CommondTest;
 using static IdentityModel.OidcConstants;
+using ViazyNetCore.RabbitMQ;
 
 var data = new Dictionary<string, string>()
             {

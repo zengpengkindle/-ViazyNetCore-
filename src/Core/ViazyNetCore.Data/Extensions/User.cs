@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using ViazyNetCore.Auth;
 
 namespace ViazyNetCore.Data.FreeSql.Extensions
 {
@@ -13,25 +11,25 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
     {
         private readonly IHttpContextAccessor _accessor;
 
+
         public User(IHttpContextAccessor accessor)
         {
             this._accessor = accessor;
         }
 
-        private AuthUser? AuthUser => this._accessor?.GetAuthUser();
         public long Id
         {
             get
             {
-                return this.AuthUser?.Id ?? 0;
+                return this._accessor?.GetUserId() ?? 0;
             }
         }
-        public string Username { get => this.AuthUser?.Username; }
-        public string Nickname { get => this.AuthUser?.Nickname; }
+        public string Username { get => this._accessor?.GetUserName() ?? string.Empty; }
+        public string Nickname { get => this._accessor?.GetNickName() ?? string.Empty; }
 
-        public AuthUserType IdentityType => this.AuthUser?.IdentityType ?? AuthUserType.Normal;
+        public AuthUserType IdentityType => this._accessor?.GetAuthUserType() ?? AuthUserType.Normal;
 
-        public bool IsModerated => this.AuthUser?.IsModerated ?? false;
+        public bool IsModerated => false;
 
         public long TenantId { get; set; }
     }
