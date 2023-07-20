@@ -11,10 +11,10 @@
     <PackageReference Include="FreeSql.Cloud" Version="1.6.3" />
     <PackageReference Include="FreeSql.DbContext" Version="3.2.687" />
     <PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.687" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ViazyNetCore.Auth\ViazyNetCore.Auth.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
   </ItemGroup>
 

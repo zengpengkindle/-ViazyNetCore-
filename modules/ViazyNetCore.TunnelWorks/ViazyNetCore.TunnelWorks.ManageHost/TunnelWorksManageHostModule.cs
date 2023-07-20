@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ViazyNetCore.AspNetCore;
+using ViazyNetCore.Auth;
+using ViazyNetCore.Authorization;
+using ViazyNetCore.AutoMapper;
+using ViazyNetCore.Identity;
+using ViazyNetCore.Swagger;
+
+namespace ViazyNetCore.TunnelWorks.ManageHost
+{
+    [DependsOn(typeof(AutoMapperModule)
+        , typeof(IdentityModule)
+        , typeof(AspNetCoreMvcModule)
+        , typeof(AuthorizationModule)
+        , typeof(AuthApplicationModule)
+        )]
+    public class TunnelWorksManageHostModule : InjectionModule
+    {
+        public override void PreConfigureServices(ServiceConfigurationContext context)
+        {
+            PreConfigure<AppOptions>(options =>
+            {
+                options.ApplicationParts.Add(typeof(AuthorizationModule).Assembly);
+            });
+        }
+        public override void ConfigureServices(ServiceConfigurationContext context)
+        {
+            Configure<AutoMapperOptions>(options => options.AddMaps<TunnelWorksManageHostModule>());
+
+            Configure<SwaggerConfig>(options =>
+            {
+            });
+            context.Services.AddSwagger();
+
+            //context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
+        }
+    }
+}
