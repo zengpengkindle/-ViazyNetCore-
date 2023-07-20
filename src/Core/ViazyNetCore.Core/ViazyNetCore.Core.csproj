@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>ViazyNetCore</RootNamespace>
+    <Description>ViazyNetCore 基础提供，包含一些基础易用功能</Description>
   </PropertyGroup>
 
   <ItemGroup>
