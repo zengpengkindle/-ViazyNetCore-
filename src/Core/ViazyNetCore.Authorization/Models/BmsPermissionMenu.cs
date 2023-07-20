@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 
     /// </summary>
-    public partial class BmsPermissionMenu : EntityBase<string>
+    public partial class BmsPermissionMenu : EntityBase<string>, ITenant
     {
         /// <summary>
         /// 设置或获取一个值，表示名称。
@@ -16,6 +16,11 @@ namespace ViazyNetCore.Authorization.Models
         /// 
         /// </summary>
         public string MenuId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long TenantId { get; set; }
 
     }
 }

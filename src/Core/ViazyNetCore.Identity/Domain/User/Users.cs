@@ -6,7 +6,7 @@ using FreeSql.DataAnnotations;
 
 namespace ViazyNetCore.Authorization.Models
 {
-    public partial class BmsUser : IUser
+    public partial class BmsUser : IUser, ITenant
     {
         public DateTime ModifyTime { get; set; }
 

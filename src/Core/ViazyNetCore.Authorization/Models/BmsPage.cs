@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Model
     /// <summary>
     /// 表示一个平台页面。
     /// </summary>
-    public partial class BmsPage : EntityBase
+    public partial class BmsPage : EntityBase, ITenant
     {
         /// <summary>
         /// 设置或获取一个值，表示页面分组编号。
@@ -50,6 +50,11 @@ namespace ViazyNetCore.Authorization.Model
         /// 设置或获取一个值，表示修改时间。
         /// </summary>
         public DateTime ModifyTime { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long TenantId { get; set; }
 
     }
 }

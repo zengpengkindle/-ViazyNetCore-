@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization.Models
 {
-    public class BmsUserOrg : Entity<long>
+    public class BmsUserOrg : Entity<long>, ITenant
     {
         /// <summary>
         /// 设置或获取一个值，表示部门编号。
@@ -29,5 +29,6 @@ namespace ViazyNetCore.Authorization.Models
         public DateTime CreateTime { get; set; }
 
         public DateTime ModifyTime { get; set; }
+        public long TenantId { get; set; }
     }
 }

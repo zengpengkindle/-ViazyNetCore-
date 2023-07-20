@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个菜单
     /// </summary>
-    public partial class BmsMenus:EntityBase<string>
+    public partial class BmsMenus : EntityBase<string>, ITenant
     {
         /// <summary>
         /// 
@@ -77,5 +77,9 @@ namespace ViazyNetCore.Authorization.Models
         /// </summary>
         public string Exdata { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public long TenantId { get; set; }
     }
 }

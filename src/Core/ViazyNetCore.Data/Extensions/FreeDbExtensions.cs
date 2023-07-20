@@ -20,6 +20,9 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddFreeDb(this IServiceCollection services, IConfiguration configuration)
         {
             var dbConfig = configuration.Get<DbConfig>();
+
+            services.Configure<DbConfig>(configuration);
+
             var freeSqlCloud = new FreeSqlCloud<string>();
             FreeSqlExtensions.RegisterDb(freeSqlCloud, dbConfig);
             if (dbConfig.Dbs?.Length > 0)

@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个功能权限。
     /// </summary>
-    public partial class BmsOwnerPermission:EntityBase<string>
+    public partial class BmsOwnerPermission : EntityBase<string>, ITenant
     {
         /// <summary>
         /// 设置或获取一个值，表示名称。
@@ -36,6 +36,11 @@ namespace ViazyNetCore.Authorization.Models
         /// 
         /// </summary>
         public bool IsLock { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long TenantId { get; set; }
 
     }
 }
