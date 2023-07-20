@@ -2,6 +2,7 @@
   "dbConfig": {
     "key": "master",
     "Type": "MySql",
+    "Tenant": true,
     "UseEnumInt": true,
     "MonitorCommand": true,
     "AutoSyncStructure": true,

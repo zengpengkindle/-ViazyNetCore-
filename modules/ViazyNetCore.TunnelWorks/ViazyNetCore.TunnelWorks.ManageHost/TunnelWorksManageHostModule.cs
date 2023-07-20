@@ -10,6 +10,7 @@ using ViazyNetCore.Authorization;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Modules;
+using ViazyNetCore.MultiTenancy;
 using ViazyNetCore.Swagger;
 using ViazyNetCore.TunnelWorks.ManageHost.Middlewares;
 
@@ -17,6 +18,7 @@ namespace ViazyNetCore.TunnelWorks.ManageHost
 {
     [DependsOn(typeof(AutoMapperModule)
         , typeof(IdentityModule)
+        , typeof(MultiTenancyModule)
         , typeof(AspNetCoreMvcModule)
         , typeof(AuthorizationModule)
         , typeof(AuthApplicationModule)
@@ -39,7 +41,7 @@ namespace ViazyNetCore.TunnelWorks.ManageHost
             {
             });
             context.Services.AddSwagger();
-
+            context.Services.AddScoped<MultiTenancyMiddleware>();
         }
 
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
