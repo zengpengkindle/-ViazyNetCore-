@@ -8,6 +8,7 @@ using ViazyNetCore.AspNetCore;
 using ViazyNetCore.Auth;
 using ViazyNetCore.Authorization;
 using ViazyNetCore.AutoMapper;
+using ViazyNetCore.Data.FreeSql.Extensions;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Modules;
 using ViazyNetCore.MultiTenancy;
@@ -18,7 +19,6 @@ namespace ViazyNetCore.TunnelWorks.ManageHost
 {
     [DependsOn(typeof(AutoMapperModule)
         , typeof(IdentityModule)
-        , typeof(MultiTenancyModule)
         , typeof(AspNetCoreMvcModule)
         , typeof(AuthorizationModule)
         , typeof(AuthApplicationModule)
@@ -41,14 +41,14 @@ namespace ViazyNetCore.TunnelWorks.ManageHost
             {
             });
             context.Services.AddSwagger();
-            context.Services.AddScoped<MultiTenancyMiddleware>();
+            context.Services.AddScoped<TunnelWorksMultiTenancyMiddleware>();
         }
 
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
 
-            app.UseMiddleware<MultiTenancyMiddleware>();
+            app.UseMiddleware<TunnelWorksMultiTenancyMiddleware>();
         }
     }
 }

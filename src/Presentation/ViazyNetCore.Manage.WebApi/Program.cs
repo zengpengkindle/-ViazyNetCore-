@@ -7,6 +7,7 @@ using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.Manage.WebApi;
 using ViazyNetCore.Modules.Internal;
+using ViazyNetCore.MultiTenancy.AspNetCore;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
@@ -73,7 +74,7 @@ builder.Services.AddResponseCompression();
 
 var app = builder.Build();
 app.InitializeApplication();
-app.UseFreeSql();
+app.UseMultiTenancyFreeSql();
 app.UseHttpsRedirection();
 //app.UseDynamicController();
 app.UseStaticFiles();

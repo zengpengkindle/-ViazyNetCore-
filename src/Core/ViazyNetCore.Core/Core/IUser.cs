@@ -15,7 +15,7 @@ namespace ViazyNetCore
         /// </summary>
         bool IsModerated { get; }
 
-        public long TenantId { get; }
+        public long TenantId { get; set; }
     }
 
     public interface IUser : IUser<long>
@@ -24,7 +24,7 @@ namespace ViazyNetCore
 
     public enum AuthUserType
     {
-        Unknown=0,
+        Unknown = 0,
         /// <summary>
         /// 会员
         /// </summary>

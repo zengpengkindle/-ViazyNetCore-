@@ -35,6 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IFreeSql>(freeSqlCloud);
             services.AddSingleton(freeSqlCloud);
             services.AddScoped<UnitOfWorkManagerCloud>();
+            services.AddSingleton<IUser, User>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(GuidRepository<>));
             services.AddScoped(typeof(BaseRepository<>), typeof(GuidRepository<>));
 
@@ -49,8 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var fsql = app.ApplicationServices.GetService<IFreeSql>();
             var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
+            var user = app.ApplicationServices.GetService<IUser>();
             var dbOption = app.ApplicationServices.GetService<IOptions<DbConfig>>();
-            User user = new User(httpContextAccessor);
             if (fsql == null)
                 throw new ArgumentNullException(nameof(IFreeSql));
             if (dbOption == null)

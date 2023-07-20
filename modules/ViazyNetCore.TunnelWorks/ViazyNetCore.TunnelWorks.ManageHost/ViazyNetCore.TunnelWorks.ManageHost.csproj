@@ -19,16 +19,19 @@
     <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="6.0.20" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.2" />
-    <PackageReference Include="ViazyNetCore.AspNetCore" Version="1.0.1" />
+    <PackageReference Include="ViazyNetCore.AspNetCore" Version="1.0.3" />
     <PackageReference Include="ViazyNetCore.AttachmentProvider" Version="1.0.1" />
-    <PackageReference Include="ViazyNetCore.Authorization" Version="1.0.1" />
-    <PackageReference Include="ViazyNetCore.AutoMapper" Version="1.0.1" />
-    <PackageReference Include="ViazyNetCore.Caching" Version="1.0.1" />
-    <PackageReference Include="ViazyNetCore.Data.FreeSql" Version="1.0.1" />
+    <PackageReference Include="ViazyNetCore.Authorization" Version="1.0.3" />
+    <PackageReference Include="ViazyNetCore.Caching" Version="1.0.3" />
     <PackageReference Include="ViazyNetCore.Formatter.Response" Version="1.0.0" />
+    <PackageReference Include="ViazyNetCore.MultiTenancy.AspNetCore" Version="1.0.3" />
     <PackageReference Include="ViazyNetCore.NLog" Version="1.0.1" />
-    <PackageReference Include="ViazyNetCore.Swagger" Version="1.0.1" />
+    <PackageReference Include="ViazyNetCore.Swagger" Version="1.0.3" />
     <PackageReference Include="ViazyNetCore.Web.DevServer" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\ViazyNetCore.TunnelWorks.Modules\ViazyNetCore.TunnelWorks.Modules.csproj" />
   </ItemGroup>
 
 </Project>

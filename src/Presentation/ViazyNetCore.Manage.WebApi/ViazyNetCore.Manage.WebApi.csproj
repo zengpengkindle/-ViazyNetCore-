@@ -46,6 +46,7 @@
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.AspNetCore\ViazyNetCore.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.EventBus.RabbitMQ\ViazyNetCore.EventBus.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Formatter.Response\ViazyNetCore.Formatter.Response.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.MultiTenancy.AspNetCore\ViazyNetCore.MultiTenancy.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Redis\ViazyNetCore.Redis.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />

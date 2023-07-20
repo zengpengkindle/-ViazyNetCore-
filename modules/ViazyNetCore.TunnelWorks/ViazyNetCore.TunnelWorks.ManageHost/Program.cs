@@ -7,6 +7,7 @@ using ViazyNetCore.AttachmentProvider;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.Manage.WebApi;
+using ViazyNetCore.MultiTenancy.AspNetCore;
 using ViazyNetCore.TunnelWorks.ManageHost;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
@@ -25,6 +26,8 @@ builder.WebHost.ConfigureLogging(logging =>
 builder.Configuration.ConfigBuild(builder.Environment);
 builder.Services.AddSingleton(new AppSettingsHelper());
 builder.Services.ReplaceConfiguration(builder.Configuration);
+
+builder.Services.AddMultiTenancy();
 
 //builder.Services.AddJwtAuthentication(builder.Configuration);
 // Add application to the container.
@@ -65,10 +68,9 @@ builder.Services.AddSingleton(sp => LockProvider.Default);
 builder.Services.AddHealthChecks();
 builder.Services.AddResponseCompression();
 
-
 var app = builder.Build();
 app.InitializeApplication();
-app.UseFreeSql();
+app.UseMultiTenancyFreeSql();
 app.UseHttpsRedirection();
 //app.UseDynamicController();
 app.UseStaticFiles();

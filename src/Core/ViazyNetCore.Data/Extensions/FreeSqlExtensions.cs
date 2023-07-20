@@ -138,7 +138,7 @@ namespace FreeSql
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal static void AopAuditValue(IUser user, AuditValueEventArgs e)
+        public static void AopAuditValue(IUser user, AuditValueEventArgs e)
         {
             //雪花Id
             if (e.AuditValueType is AuditValueType.Insert or AuditValueType.InsertOrUpdate)
