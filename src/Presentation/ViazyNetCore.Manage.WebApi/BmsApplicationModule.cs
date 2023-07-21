@@ -4,6 +4,7 @@ using ViazyNetCore.AspNetCore;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Modules;
+using ViazyNetCore.MultiTenancy;
 using ViazyNetCore.ShopMall.Manage.Application;
 using ViazyNetCore.Swagger;
 
@@ -15,6 +16,7 @@ namespace ViazyNetCore.Manage.WebApi
         , typeof(IdentityModule)
         , typeof(ShopMallManageModule)
         , typeof(RabbitMQEventBusModule)
+        , typeof(MultiTenancyModule)
         )]
     public class BmsApplicationModule : InjectionModule
     {
@@ -55,11 +57,13 @@ namespace ViazyNetCore.Manage.WebApi
             });
             context.Services.AddSwagger();
 
+            context.Services.AddSingleton<MultiTenancyMiddleware>();
             //context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
         }
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {
-            //var app = context.GetApplicationBuilder();
+            var app = context.GetApplicationBuilder();
+            app.UseMultiTenancy();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace ViazyNetCore.MultiTenancy.AspNetCore
 
             if (dbOption.Value.Tenant && currentTenant != null)
             {
-                fsql.GlobalFilter.ApplyOnly<ITenant>(FilterNames.Tenant, a => a.TenantId == currentTenant.Id);
+                fsql.GlobalFilter.ApplyOnly<ITenant>(FilterNames.Tenant, a => a.TenantId == (currentTenant.Id ?? 0));
             }
 
             //会员过滤器
