@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ViazyNetCore.Authorization\ViazyNetCore.Authorization.csproj" />
-    <ProjectReference Include="..\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.Data.FreeSql\ViazyNetCore.Data.FreeSql.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Identity\ViazyNetCore.Identity.csproj" />
   </ItemGroup>
 

@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
     <ProjectReference Include="..\..\Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
-    <ProjectReference Include="..\..\Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
+    <ProjectReference Include="..\..\Core\ViazyNetCore.Data.FreeSql\ViazyNetCore.Data.FreeSql.csproj" />
   </ItemGroup>
 
 </Project>

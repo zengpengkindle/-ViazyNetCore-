@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
+    <ProjectReference Include="..\..\Core\ViazyNetCore.Data.FreeSql\ViazyNetCore.Data.FreeSql.csproj" />
     <ProjectReference Include="..\ViazyNetCore.DI\ViazyNetCore.DI.csproj" />
   </ItemGroup>
 
