@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.AspNetCore;
+using ViazyNetCore.ShopMall.Manage.Application;
 
 namespace ViazyNetCore.ShopMall.AppApi
 {
-    [DependsOn(typeof(ShopMallApiApplicationModule), typeof(AspNetCoreMvcModule))]
+    [DependsOn(typeof(ShopMallManageModule)
+        , typeof(AspNetCoreMvcModule))]
     public class ShopMallApiApplicationModule : InjectionModule
     {
 

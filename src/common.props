@@ -3,5 +3,6 @@
 		<LangVersion>latest</LangVersion>
 		<Version>1.0.4</Version>
 		<NoWarn>$(NoWarn);CS1591;CS0436</NoWarn>
+		<Authors>Viazy</Authors>
 	</PropertyGroup>
 </Project>

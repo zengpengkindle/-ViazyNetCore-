@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.AspNetCore;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Identity;
+using ViazyNetCore.Manage.WebApi.Middlewares;
 using ViazyNetCore.Modules;
 using ViazyNetCore.MultiTenancy;
 using ViazyNetCore.ShopMall.Manage.Application;
@@ -57,13 +59,13 @@ namespace ViazyNetCore.Manage.WebApi
             });
             context.Services.AddSwagger();
 
-            context.Services.AddSingleton<MultiTenancyMiddleware>();
+            context.Services.AddSingleton<TunnelWorksMultiTenancyMiddleware>();
             //context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
         }
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
-            app.UseMultiTenancy();
+            app.UseMiddleware<TunnelWorksMultiTenancyMiddleware>();
         }
     }
 }

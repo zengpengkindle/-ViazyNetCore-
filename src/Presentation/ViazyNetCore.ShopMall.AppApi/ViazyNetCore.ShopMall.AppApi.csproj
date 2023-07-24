@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.NLog\ViazyNetCore.NLog.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.Swagger\ViazyNetCore.Swagger.csproj" />
     <ProjectReference Include="..\..\sdks\payment\Essensoft.Paylink.WeChatPay\Essensoft.Paylink.WeChatPay.csproj" />
+    <ProjectReference Include="..\..\src\ShopMall\ViazyNetCore.ShopMall.Manage.Application\ViazyNetCore.ShopMall.Manage.Application.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj" />
     <ProjectReference Include="..\..\src\ViazyNetCore.ShopMall.Modules\ViazyNetCore.ShopMall.Modules.csproj" />
   </ItemGroup>

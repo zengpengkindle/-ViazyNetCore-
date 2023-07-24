@@ -1,7 +1,6 @@
 using System.Providers;
 using NLog.Web;
 using ViazyNetCore.Auth.Jwt;
-using ViazyNetCore.Caching.DependencyInjection;
 using ViazyNetCore.Configuration;
 using ViazyNetCore.Modules.Internal;
 using ViazyNetCore.ShopMall.AppApi;

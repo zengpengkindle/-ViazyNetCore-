@@ -29,7 +29,7 @@ namespace ViazyNetCore.MultiTenancy.AspNetCore
                 throw new ArgumentNullException(nameof(DbConfig));
             //fsql.Aop.CurdAfter += Aop_CurdAfter; ;
 
-            if (dbOption.Value.Tenant && currentTenant != null)
+            // if (dbOption.Value.Tenant && currentTenant != null)
             {
                 fsql.GlobalFilter.ApplyOnly<ITenant>(FilterNames.Tenant, a => a.TenantId == (currentTenant.Id ?? 0));
             }
