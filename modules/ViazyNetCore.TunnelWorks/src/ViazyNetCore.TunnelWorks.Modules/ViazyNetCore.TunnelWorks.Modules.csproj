@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ViazyNetCore.Data.FreeSql" Version="1.0.3" />
+    <PackageReference Include="ViazyNetCore.Data.FreeSql" Version="1.0.5-preview" />
   </ItemGroup>
 
   <ItemGroup>

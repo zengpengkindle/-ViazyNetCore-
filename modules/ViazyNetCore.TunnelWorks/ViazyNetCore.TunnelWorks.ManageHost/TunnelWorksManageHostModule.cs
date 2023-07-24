@@ -41,14 +41,14 @@ namespace ViazyNetCore.TunnelWorks.ManageHost
             {
             });
             context.Services.AddSwagger();
-            context.Services.AddScoped<TunnelWorksMultiTenancyMiddleware>();
+            //context.Services.AddScoped<TunnelWorksMultiTenancyMiddleware>();
         }
 
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
 
-            app.UseMiddleware<TunnelWorksMultiTenancyMiddleware>();
+            //app.UseMiddleware<TunnelWorksMultiTenancyMiddleware>();
         }
     }
 }

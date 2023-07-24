@@ -25,3 +25,4 @@ yarn.lock
 /src/Presentation/ViazyNetCore.Manage.WebApi/Configs/redis.Development.json
 /src/Presentation/ViazyNetCore.ShopMall.AppApi/Configs/dbconfig.Development.json
 /src/Presentation/ViazyNetCore.Manage.WebApi/Configs/rabbitmq.Development.json
+/src/nuget/*.nupkg

@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Annotations", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Core", "Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj", "{C91C3E73-474A-41F3-9224-D66066CE9915}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Data.FreeSql", "Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj", "{56A26CC8-A967-47BE-9DAB-E31762A3812E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Data.FreeSql", "Core\ViazyNetCore.Data.FreeSql\ViazyNetCore.Data.FreeSql.csproj", "{56A26CC8-A967-47BE-9DAB-E31762A3812E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Business.Core", "src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj", "{8930CFC6-C865-4F6B-8EAF-44A62DE1BD5F}"
 EndProject
