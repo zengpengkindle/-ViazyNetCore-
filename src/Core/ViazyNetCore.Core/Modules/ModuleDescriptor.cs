@@ -50,7 +50,7 @@ namespace ViazyNetCore.Modules
 
         public override string ToString()
         {
-            return $"[AbpModuleDescriptor {Type.FullName}]";
+            return $"[ModuleDescriptor {Type.FullName}]";
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddMultiTenancy(this IServiceCollection services)
         {
             services.AddSingleton<ICurrentTenantAccessor>(AsyncLocalCurrentTenantAccessor.Instance);
-            services.AddTransient<ICurrentTenant, CurrentTenant>();
+            services.AddSingleton<ICurrentTenant, CurrentTenant>();
         }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ViazyNetCore.MultiTenancy
 {
-    [Injection(Lifetime = ServiceLifetime.Transient)]
+    [Injection(Lifetime = ServiceLifetime.Singleton)]
     public class CurrentTenant : ICurrentTenant
     {
         public virtual bool IsAvailable => Id.HasValue;

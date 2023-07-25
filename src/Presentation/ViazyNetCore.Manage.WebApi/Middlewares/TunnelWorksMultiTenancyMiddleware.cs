@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ViazyNetCore.Data.FreeSql.Extensions;
 using ViazyNetCore.MultiTenancy;
 
-namespace ViazyNetCore.TunnelWorks.ManageHost.Middlewares
+namespace ViazyNetCore.Manage.WebApi.Middlewares
 {
     public class TunnelWorksMultiTenancyMiddleware : IMiddleware
     {
