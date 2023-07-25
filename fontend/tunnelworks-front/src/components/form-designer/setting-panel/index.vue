@@ -30,6 +30,7 @@
                 >
                   <template v-for="(editorName, propName) in commonProps">
                     <component
+                      v-bind:key="editorName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -46,6 +47,7 @@
                 >
                   <template v-for="(editorName, propName) in advProps">
                     <component
+                      v-bind:key="editorName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -62,6 +64,7 @@
                 >
                   <template v-for="(editorName, propName) in eventProps">
                     <component
+                      v-bind:key="editorName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -98,12 +101,13 @@
                 >
                   <template v-for="(editorName, propName) in commonProps">
                     <component
+                      v-bind:key="editorName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
                       :selected-widget="selectedWidget"
                       :option-model="optionModel"
-                    ></component>
+                    />
                   </template>
                 </el-collapse-item>
 
@@ -114,12 +118,13 @@
                 >
                   <template v-for="(editorName, propName) in advProps">
                     <component
+                      v-bind:key="editorName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
                       :selected-widget="selectedWidget"
                       :option-model="optionModel"
-                    ></component>
+                    />
                   </template>
                 </el-collapse-item>
 
@@ -130,12 +135,13 @@
                 >
                   <template v-for="(editorName, propName) in eventProps">
                     <component
+                      v-bind:key="editorName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
                       :selected-widget="selectedWidget"
                       :option-model="optionModel"
-                    ></component>
+                    />
                   </template>
                 </el-collapse-item>
               </el-collapse>
@@ -153,10 +159,7 @@
           class="setting-scrollbar"
           :style="{ height: scrollerHeight }"
         >
-          <form-setting
-            :designer="designer"
-            :form-config="formConfig"
-          ></form-setting>
+          <form-setting :designer="designer" :form-config="formConfig" />
         </el-scrollbar>
       </el-tab-pane>
     </el-tabs>
@@ -176,14 +179,14 @@
         :close-on-press-escape="false"
         :destroy-on-close="true"
       >
-        <el-alert type="info" :closable="false" :title="eventHeader"></el-alert>
+        <el-alert type="info" :closable="false" :title="eventHeader" />
         <code-editor
           :mode="'javascript'"
           :readonly="false"
           v-model="eventHandlerCode"
           ref="ecEditor"
-        ></code-editor>
-        <el-alert type="info" :closable="false" title="}"></el-alert>
+        />
+        <el-alert type="info" :closable="false" title="}" />
         <template #footer>
           <div class="dialog-footer">
             <el-button @click="showWidgetEventDialogFlag = false">
@@ -200,13 +203,12 @@
 </template>
 
 <script>
-import CodeEditor from "@/components/code-editor/index";
+import CodeEditor from "@/components/code-editor/index.vue";
 import PropertyEditors from "./property-editor/index";
-import FormSetting from "./form-setting";
+import FormSetting from "./form-setting.vue";
 import WidgetProperties from "./propertyRegister";
 import { addWindowResizeHandler } from "@/utils/util";
 import i18n from "@/utils/i18n";
-import eventBus from "@/utils/event-bus";
 import emitter from "@/utils/emitter";
 import { propertyRegistered } from "@/components/form-designer/setting-panel/propertyRegister";
 
@@ -268,7 +270,7 @@ export default {
   watch: {
     "designer.selectedWidget": {
       handler(val) {
-        if (!!val) {
+        if (val) {
           this.activeTab = "1";
         }
       }
@@ -330,13 +332,13 @@ export default {
 
       /* alert组件注册了两个type属性编辑器，跳过第一个type属性编辑器，只显示第二个alert-type属性编辑器！！ */
       if (propName.indexOf("-") <= -1) {
-        let uniquePropName = this.selectedWidget.type + "-" + propName;
+        const uniquePropName = this.selectedWidget.type + "-" + propName;
         if (propertyRegistered(uniquePropName)) {
           return false;
         }
       }
 
-      let originalPropName = propName.replace(
+      const originalPropName = propName.replace(
         this.selectedWidget.type + "-",
         ""
       ); //去掉组件名称前缀-，如果有的话！！
@@ -344,19 +346,19 @@ export default {
     },
 
     getPropEditor(propName, editorName) {
-      let originalPropName = propName.replace(
+      const originalPropName = propName.replace(
         this.selectedWidget.type + "-",
         ""
       ); //去掉组件名称前缀-，如果有的话！！
-      let ownPropEditorName = `${this.selectedWidget.type}-${originalPropName}-editor`;
+      const ownPropEditorName = `${this.selectedWidget.type}-${originalPropName}-editor`;
       //console.log(ownPropEditorName, this.$options.components[ownPropEditorName])
-      if (!!this.$options.components[ownPropEditorName]) {
+      if (this.$options.components[ownPropEditorName]) {
         //局部注册的属性编辑器组件
         return ownPropEditorName;
       }
 
       //return !!this.$root.$options.components[ownPropEditorName] ? ownPropEditorName : editorName  //Vue2全局注册的属性编辑器组件
-      return !!this.$root.$.appContext.components[ownPropEditorName]
+      return this.$root.$.appContext.components[ownPropEditorName]
         ? ownPropEditorName
         : editorName; //Vue3全局注册的属性编辑器组件
     },
@@ -364,7 +366,7 @@ export default {
     showCollapse(propsObj) {
       let result = false;
 
-      for (let propName in propsObj) {
+      for (const propName in propsObj) {
         if (!propsObj.hasOwnProperty(propName)) {
           continue;
         }

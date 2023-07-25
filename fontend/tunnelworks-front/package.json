@@ -43,6 +43,7 @@
     "echarts": "^5.4.0",
     "element-plus": "^2.2.27",
     "element-resize-detector": "^1.2.4",
+    "file-saver": "^2.0.5",
     "js-cookie": "^3.0.1",
     "mitt": "^3.0.0",
     "mockjs": "^1.1.0",
