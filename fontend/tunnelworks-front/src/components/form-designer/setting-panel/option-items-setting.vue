@@ -202,7 +202,7 @@
 </template>
 
 <script>
-import CodeEditor from "@/components/code-editor/index";
+import CodeEditor from "@/components/code-editor/index.vue";
 import i18n from "@/utils/i18n";
 
 export default {

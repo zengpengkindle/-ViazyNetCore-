@@ -34,7 +34,7 @@
           :name="tab.options.name"
           @click.stop="selectWidget(widget)"
         >
-          <draggable
+          <!-- <draggable
             :list="tab.widgetList"
             item-key="id"
             v-bind="{ group: 'dragGroup', ghostClass: 'ghost', animation: 200 }"
@@ -72,7 +72,7 @@
                 </template>
               </div>
             </template>
-          </draggable>
+          </draggable> -->
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -82,7 +82,7 @@
 <script>
 import i18n from "@/utils/i18n";
 import containerMixin from "@/components/form-designer/form-widget/container-widget/containerMixin";
-import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper";
+import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper.vue";
 import FieldComponents from "@/components/form-designer/form-widget/field-widget/index";
 import refMixinDesign from "@/components/form-designer/refMixinDesign";
 

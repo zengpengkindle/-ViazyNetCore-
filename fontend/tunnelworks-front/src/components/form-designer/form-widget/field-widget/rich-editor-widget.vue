@@ -32,13 +32,13 @@
             ? `height: ${field.options.contentHeight};`
             : ''
         "
-      ></quill-editor> -->
+      /> -->
     </div>
   </form-item-wrapper>
 </template>
 
 <script>
-import FormItemWrapper from "./form-item-wrapper";
+import FormItemWrapper from "./form-item-wrapper.vue";
 import emitter from "@/utils/emitter";
 import i18n from "@/utils/i18n";
 import { deepClone } from "@/utils/util";
@@ -76,12 +76,12 @@ export default {
     }
   },
   components: {
-    FormItemWrapper,
+    FormItemWrapper //,
 
     // VueEditor: resolve => { //懒加载！！
     //   require(['vue2-editor'], ({VueEditor}) => resolve(VueEditor))
     // }
-    quillEditor
+    // quillEditor
   },
   data() {
     return {
@@ -147,7 +147,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../styles/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
+@import "../../../../style/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
 
 .full-width-input {
   width: 100% !important;

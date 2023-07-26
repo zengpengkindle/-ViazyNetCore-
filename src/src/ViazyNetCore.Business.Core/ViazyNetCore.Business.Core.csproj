@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />
-    <ProjectReference Include="..\..\Core\ViazyNetCore.Data\ViazyNetCore.Data.FreeSql.csproj" />
+    <ProjectReference Include="..\..\Core\ViazyNetCore.Data.FreeSql\ViazyNetCore.Data.FreeSql.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.EventBus\ViazyNetCore.EventBus.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Domain\ViazyNetCore.Domain.csproj" />
   </ItemGroup>

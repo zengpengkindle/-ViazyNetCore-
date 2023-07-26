@@ -1,4 +1,4 @@
-using System.RabbitMQ;
+using ViazyNetCore.RabbitMQ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.Configuration;

@@ -367,7 +367,7 @@ export default {
       let result = false;
 
       for (const propName in propsObj) {
-        if (!propsObj.hasOwnProperty(propName)) {
+        if (!Object.hasOwnProperty.call(propsObj, propName)) {
           continue;
         }
 

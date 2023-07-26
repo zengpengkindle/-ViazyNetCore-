@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <VFormDesigner ref="vfDesignerRef" :global-dsv="globalDsv">
       <!--
         <template #customToolButtons>
@@ -10,33 +10,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import VFormDesigner from "@/components/form-designer/index.vue";
+import { reactive } from "vue";
+defineOptions({
+  name: "designer"
+});
+const globalDsv = reactive({
+  testApiHost: "http://www.test.com/api",
+  testPort: 8080
+});
 
-export default {
-  name: "App",
-  components: {
-    VFormDesigner
-  },
-  data() {
-    return {
-      //全局数据源变量
-      globalDsv: {
-        testApiHost: "http://www.test.com/api",
-        testPort: 8080
-      }
-    };
-  },
-  computed: {
-    //
-  },
-  methods: {
-    doTest() {
-      const fieldList = this.$refs.vfDesignerRef.getFieldWidgets(null, true);
-      console.log("test", fieldList);
-    }
-  }
-};
+// const vfDesignerRef = ref<VFormDesigner>();
+// const doTest = () => {
+//   const fieldList = vfDesignerRef.getFieldWidgets(null, true);
+//   console.log("test", fieldList);
+// };
 </script>
 
 <style lang="scss">

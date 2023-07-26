@@ -11,7 +11,7 @@
     :rowspan="widget.options.rowspan || 1"
     @click.stop="selectWidget(widget)"
   >
-    <draggable
+    <!-- <draggable
       :list="widget.widgetList"
       item-key="id"
       v-bind="{ group: 'dragGroup', ghostClass: 'ghost', animation: 200 }"
@@ -50,7 +50,7 @@
           </template>
         </div>
       </template>
-    </draggable>
+    </draggable> -->
 
     <div
       class="table-cell-action"
@@ -159,7 +159,7 @@
 import i18n from "@/utils/i18n";
 import FieldComponents from "@/components/form-designer/form-widget/field-widget/index";
 import refMixinDesign from "@/components/form-designer/refMixinDesign";
-import SvgIcon from "@/components/svg-icon";
+import SvgIcon from "@/components/svg-icon/index.vue";
 
 export default {
   name: "TableCellWidget",

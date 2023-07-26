@@ -114,7 +114,7 @@
 
 <script>
 import i18n from "@/utils/i18n";
-import SvgIcon from "@/components/svg-icon";
+import SvgIcon from "@/components/svg-icon/index.vue";
 
 export default {
   name: "form-item-wrapper",
@@ -283,7 +283,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../styles/global.scss";
+@import "../../../../style/global.scss";
 
 .design-time-bottom-margin {
   margin-bottom: 5px;

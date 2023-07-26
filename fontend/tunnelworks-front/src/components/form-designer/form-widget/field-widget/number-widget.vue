@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import FormItemWrapper from "./form-item-wrapper";
+import FormItemWrapper from "./form-item-wrapper.vue";
 import emitter from "@/utils/emitter";
 import i18n from "@/utils/i18n";
 import fieldMixin from "@/components/form-designer/form-widget/field-widget/fieldMixin";
@@ -104,7 +104,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../styles/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
+@import "../../../../style/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
 
 .full-width-input {
   width: 100% !important;

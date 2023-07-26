@@ -32,11 +32,12 @@
                     :title="ctn.displayName"
                     @dblclick="addContainerByDbClick(ctn)"
                   >
-                    <span
-                      ><svg-icon
+                    <span>
+                      <!-- <svg-icon
                         :icon-class="ctn.icon"
                         class-name="color-svg-icon"
-                      />{{
+                      /> -->
+                      {{
                         i18n2t(
                           `designer.widgetLabel.${ctn.type}`,
                           `extension.widgetLabel.${ctn.type}`
@@ -68,11 +69,12 @@
                     :title="fld.displayName"
                     @dblclick="addFieldByDbClick(fld)"
                   >
-                    <span
-                      ><svg-icon
+                    <span>
+                      <!-- <svg-icon
                         :icon-class="fld.icon"
                         class-name="color-svg-icon"
-                      />{{
+                      /> -->
+                      {{
                         i18n2t(
                           `designer.widgetLabel.${fld.type}`,
                           `extension.widgetLabel.${fld.type}`
@@ -104,11 +106,12 @@
                     :title="fld.displayName"
                     @dblclick="addFieldByDbClick(fld)"
                   >
-                    <span
-                      ><svg-icon
+                    <span>
+                      <!-- <svg-icon
                         :icon-class="fld.icon"
                         class-name="color-svg-icon"
-                      />{{
+                      /> -->
+                      {{
                         i18n2t(
                           `designer.widgetLabel.${fld.type}`,
                           `extension.widgetLabel.${fld.type}`
@@ -141,10 +144,11 @@
                     @dblclick="addFieldByDbClick(fld)"
                   >
                     <span>
-                      <svg-icon
+                      <!-- <svg-icon
                         :icon-class="fld.icon"
                         class-name="color-svg-icon"
-                      />{{
+                      /> -->
+                      {{
                         i18n2t(
                           `designer.widgetLabel.${fld.type}`,
                           `extension.widgetLabel.${fld.type}`
@@ -170,7 +174,7 @@
             >
           </template>
 
-          <template v-for="(ft, idx) in formTemplates">
+          <template v-for="(ft, idx) in formTemplates" v-bind:key="ft.title">
             <el-card
               :bord-style="{ padding: '0' }"
               shadow="hover"
@@ -212,7 +216,7 @@ import { formTemplates } from "./templatesConfig";
 import { addWindowResizeHandler, generateId } from "@/utils/util";
 import i18n from "@/utils/i18n";
 import axios from "axios";
-import SvgIcon from "@/components/svg-icon/index";
+import SvgIcon from "@/components/svg-icon/index.vue";
 
 // import ftImg1 from '@/assets/ft-images/t1.png'
 // import ftImg2 from '@/assets/ft-images/t2.png'
@@ -361,7 +365,7 @@ export default {
       return this.designer.checkFieldMove(evt);
     },
 
-    onContainerDragEnd(evt) {
+    onContainerDragEnd(_evt) {
       //console.log('Drag end of container: ')
       //console.log(evt)
     },
@@ -416,6 +420,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* 全局css变量 */
+$--color-primary: #409eff;
 .color-svg-icon {
   -webkit-font-smoothing: antialiased;
   color: #7c7d82;

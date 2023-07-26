@@ -66,7 +66,7 @@
         class="node-tree"
         icon-class="el-icon-arrow-right"
         @node-click="onNodeTreeClick"
-      ></el-tree>
+      />
     </el-drawer>
 
     <div class="right-toolbar" :style="{ width: toolbarWidth + 'px' }">
@@ -126,7 +126,7 @@
           }}</el-button
         >
         <template v-for="(idx, slotName) in $slots">
-          <slot :name="slotName"></slot>
+          <slot :name="slotName" />
         </template>
       </div>
     </div>
@@ -171,8 +171,7 @@
               @appendButtonClick="testOnAppendButtonClick"
               @buttonClick="testOnButtonClick"
               @formChange="handleFormChange"
-            >
-            </VFormRender>
+            />
           </div>
         </div>
         <template #footer>
@@ -228,12 +227,12 @@
           :title="i18nt('designer.hint.importJsonHint')"
           show-icon
           class="alert-padding"
-        ></el-alert>
+        />
         <code-editor
           :mode="'json'"
           :readonly="false"
           v-model="importTemplate"
-        ></code-editor>
+        />
         <template #footer>
           <div class="dialog-footer">
             <el-button type="primary" @click="doJsonImport">
@@ -263,11 +262,7 @@
         :close-on-press-escape="false"
         :destroy-on-close="true"
       >
-        <code-editor
-          :mode="'json'"
-          :readonly="true"
-          v-model="jsonContent"
-        ></code-editor>
+        <code-editor :mode="'json'" :readonly="true" v-model="jsonContent" />
         <template #footer>
           <div class="dialog-footer">
             <el-button
@@ -317,7 +312,7 @@
               :readonly="true"
               v-model="vueCode"
               :user-worker="false"
-            ></code-editor>
+            />
           </el-tab-pane>
           <el-tab-pane label="HTML" name="html">
             <code-editor
@@ -325,7 +320,7 @@
               :readonly="true"
               v-model="htmlCode"
               :user-worker="false"
-            ></code-editor>
+            />
           </el-tab-pane>
         </el-tabs>
         <template #footer>
@@ -380,11 +375,7 @@
         :append-to-body="true"
       >
         <div style="border: 1px solid #dcdfe6">
-          <code-editor
-            :mode="'json'"
-            :readonly="true"
-            v-model="formDataJson"
-          ></code-editor>
+          <code-editor :mode="'json'" :readonly="true" v-model="formDataJson" />
         </div>
         <template #footer>
           <div class="dialog-footer">
@@ -436,7 +427,7 @@
               :readonly="true"
               v-model="sfcCode"
               :user-worker="false"
-            ></code-editor>
+            />
           </el-tab-pane>
           <el-tab-pane label="Vue3" name="vue3">
             <code-editor
@@ -444,7 +435,7 @@
               :readonly="true"
               v-model="sfcCodeV3"
               :user-worker="false"
-            ></code-editor>
+            />
           </el-tab-pane>
         </el-tabs>
         <template #footer>
@@ -482,8 +473,8 @@
 </template>
 
 <script>
-import VFormRender from "@/components/form-render/index";
-import CodeEditor from "@/components/code-editor/index";
+import VFormRender from "@/components/form-render/index.vue";
+import CodeEditor from "@/components/code-editor/index.vue";
 import Clipboard from "clipboard";
 import {
   deepClone,
@@ -499,7 +490,7 @@ import { genSFC } from "@/utils/sfc-generator";
 import loadBeautifier from "@/utils/beautifierLoader";
 import { saveAs } from "file-saver";
 import axios from "axios";
-import SvgIcon from "@/components/svg-icon/index";
+import SvgIcon from "@/components/svg-icon/index.vue";
 
 export default {
   name: "ToolbarPanel",
@@ -610,9 +601,9 @@ export default {
     }
   },
   mounted() {
-    let maxTBWidth = this.designerConfig.toolbarMaxWidth || 460;
-    let minTBWidth = this.designerConfig.toolbarMinWidth || 300;
-    let newTBWidth = window.innerWidth - 260 - 300 - 320 - 80;
+    const maxTBWidth = this.designerConfig.toolbarMaxWidth || 460;
+    const minTBWidth = this.designerConfig.toolbarMinWidth || 300;
+    const newTBWidth = window.innerWidth - 260 - 300 - 320 - 80;
     this.toolbarWidth =
       newTBWidth >= maxTBWidth
         ? maxTBWidth
@@ -621,7 +612,7 @@ export default {
         : newTBWidth;
     addWindowResizeHandler(() => {
       this.$nextTick(() => {
-        let newTBWidth2 = window.innerWidth - 260 - 300 - 320 - 80;
+        const newTBWidth2 = window.innerWidth - 260 - 300 - 320 - 80;
         this.toolbarWidth =
           newTBWidth2 >= maxTBWidth
             ? maxTBWidth
@@ -641,7 +632,7 @@ export default {
     },
 
     buildTreeNodeOfWidget(widget, treeNode) {
-      let curNode = {
+      const curNode = {
         id: widget.id,
         label: widget.options.label || widget.type
         //selectable: true,
@@ -655,7 +646,7 @@ export default {
       curNode.children = [];
       if (widget.type === "grid") {
         widget.cols.map(col => {
-          let colNode = {
+          const colNode = {
             id: col.id,
             label: col.options.name || widget.type,
             children: []
@@ -668,7 +659,7 @@ export default {
       } else if (widget.type === "table") {
         //TODO: 需要考虑合并单元格！！
         widget.rows.map(row => {
-          let rowNode = {
+          const rowNode = {
             id: row.id,
             label: "table-row",
             selectable: false,
@@ -677,13 +668,13 @@ export default {
           curNode.children.push(rowNode);
 
           row.cols.map(cell => {
-            if (!!cell.merged) {
+            if (cell.merged) {
               //跳过合并单元格！！
               return;
             }
 
-            let rowChildren = rowNode.children;
-            let cellNode = {
+            const rowChildren = rowNode.children;
+            const cellNode = {
               id: cell.id,
               label: "table-cell",
               children: []
@@ -697,7 +688,7 @@ export default {
         });
       } else if (widget.type === "tab") {
         widget.tabs.map(tab => {
-          let tabNode = {
+          const tabNode = {
             id: tab.id,
             label: tab.options.name || widget.type,
             selectable: false,
@@ -731,7 +722,7 @@ export default {
       this.refreshNodeTree();
       this.showNodeTreeDrawerFlag = true;
       this.$nextTick(() => {
-        if (!!this.designer.selectedId) {
+        if (this.designer.selectedId) {
           //同步当前选中组件到节点树！！！
           this.$refs.nodeTree.setCurrentKey(this.designer.selectedId);
         }
@@ -811,13 +802,13 @@ export default {
 
     doJsonImport() {
       try {
-        let importObj = JSON.parse(this.importTemplate);
+        const importObj = JSON.parse(this.importTemplate);
         //console.log('test import', this.importTemplate)
         if (!importObj || !importObj.formConfig) {
           throw new Error(this.i18nt("designer.hint.invalidJsonFormat"));
         }
 
-        let fJsonVer = importObj.formConfig.jsonVersion;
+        const fJsonVer = importObj.formConfig.jsonVersion;
         if (!fJsonVer || fJsonVer !== 3) {
           throw new Error(this.i18nt("designer.hint.jsonVersionMismatch"));
         }
@@ -836,8 +827,8 @@ export default {
     },
 
     exportJson() {
-      let widgetList = deepClone(this.designer.widgetList);
-      let formConfig = deepClone(this.designer.formConfig);
+      const widgetList = deepClone(this.designer.widgetList);
+      const formConfig = deepClone(this.designer.formConfig);
       this.jsonContent = JSON.stringify({ widgetList, formConfig }, null, "  ");
       this.jsonRawContent = JSON.stringify({ widgetList, formConfig });
       this.showExportJsonDialogFlag = true;
@@ -982,24 +973,24 @@ export default {
           "https://www.fastmock.site/mock/e9710039bb5f11262d1a0f2f0bbe08c8/vform3/getFS"
         )
         .then(res => {
-          let newFormJson = res.data;
+          const newFormJson = res.data;
           this.$refs.preForm.setFormJson(newFormJson);
           // let newFormData = {'input30696': '668899'}
           // this.$refs.preForm.setFormData(newFormData)
 
           console.log("test", "aaaaaaaa");
           this.$nextTick(() => {
-            let newFormData = { input30696: "668899" };
+            const newFormData = { input30696: "668899" };
             this.$refs.preForm.setFormData(newFormData);
           });
         })
-        .catch(err => {
+        .catch(_err => {
           //
         });
     },
 
     testSetFormJson() {
-      let newFormJson = {
+      const newFormJson = {
         widgetList: [
           {
             type: "static-text",
@@ -1818,7 +1809,7 @@ export default {
     },
 
     testSetFormData() {
-      let testFD = {
+      const testFD = {
         input89263: "899668"
       };
       this.$refs.preForm.setFormData(testFD);
@@ -1869,7 +1860,7 @@ export default {
       return foundW;
     },
 
-    onNodeTreeClick(nodeData, node, nodeEl) {
+    onNodeTreeClick(nodeData, _node, _nodeEl) {
       //console.log('test', JSON.stringify(nodeData))
 
       if (nodeData.selectable !== undefined && !nodeData.selectable) {
@@ -1879,7 +1870,7 @@ export default {
       } else {
         const selectedId = nodeData.id;
         const foundW = this.findWidgetById(selectedId);
-        if (!!foundW) {
+        if (foundW) {
           this.designer.setSelected(foundW);
         }
       }

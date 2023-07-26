@@ -67,14 +67,14 @@
 </template>
 
 <script>
-import FormItemWrapper from "./form-item-wrapper";
+import FormItemWrapper from "./form-item-wrapper.vue";
 import emitter from "@/utils/emitter";
 import i18n, { translate } from "@/utils/i18n";
 import { deepClone, evalFn } from "@/utils/util";
 import fieldMixin from "@/components/form-designer/form-widget/field-widget/fieldMixin";
-import SvgIcon from "@/components/svg-icon/index";
+import SvgIcon from "@/components/svg-icon/index.vue";
 
-let selectFileText = "'" + translate("render.hint.selectFile") + "'";
+const selectFileText = "'" + translate("render.hint.selectFile") + "'";
 
 export default {
   name: "file-upload-widget",
@@ -351,7 +351,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../styles/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
+@import "../../../../style/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
 
 .full-width-input {
   width: 100% !important;

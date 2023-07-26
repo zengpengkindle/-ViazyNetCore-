@@ -51,8 +51,8 @@
 <script>
 import i18n from "@/utils/i18n";
 import containerMixin from "@/components/form-designer/form-widget/container-widget/containerMixin";
-import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper";
-import TableCellWidget from "@/components/form-designer/form-widget/container-widget/table-cell-widget";
+import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper.vue";
+import TableCellWidget from "@/components/form-designer/form-widget/container-widget/table-cell-widget.vue";
 import refMixinDesign from "@/components/form-designer/refMixinDesign";
 
 export default {
@@ -94,6 +94,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../../../style/global.scss";
 div.table-container {
   padding: 5px;
   border: 1px dashed #336699;

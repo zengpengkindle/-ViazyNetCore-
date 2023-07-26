@@ -39,9 +39,9 @@
 
 <script>
 import i18n from "@/utils/i18n";
-import GridColWidget from "@/components/form-designer/form-widget/container-widget/grid-col-widget";
+import GridColWidget from "@/components/form-designer/form-widget/container-widget/grid-col-widget.vue";
 import containerMixin from "@/components/form-designer/form-widget/container-widget/containerMixin";
-import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper";
+import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper.vue";
 import refMixinDesign from "@/components/form-designer/refMixinDesign";
 
 export default {

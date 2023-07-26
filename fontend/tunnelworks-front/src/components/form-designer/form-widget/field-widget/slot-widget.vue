@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import StaticContentWrapper from "./static-content-wrapper";
+import StaticContentWrapper from "./static-content-wrapper.vue";
 import emitter from "@/utils/emitter";
 import i18n, { translate } from "@/utils/i18n";
 import fieldMixin from "@/components/form-designer/form-widget/field-widget/fieldMixin";

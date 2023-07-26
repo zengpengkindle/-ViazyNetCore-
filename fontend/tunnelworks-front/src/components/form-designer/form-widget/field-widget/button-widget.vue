@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import StaticContentWrapper from "./static-content-wrapper";
+import StaticContentWrapper from "./static-content-wrapper.vue";
 import emitter from "@/utils/emitter";
 import i18n from "@/utils/i18n";
 import fieldMixin from "@/components/form-designer/form-widget/field-widget/fieldMixin";
@@ -92,5 +92,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../styles/global.scss"; //* static-content-wrapper已引入，还需要重复引入吗？ *//
+@import "../../../../style/global.scss"; //* static-content-wrapper已引入，还需要重复引入吗？ *//
 </style>

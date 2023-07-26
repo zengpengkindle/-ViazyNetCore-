@@ -35,6 +35,16 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     resolve: {
       alias
     },
+    css: {
+      preprocessorOptions: {
+        // 全局样式引入
+        scss: {
+          // 文件路径，注意最后需要添加 ';'
+          additionalData: '@import "@/style/variable.scss";',
+          javascriptEnabled: true
+        }
+      }
+    },
     // 服务端渲染
     server: {
       hmr: {

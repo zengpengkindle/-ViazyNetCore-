@@ -9,65 +9,10 @@
 -->
 
 <template>
-  <el-container class="main-container full-height">
+  <el-container class="full-height">
     <el-header class="main-header">
       <div class="float-left main-title">
-        <img src="../../assets/vform-logo.png" @click="openHome" />
-        <span class="bold">VForm 3</span>
         {{ i18nt("application.productTitle") }}
-        <span class="version-span">Ver {{ vFormVersion }}</span>
-      </div>
-      <div class="float-right external-link">
-        <el-dropdown
-          v-if="showLink('languageMenu')"
-          :hide-timeout="2000"
-          @command="handleLanguageChanged"
-        >
-          <span class="el-dropdown-link"
-            >{{ curLangName }}<svg-icon icon-class="el-arrow-down"
-          /></span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="zh-CN">{{
-                i18nt("application.zh-CN")
-              }}</el-dropdown-item>
-              <el-dropdown-item command="en-US">{{
-                i18nt("application.en-US")
-              }}</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-        <a
-          v-if="showLink('externalLink')"
-          href="javascript:void(0)"
-          @click="ev => openUrl(ev, gitUrl)"
-          target="_blank"
-          ><svg-icon icon-class="github" />{{ i18nt("application.github") }}</a
-        >
-        <a
-          v-if="showLink('externalLink')"
-          href="javascript:void(0)"
-          @click="ev => openUrl(ev, docUrl)"
-          target="_blank"
-          ><svg-icon icon-class="document" />{{
-            i18nt("application.document")
-          }}</a
-        >
-        <a
-          v-if="showLink('externalLink')"
-          href="javascript:void(0)"
-          @click="ev => openUrl(ev, chatUrl)"
-          target="_blank"
-          >{{ i18nt("application.qqGroup") }}</a
-        >
-        <a
-          v-if="showLink('externalLink')"
-          href="javascript:void(0)"
-          @click="ev => openUrl(ev, subScribeUrl)"
-          target="_blank"
-        >
-          {{ i18nt("application.subscription") }}<i class="el-icon-top-right"
-        /></a>
       </div>
     </el-header>
 
@@ -84,7 +29,7 @@
             ref="toolbarRef"
           >
             <template v-for="(idx, slotName) in $slots" #[slotName]>
-              <slot :name="slotName"></slot>
+              <slot :name="slotName" />
             </template>
           </toolbar-panel>
         </el-header>
@@ -103,7 +48,7 @@
         </el-main>
       </el-container>
 
-      <el-aside>
+      <el-aside class="form-setting-panel">
         <setting-panel
           :designer="designer"
           :selected-widget="designer.selectedWidget"
@@ -133,14 +78,12 @@ import {
 import { MOCK_CASE_URL, VARIANT_FORM_VERSION } from "@/utils/config";
 import i18n, { changeLocale } from "@/utils/i18n";
 import axios from "axios";
-import SvgIcon from "@/components/svg-icon/index";
 
 export default {
   name: "VFormDesigner",
   componentName: "VFormDesigner",
   mixins: [i18n],
   components: {
-    SvgIcon,
     WidgetPanel,
     ToolbarPanel,
     SettingPanel,
@@ -163,9 +106,9 @@ export default {
       type: Object,
       default: () => {
         return {
-          languageMenu: true, //是否显示语言切换菜单
-          externalLink: true, //是否显示GitHub、文档等外部链接
-          formTemplates: true, //是否显示表单模板
+          languageMenu: false, //是否显示语言切换菜单
+          externalLink: false, //是否显示GitHub、文档等外部链接
+          formTemplates: false, //是否显示表单模板
           eventCollapse: true, //是否显示组件事件属性折叠面板
           widgetNameReadonly: false, //禁止修改组件名称
 
@@ -201,10 +144,10 @@ export default {
       vsCodeFlag: false,
       caseName: "",
 
-      docUrl: "https://www.vform666.com/document3.html",
-      gitUrl: "https://github.com/vform666/variant-form3-vite",
-      chatUrl: "https://www.vform666.com/pages/chat-group/",
-      subScribeUrl: "https://www.vform666.com/pages/pro/",
+      docUrl: "", // "https://www.vform666.com/document3.html",
+      gitUrl: "", // "https://github.com/vform666/variant-form3-vite",
+      chatUrl: "", // "https://www.vform666.com/pages/chat-group/",
+      subScribeUrl: "", // "https://www.vform666.com/pages/pro/",
 
       scrollerHeight: 0,
 
@@ -252,7 +195,7 @@ export default {
     },
 
     openHome() {
-      if (!!this.vsCodeFlag) {
+      if (this.vsCodeFlag) {
         const msgObj = {
           cmd: "openUrl",
           data: {
@@ -264,7 +207,7 @@ export default {
     },
 
     openUrl(event, url) {
-      if (!!this.vsCodeFlag) {
+      if (this.vsCodeFlag) {
         const msgObj = {
           cmd: "openUrl",
           data: {
@@ -273,7 +216,7 @@ export default {
         };
         window.parent.postMessage(msgObj, "*");
       } else {
-        let aDom = event.currentTarget;
+        const aDom = event.currentTarget;
         aDom.href = url;
         //window.open(url, '_blank') //直接打开新窗口，会被浏览器拦截
       }
@@ -287,7 +230,7 @@ export default {
       axios
         .get(MOCK_CASE_URL + this.caseName + ".txt")
         .then(res => {
-          if (!!res.data.code) {
+          if (res.data.code) {
             this.$message.error(this.i18nt("designer.hint.sampleLoadedFail"));
             return;
           }
@@ -306,7 +249,7 @@ export default {
 
     initLocale() {
       this.curLocale = localStorage.getItem("v_form_locale");
-      if (!!this.vsCodeFlag) {
+      if (this.vsCodeFlag) {
         this.curLocale = this.curLocale || "en-US";
       } else {
         this.curLocale = this.curLocale || "zh-CN";
@@ -320,12 +263,12 @@ export default {
         return;
       }
 
-      let headers = this.fieldListApi.headers || {};
+      const headers = this.fieldListApi.headers || {};
       axios
         .get(this.fieldListApi.URL, { headers: headers })
         .then(res => {
-          let labelKey = this.fieldListApi.labelKey || "label";
-          let nameKey = this.fieldListApi.nameKey || "name";
+          const labelKey = this.fieldListApi.labelKey || "label";
+          const nameKey = this.fieldListApi.nameKey || "name";
 
           this.fieldList.splice(0, this.fieldList.length); //清空已有
           res.data.forEach(fieldItem => {
@@ -351,7 +294,7 @@ export default {
 
     setFormJson(formJson) {
       let modifiedFlag = false;
-      if (!!formJson) {
+      if (formJson) {
         if (typeof formJson === "string") {
           modifiedFlag = this.designer.loadFormJson(JSON.parse(formJson));
         } else if (formJson.constructor === Object) {
@@ -381,7 +324,7 @@ export default {
     refreshDesigner() {
       //this.designer.loadFormJson( this.getFormJson() )  //只有第一次调用生效？？
 
-      let fJson = this.getFormJson();
+      const fJson = this.getFormJson();
       this.designer.clearDesigner(true); //不触发历史记录变更
       this.designer.loadFormJson(fJson);
     },
@@ -426,7 +369,7 @@ export default {
      * @returns {*[]}
      */
     getFieldWidgets(widgetList = null) {
-      return !!widgetList
+      return widgetList
         ? getAllFieldWidgets(widgetList)
         : getAllFieldWidgets(this.designer.widgetList);
     },
@@ -436,7 +379,7 @@ export default {
      * @returns {*[]}
      */
     getContainerWidgets(widgetList = null) {
-      return !!widgetList
+      return widgetList
         ? getAllContainerWidgets(widgetList)
         : getAllContainerWidgets(this.designer.widgetList);
     },
@@ -472,6 +415,9 @@ export default {
 };
 </script>
 
+<style lang="scss">
+@import "../../style/global.scss";
+</style>
 <style lang="scss" scoped>
 .el-container.main-container {
   background: #fff;
@@ -493,6 +439,7 @@ export default {
   min-width: 680px;
   border-left: 2px dotted #ebeef5;
   border-right: 2px dotted #ebeef5;
+  background-color: #fff;
 }
 
 .el-header.main-header {
@@ -500,6 +447,7 @@ export default {
   height: 48px !important;
   line-height: 48px !important;
   min-width: 800px;
+  background-color: #fff;
 }
 
 div.main-title {
@@ -563,6 +511,7 @@ div.external-link {
 .el-aside.side-panel {
   width: 260px !important;
   overflow-y: hidden;
+  background-color: #fff;
 }
 
 .el-main.form-widget-main {
@@ -577,5 +526,8 @@ div.external-link {
   :deep(.el-scrollbar__view) {
     overflow-x: hidden;
   }
+}
+.form-setting-panel {
+  background-color: #fff;
 }
 </style>

@@ -252,12 +252,12 @@
         :close-on-press-escape="false"
         :destroy-on-close="true"
       >
-        <!-- <code-editor
+        <code-editor
           :mode="'javascript'"
           :readonly="false"
           v-model="functionsCode"
           ref="gfEditor"
-        ></code-editor> -->
+        />
         <template #footer>
           <div class="dialog-footer">
             <el-button @click="showEditFunctionsDialogFlag = false">
@@ -275,7 +275,7 @@
 
 <script>
 import i18n from "@/utils/i18n";
-// import CodeEditor from "@/components/code-editor/index";
+import CodeEditor from "@/components/code-editor/index.vue";
 import {
   deepClone,
   insertCustomCssToHead,
@@ -286,7 +286,7 @@ export default {
   name: "form-setting",
   mixins: [i18n],
   components: {
-    // CodeEditor
+    CodeEditor
   },
   props: {
     designer: Object,
