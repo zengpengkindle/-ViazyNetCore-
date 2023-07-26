@@ -27,7 +27,7 @@
         <draggable
           :list="designer.widgetList"
           item-key="id"
-          :component-data="{ name: 'fade' }"
+          v-bind="{ group: 'dragGroup', ghostClass: 'ghost', animation: 300 }"
           handle=".drag-handler"
           @end="onDragEnd"
           @add="onDragAdd"

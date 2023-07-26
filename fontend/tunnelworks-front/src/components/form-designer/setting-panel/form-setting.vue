@@ -511,7 +511,6 @@ export default {
   }
 
   :deep(.el-collapse-item__header) {
-    font-style: italic;
     font-weight: bold;
   }
 }

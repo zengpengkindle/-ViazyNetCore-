@@ -214,7 +214,6 @@ function initRouter() {
   } else {
     return new Promise(resolve => {
       RouterApi.apiPermissionGetUserRouters().then(data => {
-        console.log("route data", data);
         handleAsyncRoutes(cloneDeep(data));
         resolve(router);
       });

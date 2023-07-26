@@ -28,7 +28,7 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@element-plus/icons": "^0.0.11",
+    "@element-plus/icons-vue": "^0.2.4",
     "@pureadmin/descriptions": "^1.1.0",
     "@pureadmin/table": "^1.9.0",
     "@pureadmin/utils": "^1.8.5",

@@ -19,6 +19,17 @@
       @add="evt => onGridDragAdd(evt, widget.widgetList)"
       @update="onGridDragUpdate"
       :move="checkContainerMove"
+    > -->
+    <draggable
+      :list="widget.widgetList"
+      item-key="id"
+      v-bind="{ group: 'dragGroup', ghostClass: 'ghost', animation: 200 }"
+      :component-data="{ name: 'fade' }"
+      handle=".drag-handler"
+      @end="evt => onGridDragEnd(evt, widget.widgetList)"
+      @add="evt => onGridDragAdd(evt, widget.widgetList)"
+      @update="onGridDragUpdate"
+      :move="checkContainerMove"
     >
       <template #item="{ element: subWidget, index: swIdx }">
         <div class="form-widget-list">
@@ -47,7 +58,7 @@
           </template>
         </div>
       </template>
-    </draggable> -->
+    </draggable>
 
     <div
       class="grid-col-action"

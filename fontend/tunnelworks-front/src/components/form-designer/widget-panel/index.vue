@@ -456,7 +456,6 @@ div.panel-container {
 
   :deep(.el-collapse-item__header) {
     margin-left: 8px;
-    font-style: italic;
     font-weight: bold;
   }
 

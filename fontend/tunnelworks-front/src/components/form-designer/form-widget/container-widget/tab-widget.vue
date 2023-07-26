@@ -44,6 +44,16 @@
             @add="evt => onContainerDragAdd(evt, tab.widgetList)"
             @update="onContainerDragUpdate"
             :move="checkContainerMove"
+          > -->
+          <draggable
+            :list="tab.widgetList"
+            item-key="id"
+            v-bind="{ group: 'dragGroup', ghostClass: 'ghost', animation: 200 }"
+            handle=".drag-handler"
+            :component-data="{ name: 'fade' }"
+            @add="evt => onContainerDragAdd(evt, tab.widgetList)"
+            @update="onContainerDragUpdate"
+            :move="checkContainerMove"
           >
             <template #item="{ element: subWidget, index: swIdx }">
               <div class="form-widget-list">
@@ -72,7 +82,7 @@
                 </template>
               </div>
             </template>
-          </draggable> -->
+          </draggable>
         </el-tab-pane>
       </el-tabs>
     </div>

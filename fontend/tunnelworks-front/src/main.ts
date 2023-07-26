@@ -8,6 +8,8 @@ import { MotionPlugin } from "@vueuse/motion";
 import createGlobal from "@/utils/globals";
 // import { useEcharts } from "@/plugins/echarts";
 import { injectResponsiveStorage } from "@/utils/responsive";
+import { registerIcon } from "@/utils/el-icons";
+import "virtual:svg-icons-register";
 
 import Table from "@pureadmin/table";
 import Status from "@/components/ui/status.vue";
@@ -30,6 +32,7 @@ import "./assets/iconfont/iconfont.js";
 import "./assets/iconfont/iconfont.css";
 
 const app = createApp(App);
+registerIcon(app);
 
 // 自定义指令
 import * as directives from "@/directives";
