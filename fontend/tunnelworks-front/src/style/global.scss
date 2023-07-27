@@ -1,5 +1,5 @@
 /* 全局css变量 */
-$--color-primary: #409EFF;
+$--color-primary: var(--el-color-primary) ;
 
 .primary-color {
   color: $--color-primary;

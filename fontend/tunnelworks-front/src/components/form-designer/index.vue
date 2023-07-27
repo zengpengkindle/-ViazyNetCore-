@@ -437,13 +437,12 @@ export default {
 
 .el-container.center-layout-container {
   min-width: 680px;
-  border-left: 2px dotted #ebeef5;
-  border-right: 2px dotted #ebeef5;
+  border-left: 1px solid #ebeef5;
+  border-right: 1px solid #ebeef5;
   background-color: #fff;
 }
 
 .el-header.main-header {
-  border-bottom: 2px dotted #ebeef5;
   height: 48px !important;
   line-height: 48px !important;
   min-width: 800px;
@@ -503,13 +502,13 @@ div.external-link {
 
 .el-header.toolbar-header {
   font-size: 14px;
-  border-bottom: 1px dotted #cccccc;
+  border-bottom: 1px solid #cccccc;
   height: 42px !important;
   //line-height: 42px !important;
 }
 
 .el-aside.side-panel {
-  width: 260px !important;
+  width: 220px !important;
   overflow-y: hidden;
   background-color: #fff;
 }

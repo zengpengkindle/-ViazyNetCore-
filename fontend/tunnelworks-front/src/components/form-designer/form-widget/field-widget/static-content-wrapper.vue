@@ -241,5 +241,6 @@ export default {
 .el-form-item.selected,
 .static-content-item.selected {
   outline: 2px solid $--color-primary;
+  border-radius: 5px;
 }
 </style>

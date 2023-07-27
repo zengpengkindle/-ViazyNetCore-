@@ -475,7 +475,7 @@
 <script>
 import VFormRender from "@/components/form-render/index.vue";
 import CodeEditor from "@/components/code-editor/index.vue";
-import Clipboard from "clipboard";
+// import Clipboard from "clipboard";
 import {
   deepClone,
   copyToClipboard,
@@ -498,7 +498,7 @@ export default {
   components: {
     VFormRender,
     CodeEditor,
-    Clipboard,
+    // Clipboard,
     SvgIcon
   },
   props: {

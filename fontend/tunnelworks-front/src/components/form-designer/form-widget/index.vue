@@ -250,7 +250,7 @@ export default {
 
   .el-form.full-height-width {
     height: 100%;
-    padding: 3px;
+    padding: 10px;
     background: #ffffff;
 
     .no-widget-hint {
@@ -280,6 +280,7 @@ export default {
 
   .el-form.Pad-layout {
     margin: 0 auto;
+    padding: 10px;
     max-width: 960px;
     border-radius: 15px;
     box-shadow: 0 0 1px 10px #495060;
@@ -287,6 +288,7 @@ export default {
 
   .el-form.H5-layout {
     margin: 0 auto;
+    padding: 10px;
     width: 420px;
     border-radius: 15px;
     //border-width: 10px;

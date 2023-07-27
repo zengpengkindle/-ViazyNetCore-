@@ -420,8 +420,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* 全局css变量 */
-$--color-primary: #409eff;
 .color-svg-icon {
   -webkit-font-smoothing: antialiased;
   color: #7c7d82;
@@ -478,17 +476,16 @@ div.panel-container {
       .container-widget-item,
       .field-widget-item {
         display: inline-block;
-        height: 32px;
-        line-height: 32px;
-        width: 98px;
-        float: left;
+        height: 28px;
+        width: 90px;
+        line-height: 28px;
         margin: 2px 6px 6px 0;
         cursor: move;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        background: #fff;
-        border: 1px solid #e8e9eb;
+        background: #f4f5f8;
+        border: 1px solid #f4f5f8;
         border-radius: 4px;
         padding: 0 8px;
       }

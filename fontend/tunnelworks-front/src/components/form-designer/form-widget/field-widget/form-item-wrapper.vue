@@ -294,19 +294,29 @@ export default {
 
   .field-action {
     position: absolute;
-    //bottom: -24px;
-    bottom: 0;
-    right: -2px;
-    height: 22px;
-    line-height: 22px;
-    background: $--color-primary;
+    bottom: -12px;
+    right: 12px;
+    // bottom: 0;
+    // right: -2px;
+    height: 28px;
+    line-height: 28px;
+    // background: $--color-primary;
     z-index: 9;
 
     i {
-      font-size: 14px;
-      color: #fff;
+      font-size: 12px;
+      padding: 6px;
       margin: 0 3px;
       cursor: pointer;
+      color: $--color-primary;
+      background: #e8f4ff;
+      border: 1px solid;
+      border-radius: 50%;
+      border-color: $--color-primary;
+      &:hover {
+        background: $--color-primary;
+        color: #fff;
+      }
     }
   }
 
@@ -394,6 +404,7 @@ export default {
 .el-form-item.selected,
 .static-content-item.selected {
   outline: 2px solid $--color-primary;
+  border-radius: 5px;
 }
 
 :deep(.label-left-align) .el-form-item__label {
