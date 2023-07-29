@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Crm.Model
+namespace ViazyNetCore.TunnelWorks.Models
 {
     /// <summary>
     /// 产品分类表

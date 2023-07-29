@@ -1967,6 +1967,7 @@ export default {
 .form-render-wrapper.h5-layout {
   margin: 0 auto;
   width: 420px;
+  padding: 10px;
   border-radius: 15px;
   //border-width: 10px;
   box-shadow: 0 0 1px 10px #495060;
@@ -1978,6 +1979,7 @@ export default {
 .form-render-wrapper.pad-layout {
   margin: 0 auto;
   width: 960px;
+  padding: 10px;
   border-radius: 15px;
   //border-width: 10px;
   box-shadow: 0 0 1px 10px #495060;

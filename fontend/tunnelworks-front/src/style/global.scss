@@ -14,10 +14,11 @@ $--color-primary: var(--el-color-primary) ;
   .ghost{
     content: '';
     font-size: 0;
-    height: 3px;
+    height: 50px;
     box-sizing: border-box;
-    background: $--color-primary;
-    border: 2px solid $--color-primary;
+    background: #f7f7f9;
+    border-top: 3px solid $--color-primary;
+    border-radius: 5px;
     outline-width: 0;
     padding: 0;
     overflow: hidden;

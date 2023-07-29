@@ -264,14 +264,18 @@ function formatData(swagger, options) {
         // console.log('x-enumNames',enums,definition.enum);
         enums = enums.length > 0 ? enums : definition.enum;
         _.forEach(enums, function (enumSource) {
-          const enumItem = enumSource.split(",");
-          const hasDes = enumItem.length > 1;
-          const enumValue = Number(enumItem[0]);
-          const item = {
-            Name: hasDes ? enumItem[1] : "_" + enumValue,
-            Value: Number(enumItem[0]),
-          };
-          e.Items.push(item);
+          if (typeof enumSource !== "number") {
+            const enumItem = enumSource.split(",");
+            const hasDes = enumItem.length > 1;
+            const enumValue = Number(enumItem[0]);
+            const item = {
+              Name: hasDes ? enumItem[1] : "_" + enumValue,
+              Value: Number(enumItem[0]),
+            };
+            e.Items.push(item);
+          } else {
+            e.Items.push({ Name: "_" + enumSource, Value: enumSource });
+          }
         });
 
         apiData.Enums.push(e);

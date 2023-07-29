@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ViazyNetCore.AutoMapper" Version="1.0.5-preview" />
     <PackageReference Include="ViazyNetCore.Data.FreeSql" Version="1.0.5-preview" />
   </ItemGroup>
 

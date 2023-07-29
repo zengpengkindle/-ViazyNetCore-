@@ -356,7 +356,7 @@ export default {
 .el-form-item {
   //margin-bottom: 0 !important;
   //margin-bottom: 6px;
-
+  padding: 5px;
   //margin-top: 2px;
   position: relative;
 

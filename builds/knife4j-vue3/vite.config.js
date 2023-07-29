@@ -46,7 +46,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '^/proxyApi': {
-        target: `https://localhost:7284/`,
+        target: `https://localhost:7178/`,
         secure: false,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/proxyApi/, '/swagger')

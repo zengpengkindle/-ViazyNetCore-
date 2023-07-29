@@ -116,8 +116,8 @@ export default {
           previewFormButton: true, //是否显示预览表单按钮
           importJsonButton: true, //是否显示导入JSON按钮
           exportJsonButton: true, //是否显示导出JSON器按钮
-          exportCodeButton: true, //是否显示导出代码按钮
-          generateSFCButton: true, //是否显示生成SFC按钮
+          exportCodeButton: false, //是否显示导出代码按钮
+          generateSFCButton: false, //是否显示生成SFC按钮
 
           toolbarMaxWidth: 450, //设计器工具按钮栏最大宽度（单位像素）
           toolbarMinWidth: 300, //设计器工具按钮栏最小宽度（单位像素）

@@ -240,7 +240,7 @@ export function createDesigner(vueInstance) {
         }
       }
 
-      let newRow = deepClone(widget.rows[cloneRowIdx]);
+      const newRow = deepClone(widget.rows[cloneRowIdx]);
       newRow.id = "table-row-" + generateId();
       newRow.merged = false;
       newRow.cols.forEach(col => {
@@ -881,7 +881,7 @@ export function createDesigner(vueInstance) {
     },
 
     moveDownWidget(parentList, indexOfParentList) {
-      if (!!parentList) {
+      if (parentList) {
         if (indexOfParentList === parentList.length - 1) {
           this.vueInstance.$message(
             this.vueInstance.i18nt("designer.hint.moveDownLastChildHint")
@@ -889,15 +889,15 @@ export function createDesigner(vueInstance) {
           return;
         }
 
-        let tempWidget = parentList[indexOfParentList];
+        const tempWidget = parentList[indexOfParentList];
         parentList.splice(indexOfParentList, 1);
         parentList.splice(indexOfParentList + 1, 0, tempWidget);
       }
     },
 
     copyNewFieldWidget(origin) {
-      let newWidget = deepClone(origin);
-      let tempId = generateId();
+      const newWidget = deepClone(origin);
+      const tempId = generateId();
       newWidget.id = newWidget.type.replace(/-/g, "") + tempId;
       //console.log('test id===', newWidget.id)
       newWidget.options.name = newWidget.id;
@@ -909,7 +909,7 @@ export function createDesigner(vueInstance) {
     },
 
     copyNewContainerWidget(origin) {
-      let newCon = deepClone(origin);
+      const newCon = deepClone(origin);
       newCon.id = newCon.type.replace(/-/g, "") + generateId();
       newCon.options.name = newCon.id;
       if (newCon.type === "grid") {
@@ -925,10 +925,10 @@ export function createDesigner(vueInstance) {
         newCol.options.name = "gridCol" + tmpId;
         newCon.cols.push(newCol);
       } else if (newCon.type === "table") {
-        let newRow = { cols: [] };
+        const newRow = { cols: [], id: "", merged: false };
         newRow.id = "table-row-" + generateId();
         newRow.merged = false;
-        let newCell = deepClone(this.getContainerByType("table-cell"));
+        const newCell = deepClone(this.getContainerByType("table-cell"));
         newCell.id = "table-cell-" + generateId();
         newCell.options.name = newCell.id;
         newCell.merged = false;
@@ -937,7 +937,7 @@ export function createDesigner(vueInstance) {
         newRow.cols.push(newCell);
         newCon.rows.push(newRow);
       } else if (newCon.type === "tab") {
-        let newTabPane = deepClone(this.getContainerByType("tab-pane"));
+        const newTabPane = deepClone(this.getContainerByType("tab-pane"));
         newTabPane.id = "tab-pane-" + generateId();
         newTabPane.options.name = "tab1";
         newTabPane.options.label = "tab 1";
@@ -950,18 +950,18 @@ export function createDesigner(vueInstance) {
     },
 
     addContainerByDbClick(container) {
-      let newCon = this.copyNewContainerWidget(container);
+      const newCon = this.copyNewContainerWidget(container);
       this.widgetList.push(newCon);
       this.setSelected(newCon);
     },
 
     addFieldByDbClick(widget) {
-      let newWidget = this.copyNewFieldWidget(widget);
+      const newWidget = this.copyNewFieldWidget(widget);
       if (!!this.selectedWidget && this.selectedWidget.type === "tab") {
         //获取当前激活的tabPane
         let activeTab = this.selectedWidget.tabs[0];
         this.selectedWidget.tabs.forEach(tabPane => {
-          if (!!tabPane.options.active) {
+          if (tabPane.options.active) {
             activeTab = tabPane;
           }
         });
@@ -985,8 +985,8 @@ export function createDesigner(vueInstance) {
 
     addNewColOfGrid(gridWidget) {
       const cols = gridWidget.cols;
-      let newGridCol = deepClone(this.getContainerByType("grid-col"));
-      let tmpId = generateId();
+      const newGridCol = deepClone(this.getContainerByType("grid-col"));
+      const tmpId = generateId();
       newGridCol.id = "grid-col-" + tmpId;
       newGridCol.options.name = "gridCol" + tmpId;
       if (!!cols && cols.length > 0) {
@@ -1010,7 +1010,7 @@ export function createDesigner(vueInstance) {
 
     addTabPaneOfTabs(tabsWidget) {
       const tabPanes = tabsWidget.tabs;
-      let newTabPane = deepClone(this.getContainerByType("tab-pane"));
+      const newTabPane = deepClone(this.getContainerByType("tab-pane"));
       newTabPane.id = "tab-pane-" + generateId();
       newTabPane.options.name = newTabPane.id;
       newTabPane.options.label = "tab " + (tabPanes.length + 1);
@@ -1129,17 +1129,17 @@ export function createDesigner(vueInstance) {
     },
 
     loadFormContentFromStorage() {
-      let widgetListBackup = window.localStorage.getItem(
+      const widgetListBackup = window.localStorage.getItem(
         "widget__list__backup"
       );
-      if (!!widgetListBackup) {
+      if (widgetListBackup) {
         this.widgetList = JSON.parse(widgetListBackup);
       }
 
-      let formConfigBackup = window.localStorage.getItem(
+      const formConfigBackup = window.localStorage.getItem(
         "form__config__backup"
       );
-      if (!!formConfigBackup) {
+      if (formConfigBackup) {
         //this.formConfig = JSON.parse(formConfigBackup)
         overwriteObj(
           this.formConfig,
