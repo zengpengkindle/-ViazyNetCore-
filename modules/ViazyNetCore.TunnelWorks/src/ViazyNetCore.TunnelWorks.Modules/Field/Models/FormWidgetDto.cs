@@ -21,7 +21,7 @@ namespace ViazyNetCore.TunnelWorks.Modules.Models
     {
         public string Name { get; set; }
         //"label": "input",
-        public string Lable { get; set; }
+        public string Label { get; set; }
         //"labelAlign": "",
         public string LabelAlign { get; set; }
         //"type": "text",

@@ -14,8 +14,8 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.Mapper
             CreateMap<FormTemplateDto, FormTemplateEditResult>();
             CreateMap<FormTemplateQueryRequest, FormTemplateListQueryDto>();
 
-            CreateMap<FormWidgetDto, FormWidgetResult>();
-            CreateMap<FormWidgetOptionDto, FormWidgetOptionResult>();
+            CreateMap<FormWidgetDto, FormWidgetResult>().ReverseMap();
+            CreateMap<FormWidgetOptionDto, FormWidgetOptionResult>().ReverseMap();
         }
     }
 }

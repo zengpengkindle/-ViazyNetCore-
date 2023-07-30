@@ -32,7 +32,27 @@ namespace ViazyNetCore.TunnelWorks.Models
     public enum WeightType
     {
         Input = 1,
-        Texteara = 2,
-        Radio = 3
+        Textarea = 2,
+        Number = 3,
+        Radio = 4,
+        Checkbox=5,
+        Select=6,
+        Time=7,
+        Time_Range=8,
+        Switch=9,
+        Rate=10,
+        Color=11,
+        Slider=12,
+        Static_Text=13,
+        Html_Text=14,
+        Button=15,
+        Divider=16,
+        Picture_Upload=17,
+        File_Upload=18,
+        Rich_Editor=19,
+        /// <summary>
+        /// 级联选择
+        /// </summary>
+        Cascader=20
     }
 }

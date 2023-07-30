@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.FileIO;
 
 namespace ViazyNetCore.TunnelWorks.Modules
 {
@@ -45,6 +46,7 @@ namespace ViazyNetCore.TunnelWorks.Modules
             var sort = 1;
             foreach(var item in dtos)
             {
+                Enum.TryParse<WeightType>(item.Type, true, out var fielType);
                 var fieldEntity = new FormField
                 {
                     CreateTime = DateTime.Now,
@@ -54,13 +56,13 @@ namespace ViazyNetCore.TunnelWorks.Modules
                     ExamineCategoryId = 0,
                     FieldName = item.Id,
                     Id = 0,
-                    FieldType = (int)Enum.Parse<WeightType>(item.Type),
+                    FieldType =(int)fielType,
                     Sorting = sort++,
-                    Type = Enum.Parse<WeightType>(item.Type),
+                    Type = fielType,
                     FormId = formId,
                     InputTips = item.Options.Placeholder,
                     IsNull = !item.Options.Required,
-                    Lable = item.Options.Lable,
+                    Lable = item.Options.Label,
                     Name = item.Options.Name,
                     Options = JSON.Stringify(item.Options),
                 };

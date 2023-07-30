@@ -9,7 +9,7 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.ViewModels
     public class FormWidgetResult
     {
         public string Id { get; set; }
-        public long Key { get; set; }
+        public string Key { get; set; }
         public string Type { get; set; }
         public string? Icon { get; set; }
         public bool FormItemFlag { get; set; }
@@ -20,21 +20,21 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.ViewModels
     {
         public string Name { get; set; }
         //"label": "input",
-        public string Lable { get; set; }
+        public string Label { get; set; }
         //"labelAlign": "",
         public string LabelAlign { get; set; }
         //"type": "text",
-        public string Type { get; set; }
+        public string? Type { get; set; }
         //"defaultValue": "",
-        public string DefaultValue { get; set; }
+        public string? DefaultValue { get; set; }
         //"placeholder": "",
-        public string Placeholder { get; set; }
+        public string? Placeholder { get; set; }
         //"columnWidth": "200px",
-        public string ColumnWidth { get; set; }
+        public string? ColumnWidth { get; set; }
         //"size": "",
-        public string Size { get; set; }
+        public string? Size { get; set; }
         //"labelWidth": null,
-        public string LabelWidth { get; set; }
+        public string? LabelWidth { get; set; }
         //"labelHidden": false,
         public bool LabelHidden { get; set; }
         //"readonly": false,
@@ -50,11 +50,11 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.ViewModels
         //"required": false,
         public bool Required { get; set; }
         //"requiredHint": "",
-        public string RequiredHint { get; set; }
+        public string? RequiredHint { get; set; }
         //"validation": "",
-        public string Validation { get; set; }
+        public string? Validation { get; set; }
         //"validationHint": "",
-        public string ValidationHint { get; set; }
+        public string? ValidationHint { get; set; }
         //"customClass": "",
         //"labelIconClass": null,
         //"labelIconPosition": "rear",

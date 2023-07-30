@@ -310,11 +310,7 @@ export function getAllFieldWidgets(widgetList) {
 
   const result = [];
   const handlerFn = w => {
-    result.push({
-      type: w.type,
-      name: w.options.name,
-      field: w
-    });
+    result.push(w);
   };
   traverseFieldWidgets(widgetList, handlerFn);
 
