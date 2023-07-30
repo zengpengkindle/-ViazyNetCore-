@@ -7,8 +7,9 @@ using ViazyNetCore.TunnelWorks.Models;
 
 namespace ViazyNetCore.TunnelWorks.ManageHost.ViewModels
 {
-    public class FormTemplateAddRequest
+    public class FormTemplateEditRequest
     {
+        public long Id { get; set; }
         /// <summary>
         /// 表单名称
         /// </summary>

@@ -14,6 +14,7 @@ namespace ViazyNetCore.TunnelWorks.ManageHost
         , typeof(AspNetCoreMvcModule)
         , typeof(AuthorizationModule)
         , typeof(AuthApplicationModule)
+        , typeof(TunnelWorksModulsModule)
         )]
     public class TunnelWorksManageHostModule : InjectionModule
     {

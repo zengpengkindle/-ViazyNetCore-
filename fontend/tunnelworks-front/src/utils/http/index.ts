@@ -49,6 +49,7 @@ class ViazyHttp {
     headers: null,
     beforeResponseCallback: (response: ViazyHttpResponse) => {
       const apiResponse = response.data as ApiResponse;
+      console.log(apiResponse)
       if (apiResponse.code == 200) {
         if (apiResponse.data.success) {
           return apiResponse.data.result;

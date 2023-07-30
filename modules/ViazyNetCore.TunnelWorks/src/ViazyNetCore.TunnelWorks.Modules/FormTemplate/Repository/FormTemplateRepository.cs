@@ -33,5 +33,16 @@ namespace ViazyNetCore.TunnelWorks.Modules.Repository
                 })
                 .ToPageAsync(pagination);
         }
+
+        public async Task UpsertAsync(FormTemplate entity)
+        {
+            await this.Orm.InsertOrUpdate<FormTemplate>().SetSource(entity)
+                .UpdateColumns(p => new
+                {
+                    p.Description,
+                    p.Name,
+                    p.FormType,
+                }).ExecuteAffrowsAsync();
+        }
     }
 }

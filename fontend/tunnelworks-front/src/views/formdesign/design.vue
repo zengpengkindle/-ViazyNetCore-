@@ -1,18 +1,23 @@
 <template>
   <div>
-    <VFormDesigner ref="vfDesignerRef" :global-dsv="globalDsv">
-      <!--
-        <template #customToolButtons>
-          <el-button type="text" @click="doTest">测试btn</el-button>
-        </template>
-        -->
+    <VFormDesigner
+      ref="vfDesignerRef"
+      :global-dsv="globalDsv"
+      :widgetListApi="widgetListApi"
+    >
+      <template #customToolButtons>
+        <el-button type="primary" @click="doTest">保存</el-button>
+      </template>
     </VFormDesigner>
   </div>
 </template>
 
 <script lang="ts" setup>
 import VFormDesigner from "@/components/form-designer/index.vue";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+import { useRoute } from "vue-router";
+import { message } from "@/utils/message";
+import FormTemplateApi from "@/api/formTemplate";
 defineOptions({
   name: "designer"
 });
@@ -20,12 +25,20 @@ const globalDsv = reactive({
   testApiHost: "http://www.test.com/api",
   testPort: 8080
 });
-
-// const vfDesignerRef = ref<VFormDesigner>();
-// const doTest = () => {
-//   const fieldList = vfDesignerRef.getFieldWidgets(null, true);
-//   console.log("test", fieldList);
-// };
+const route = useRoute();
+const widgetListApi = reactive({
+  URL: "/api/formTemplate/getFields?id=" + route.query.formId,
+  method: "get"
+});
+const vfDesignerRef = ref<typeof VFormDesigner>();
+const doTest = async () => {
+  const fieldList = vfDesignerRef.value.getFieldWidgets(null, true);
+  await FormTemplateApi.saveFields(
+    parseInt(route.query.formId as string),
+    fieldList
+  );
+  message("保存成功", { type: "success" });
+};
 </script>
 
 <style lang="scss">

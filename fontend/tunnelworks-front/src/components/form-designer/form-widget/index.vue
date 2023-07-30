@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import "@/components/form-designer/form-widget/container-widget/index";
+import ContainerWidgetComponents from "@/components/form-designer/form-widget/container-widget/index";
 import FieldComponents from "@/components/form-designer/form-widget/field-widget/index";
 import i18n from "@/utils/i18n";
 
@@ -77,7 +77,8 @@ export default {
   componentName: "VFormWidget",
   mixins: [i18n],
   components: {
-    ...FieldComponents
+    ...FieldComponents,
+    ...ContainerWidgetComponents
   },
   props: {
     designer: Object,

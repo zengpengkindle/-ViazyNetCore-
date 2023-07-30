@@ -11,7 +11,11 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.Mapper
         public FormTemplateProfile()
         {
             CreateMap<FormTemplateDto, FormTemplateResult>();
+            CreateMap<FormTemplateDto, FormTemplateEditResult>();
             CreateMap<FormTemplateQueryRequest, FormTemplateListQueryDto>();
+
+            CreateMap<FormWidgetDto, FormWidgetResult>();
+            CreateMap<FormWidgetOptionDto, FormWidgetOptionResult>();
         }
     }
 }

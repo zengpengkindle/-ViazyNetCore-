@@ -38,4 +38,9 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.ViewModels
         /// </summary>
         public FormType FormType { get; set; }
     }
+
+    public class FormTemplateEditResult : FormTemplateEditRequest
+    {
+
+    }
 }

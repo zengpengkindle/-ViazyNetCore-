@@ -39,7 +39,7 @@ public class FormTemplateDto
     public FormType FormType { get; set; }
 }
 
-public class FormTemplateAddDto : FormTemplateDto
+public class FormTemplateEditDto : FormTemplateDto
 {
 }
 

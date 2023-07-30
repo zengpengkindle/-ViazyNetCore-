@@ -308,8 +308,8 @@ export function getAllFieldWidgets(widgetList) {
     return [];
   }
 
-  let result = [];
-  let handlerFn = w => {
+  const result = [];
+  const handlerFn = w => {
     result.push({
       type: w.type,
       name: w.options.name,

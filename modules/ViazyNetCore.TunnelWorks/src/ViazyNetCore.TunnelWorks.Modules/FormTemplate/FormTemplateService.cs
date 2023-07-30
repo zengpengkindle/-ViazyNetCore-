@@ -24,10 +24,10 @@ namespace ViazyNetCore.TunnelWorks.Modules
             return this._mapper.Map<FormTemplate, FormTemplateDto>(result);
         }
 
-        public async Task<long> AddForm(FormTemplateAddDto formTemplateDto)
+        public async Task<long> EditForm(FormTemplateEditDto formTemplateDto)
         {
-            var entity = this._mapper.Map<FormTemplateAddDto, FormTemplate>(formTemplateDto);
-            await this._formTemplateRepository.InsertAsync(entity);
+            var entity = this._mapper.Map<FormTemplateEditDto, FormTemplate>(formTemplateDto);
+            await this._formTemplateRepository.UpsertAsync(entity);
             return entity.Id;
         }
 

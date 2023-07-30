@@ -12,5 +12,6 @@ namespace ViazyNetCore.TunnelWorks.Modules.Repository
     public interface IFormTemplateRepository : IBaseRepository<FormTemplate, long>
     {
         Task<PageData<FormTemplateDto>> GetPageListAsync(Pagination pagination, FormTemplateListQueryDto queryDto);
+        Task UpsertAsync(FormTemplate entity);
     }
 }

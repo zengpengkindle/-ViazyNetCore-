@@ -77,7 +77,7 @@ import {
 } from "@/utils/util";
 import { MOCK_CASE_URL, VARIANT_FORM_VERSION } from "@/utils/config";
 import i18n, { changeLocale } from "@/utils/i18n";
-import axios from "axios";
+import { http } from "@/utils/http";
 
 export default {
   name: "VFormDesigner",
@@ -92,6 +92,10 @@ export default {
   props: {
     /* 后端字段列表API */
     fieldListApi: {
+      type: Object,
+      default: null
+    },
+    widgetListApi: {
       type: Object,
       default: null
     },
@@ -178,6 +182,7 @@ export default {
     });
 
     this.loadCase();
+    this.loadWeightListFromServer();
     this.loadFieldListFromServer();
   },
   methods: {
@@ -258,20 +263,39 @@ export default {
       this.changeLanguage(this.curLocale);
     },
 
+    loadWeightListFromServer() {
+      if (!this.widgetListApi) {
+        return;
+      }
+
+      http
+        .request({
+          url: this.widgetListApi.URL,
+          method: this.widgetListApi.method
+        })
+        .then(res => {
+          this.setFormJson({ widgetList: res });
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
+    },
     loadFieldListFromServer() {
       if (!this.fieldListApi) {
         return;
       }
 
-      const headers = this.fieldListApi.headers || {};
-      axios
-        .get(this.fieldListApi.URL, { headers: headers })
+      http
+        .request({
+          url: this.fieldListApi.URL,
+          method: this.fieldListApi.method
+        })
         .then(res => {
           const labelKey = this.fieldListApi.labelKey || "label";
           const nameKey = this.fieldListApi.nameKey || "name";
 
           this.fieldList.splice(0, this.fieldList.length); //清空已有
-          res.data.forEach(fieldItem => {
+          res.forEach(fieldItem => {
             this.fieldList.push({
               label: fieldItem[labelKey],
               name: fieldItem[nameKey]

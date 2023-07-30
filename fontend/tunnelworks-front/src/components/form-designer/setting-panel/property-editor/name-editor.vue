@@ -17,7 +17,7 @@
         v-model="optionModel.name"
         :readonly="widgetNameReadonly"
         @change="updateWidgetNameAndRef"
-      ></el-input>
+      />
     </template>
     <template v-else>
       <el-select
@@ -72,16 +72,16 @@ export default {
   },
   methods: {
     updateWidgetNameAndRef(newName) {
-      let oldName = this.designer.selectedWidgetName;
+      const oldName = this.designer.selectedWidgetName;
       if (isEmptyStr(newName)) {
         this.selectedWidget.options.name = oldName;
         this.$message.info(this.i18nt("designer.hint.nameRequired"));
         return;
       }
 
-      if (!!this.designer.formWidget) {
-        let foundRef = this.designer.formWidget.getWidgetRef(newName); // 检查newName是否已存在！！
-        if (!!foundRef) {
+      if (this.designer.formWidget) {
+        const foundRef = this.designer.formWidget.getWidgetRef(newName); // 检查newName是否已存在！！
+        if (foundRef) {
           this.selectedWidget.options.name = oldName;
           this.$message.info(
             this.i18nt("designer.hint.duplicateName") + newName
@@ -89,10 +89,10 @@ export default {
           return;
         }
 
-        let widgetInDesign = this.designer.formWidget.getWidgetRef(oldName);
+        const widgetInDesign = this.designer.formWidget.getWidgetRef(oldName);
         if (!!widgetInDesign && !!widgetInDesign.registerToRefList) {
           widgetInDesign.registerToRefList(oldName); //注册组件新的ref名称并删除老的ref！！
-          let newLabel = this.getLabelByFieldName(newName);
+          const newLabel = this.getLabelByFieldName(newName);
           this.designer.updateSelectedWidgetNameAndLabel(
             this.selectedWidget,
             newName,

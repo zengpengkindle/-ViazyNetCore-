@@ -8,6 +8,7 @@ using ViazyNetCore.TunnelWorks.Models;
 
 namespace ViazyNetCore.TunnelWorks.Modules.Repository
 {
+    [Injection]
     public class FormFieldStyleRepository : DefaultRepository<FormFieldStyle, long>, IFormFieldStyleRepository
     {
         public FormFieldStyleRepository(IFreeSql fsql) : base(fsql)

@@ -8,8 +8,9 @@ using ViazyNetCore.TunnelWorks.Models;
 
 namespace ViazyNetCore.TunnelWorks.Modules.Repository
 {
+    [Injection]
     public interface IFormFieldRepository : IBaseRepository<FormField, long>
     {
-
+        Task<List<FormField>> GetListByFormIdAsync(long formId);
     }
 }
