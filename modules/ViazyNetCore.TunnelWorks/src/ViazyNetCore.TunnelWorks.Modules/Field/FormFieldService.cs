@@ -33,7 +33,7 @@ namespace ViazyNetCore.TunnelWorks.Modules
                     Icon = "",
                     Key = field.Name,
                     Options = JSON.Parse<FormWidgetOptionDto>(field.Options),
-                    Type = field.Type.ToString().ToLower(),
+                    Type = field.Type.ToString().Replace("_", "-").ToLower(),
                 });
             }
 
@@ -46,7 +46,7 @@ namespace ViazyNetCore.TunnelWorks.Modules
             var sort = 1;
             foreach(var item in dtos)
             {
-                Enum.TryParse<WeightType>(item.Type, true, out var fielType);
+                Enum.TryParse<WeightType>(item.Type.Replace("-", "_"), true, out var fielType);
                 var fieldEntity = new FormField
                 {
                     CreateTime = DateTime.Now,
@@ -56,7 +56,7 @@ namespace ViazyNetCore.TunnelWorks.Modules
                     ExamineCategoryId = 0,
                     FieldName = item.Id,
                     Id = 0,
-                    FieldType =(int)fielType,
+                    FieldType = (int)fielType,
                     Sorting = sort++,
                     Type = fielType,
                     FormId = formId,
@@ -66,7 +66,7 @@ namespace ViazyNetCore.TunnelWorks.Modules
                     Name = item.Options.Name,
                     Options = JSON.Stringify(item.Options),
                 };
-                await this._formFieldRepository.InsertOrUpdateAsync(fieldEntity);
+                await this._formFieldRepository.Orm.InsertOrUpdate<FormField>().SetSource(fieldEntity).ExecuteAffrowsAsync();
             }
         }
     }

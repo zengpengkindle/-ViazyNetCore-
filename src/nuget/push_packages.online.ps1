@@ -1,9 +1,10 @@
+$apiKey = $args[0]
 . ".\common.ps1"
 
 # Get the version
 [xml]$commonPropsXml = Get-Content (Join-Path $rootFolder "common.props")
 $version = $commonPropsXml.Project.PropertyGroup.Version
-$nugetUrl = "d:/nuget"
+$nugetUrl = "https://api.nuget.org/v3/index.json"
 Set-Location $packFolder
 
 foreach($project in $projects) {
@@ -17,8 +18,8 @@ foreach($project in $projects) {
 	
 	if ($nugetPackageExists)
 	{
-		#dotnet nuget push $nugetPackageName --skip-duplicate -s $nugetUrl --api-key "$apiKey"		
-		dotnet nuget push $nugetPackageName -s $nugetUrl	
+		dotnet nuget push $nugetPackageName --skip-duplicate -s $nugetUrl --api-key "$apiKey"		
+		#dotnet nuget push $nugetPackageName -s $nugetUrl	
 		#Write-Host ("Deleting package from local: " + $nugetPackageName)
 		Remove-Item $nugetPackageName -Force
 	}

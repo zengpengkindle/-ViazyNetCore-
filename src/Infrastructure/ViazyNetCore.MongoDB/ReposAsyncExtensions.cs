@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using ViazyNetCore;
 
 namespace System.Linq
 {
@@ -192,7 +193,7 @@ namespace System.Linq
         /// <param name="source">要从其创建 <see cref="PageData{TSource}"/> 的 <see cref="IRepositoryQuery{TSource}"/>。</param>
         /// <param name="pagination">分页参数。</param>
         /// <returns>一个包含输入序列中元素的 <see cref="PageData{TSource}"/>。</returns>
-        public static Task<PageData<TSource>> ToPageAsync<TSource>(this IRepositoryQuery<TSource> source, IPagination pagination) => source.ToPageAsync(pagination.PageNumber, pagination.PageSize);
+        public static Task<PageData<TSource>> ToPageAsync<TSource>(this IRepositoryQuery<TSource> source, IPagination pagination) => source.ToPageAsync(pagination.Page, pagination.Limit);
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

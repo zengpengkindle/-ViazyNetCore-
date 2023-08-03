@@ -27,7 +27,7 @@ namespace ViazyNetCore.TunnelWorks.Modules.Models
         //"type": "text",
         public string Type { get; set; }
         //"defaultValue": "",
-        public string DefaultValue { get; set; }
+        public object DefaultValue { get; set; }
         //"placeholder": "",
         public string Placeholder { get; set; }
         //"columnWidth": "200px",

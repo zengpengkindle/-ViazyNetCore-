@@ -18,7 +18,7 @@ foreach($project in $projects) {
 	Set-Location $projectFolder
 
     #dotnet clean
-   dotnet pack -c Debug --no-build -- /maxcpucount
+   dotnet pack -c Release --no-build -- /maxcpucount
 
     if (-Not $?) {
         Write-Error "Packaging failed for the project: $projectName" 
@@ -27,7 +27,7 @@ foreach($project in $projects) {
     
     # Move nuget package
     $projectName = $project.Substring($project.LastIndexOf("/") + 1)
-    $projectPackPath = Join-Path $projectFolder ("/bin/Debug/" + $projectName + ".*.nupkg")
+    $projectPackPath = Join-Path $projectFolder ("/bin/Release/" + $projectName + ".*.nupkg")
     Move-Item -Force $projectPackPath $packFolder
 	
 	Seperator

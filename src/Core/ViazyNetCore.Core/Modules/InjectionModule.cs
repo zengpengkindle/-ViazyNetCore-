@@ -65,7 +65,7 @@ namespace ViazyNetCore
         {
             if (!IsInjectionModule(moduleType))
             {
-                throw new ArgumentException("Given type is not an ABP module: " + moduleType.AssemblyQualifiedName);
+                throw new ArgumentException("Given type is not an module: " + moduleType.AssemblyQualifiedName);
             }
         }
 
