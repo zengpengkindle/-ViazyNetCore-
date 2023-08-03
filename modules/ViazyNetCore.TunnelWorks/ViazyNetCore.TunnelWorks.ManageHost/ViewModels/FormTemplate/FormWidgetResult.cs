@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace ViazyNetCore.TunnelWorks.ManageHost.ViewModels
 {
@@ -26,7 +27,7 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.ViewModels
         //"type": "text",
         public string? Type { get; set; }
         //"defaultValue": "",
-        public object? DefaultValue { get; set; }
+        public JToken? DefaultValue { get; set; }
         //"placeholder": "",
         public string? Placeholder { get; set; }
         //"columnWidth": "200px",
@@ -69,6 +70,7 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.ViewModels
         public bool AppendButton { get; set; }
         //"appendButtonDisabled": false,
         public bool AppendButtonDisabled { get; set; }
+        public JToken? OptionItems { get; set; }
         //"buttonIcon": "custom-search",
         //"onCreated": "",
         //"onMounted": "",

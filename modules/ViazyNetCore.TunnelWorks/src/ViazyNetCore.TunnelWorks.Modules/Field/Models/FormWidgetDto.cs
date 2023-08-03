@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.FileIO;
+using Newtonsoft.Json.Linq;
 
 namespace ViazyNetCore.TunnelWorks.Modules.Models
 {
@@ -27,7 +28,7 @@ namespace ViazyNetCore.TunnelWorks.Modules.Models
         //"type": "text",
         public string Type { get; set; }
         //"defaultValue": "",
-        public object DefaultValue { get; set; }
+        public JToken? DefaultValue { get; set; }
         //"placeholder": "",
         public string Placeholder { get; set; }
         //"columnWidth": "200px",
@@ -70,6 +71,8 @@ namespace ViazyNetCore.TunnelWorks.Modules.Models
         public bool AppendButton { get; set; }
         //"appendButtonDisabled": false,
         public bool AppendButtonDisabled { get; set; }
+
+        public JToken? OptionItems { get; set; }
         //"buttonIcon": "custom-search",
         //"onCreated": "",
         //"onMounted": "",
