@@ -26,6 +26,7 @@ const {
   editDrawer,
   onSearch,
   resetForm,
+  editForm,
   handleUpdate,
   handleDelete,
   handleSizeChange,
@@ -130,6 +131,21 @@ const {
                 :size="size"
                 :icon="useRenderIcon(More)"
               />
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <el-button
+                      class="buttonClass"
+                      link
+                      type="info"
+                      :size="size"
+                      @click="editForm(row)"
+                    >
+                      填写表单
+                    </el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
             </el-dropdown>
           </template>
         </pure-table>

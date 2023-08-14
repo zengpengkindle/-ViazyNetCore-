@@ -195,6 +195,10 @@ export function useFormTemplate() {
     onSearch();
   });
 
+  const editForm = row => {
+    router.push({ path: "/formdesign/render", query: { formId: row.id } });
+  };
+
   return {
     form,
     loading,
@@ -204,6 +208,7 @@ export function useFormTemplate() {
     buttonClass,
     editDrawer,
     onSearch,
+    editForm,
     resetForm,
     handleUpdate,
     handleDelete,

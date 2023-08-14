@@ -116,6 +116,16 @@ export class FormTemplateApi {
       params: { formId }
     });
   }
+  /**
+   * 无
+   */
+  public getFields(id?: number): Promise<Array<FormWidgetResult>> {
+    return http.request({
+      url: "/api/formTemplate/getFields",
+      method: "get",
+      params: { id }
+    });
+  }
 }
 
 /**

@@ -29,6 +29,33 @@ export default [
     ]
   },
   {
+    path: "/formdesign",
+    component: Layout,
+    meta: {
+      title: "表单设计器",
+      showLink: false,
+      rank: 104
+    },
+    children: [
+      {
+        path: "/formdesign/design",
+        name: "formdesigndesign",
+        component: () => import("@/views/formdesign/design.vue"),
+        meta: {
+          title: "表单编辑"
+        }
+      },
+      {
+        path: "/formdesign/render",
+        name: "formdesignrender",
+        component: () => import("@/views/formdesign/render.vue"),
+        meta: {
+          title: "表单填写"
+        }
+      }
+    ]
+  },
+  {
     path: "/shopmall",
     component: Layout,
     meta: {

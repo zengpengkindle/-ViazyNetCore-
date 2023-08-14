@@ -1,10 +1,6 @@
 <template>
   <div>
-    <VFormDesigner
-      ref="vfDesignerRef"
-      :global-dsv="globalDsv"
-      :widgetListApi="widgetListApi"
-    >
+    <VFormDesigner ref="vfDesignerRef" :widgetListApi="widgetListApi">
       <template #customToolButtons>
         <el-button type="primary" @click="doTest">保存</el-button>
       </template>
