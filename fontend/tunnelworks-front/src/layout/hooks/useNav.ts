@@ -57,6 +57,9 @@ export function useNav() {
   function logout() {
     useUserStoreHook().logOut();
   }
+  function goInfo() {
+    router.push("/account/settings");
+  }
 
   function backHome() {
     router.push("/welcome");
@@ -126,6 +129,7 @@ export function useNav() {
     device,
     layout,
     logout,
+    goInfo,
     routers,
     $storage,
     backHome,

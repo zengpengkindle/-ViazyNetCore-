@@ -11,12 +11,15 @@ namespace ViazyNetCore.TunnelWorks.Modules
     public class FormFieldService
     {
         private readonly IFormFieldRepository _formFieldRepository;
+        private readonly IFormFieldValueRepository _formFieldValueRepository;
         private readonly IMapper _mapper;
 
         public FormFieldService(IFormFieldRepository formFieldRepository
+            , IFormFieldValueRepository formFieldValueRepository
             , IMapper mapper)
         {
             this._formFieldRepository = formFieldRepository;
+            this._formFieldValueRepository = formFieldValueRepository;
             this._mapper = mapper;
         }
 
@@ -49,13 +52,13 @@ namespace ViazyNetCore.TunnelWorks.Modules
                 Enum.TryParse<WeightType>(item.Type.Replace("-", "_"), true, out var fielType);
                 var fieldEntity = new FormField
                 {
+                    Id = Snowflake.NextId(),
                     CreateTime = DateTime.Now,
                     CreateUserId = 0,
                     CreateUserName = "",
                     DefaultValue = null,
                     ExamineCategoryId = 0,
                     FieldName = item.Id,
-                    Id = 0,
                     FieldType = (int)fielType,
                     Sorting = sort++,
                     Type = fielType,
@@ -68,6 +71,27 @@ namespace ViazyNetCore.TunnelWorks.Modules
                 };
                 await this._formFieldRepository.Orm.InsertOrUpdate<FormField>().SetSource(fieldEntity).ExecuteAffrowsAsync();
             }
+        }
+
+        public async Task SaveForms(long batchId, List<FormFieldValueDto> editDtos)
+        {
+            var fieldValueEntities = new List<FormFieldValue>();
+            foreach(var item in editDtos)
+            {
+                var fieldEntity = new FormFieldValue
+                {
+                    Id = Snowflake.NextId(),
+                    CreateTime = DateTime.Now,
+                    CreateUserId = 0,
+                    CreateUserName = "",
+                    FieldId = item.FieldId,
+                    Value = item.Value,
+                    BatchId = batchId,
+                    Name = null
+                };
+                fieldValueEntities.Add(fieldEntity);
+            }
+            await this._formFieldValueRepository.Orm.InsertOrUpdate<FormFieldValue>().SetSource(fieldValueEntities).ExecuteAffrowsAsync();
         }
     }
 }

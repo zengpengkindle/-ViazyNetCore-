@@ -31,7 +31,7 @@ namespace ViazyNetCore.Authorization
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<UserTokenModel> LoginAsync([Required][FromBody] UserLoginArgs args, [FromServices] IPermissionService permissionService)
+        public async Task<UserTokenDto> LoginAsync([Required][FromBody] UserLoginArgs args, [FromServices] IPermissionService permissionService)
         {
             var ip = this._httpContextAccessor.HttpContext!?.GetRequestIP();
             OperationLog operationLog = new OperationLog
@@ -52,7 +52,7 @@ namespace ViazyNetCore.Authorization
                 {
                     var identity = await this._userService.GetUserLoginIdentityAsync(args, ip, false);
                     var permissions = await permissionService.ResolveUserPermission(identity.Id);
-                    var token = await this._tokenProvider.IssueToken(identity.Id, identity.Nickname, AuthUserType.Normal ,permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
+                    var token = await this._tokenProvider.IssueToken(identity, AuthUserType.Normal ,permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
                     //登陆成功，清空缓存
                     _userService.ClearCache(args.Username);
 
@@ -61,7 +61,7 @@ namespace ViazyNetCore.Authorization
                     operationLog.ObjectId = identity.Id.ToString();
                     operationLog.Description = $"登录用户：{args.Username},登陆成功";
 
-                    return new UserTokenModel
+                    return new UserTokenDto
                     {
                         AccessToken = token.AccessToken,
                         ExpiresIn = token.ExpiresIn,
@@ -103,7 +103,7 @@ namespace ViazyNetCore.Authorization
 
         [Authorize, ApiTitle("修改密码")]
         [HttpPost]
-        public async Task<bool> ModifyPasswordAsync([Required] UserModifyPasswordArgs args)
+        public async Task<bool> ModifyPasswordAsync([Required] UserModifyPasswordEditDto args)
         {
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
             OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.Id.ToString(), authUser.Username, OperatorType.Bms)

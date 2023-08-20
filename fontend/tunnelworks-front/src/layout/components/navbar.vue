@@ -6,12 +6,14 @@ import { useNav } from "@/layout/hooks/useNav";
 import Breadcrumb from "./sidebar/breadCrumb.vue";
 import topCollapse from "./sidebar/topCollapse.vue";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
+import AccountPinBoxFill from "@iconify-icons/ri/account-pin-box-fill";
 import Setting from "@iconify-icons/ri/settings-3-line";
 
 const {
   layout,
   device,
   logout,
+  goInfo,
   onPanel,
   pureApp,
   username,
@@ -42,7 +44,7 @@ const {
       <!-- 菜单搜索 -->
       <Search />
       <!-- 通知 -->
-      <Notice id="header-notice" />
+      <!-- <Notice id="header-notice" /> -->
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
@@ -54,6 +56,13 @@ const {
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
+            <el-dropdown-item @click="goInfo">
+              <IconifyIconOffline
+                :icon="AccountPinBoxFill"
+                style="margin: 5px"
+              />
+              个人信息
+            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"

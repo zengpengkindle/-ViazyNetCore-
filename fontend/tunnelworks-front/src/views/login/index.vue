@@ -34,8 +34,8 @@ dataThemeChange();
 const { title } = useNav();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  username: "",
+  password: ""
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -127,6 +127,7 @@ onBeforeUnmount(() => {
                   clearable
                   v-model="ruleForm.username"
                   placeholder="账号"
+                  autocomplete="on"
                   :prefix-icon="useRenderIcon(User)"
                 />
               </el-form-item>
@@ -138,6 +139,7 @@ onBeforeUnmount(() => {
                   clearable
                   show-password
                   v-model="ruleForm.password"
+                  autocomplete="current-password"
                   placeholder="密码"
                   :prefix-icon="useRenderIcon(Lock)"
                 />

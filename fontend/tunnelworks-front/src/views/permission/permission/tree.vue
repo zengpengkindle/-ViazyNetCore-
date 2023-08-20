@@ -102,7 +102,7 @@ function submitTreeNode() {
 
 <template>
   <div class="overflow-auto">
-    <el-card class="h-full mt-4 min-h-[780px]" v-loading="loading">
+    <el-card class="h-full min-h-[780px]" v-loading="loading">
       <template #header>
         <div class="flex items-center h-[34px]">
           <div class="flex-1 font-bold text-base truncate" title="菜单列表">

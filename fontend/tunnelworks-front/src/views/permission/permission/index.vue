@@ -26,7 +26,11 @@ const {
 <template>
   <div class="main">
     <div class="w-[40%] float-left">
-      <PureTableBar title="权限列表" @refresh="onSearch">
+      <PureTableBar
+        title="权限列表"
+        @refresh="onSearch"
+        v-bind:style="{ marginTop: 0 }"
+      >
         <template #buttons>
           <el-button type="primary" :icon="useRenderIcon(AddFill)">
             新增权限

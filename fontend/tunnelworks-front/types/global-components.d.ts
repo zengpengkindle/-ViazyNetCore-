@@ -10,6 +10,7 @@ declare module "vue" {
     XStatus: typeof import("../src/components/ui/status.vue")['default'];
     XImage: typeof import("../src/components/ui/image.vue")['default'];
     XTable: typeof import("@/components/Table")["XTable"];
+    XCofirmButton: typeof import("@/components/ui/cofirm-button.vue")["default"];
   }
 }
 

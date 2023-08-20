@@ -30,7 +30,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         [ApiTitle("所有查询")]
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public Task<PageData<UserFindAllModel>> FindAllAsync([Required] UserFindAllArgs args)
+        public Task<PageData<UserFindAllModel>> FindAllAsync([Required] UserFindQueryDto args)
         {
             return this._userService.FindAllAsync(args);
         }
@@ -108,8 +108,6 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
                 Description = $"编码:{id}"
             };
             this._eventBus.Publish(new OperationLogEventData(operationLog));
-
-
             return res;
         }
 
@@ -121,6 +119,5 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             this._userService.ClearCache(username);
             return true;
         }
-
     }
 }

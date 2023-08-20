@@ -130,7 +130,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="args">查询参数。</param>
         /// <returns>模型的集合。</returns>
-        public Task<PageData<UserFindAllModel>> FindAllAsync(UserFindAllArgs args)
+        public Task<PageData<UserFindAllModel>> FindAllAsync(UserFindQueryDto args)
         {
             return _userRepository.FindAllAsync(args.UsernameLike, args.RoleId, args.Status, args.OrgId, args);
         }
@@ -217,7 +217,7 @@ namespace ViazyNetCore.Modules
         /// <param name="id">用户编号。</param>
         /// <param name="args">参数。</param>
         /// <returns>修改成功返回 true 值，否则返回 false 值。</returns>
-        public async Task<bool> ModifyPasswordAsync(long id, UserModifyPasswordArgs args)
+        public async Task<bool> ModifyPasswordAsync(long id, UserModifyPasswordEditDto args)
         {
             var user = await _userRepository.GetEnabledUserByIdAsync(id);
 

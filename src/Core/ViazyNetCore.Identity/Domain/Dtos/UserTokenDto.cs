@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Auth.Authorization.ViewModels
 {
-    public class UserTokenModel
+    public class UserTokenDto
     {
 
         /// <summary>

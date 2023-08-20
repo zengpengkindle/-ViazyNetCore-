@@ -76,6 +76,59 @@ namespace ViazyNetCore.Auth.Jwt
             }
             return result;
         }
+        public async Task<JwtTokenResult> IssueToken(IUser user, AuthUserType userType, object[]? roleIds)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var expires = DateTime.Now.Add(TimeSpan.FromSeconds(_option.ExpiresIn));
+
+            var jti = Guid.NewGuid().ToShortId();
+            var clientName = this._option.AppName ?? "app";
+
+            var tokenDescripor = new SecurityTokenDescriptor
+            {
+                Expires = expires,
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_option.Secret)),
+                    SecurityAlgorithms.HmacSha256Signature
+                ),
+                Subject = new ClaimsIdentity(new Claim[] {
+                     new Claim(JwtRegisteredClaimNames.Jti, jti),
+                     new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
+                     new Claim(JwtRegisteredClaimNames.Aud, clientName),
+                     new Claim(ClaimTypes.Name, user.Username),
+                     new Claim(ClaimTypes.Surname, user.Nickname),
+                     new Claim(JwtRegisteredClaimNames.Iss, this._option.Issuer),
+                     new Claim(JwtRegisteredClaimNames.Exp, expires.ConvertToJsTime().ToString()),
+                     new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ConvertToJsTime().ToString()),
+                     new Claim(JwtRegisteredClaimNames.Typ, userType.ToString())
+                })
+            };
+            if (roleIds != null)
+            {
+                tokenDescripor.Subject.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", roleIds.Select(t => t?.ToString()))));
+            }
+
+            var token = tokenHandler.CreateJwtSecurityToken(tokenDescripor);
+            var tokenString = tokenHandler.WriteToken(token);
+            var result = new JwtTokenResult()
+            {
+                AccessToken = tokenString,
+                ExpiresIn = expires.ConvertToJsTime(),
+            };
+
+            if (this._option.UseDistributedCache)
+            {
+                if (this._cacheService != null)
+                {
+                    var redisFieldKey = this.GenerateCacheKey(user.Id);
+                    await this._cacheService.HashSetAsync(HashCachePrefix + clientName, redisFieldKey, jti.Object2Bytes(), new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(this._option.ExpiresIn)
+                    });
+                }
+            }
+            return result;
+        }
 
         public async Task ValidToken(JwtSecurityToken token)
         {

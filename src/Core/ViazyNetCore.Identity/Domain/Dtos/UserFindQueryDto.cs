@@ -5,7 +5,7 @@ namespace ViazyNetCore.Dtos
     /// <summary>
     /// 表示一个用户的查询参数。
     /// </summary>
-    public class UserFindAllArgs : PaginationSort
+    public class UserFindQueryDto : PaginationSort
     {
         /// <summary>
         /// 获取或设置一个值，表示用户账号通配符。

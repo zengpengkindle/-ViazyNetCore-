@@ -5,7 +5,7 @@ namespace ViazyNetCore.Dtos
     /// <summary>
     /// 表示一个用户修改密码的参数。
     /// </summary>
-    public class UserModifyPasswordArgs
+    public class UserModifyPasswordEditDto
     {
         /// <summary>
         /// 设置或获取一个值，表示旧的密码。

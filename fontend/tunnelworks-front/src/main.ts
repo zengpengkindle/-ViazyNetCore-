@@ -15,6 +15,7 @@ import Table from "@pureadmin/table";
 import Status from "@/components/ui/status.vue";
 import XTable from "@/components/Table";
 import ImageUpload from "@/components/ui/image.vue";
+import CofirmButton from "@/components/ui/cofirm-button.vue";
 
 // import * as Draggable from "@/../lib/vuedraggable/dist/vuedraggable.umd.js";
 import * as Draggable from "vuedraggable";
@@ -55,6 +56,7 @@ import { Auth } from "@/components/ReAuth";
 app.component("Auth", Auth);
 app.component("x-status", Status);
 app.component("x-image", ImageUpload);
+app.component("x-cofirm-button", CofirmButton);
 app.component("draggable", Draggable);
 
 getServerConfig(app).then(async config => {

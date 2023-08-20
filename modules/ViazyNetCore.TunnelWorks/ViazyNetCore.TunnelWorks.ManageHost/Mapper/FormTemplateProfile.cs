@@ -16,6 +16,10 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.Mapper
 
             CreateMap<FormWidgetDto, FormWidgetResult>().ReverseMap();
             CreateMap<FormWidgetOptionDto, FormWidgetOptionResult>().ReverseMap();
+
+            CreateMap<FormFieldValueEditRequest, FormFieldValueDto>()
+                .ForMember(p => p.FieldId, cfg => cfg.MapFrom(p => p.FieldId))
+                .ForMember(p => p.Value, cfg => cfg.MapFrom(p => p.Value));
         }
     }
 }

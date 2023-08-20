@@ -68,5 +68,13 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.Controllers
             var dtos = this._mapper.Map<List<FormWidgetResult>, List<FormWidgetDto>>(formWidgets);
             await this._formFieldService.SaveFormFields(formId, dtos);
         }
+
+        [HttpPost, Route("saveForms")]
+        public async Task SaveFormValues(long formId, [FromBody] List<FormFieldValueEditRequest> editRequest)
+        {
+            var editDtos = this._mapper.Map<List<FormFieldValueEditRequest>, List<FormFieldValueDto>>(editRequest);
+            var batchId = Snowflake<FormFieldValue>.NextId();
+            await this._formFieldService.SaveForms(batchId, editDtos);
+        }
     }
 }

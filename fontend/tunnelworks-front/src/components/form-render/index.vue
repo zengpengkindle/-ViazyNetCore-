@@ -196,7 +196,7 @@ export default {
   methods: {
     initFormObject(insertHtmlCodeFlag = true) {
       this.formId = "vfRender" + generateId();
-      if (!!insertHtmlCodeFlag) {
+      if (insertHtmlCodeFlag) {
         this.insertCustomStyleAndScriptNode();
       }
       this.addFieldChangeEventHandler();
@@ -276,12 +276,12 @@ export default {
             });
           }
         } else if (wItem.type === "sub-form") {
-          let subFormName = wItem.options.name;
+          const subFormName = wItem.options.name;
           if (!this.formData.hasOwnProperty(subFormName)) {
-            let subFormDataRow = {};
+            const subFormDataRow = {};
             if (wItem.options.showBlankRow) {
               wItem.widgetList.forEach(subFormItem => {
-                if (!!subFormItem.formItemFlag) {
+                if (subFormItem.formItemFlag) {
                   subFormDataRow[subFormItem.options.name] =
                     subFormItem.options.defaultValue;
                 }
@@ -292,7 +292,7 @@ export default {
               this.formDataModel[subFormName] = [];
             }
           } else {
-            let initialValue = this.formData[subFormName];
+            const initialValue = this.formData[subFormName];
             this.formDataModel[subFormName] = deepClone(initialValue);
           }
         } else if (wItem.type === "grid-col" || wItem.type === "table-cell") {
@@ -309,11 +309,11 @@ export default {
             });
           }
         }
-      } else if (!!wItem.formItemFlag) {
+      } else if (wItem.formItemFlag) {
         if (!this.formData.hasOwnProperty(wItem.options.name)) {
           this.formDataModel[wItem.options.name] = wItem.options.defaultValue;
         } else {
-          let initialValue = this.formData[wItem.options.name];
+          const initialValue = this.formData[wItem.options.name];
           this.formDataModel[wItem.options.name] = deepClone(initialValue);
         }
       }
@@ -363,7 +363,7 @@ export default {
       subFormRowIndex
     ) {
       if (!!this.formConfig && !!this.formConfig.onFormDataChange) {
-        let customFunc = new Function(
+        const customFunc = new Function(
           "fieldName",
           "newValue",
           "oldValue",
@@ -386,21 +386,21 @@ export default {
 
     handleOnCreated() {
       if (!!this.formConfig && !!this.formConfig.onFormCreated) {
-        let customFunc = new Function(this.formConfig.onFormCreated);
+        const customFunc = new Function(this.formConfig.onFormCreated);
         customFunc.call(this);
       }
     },
 
     handleOnMounted() {
       if (!!this.formConfig && !!this.formConfig.onFormMounted) {
-        let customFunc = new Function(this.formConfig.onFormMounted);
+        const customFunc = new Function(this.formConfig.onFormMounted);
         customFunc.call(this);
       }
     },
 
     findWidgetAndSetDisabled(widgetName, disabledFlag) {
-      let foundW = this.getWidgetRef(widgetName);
-      if (!!foundW) {
+      const foundW = this.getWidgetRef(widgetName);
+      if (foundW) {
         foundW.setDisabled(disabledFlag);
       } else {
         //没找到，可能是子表单中的组件
@@ -410,16 +410,16 @@ export default {
 
     findWidgetOfSubFormAndSetDisabled(widgetName, disabledFlag) {
       this.findWidgetNameInSubForm(widgetName).forEach(wn => {
-        let sw = this.getWidgetRef(wn);
-        if (!!sw) {
+        const sw = this.getWidgetRef(wn);
+        if (sw) {
           sw.setDisabled(disabledFlag);
         }
       });
     },
 
     findWidgetAndSetHidden(widgetName, hiddenFlag) {
-      let foundW = this.getWidgetRef(widgetName);
-      if (!!foundW) {
+      const foundW = this.getWidgetRef(widgetName);
+      if (foundW) {
         foundW.setHidden(hiddenFlag);
       } else {
         //没找到，可能是子表单中的组件
@@ -429,27 +429,27 @@ export default {
 
     findWidgetOfSubFormAndSetHidden(widgetName, hiddenFlag) {
       this.findWidgetNameInSubForm(widgetName).forEach(wn => {
-        let sw = this.getWidgetRef(wn);
-        if (!!sw) {
+        const sw = this.getWidgetRef(wn);
+        if (sw) {
           sw.setHidden(hiddenFlag);
         }
       });
     },
 
     findWidgetNameInSubForm(widgetName) {
-      let result = [];
+      const result = [];
       let subFormName = null;
-      let handlerFn = (field, parent) => {
+      const handlerFn = (field, parent) => {
         if (!!field.options && field.options.name === widgetName) {
           subFormName = parent.options.name;
         }
       };
       traverseFieldWidgets(this.widgetList, handlerFn);
 
-      if (!!subFormName) {
-        let subFormRef = this.getWidgetRef(subFormName);
-        if (!!subFormRef) {
-          let rowIds = subFormRef.getRowIdData();
+      if (subFormName) {
+        const subFormRef = this.getWidgetRef(subFormName);
+        if (subFormRef) {
+          const rowIds = subFormRef.getRowIdData();
           if (!!rowIds && rowIds.length > 0) {
             rowIds.forEach(rid => {
               result.push(widgetName + "@row" + rid);
@@ -609,7 +609,7 @@ export default {
 
     setFieldValue(fieldName, fieldValue) {
       //单个更新字段值
-      let fieldRef = this.getWidgetRef(fieldName);
+      const fieldRef = this.getWidgetRef(fieldName);
       if (!!fieldRef && !!fieldRef.setValue) {
         fieldRef.setValue(fieldValue);
       }
@@ -626,7 +626,7 @@ export default {
     },
 
     getSubFormValues(subFormName, needValidation = true) {
-      let foundSFRef = this.subFormRefList[subFormName];
+      const foundSFRef = this.subFormRefList[subFormName];
       // if (!foundSFRef) {
       //   return this.formDataModel[subFormName]
       // }
@@ -634,10 +634,10 @@ export default {
     },
 
     disableForm() {
-      let wNameList = Object.keys(this.widgetRefList);
+      const wNameList = Object.keys(this.widgetRefList);
       wNameList.forEach(wName => {
-        let foundW = this.getWidgetRef(wName);
-        if (!!foundW) {
+        const foundW = this.getWidgetRef(wName);
+        if (foundW) {
           if (!!foundW.widget && foundW.widget.type === "sub-form") {
             foundW.disableSubForm();
           } else {
@@ -651,15 +651,15 @@ export default {
     },
 
     enableForm() {
-      let wNameList = Object.keys(this.widgetRefList);
+      const wNameList = Object.keys(this.widgetRefList);
       wNameList.forEach(wName => {
-        let foundW = this.getWidgetRef(wName);
-        if (!!foundW) {
+        const foundW = this.getWidgetRef(wName);
+        if (foundW) {
           if (!!foundW.widget && foundW.widget.type === "sub-form") {
             foundW.enableSubForm();
           } else {
             //!!foundW.setDisabled && foundW.setDisabled(false)
-            if (!!foundW.setDisabled) {
+            if (foundW.setDisabled) {
               foundW.setDisabled(false);
             }
           }
@@ -669,16 +669,16 @@ export default {
 
     resetForm() {
       //重置表单
-      let subFormNames = Object.keys(this.subFormRefList);
+      const subFormNames = Object.keys(this.subFormRefList);
       subFormNames.forEach(sfName => {
-        if (!!this.subFormRefList[sfName].resetSubForm) {
+        if (this.subFormRefList[sfName].resetSubForm) {
           this.subFormRefList[sfName].resetSubForm();
         }
       });
 
-      let wNameList = Object.keys(this.widgetRefList);
+      const wNameList = Object.keys(this.widgetRefList);
       wNameList.forEach(wName => {
-        let foundW = this.getWidgetRef(wName);
+        const foundW = this.getWidgetRef(wName);
         if (!!foundW && !foundW.subFormItemFlag && !!foundW.resetField) {
           // 跳过子表单字段！！
           foundW.resetField();
@@ -709,7 +709,7 @@ export default {
     },
 
     disableWidgets(widgetNames) {
-      if (!!widgetNames) {
+      if (widgetNames) {
         if (typeof widgetNames === "string") {
           this.findWidgetAndSetDisabled(widgetNames, true);
         } else if (Array.isArray(widgetNames)) {
@@ -733,7 +733,7 @@ export default {
     },
 
     hideWidgets(widgetNames) {
-      if (!!widgetNames) {
+      if (widgetNames) {
         if (typeof widgetNames === "string") {
           this.findWidgetAndSetHidden(widgetNames, true);
         } else if (Array.isArray(widgetNames)) {
@@ -745,7 +745,7 @@ export default {
     },
 
     showWidgets(widgetNames) {
-      if (!!widgetNames) {
+      if (widgetNames) {
         if (typeof widgetNames === "string") {
           this.findWidgetAndSetHidden(widgetNames, false);
         } else if (Array.isArray(widgetNames)) {

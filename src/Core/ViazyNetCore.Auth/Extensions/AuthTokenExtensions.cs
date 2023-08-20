@@ -41,7 +41,7 @@ namespace Microsoft.AspNetCore.Http
             if (string.IsNullOrEmpty(tokenValue))
                 return null;
 
-            if (tokenValue.StartsWith("Basic")) 
+            if (tokenValue.StartsWith("Basic"))
                 return null;
 
             var rawToken = tokenValue.Replace("Bearer ", "").Replace("bearer", "");
@@ -62,6 +62,7 @@ namespace Microsoft.AspNetCore.Http
                 Exp = claims.GetExp(),
                 Nbf = claims.GetNbf(),
                 Username = claims.GetUserName(),
+                Nickname = claims.GetNickName()
             };
         }
 

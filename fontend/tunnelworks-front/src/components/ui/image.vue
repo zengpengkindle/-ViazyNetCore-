@@ -9,7 +9,7 @@
     :http-request="httpRequestHandler"
     action="/api/common/upload/image"
   >
-    <img v-if="props.modelValue" :src="props.modelValue" class="avatar" />
+    <el-image v-if="props.modelValue" :src="props.modelValue" class="avatar" />
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
   </el-upload>
   <el-dialog v-model="dialogVisible">

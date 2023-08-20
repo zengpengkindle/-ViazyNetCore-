@@ -29,6 +29,26 @@ export default [
     ]
   },
   {
+    path: "/account",
+    component: Layout,
+    meta: {
+      title: "账号管理",
+      showLink: false,
+      rank: 104
+    },
+    children: [
+      {
+        path: "/account/settings",
+        name: "accountSettings",
+        component: () => import("@/views/account/settings.vue"),
+        meta: {
+          title: "个人信息",
+          showLink: false
+        }
+      }
+    ]
+  },
+  {
     path: "/formdesign",
     component: Layout,
     meta: {
@@ -42,7 +62,9 @@ export default [
         name: "formdesigndesign",
         component: () => import("@/views/formdesign/design.vue"),
         meta: {
-          title: "表单编辑"
+          title: "表单编辑",
+          hiddenTag: true,
+          showLink: false
         }
       },
       {
@@ -50,7 +72,9 @@ export default [
         name: "formdesignrender",
         component: () => import("@/views/formdesign/render.vue"),
         meta: {
-          title: "表单填写"
+          title: "表单填写",
+          hiddenTag: true,
+          showLink: false
         }
       }
     ]

@@ -56,5 +56,6 @@ namespace ViazyNetCore.TunnelWorks.Models
         Cascader = 20,
         Date = 21,
         Date_Range = 22,
+        Grid=10001
     }
 }
