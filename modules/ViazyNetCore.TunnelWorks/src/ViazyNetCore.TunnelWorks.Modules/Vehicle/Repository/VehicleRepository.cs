@@ -15,6 +15,32 @@ namespace ViazyNetCore.TunnelWorks.Modules.Repository
         {
         }
 
+        public async Task<VehicleInfoDto> GetInfoAsync(long id)
+        {
+            return await this.Select.Where(p => p.Id == id)
+                //.From<VehicleCategory, BmsOrg>((v, vc, o) =>
+                //v.LeftJoin(v => v.CatId == vc.Id).LeftJoin(p => p.OrgId == o.Id)
+                //)
+                .WithTempQuery(t => new VehicleInfoDto
+                {
+                    Id = t.Id,
+                    VehicleImg = t.VehicleImg,
+                    CatId = t.CatId,
+                    //CatName = t.t2.Name,
+                    Code = t.Code,
+                    EngineCode = t.EngineCode,
+                    FrameCode = t.FrameCode,
+                    LicenseCode = t.LicenseCode,
+                    OrgId = t.OrgId,
+                    OriginEnterprise = t.OriginEnterprise,
+                    //OrgName = t.t3.Name,
+                    OriginPlace = t.OriginPlace,
+                    Spec = t.Spec,
+                    VehicleStatus = t.VehicleStatus,
+                })
+                  .FirstAsync();
+        }
+
         public async Task<PageData<VehicleListItemDto>> PageListAsync(PaginationSort pagination, VehicleQueryDto queryDto)
         {
             var result = await this.Select

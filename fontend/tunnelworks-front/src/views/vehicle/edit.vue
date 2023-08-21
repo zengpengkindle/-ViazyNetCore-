@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ComStatus } from "@/api/model";
+import OrgApi from "@/api/org";
 import VehicleApi, { VehicleEditRequest, VehicleStatus } from "@/api/vehicle";
 import { message } from "@/utils/message";
+import { handleTree } from "@/utils/tree";
 import {
   ElButton,
   ElDrawer,
@@ -11,6 +12,7 @@ import {
   FormInstance,
   FormRules
 } from "element-plus";
+import { onMounted } from "vue";
 import { ref, watch, Ref, reactive } from "vue";
 
 export interface Props {
@@ -86,6 +88,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
 const closeForm = () => {
   handleClose(() => {});
 };
+
+const loading = ref(true);
+const dataList = ref([]);
+async function onSearch() {
+  loading.value = true;
+  const data = await OrgApi.apiOrgGetList();
+  dataList.value = handleTree(data);
+  loading.value = false;
+}
+onMounted(async () => {
+  await onSearch();
+
+});
 </script>
 <template>
   <el-drawer
@@ -112,7 +127,18 @@ const closeForm = () => {
         <x-image v-model="vehicleInfo.vehicleImg" />
       </el-form-item>
       <el-form-item label="机构编码" prop="orgId">
-        <el-input v-model="vehicleInfo.orgId" type="text" />
+        <el-tree-select
+          :data="dataList"
+          v-model="vehicleInfo.orgId"
+          default-expand-all
+          check-strictly
+          :props="{
+            value: 'id',
+            label: 'name',
+            emitPath: false
+          }"
+          clearable
+        />
       </el-form-item>
 
       <el-form-item label="装备状态" prop="vehicleStatus">
