@@ -13,6 +13,8 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.Mapper
             CreateMap<VehicleEditRequest, VehicleEditDto>();
             CreateMap<VehicleQueryRequest, VehicleQueryDto>();
             CreateMap<VehicleListItemDto, VehicleListItemResult>();
+
+            CreateMap<VehicleInfoDto, VehicleInfoResult>();
         }
     }
 }

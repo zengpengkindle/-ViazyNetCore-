@@ -28,5 +28,10 @@ namespace ViazyNetCore.TunnelWorks.Modules
         {
             return await this._vehicleRepository.PageListAsync(pagination, queryDto);
         }
+
+        public Task<VehicleInfoDto> GetInfoAsync(long id)
+        {
+            return this._vehicleRepository.GetInfoAsync(id);
+        }
     }
 }

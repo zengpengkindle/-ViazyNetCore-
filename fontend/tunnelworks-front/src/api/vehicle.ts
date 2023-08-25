@@ -95,7 +95,7 @@ export class VehicleApi {
   }
   public getInfo(id: number): Promise<VehicleEditRequest> {
     return http.request({
-      url: "/api/vehicle/getInfo",
+      url: "/api/vehicle/info",
       method: "post",
       params: { id }
     });

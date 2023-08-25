@@ -37,5 +37,12 @@ namespace ViazyNetCore.TunnelWorks.ManageHost.Controllers
             var editDto = this._mapper.Map<VehicleEditRequest, VehicleEditDto>(editRequest);
             await this._vehicleService.UpsertAsync(editDto);
         }
+
+        [HttpPost, Route("info")]
+        public async Task<VehicleInfoResult> GetInfoAsync(long id)
+        {
+            var dto = await this._vehicleService.GetInfoAsync(id);
+            return this._mapper.Map<VehicleInfoDto, VehicleInfoResult>(dto);
+        }
     }
 }
