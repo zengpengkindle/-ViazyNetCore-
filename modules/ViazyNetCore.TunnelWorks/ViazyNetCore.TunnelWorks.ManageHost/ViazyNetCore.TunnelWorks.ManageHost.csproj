@@ -21,6 +21,7 @@
     <PackageReference Include="ViazyNetCore.Formatter.Response" Version="1.0.6-preview" />
     <PackageReference Include="ViazyNetCore.MultiTenancy.AspNetCore" Version="1.0.6-preview" />
     <PackageReference Include="ViazyNetCore.NLog" Version="1.0.6-preview" />
+    <PackageReference Include="ViazyNetCore.Redis" Version="1.0.6-preview" />
     <PackageReference Include="ViazyNetCore.Swagger" Version="1.0.6-preview" />
     <PackageReference Include="ViazyNetCore.Web.DevServer" Version="1.0.6-preview" />
   </ItemGroup>
