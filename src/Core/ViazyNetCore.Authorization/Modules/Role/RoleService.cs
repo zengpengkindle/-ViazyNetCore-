@@ -29,12 +29,9 @@ namespace ViazyNetCore.Authorization.Modules
         public async Task<List<long>> GetRoleIdsOfUser(long userId)
         {
             var cacheKeyUserInRole = GetCacheKey_GetRoleIdsOfUser(userId);
-            var roleIds = this._cacheService.Get<List<long>>(cacheKeyUserInRole);
-            if (roleIds == null)
-            {
-                roleIds = await this._userRoleRepository.GetRoleIdsOfUser(userId);
-                this._cacheService.Set(cacheKeyUserInRole, roleIds, CachingExpirationType.ObjectCollection);
-            }
+            var roleIds = await this._cacheService.LockGetAsync(cacheKeyUserInRole
+                , () => this._userRoleRepository.GetRoleIdsOfUser(userId)
+                , CachingExpirationType.ObjectCollection);
 
             return roleIds;
         }

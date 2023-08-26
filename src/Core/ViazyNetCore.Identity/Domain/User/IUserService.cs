@@ -133,6 +133,7 @@ namespace ViazyNetCore.Modules
         Task<bool> AnyAsync();
         Task<IUser<long>> GetUser(long userId);
         Task<IUser<long>> GetUserByUserName(string normalizedUserName);
+        Task<IUser<long>> GetUserByCache(long userId);
     }
 
 }

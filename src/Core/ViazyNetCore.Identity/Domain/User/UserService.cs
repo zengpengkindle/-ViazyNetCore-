@@ -89,9 +89,12 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>异步操作。</returns>
-        public Task RemoveAsync(long id)
+        public async Task RemoveAsync(long id)
         {
-            return _userRepository.RemoveByIdAsync(id);
+            var cacheKey = this.GetCacheKey_GetUser(id);
+            this._cacheService.Remove(cacheKey);
+            await _userRepository.RemoveByIdAsync(id);
+            this._cacheService.Remove(cacheKey);
         }
 
         /// <summary>
@@ -388,5 +391,18 @@ namespace ViazyNetCore.Modules
         }
         #endregion
 
+        private string GetCacheKey_GetUser(long userId)
+        {
+            return $"User:UserId:{userId}";
+        }
+
+        public async Task<IUser<long>> GetUserByCache(long userId)
+        {
+            var cacheKey = this.GetCacheKey_GetUser(userId);
+            var user = await this._cacheService.LockGetAsync(cacheKey
+               , () => this._userRepository.GetAsync(userId)
+               , CachingExpirationType.ObjectCollection);
+            return user;
+        }
     }
 }

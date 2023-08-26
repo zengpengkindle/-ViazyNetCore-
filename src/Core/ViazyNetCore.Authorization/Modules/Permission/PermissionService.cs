@@ -45,14 +45,11 @@ namespace ViazyNetCore.Authorization.Modules
         public async Task<IEnumerable<BmsOwnerPermission>> GetPermissionsInUserRole(long ownerId, OwnerType ownerType)
         {
             string cacheKey = GetCacheKey_GetPermissionsInUserRole(ownerId, ownerType);
-            var permissionItemInUserRoles = this._cacheService.Get<List<BmsOwnerPermission>>(cacheKey);
+            var permissionItemInUserRoles = await this._cacheService.LockGetAsync(cacheKey,
+              async () => await this._freeSql.Select<BmsOwnerPermission>()
+                    .Where(p => p.OwnerId == ownerId && p.OwnerType == ownerType).ToListAsync()
+                    , CachingExpirationType.ObjectCollection);
 
-            if (permissionItemInUserRoles == null)
-            {
-                permissionItemInUserRoles = await this._freeSql.Select<BmsOwnerPermission>()
-                    .Where(p => p.OwnerId == ownerId && p.OwnerType == ownerType).ToListAsync();
-                this._cacheService.Set(cacheKey, permissionItemInUserRoles, CachingExpirationType.ObjectCollection);
-            }
             return permissionItemInUserRoles;
         }
 
@@ -251,7 +248,7 @@ namespace ViazyNetCore.Authorization.Modules
         public async Task<IEnumerable<BmsOwnerPermission>> ResolveUserPermission(long userId)
         {
             IEnumerable<BmsOwnerPermission> permissions = new List<BmsOwnerPermission>();
-            var user = await _userService.GetUser(userId);
+            var user = await _userService.GetUserByCache(userId);
             //匿名用户
             if (user == null)
                 return permissions;

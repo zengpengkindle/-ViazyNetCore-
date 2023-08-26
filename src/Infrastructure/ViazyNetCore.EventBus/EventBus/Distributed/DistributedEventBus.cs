@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ViazyNetCore.EventBus.Distributed
 {
@@ -13,7 +14,8 @@ namespace ViazyNetCore.EventBus.Distributed
 
         public DistributedEventBus(ILocalEventStore localEventStore
             , IDistributedEventStore distributedEventStore
-            , IEventHandlerInvoker eventHandlerInvoker) : base(localEventStore, eventHandlerInvoker)
+            , IServiceProvider serviceProvider
+            , IEventHandlerInvoker eventHandlerInvoker) : base(localEventStore, serviceProvider, eventHandlerInvoker)
         {
             this._distributedEventStore = distributedEventStore;
         }
