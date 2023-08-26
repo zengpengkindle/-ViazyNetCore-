@@ -1,11 +1,17 @@
 $apiKey = $args[0]
+$nugethost = $args[1]
 . ".\common.ps1"
 
 # Get the version
 [xml]$commonPropsXml = Get-Content (Join-Path $rootFolder "common.props")
 $version = $commonPropsXml.Project.PropertyGroup.Version
 $nugetUrl = "https://api.nuget.org/v3/index.json"
+
 Set-Location $packFolder
+
+if($nugethost == "1"){
+  $nugetUrl = "http://120.46.73.168:5001/api/v2/package"
+}
 
 foreach($project in $projects) {
 	$i += 1
