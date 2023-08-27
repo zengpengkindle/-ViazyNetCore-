@@ -8,16 +8,16 @@ namespace ViazyNetCore.Castle.DynamicProxy;
 public class CastleAsyncAbpInterceptorAdapter<TInterceptor> : AsyncInterceptorBase
     where TInterceptor : IProxyInterceptor
 {
-    private readonly TInterceptor _abpInterceptor;
+    private readonly TInterceptor _interceptor;
 
-    public CastleAsyncAbpInterceptorAdapter(TInterceptor abpInterceptor)
+    public CastleAsyncAbpInterceptorAdapter(TInterceptor interceptor)
     {
-        _abpInterceptor = abpInterceptor;
+        _interceptor = interceptor;
     }
 
     protected override async Task InterceptAsync(IInvocation invocation, IInvocationProceedInfo proceedInfo, Func<IInvocation, IInvocationProceedInfo, Task> proceed)
     {
-        await _abpInterceptor.InterceptAsync(
+        await _interceptor.InterceptAsync(
             new CastleMethodInvocationAdapter(invocation, proceedInfo, proceed)
         );
     }
@@ -26,7 +26,7 @@ public class CastleAsyncAbpInterceptorAdapter<TInterceptor> : AsyncInterceptorBa
     {
         var adapter = new CastleMethodInvocationAdapterWithReturnValue<TResult>(invocation, proceedInfo, proceed);
 
-        await _abpInterceptor.InterceptAsync(
+        await _interceptor.InterceptAsync(
             adapter
         );
 

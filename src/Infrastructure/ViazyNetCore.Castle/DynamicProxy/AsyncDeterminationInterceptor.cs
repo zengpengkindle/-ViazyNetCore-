@@ -6,8 +6,8 @@ namespace ViazyNetCore.Castle.DynamicProxy;
 public class AsyncDeterminationInterceptor<TInterceptor> : AsyncDeterminationInterceptor
     where TInterceptor : IProxyInterceptor
 {
-    public AsyncDeterminationInterceptor(TInterceptor abpInterceptor)
-        : base(new CastleAsyncAbpInterceptorAdapter<TInterceptor>(abpInterceptor))
+    public AsyncDeterminationInterceptor(TInterceptor interceptor)
+        : base(new CastleAsyncAbpInterceptorAdapter<TInterceptor>(interceptor))
     {
 
     }
