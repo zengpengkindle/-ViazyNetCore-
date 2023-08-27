@@ -19,6 +19,7 @@ namespace ViazyNetCore.Manage.WebApi
         , typeof(ShopMallManageModule)
         , typeof(RabbitMQEventBusModule)
         , typeof(MultiTenancyModule)
+        , typeof(EventBusModule)
         )]
     public class BmsApplicationModule : InjectionModule
     {
@@ -59,13 +60,13 @@ namespace ViazyNetCore.Manage.WebApi
             });
             context.Services.AddSwagger();
 
-            context.Services.AddSingleton<TunnelWorksMultiTenancyMiddleware>();
+            //context.Services.AddSingleton<TunnelWorksMultiTenancyMiddleware>();
             //context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
         }
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
-            app.UseMiddleware<TunnelWorksMultiTenancyMiddleware>();
+            //app.UseMiddleware<TunnelWorksMultiTenancyMiddleware>();
         }
     }
 }

@@ -155,7 +155,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns>返回用户名称</returns>
         public static string GetUserName(this ClaimsPrincipal claims)
         {
-            return claims.GetFirstValue(ClaimTypes.Name);
+            return claims.GetFirstValue(JwtRegisteredClaimNames.UniqueName);
         }
         /// <summary>
         /// 获取当前用户的用户名称。
@@ -164,7 +164,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns>返回用户名称。</returns>
         public static string? GetUserName(this HttpRequest request)
         {
-            return request.Claims().FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            return request.HttpContext.User.GetUserName();
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static string? GetUserName(this IEnumerable<Claim> claims)
         {
-            return claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            return claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
         }
         /// <summary>
         /// 获取当前用户的用户名称
@@ -183,7 +183,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static string? GetNickName(this IEnumerable<Claim> claims)
         {
-            return claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
+            return claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.FamilyName)?.Value;
         }
         #endregion
 

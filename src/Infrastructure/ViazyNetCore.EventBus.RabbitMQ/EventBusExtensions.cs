@@ -27,7 +27,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
-            services.Replace(new ServiceDescriptor(typeof(IEventBus), typeof(DistributedEventBus), ServiceLifetime.Singleton));
+            services.Replace(new ServiceDescriptor(typeof(IEventBus), typeof(DistributedEventBus), ServiceLifetime.Scoped));
+            services.Replace(new ServiceDescriptor(typeof(IEventStore), typeof(RabbitMqDistributedEventStore), ServiceLifetime.Scoped));
             services.TryAddSingleton<IDistributedEventStore, RabbitMqDistributedEventStore>();
         }
     }

@@ -5,6 +5,7 @@ import mixNav from "./sidebar/mixNav.vue";
 import { useNav } from "@/layout/hooks/useNav";
 import Breadcrumb from "./sidebar/breadCrumb.vue";
 import topCollapse from "./sidebar/topCollapse.vue";
+import AccountPinBoxFill from "@iconify-icons/ri/account-pin-box-fill";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 
@@ -13,6 +14,7 @@ const {
   device,
   logout,
   onPanel,
+  goInfo,
   pureApp,
   username,
   avatarsStyle,
@@ -54,6 +56,13 @@ const {
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
+            <el-dropdown-item @click="goInfo">
+              <IconifyIconOffline
+                :icon="AccountPinBoxFill"
+                style="margin: 5px"
+              />
+              个人信息
+            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"

@@ -173,7 +173,9 @@ namespace ViazyNetCore.Authorization
             //await _roleOrgRepository.SoftDeleteAsync(a => orgIdList.Contains(a.OrgId));
 
             //删除本部门和下级部门
-            await _orgRepository.DeleteAsync(a => orgIdList.Contains(a.Id));
+            await _orgRepository.UpdateDiy.Where(a => orgIdList.Contains(a.Id))
+                .Set(p => p.Status, ComStatus.Deleted)
+                .ExecuteAffrowsAsync();
 
             await this._cacheService.RemoveByPatternAsync(GetCacheKey_GetDataPermission("*"));
         }

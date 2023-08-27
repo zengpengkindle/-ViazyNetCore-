@@ -33,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
+            services.TryAddSingleton<IEventStore, LocalEventStore>();
             services.TryAddSingleton<ILocalEventStore, LocalEventStore>();
             services.TryAddSingleton<IEventHandlerInvoker, EventHandlerInvoker>();
             services.TryAddScoped<IEventBus, DefaultEventBus>();

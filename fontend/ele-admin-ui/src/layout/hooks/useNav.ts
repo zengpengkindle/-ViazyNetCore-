@@ -52,7 +52,9 @@ export function useNav() {
     if (Title) document.title = `${meta.title} | ${Title}`;
     else document.title = meta.title;
   }
-
+  function goInfo() {
+    router.push("/account/settings");
+  }
   /** 退出登录 */
   function logout() {
     useUserStoreHook().logOut();
@@ -135,6 +137,7 @@ export function useNav() {
     menuSelect,
     handleResize,
     resolvePath,
+    goInfo,
     isCollapse,
     pureApp,
     username,

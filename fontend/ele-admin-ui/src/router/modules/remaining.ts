@@ -29,6 +29,26 @@ export default [
     ]
   },
   {
+    path: "/account",
+    component: Layout,
+    meta: {
+      title: "账号管理",
+      showLink: false,
+      rank: 104
+    },
+    children: [
+      {
+        path: "/account/settings",
+        name: "accountSettings",
+        component: () => import("@/views/account/settings.vue"),
+        meta: {
+          title: "个人信息",
+          showLink: false
+        }
+      }
+    ]
+  },
+  {
     path: "/shopmall",
     component: Layout,
     meta: {
