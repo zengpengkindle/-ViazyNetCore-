@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Authorization.Modules.Repositories;
+using ViazyNetCore.Caching;
 
 namespace ViazyNetCore.Authorization.Modules
 {
@@ -13,11 +15,15 @@ namespace ViazyNetCore.Authorization.Modules
     {
         private readonly IDictionaryTypeRepository _dictionaryTypeRepository;
         private readonly IDictionaryValueRepository _dictionaryValueRepository;
+        private readonly ICacheService _cacheService;
 
-        public DictionaryService(IDictionaryTypeRepository dictionaryTypeRepository, IDictionaryValueRepository dictionaryValueRepository)
+        public DictionaryService(IDictionaryTypeRepository dictionaryTypeRepository
+            , IDictionaryValueRepository dictionaryValueRepository
+            , ICacheService cacheService)
         {
             this._dictionaryTypeRepository = dictionaryTypeRepository;
             this._dictionaryValueRepository = dictionaryValueRepository;
+            this._cacheService = cacheService;
         }
 
         /// <summary>
@@ -117,14 +123,29 @@ namespace ViazyNetCore.Authorization.Modules
 
         public async Task<long> AddValueAsync(DictionaryValueAddInput input)
         {
+            var type = await this._dictionaryTypeRepository.GetAsync(input.DictionaryTypeId);
+            if (type != null)
+            {
+                throw new ApiException("数据字典不存在！");
+            }
+
             var dictionaryValue = input.CopyTo<DictionaryValue>();
             dictionaryValue.CreateTime = DateTime.Now;
             await _dictionaryValueRepository.InsertAsync(dictionaryValue);
+
+            var cacheKey = this.GetCacheKey_DicionaryValueFromCode(type.Code);
+            this._cacheService.Remove(cacheKey);
+
             return dictionaryValue.Id;
         }
 
         public async Task UpdateValueAsync(DictionaryValueUpdateInput input)
         {
+            var type = await this._dictionaryTypeRepository.GetAsync(input.DictionaryTypeId);
+            if (type != null)
+            {
+                throw new ApiException("数据字典不存在！");
+            }
             var entity = await _dictionaryValueRepository.GetAsync(input.Id);
             if (!(entity?.Id > 0))
             {
@@ -133,6 +154,30 @@ namespace ViazyNetCore.Authorization.Modules
 
             input.CopyTo(entity);
             await _dictionaryValueRepository.UpdateAsync(entity);
+
+            var cacheKey = this.GetCacheKey_DicionaryValueFromCode(type.Code);
+            this._cacheService.Remove(cacheKey);
+        }
+
+        public async Task<List<DictionaryValue>> GetAllValuesAsync(string code)
+        {
+            var cacheKey = this.GetCacheKey_DicionaryValueFromCode(code);
+            return await this._cacheService.GetAsync(cacheKey, async () =>
+                {
+                    var type = await this._dictionaryTypeRepository.Where(a => a.Code == code).FirstAsync();
+                    if (type == null)
+                        return new List<DictionaryValue>();
+                    var result = await this._dictionaryValueRepository.Select
+                    .Where(p => p.DictionaryTypeId == type.Id)
+                    .OrderByDescending(true, c => c.Sort)
+                    .ToListAsync();
+                    return result;
+                }, CachingExpirationType.ObjectCollection);
+        }
+
+        private string GetCacheKey_DicionaryValueFromCode(string code)
+        {
+            return $"Dicionary:Values:Code:{code}";
         }
     }
 }

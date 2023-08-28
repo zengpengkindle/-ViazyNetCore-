@@ -68,7 +68,13 @@ namespace ViazyNetCore.Authorization
             return await this._dictionaryService.GetValuePageAsync(args);
         }
 
-
+        [HttpPost]
+        [Permission(PermissionIds.Setting)]
+        [Route("getvalues")]
+        public async Task<List<DictionaryValue>> FindAllValuesAsync(string code)
+        {
+            return await this._dictionaryService.GetAllValuesAsync(code);
+        }
 
         [HttpPost]
         [Permission(PermissionIds.Setting)]
