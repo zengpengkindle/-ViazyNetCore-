@@ -9,7 +9,7 @@ $nugetUrl = "https://api.nuget.org/v3/index.json"
 
 Set-Location $packFolder
 
-if($nugethost == "1"){
+if ($nugethost -eq "1"){
   $nugetUrl = "http://120.46.73.168:5001/api/v2/package"
 }
 
