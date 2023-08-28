@@ -124,7 +124,7 @@ namespace ViazyNetCore.Authorization.Modules
         public async Task<long> AddValueAsync(DictionaryValueAddInput input)
         {
             var type = await this._dictionaryTypeRepository.GetAsync(input.DictionaryTypeId);
-            if (type != null)
+            if (type == null)
             {
                 throw new ApiException("数据字典不存在！");
             }
@@ -142,7 +142,7 @@ namespace ViazyNetCore.Authorization.Modules
         public async Task UpdateValueAsync(DictionaryValueUpdateInput input)
         {
             var type = await this._dictionaryTypeRepository.GetAsync(input.DictionaryTypeId);
-            if (type != null)
+            if (type == null)
             {
                 throw new ApiException("数据字典不存在！");
             }
