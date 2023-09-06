@@ -142,6 +142,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Castle", "Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.AspNetCore.Mvc.Dapr", "Infrastructure\ViazyNetCore.AspNetCore.Mvc.Dapr\ViazyNetCore.AspNetCore.Mvc.Dapr.csproj", "{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.OSS", "Infrastructure\ViazyNetCore.OSS\ViazyNetCore.OSS.csproj", "{1B80D0C6-9600-447B-8B0B-0339BA5CC7DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.OSS.Minio", "Infrastructure\ViazyNetCore.OSS.Minio\ViazyNetCore.OSS.Minio.csproj", "{F47A1985-7A1A-4A5C-928E-0305D0DA0E3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -372,6 +376,14 @@ Global
 		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B80D0C6-9600-447B-8B0B-0339BA5CC7DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B80D0C6-9600-447B-8B0B-0339BA5CC7DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B80D0C6-9600-447B-8B0B-0339BA5CC7DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B80D0C6-9600-447B-8B0B-0339BA5CC7DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F47A1985-7A1A-4A5C-928E-0305D0DA0E3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F47A1985-7A1A-4A5C-928E-0305D0DA0E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F47A1985-7A1A-4A5C-928E-0305D0DA0E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F47A1985-7A1A-4A5C-928E-0305D0DA0E3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -436,6 +448,8 @@ Global
 		{15B0B9B3-093B-4AFF-AE4A-50134F4D6DA6} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{0EAC6DF4-7480-42D5-9F58-87FF5E662A1D} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{3EA1F738-3A32-4EB8-AD53-2849C5820FD3} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{1B80D0C6-9600-447B-8B0B-0339BA5CC7DF} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{F47A1985-7A1A-4A5C-928E-0305D0DA0E3B} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}
