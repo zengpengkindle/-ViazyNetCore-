@@ -31,7 +31,7 @@ namespace ViazyNetCore.OSS
         /// </summary>
         public string SecretKey { get; set; }
 
-        private string _region = "us-east-1";
+        private string _region = "cn-east-1";
 
         /// <summary>
         /// 地域
@@ -46,7 +46,7 @@ namespace ViazyNetCore.OSS
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    _region = "us-east-1";
+                    _region = "cn-east-1";
                 }
                 else
                 {
@@ -65,6 +65,8 @@ namespace ViazyNetCore.OSS
         /// 在使用之前请评估当前应用的缓存能力能否顶住当前请求
         /// </summary>
         public bool IsEnableCache { get; set; } = false;
+
+        public string SessionToken { get; set; }
     }
     public enum OSSProvider
     {
