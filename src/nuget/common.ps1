@@ -98,5 +98,7 @@ $projects = (
 	"Infrastructure/ViazyNetCore.Swagger",
 	"Infrastructure/ViazyNetCore.TaskScheduler",
 	"Infrastructure/ViazyNetCore.TaskScheduler.RabbitMQ",
-	"Infrastructure/ViazyNetCore.Web.DevServer"
+	"Infrastructure/ViazyNetCore.Web.DevServer",
+	"Infrastructure/ViazyNetCore.OSS",
+	"Infrastructure/ViazyNetCore.OSS.Minio"
 )
