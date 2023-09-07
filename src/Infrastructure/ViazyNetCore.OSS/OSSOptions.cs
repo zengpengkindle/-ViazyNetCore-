@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViazyNetCore.AttachmentProvider;
 
 namespace ViazyNetCore.OSS
 {
@@ -12,6 +13,8 @@ namespace ViazyNetCore.OSS
         /// 枚举，OOS提供商
         /// </summary>
         public OSSProvider Provider { get; set; }
+
+        public string DefaultBucketName { get; set; }
 
         /// <summary>
         /// 节点
@@ -67,6 +70,7 @@ namespace ViazyNetCore.OSS
         public bool IsEnableCache { get; set; } = false;
 
         public string SessionToken { get; set; }
+        public List<MediaType> MediaTypes { get; set; } = new List<MediaType> { MediaType.Image };
     }
     public enum OSSProvider
     {

@@ -1,0 +1,13 @@
+{
+  "oss": {
+    "Endpoint": "120.46.73.168:9000",
+    "IsEnableCache": false,
+    "IsEnableHttps": false,
+    "Provider": "Minio",
+    "Region": null,
+    "AccessKey": "HXAO599jPZONXzqR1pW3",
+    "SecretKey": "opaaGRUJrw7oLsBsBlhcsJI5yFH1gV2d0MJtx3oN",
+    "SessionToken": null,
+    "DefaultBucketName": "images"
+  }
+}

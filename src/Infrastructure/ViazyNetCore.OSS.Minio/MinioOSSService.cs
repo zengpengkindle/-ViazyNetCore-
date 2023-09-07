@@ -3,6 +3,7 @@ using Minio.Exceptions;
 using Minio;
 using DataModel = Minio.DataModel;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Options;
 
 namespace ViazyNetCore.OSS
 {
@@ -19,14 +20,15 @@ namespace ViazyNetCore.OSS
             }
         }
 
-        public MinioOSSService(OSSOptions options)
-            : base(options)
+        public MinioOSSService(IOptions<OSSOptions> options)
+            : base(options.Value)
         {
+            var option = options.Value;
             MinioClient client = new MinioClient()
-                .WithEndpoint(options.Endpoint)
-                .WithRegion(options.Region)
-                .WithCredentials(options.AccessKey, options.SecretKey);
-            if (options.IsEnableHttps)
+                .WithEndpoint(option.Endpoint)
+                .WithRegion(option.Region)
+                .WithCredentials(option.AccessKey, option.SecretKey);
+            if (option.IsEnableHttps)
             {
                 client = client.WithSSL();
             }

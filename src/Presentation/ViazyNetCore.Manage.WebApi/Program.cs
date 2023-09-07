@@ -22,8 +22,8 @@ builder.WebHost.ConfigureLogging(logging =>
 })
 .UseNLog();
 
-builder.Configuration.ConfigBuild(builder.Environment);
 builder.Services.AddSingleton(new AppSettingsHelper());
+builder.Configuration.ConfigBuild(builder.Environment);
 builder.Services.ReplaceConfiguration(builder.Configuration);
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -59,13 +59,16 @@ builder.Services.AddApiDescriptor(option =>
 
 //- 添加自动依赖注入
 
-builder.Services.AddLocalStoreProvider(options =>
-{
-    //options.RequestPath
-    options.StoreRootPath = "../files";
-    options.RequestPath = "/upload";
-    options.MediaTypes = new List<MediaType> { MediaType.Image };
-});
+//builder.Services.AddLocalStoreProvider(options =>
+//{
+//    //options.RequestPath
+//    options.StoreRootPath = "../files";
+//    options.RequestPath = "/upload";
+//    options.MediaTypes = new List<MediaType> { MediaType.Image };
+//});
+
+builder.Services.AddMinioOSSService();
+
 builder.Services.AddSingleton(sp => LockProvider.Default);
 
 builder.Services.AddHealthChecks();

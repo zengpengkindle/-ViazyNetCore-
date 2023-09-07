@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
 /// <summary>
 /// 
 /// </summary>
-public static class AttachmentStartup
+public static class AttachmentExtensions
 {
     /// <summary>
     /// 添加本地附件存储服务。
@@ -72,13 +72,14 @@ public static class AttachmentStartup
     /// <param name="services"></param>
     /// <param name="action"></param>
     /// <returns></returns>
-    public static IServiceCollection AddStoreProvider(this IServiceCollection services, Action<IStoreProvider> action = null)
+    public static IServiceCollection AddStoreProvider(this IServiceCollection services, Action<IServiceProvider, IStoreProvider> action = null)
     {
+        services.TryAddSingleton<IPathFormatter, DefaultPathFormatter>();
         services.TryAddSingleton<IStoreProvider>(sp =>
         {
             var storeProvider = sp.CreateInstance<StoreProvider>();
             if (action != null)
-                action.Invoke(storeProvider);
+                action.Invoke(sp, storeProvider);
             else
             {
                 var storeRootPath = sp.GetRequiredService<IWebHostEnvironment>().WebRootFileProvider.GetDirectoryInfo("").PhysicalPath;

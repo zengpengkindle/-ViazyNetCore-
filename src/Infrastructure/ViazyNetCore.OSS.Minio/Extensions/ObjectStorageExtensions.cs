@@ -18,9 +18,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static IServiceCollection AddOSSService(this IServiceCollection services, string key = "oss")
+        public static IServiceCollection AddMinioOSSService(this IServiceCollection services, string key = "oss")
         {
-            return services.AddOSSService(DefaultOptionName.Name, key);
+            return services.AddMinioOSSService(DefaultOptionName.Name, key);
         }
 
         /// <summary>
@@ -31,10 +31,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static IServiceCollection AddOSSService(this IServiceCollection services, string name, string key = "oss")
+        public static IServiceCollection AddMinioOSSService(this IServiceCollection services, string name, string key = "oss")
         {
             ServiceProvider provider = services.BuildServiceProvider();
-            IConfiguration configuration = provider.GetRequiredService<IConfiguration>();
+            IConfiguration configuration = provider.GetService<IConfiguration>();
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(IConfiguration));
@@ -51,8 +51,9 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new Exception($"Get OSS option from config file failed.");
             }
-            return services.AddOSSService(name, o =>
+            return services.AddMinioOSSService(name, o =>
             {
+                o.DefaultBucketName = options.DefaultBucketName;
                 o.AccessKey = options.AccessKey;
                 o.Endpoint = options.Endpoint;
                 o.IsEnableCache = options.IsEnableCache;
@@ -67,22 +68,32 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 配置默认配置
         /// </summary>
-        public static IServiceCollection AddOSSService(this IServiceCollection services, Action<OSSOptions> option)
+        public static IServiceCollection AddMinioOSSService(this IServiceCollection services, Action<OSSOptions> option)
         {
-            return services.AddOSSService(DefaultOptionName.Name, option);
+            return services.AddMinioOSSService(DefaultOptionName.Name, option);
         }
 
         /// <summary>
         /// 根据名称配置
         /// </summary>
-        public static IServiceCollection AddOSSService(this IServiceCollection services, string name, Action<OSSOptions> option)
+        public static IServiceCollection AddMinioOSSService(this IServiceCollection services, string name, Action<OSSOptions> option)
         {
             if (string.IsNullOrEmpty(name))
             {
                 name = DefaultOptionName.Name;
             }
+            services.Configure(option);
             services.Configure(name, option);
 
+            services.AddOptions<OSSOptions>();
+
+            services.TryAddSingleton<IObjectStorageService, MinioOSSService>();
+            services.TryAddSingleton<IMinioOSSService, MinioOSSService>();
+
+            services.AddStoreProvider((sp, provider) =>
+            {
+                provider.AddHost<MinioStoreHost>(null);
+            });
             return services;
         }
     }

@@ -24,7 +24,8 @@ namespace ViazyNetCore.ShopMall.Manage.Application.Controllers
         {
             var file = this.HttpContext.Request.Form.Files[0];
             var attachment = await storeProvider.SaveAsync(file);
-            return attachment.RelativeUrl;
+            return attachment.HostFiles[0].FileUrl;
+            //return attachment.RelativeUrl;
         }
     }
 }

@@ -33,6 +33,12 @@ namespace Microsoft.AspNetCore.Builder
                 configurationManager.AddJsonFile($"./Configs/redis.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
             }
 
+            configurationManager.AddJsonFile("./Configs/oss.json", optional: true, reloadOnChange: true);
+            if (env.EnvironmentName.IsNotNull())
+            {
+                configurationManager.AddJsonFile($"./Configs/oss.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+            }
+
             configurationManager.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             if (env.EnvironmentName.IsNotNull())
             {
