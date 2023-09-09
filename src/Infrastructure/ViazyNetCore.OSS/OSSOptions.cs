@@ -17,6 +17,11 @@ namespace ViazyNetCore.OSS
         public string DefaultBucketName { get; set; }
 
         /// <summary>
+        /// 前端访问地址
+        /// </summary>
+        public string BrowseUrl { get; set; }
+
+        /// <summary>
         /// 节点
         /// </summary>
         /// <remarks>
