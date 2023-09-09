@@ -8,7 +8,7 @@ namespace ViazyNetCore.Redis
     /// <summary>
     /// Redis缓存接口
     /// </summary>
-    public interface IRedisCache : IRedisListCache, IRedisSetCache
+    public interface IRedisCache : IRedisListCache, IRedisSetCache, IRedisPubCache
     {
 
         //获取 Reids 缓存值
