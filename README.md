@@ -31,6 +31,22 @@
 ``` csharp
 
 // 模块注入
+builder.Services.AddCaching()  // 缓存注入
+    .UseDistributedMemoryCache()  // 内存缓存
+    .UseStackExchangeRedisCaching(options =>  // 基于 StackExchangeRedis 的缓存
+    {
+        var redisConfig = builder.Configuration.GetSection("Redis").Get<RedisConfig>();
+
+        options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+        {
+            EndPoints =
+            {
+                { redisConfig.Host, redisConfig.Port }
+            },
+            Password = redisConfig.Password,
+            ChannelPrefix = "Blog"
+        };
+    });
 await builder.Services.AddApplicationAsync<BloggingManageHostModule>();
 
 // Api 返回全局拦截及处理
