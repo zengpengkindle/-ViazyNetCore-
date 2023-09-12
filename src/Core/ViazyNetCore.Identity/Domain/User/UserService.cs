@@ -149,13 +149,13 @@ namespace ViazyNetCore.Modules
             if (user != null && user.Status != ComStatus.Deleted)
             {
                 args.Auditor = user.Id;
-                if (user.Status != ComStatus.Enabled) throw new ApiException("Account has been disabled!");
+                if (user.Status != ComStatus.Enabled) throw new ApiException("账号已被禁用!");
                 //谷歌校验码
                 var res = this.CheckGoogleKey(user.GoogleKey, args.Code, this._userOption.EnableGoogleToken);
                 if (!res)
                 {
                     this.GetByUsernameCache(args.Username, false);
-                    throw new ApiException("The verification code is wrong or expired.");
+                    throw new ApiException("验证码过期或已失效.");
                 }
 
                 //管理员 授权所有按钮权限
@@ -196,9 +196,9 @@ namespace ViazyNetCore.Modules
             //密码错误 和 账号不存在 都统一一个提示语，防止强行试账号
             var userLoginCheck = this.GetByUsernameCache(args.Username, false, ip, args.Auditor);
             if (LOGIN_MAXCOUNT - userLoginCheck.ErrorCount == 0)
-                throw new ApiException($"Your account has been lock,try again in {LOGIN_TIME} minutes");
+                throw new ApiException($"您的账号已被锁定，请在 {LOGIN_TIME} 分钟后重试");
             else
-                throw new ApiException(string.Format("The account or password what you enter is error,you can only try it for {0} times", LOGIN_MAXCOUNT - userLoginCheck.ErrorCount));
+                throw new ApiException(string.Format("您的账号或密码错误，您还可以尝试 {0} 次", LOGIN_MAXCOUNT - userLoginCheck.ErrorCount));
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace ViazyNetCore.Modules
                     if (result.ErrorCount >= LOGIN_MAXCOUNT)
                     {
                         //次数已超出，不管正确还是错误都是抛出
-                        throw new ApiException(string.Format("Your continuous login times have exceeded the limit，please try again after {0} minutes！", Math.Ceiling(LOGIN_TIME - PastMinutes)));
+                        throw new ApiException(string.Format("您的登录次数已超过限制，请在 {0} 分钟后重试！", Math.Ceiling(LOGIN_TIME - PastMinutes)));
                     }
                     else
                     {
