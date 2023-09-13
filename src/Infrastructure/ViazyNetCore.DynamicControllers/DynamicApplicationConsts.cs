@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.DI
+namespace ViazyNetCore.DynamicControllers
 {
     public static class DynamicApplicationConsts
     {

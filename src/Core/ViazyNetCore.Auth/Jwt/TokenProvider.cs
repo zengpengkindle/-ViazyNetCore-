@@ -92,20 +92,20 @@ namespace ViazyNetCore.Auth.Jwt
                     SecurityAlgorithms.HmacSha256Signature
                 ),
                 Subject = new ClaimsIdentity(new Claim[] {
-                     new Claim(JwtRegisteredClaimNames.Jti, jti),
-                     new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
-                     new Claim(JwtRegisteredClaimNames.Aud, clientName),
-                     new Claim(ClaimTypes.Name, user.Username),
-                     new Claim(ClaimTypes.Surname, user.Nickname),
-                     new Claim(JwtRegisteredClaimNames.Iss, this._option.Issuer),
-                     new Claim(JwtRegisteredClaimNames.Exp, expires.ConvertToJsTime().ToString()),
-                     new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ConvertToJsTime().ToString()),
-                     new Claim(JwtRegisteredClaimNames.Typ, userType.ToString())
+                     new Claim(JwtClaimTypes.JwtId, jti),
+                     new Claim(JwtClaimTypes.SessionId, user.Id.ToString()),
+                     new Claim(JwtClaimTypes.Audience, clientName),
+                     new Claim(JwtClaimTypes.Name, user.Username),
+                     new Claim(JwtClaimTypes.NickName, user.Nickname),
+                     new Claim(JwtClaimTypes.Issuer, this._option.Issuer),
+                     new Claim(JwtClaimTypes.Expiration, expires.ConvertToJsTime().ToString()),
+                     new Claim(JwtClaimTypes.NotBefore, DateTime.Now.ConvertToJsTime().ToString()),
+                     new Claim(JwtClaimTypes.Type, userType.ToString())
                 })
             };
             if (roleIds != null)
             {
-                tokenDescripor.Subject.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", roleIds.Select(t => t?.ToString()))));
+                tokenDescripor.Subject.AddClaim(new Claim(JwtClaimTypes.Role, string.Join(",", roleIds.Select(t => t?.ToString()))));
             }
 
             var token = tokenHandler.CreateJwtSecurityToken(tokenDescripor);

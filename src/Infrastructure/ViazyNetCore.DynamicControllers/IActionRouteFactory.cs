@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace ViazyNetCore.DI
+namespace ViazyNetCore.DynamicControllers
 {
     public interface IActionRouteFactory
     {

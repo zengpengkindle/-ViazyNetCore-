@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using ViazyNetCore.DI;
+using ViazyNetCore.DynamicControllers;
 using ViazyNetCore.Modules;
 using ViazyNetCore.Mvc;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using ViazyNetCore.Core.System;
 
-namespace ViazyNetCore.DI
+namespace ViazyNetCore.DynamicControllers
 {
     public class DynamicControllerControllerFeatureProvider : ControllerFeatureProvider
     {

@@ -195,7 +195,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static AuthUserType? GetAuthUserType(this Claim[] claims)
         {
-            var value = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Typ)?.Value;
+            var value = claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Type)?.Value;
             if (string.IsNullOrEmpty(value))
                 return null;
             return Enum.Parse<AuthUserType>(value);
@@ -207,7 +207,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static AuthUserType? GetAuthUserType(this IEnumerable<Claim> claims)
         {
-            var value = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Typ)?.Value;
+            var value = claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Type)?.Value;
             if (string.IsNullOrEmpty(value))
                 return null;
             return Enum.Parse<AuthUserType>(value);
@@ -232,7 +232,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static string GetClientId(this HttpRequest request)
         {
-            return request.Claims().FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Aud)?.Value;
+            return request.Claims().FirstOrDefault(c => c.Type == JwtClaimTypes.Audience)?.Value;
         }
         /// <summary>
         /// 获取 Client Id
@@ -241,7 +241,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static string GetClientId(this IEnumerable<Claim> claims)
         {
-            return claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Aud)?.Value;
+            return claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Audience)?.Value;
         }
         #endregion
 
@@ -253,7 +253,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static long GetNbf(this HttpRequest request)
         {
-            var ngf = request.Claims().FirstOrDefault(c => c.Type == "nbf")?.Value;
+            var ngf = request.Claims().FirstOrDefault(c => c.Type == JwtClaimTypes.NotBefore)?.Value;
             if (!string.IsNullOrEmpty(ngf))
                 return long.Parse(ngf);
             return default;
@@ -265,7 +265,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static long GetNbf(this Claim[] claims)
         {
-            var ngf = claims.FirstOrDefault(c => c.Type == "nbf")?.Value;
+            var ngf = claims.FirstOrDefault(c => c.Type == JwtClaimTypes.NotBefore)?.Value;
             if (!string.IsNullOrEmpty(ngf))
                 return long.Parse(ngf);
             return default;
@@ -280,7 +280,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static long GetExp(this HttpRequest request)
         {
-            var exp = request.Claims().FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp)?.Value;
+            var exp = request.Claims().FirstOrDefault(c => c.Type == JwtClaimTypes.Expiration)?.Value;
             if (!string.IsNullOrEmpty(exp))
                 return long.Parse(exp);
             return default;
@@ -293,7 +293,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static long GetExp(this IEnumerable<Claim> claims)
         {
-            var exp = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp)?.Value;
+            var exp = claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Expiration)?.Value;
             if (!string.IsNullOrEmpty(exp))
                 return long.Parse(exp);
             return default;

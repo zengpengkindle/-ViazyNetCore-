@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ViazyNetCore.DI
+namespace ViazyNetCore.DynamicControllers
 {
     public class DynamicControllerGroupConvention : IControllerModelConvention
     {

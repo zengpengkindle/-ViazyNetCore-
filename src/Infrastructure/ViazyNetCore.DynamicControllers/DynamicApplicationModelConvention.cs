@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Core.System;
 using Microsoft.AspNetCore.Http;
 
-namespace ViazyNetCore.DI
+namespace ViazyNetCore.DynamicControllers
 {
 
     public class DynamicApplicationModelConvention : IApplicationModelConvention

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ViazyNetCore.DI;
+using ViazyNetCore.DynamicControllers;
 
 namespace ViazyNetCore.Authorization
 {

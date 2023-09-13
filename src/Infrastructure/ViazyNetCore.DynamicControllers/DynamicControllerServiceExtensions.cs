@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Core.System;
-using ViazyNetCore.DI;
+using ViazyNetCore.DynamicControllers;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

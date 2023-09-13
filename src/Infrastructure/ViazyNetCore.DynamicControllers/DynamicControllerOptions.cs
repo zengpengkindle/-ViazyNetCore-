@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ViazyNetCore.Core.System;
 
-namespace ViazyNetCore.DI
+namespace ViazyNetCore.DynamicControllers
 {
     public class DynamicControllerOptions
     {

@@ -85,7 +85,7 @@ $projects = (
 	"Infrastructure/ViazyNetCore.Annotations",
 	"Infrastructure/ViazyNetCore.AspNetCore",
 	"Infrastructure/ViazyNetCore.AutoMapper",
-	"Infrastructure/ViazyNetCore.DI",
+	"Infrastructure/ViazyNetCore.DynamicControllers",
 	"Infrastructure/ViazyNetCore.EventBus",
 	"Infrastructure/ViazyNetCore.EventBus.RabbitMQ",
 	"Infrastructure/ViazyNetCore.Formatter.Excel",
