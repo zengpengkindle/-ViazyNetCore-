@@ -25,7 +25,7 @@
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.DI\ViazyNetCore.DI.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.DynamicControllers\ViazyNetCore.DynamicControllers.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\ViazyNetCore.EventBus\ViazyNetCore.EventBus.csproj" />
 		<ProjectReference Include="..\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
 	</ItemGroup>

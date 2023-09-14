@@ -15,7 +15,9 @@
 - ViazyNetCore.TaskScheduler 基于Quartz.Net的任务管理。
 - ViazyNetCore.RabbitMQ RabbitMQ消息队列
 - ViazyNetCore.TaskScheduler.RabbitMQ RabbitMQ Quartz任务消费者
-- 
+- ViazyNetCore.OSS  OSS 文件存储基类
+- ViazyNetCore.OSS.Minio MinIO 文件存储
+-
 - fontend/ele-admin-ui vue3 管理后台-前端UI
 - fontend/shopmall-uniapp 前端商城小程序 uni-app项目
 ## 🚀 快速入门
@@ -27,17 +29,25 @@
 > 示范
 
 ``` csharp
-builder.Services.AddCustomApiVersioning(); // 启用Api版本管理
-builder.Services.AddJwtAuthentication() // 启用Jwt授权
 
-builder.Services.AddSwagger("ViazyNetCore-Manage");//注入Swagger文档
-builder.Services.AddEventBus();// 注入EventBus 事件推送器
-// 注入EventBus 事件Handler
-builder.Services.RegisterEventHanldersDependencies(ServiceAssemblies, ServiceLifetime.Scoped);
+// 模块注入
+builder.Services.AddCaching()  // 缓存注入
+    .UseDistributedMemoryCache()  // 内存缓存
+    .UseStackExchangeRedisCaching(options =>  // 基于 StackExchangeRedis 的缓存
+    {
+        var redisConfig = builder.Configuration.GetSection("Redis").Get<RedisConfig>();
 
-builder.Services.AddApiDescriptor(); //Api接口文档获取器
-//- 添加自动依赖注入
-builder.Services.AddAssemblyServices(ServiceLifetime.Scoped, ServiceAssemblies);
+        options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+        {
+            EndPoints =
+            {
+                { redisConfig.Host, redisConfig.Port }
+            },
+            Password = redisConfig.Password,
+            ChannelPrefix = "Blog"
+        };
+    });
+await builder.Services.AddApplicationAsync<BloggingManageHostModule>();
 
 // Api 返回全局拦截及处理
 app.UseApiResponseWrapper(option =>
@@ -48,15 +58,43 @@ app.UseApiResponseWrapper(option =>
 });
 
 // Environment.IsDevelopment()
- app.UseSwaggerAndUI(); // 启用SwaggerUI
  app.UseSpa(spa =>
     {
         spa.Options.SourcePath = "client"; //启用的前端项目的路径 相对于当前项目路径
         //spa.Options.PackageManagerCommand = "npm"; // 执行的 command命令
         // 开发阶段, 启用 ViteNode 监听端口，前后端可单端口运行，F5 一键启动调试。
-        spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions() 
+        spa.UseDevServer(new ViteNodeServerOptions()  // dotnet add package ViazyNetCore.Web.DevServer
         {
             //Host= "172.0.0.1",
         });
     });
+```
+
+```csharp
+[DependsOn(typeof(AutoMapperModule)
+        , typeof(IdentityModule)
+        , typeof(AspNetCoreMvcModule)
+        , typeof(AuthorizationModule)
+        , typeof(AuthApplicationModule)
+        , typeof(BloggingModulsModule)
+        )]
+    public class BloggingManageHostModule : InjectionModule
+    {
+        …
+        public override void ConfigureServices(ServiceConfigurationContext context)
+        {
+            // dotnet add package ViazyNetCore.Swagger
+            Configure<SwaggerConfig>(options =>
+            {
+                options.Projects.Add(new ProjectConfig
+                {
+                    Name = "博客",
+                    Code = "blogging",
+                    Description = "博客",
+                    Version = "1.0",
+                });
+            });
+            context.Services.AddSwagger();
+        }
+    }
 ```

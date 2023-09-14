@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using ViazyNetCore.Data.FreeSql;
-using ViazyNetCore.DI;
+using ViazyNetCore.DynamicControllers;
 
 namespace ViazyNetCore.TaskScheduler
 {

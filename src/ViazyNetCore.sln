@@ -54,7 +54,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Data.FreeSql",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Business.Core", "src\ViazyNetCore.Business.Core\ViazyNetCore.Business.Core.csproj", "{8930CFC6-C865-4F6B-8EAF-44A62DE1BD5F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.DI", "Infrastructure\ViazyNetCore.DI\ViazyNetCore.DI.csproj", "{418AC4CD-55AA-4637-B260-C6A3DFB4E96E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.DynamicControllers", "Infrastructure\ViazyNetCore.DynamicControllers\ViazyNetCore.DynamicControllers.csproj", "{418AC4CD-55AA-4637-B260-C6A3DFB4E96E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.Domain", "src\ViazyNetCore.Domain\ViazyNetCore.Domain.csproj", "{954A9763-C2A3-4B96-94FA-B1590033632D}"
 EndProject
@@ -146,7 +146,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.OSS", "Infrast
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.OSS.Minio", "Infrastructure\ViazyNetCore.OSS.Minio\ViazyNetCore.OSS.Minio.csproj", "{F47A1985-7A1A-4A5C-928E-0305D0DA0E3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.EventBus.Redis", "Infrastructure\ViazyNetCore.EventBus.Redis\ViazyNetCore.EventBus.Redis.csproj", "{9020C419-D92E-4DE9-9745-AD73B58EE7DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.EventBus.Redis", "Infrastructure\ViazyNetCore.EventBus.Redis\ViazyNetCore.EventBus.Redis.csproj", "{9020C419-D92E-4DE9-9745-AD73B58EE7DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

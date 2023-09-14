@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ViazyNetCore.DI\ViazyNetCore.DI.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.DynamicControllers\ViazyNetCore.DynamicControllers.csproj" />
   </ItemGroup>
 
 </Project>
