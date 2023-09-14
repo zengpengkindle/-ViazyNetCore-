@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace ViazyNetCore.Redis
 {
-    public partial class RedisService
+    public partial class RedisService : IRedisPubCache
     {
         public ISubscriber GetSubscriber()
         {

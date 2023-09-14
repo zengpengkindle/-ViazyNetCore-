@@ -14,12 +14,12 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static ICachingBuilder UseStackExchangeRedisCaching(this ICachingBuilder services, Action<RedisCacheOptions> setupAction)
+        public static ICachingBuilder UseStackExchangeRedisCaching(this ICachingBuilder services, Action<RedisCacheOptions> setupAction, Action<DistributedCacheOptions>? options = null)
         {
             services.Services.AddStackExchangeRedisCache(setupAction);
             services.Services.AddSingleton<IRedisCache, RedisService>();
 
-            services.UseDistributedCache<DefaultRedisCache>();
+            services.UseDistributedCache<DefaultRedisCache>(options);
 
             return services;
         }
