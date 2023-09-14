@@ -186,6 +186,7 @@ namespace ViazyNetCore.AttachmentProvider
                     {
                         var fileUrl = await host.UploadAsync(attachment.FileName, formFile.OpenReadStream());
                         attachment.AddHostFile(fileUrl, host.Name);
+                        break;
                     }
                 }
             }
