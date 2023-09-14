@@ -18,7 +18,7 @@ namespace ViazyNetCore.MultiTenancy
             this._cache = cache;
         }
 
-        private const string TENANT_CACHEKEY = "__CaesarTenantStore";
+        private const string TENANT_CACHEKEY = "__TenantStore";
 
         public async Task<TenantConfiguration> FindAsync(int id)
         {
