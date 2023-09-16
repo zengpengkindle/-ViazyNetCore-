@@ -3,7 +3,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个角色权限。
     /// </summary>
-    public partial class BmsPermission : EntityBase<int>, ITenant
+    public partial class BmsPermission : EntityBase, ITenant
     {
         /// <summary>
         /// 设置或获取一个值，表示权限ID。

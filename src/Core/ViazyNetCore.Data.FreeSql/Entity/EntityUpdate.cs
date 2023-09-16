@@ -60,5 +60,7 @@ namespace ViazyNetCore
     /// </summary>
     public class EntityUpdate : EntityUpdate<long>
     {
+        [Column(IsPrimary = true, Position = 1, IsIdentity = true)]
+        public override long Id { get => base.Id; set => base.Id = value; }
     }
 }

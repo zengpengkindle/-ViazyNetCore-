@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个角色。
     /// </summary>
-    public partial class BmsRole : EntityUpdate<long>, ITenant
+    public partial class BmsRole : EntityUpdate, ITenant
     {
         /// <summary>
         /// 设置或获取一个值，表示名称。
