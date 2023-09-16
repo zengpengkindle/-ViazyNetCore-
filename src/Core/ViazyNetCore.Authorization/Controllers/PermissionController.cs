@@ -49,7 +49,7 @@ namespace ViazyNetCore.Authrozation
         /// <param name="permissionModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<int> AddPermission(PermissionModel permissionModel)
+        public async Task<long> AddPermission(PermissionModel permissionModel)
         {
             await this._permissionService.AddPermission(permissionModel.Name, permissionModel.Key);
 
