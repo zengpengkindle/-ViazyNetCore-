@@ -62,6 +62,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 o.Region = options.Region;
                 o.SecretKey = options.SecretKey;
                 o.SessionToken = options.SessionToken;
+                o.BrowseUrl = options.BrowseUrl;
             });
         }
 
