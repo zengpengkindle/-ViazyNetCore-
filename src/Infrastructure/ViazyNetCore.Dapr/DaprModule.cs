@@ -18,6 +18,7 @@ namespace ViazyNetCore.Dapr
 
             ConfigureDaprOptions(configuration);
 
+            context.Services.TryAddSingleton<IDaprClientFactory, DaprClientFactory>();
             context.Services.TryAddSingleton(
                 serviceProvider => serviceProvider
                     .GetRequiredService<IDaprClientFactory>()
