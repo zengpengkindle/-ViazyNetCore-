@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using FreeSql.Aop;
-using Microsoft.AspNetCore.Builder;
 using ViazyNetCore;
 using ViazyNetCore.Data.FreeSql;
-using ViazyNetCore.Data.FreeSql.Extensions;
 
 namespace FreeSql
 {
@@ -156,6 +147,32 @@ namespace FreeSql
                     }
                 }
             }
+            if (e.AuditValueType is AuditValueType.Insert or AuditValueType.InsertOrUpdate)
+            {
+                switch (e.Property.Name)
+                {
+                    case "CreateTime":
+                        if ((e.Column.CsType == typeof(DateTime) || e.Column.CsType == typeof(DateTime?))
+                             && (e.Value == null || (DateTime)e.Value == default || (DateTime?)e.Value == default))
+                        {
+                            e.Value = DateTime.Now;
+                        }
+                        break;
+                }
+            }
+            if (e.AuditValueType is AuditValueType.Update or AuditValueType.InsertOrUpdate)
+            {
+                switch (e.Property.Name)
+                {
+                    case "UpdateTime":
+                        if ((e.Column.CsType == typeof(DateTime) || e.Column.CsType == typeof(DateTime?))
+                             && (e.Value == null || (DateTime)e.Value == default || (DateTime?)e.Value == default))
+                        {
+                            e.Value = DateTime.Now;
+                        }
+                        break;
+                }
+            }
 
             if (user == null || user.Id <= 0)
             {
@@ -179,19 +196,6 @@ namespace FreeSql
                             e.Value = user.Nickname;
                         }
                         break;
-                    case "CreateTime":
-                        if ((e.Column.CsType == typeof(DateTime) || e.Column.CsType == typeof(DateTime?))
-                             && (e.Value == null || (DateTime)e.Value == default || (DateTime?)e.Value == default))
-                        {
-                            e.Value = DateTime.Now;
-                        }
-                        break;
-                        //case "TenantId":
-                        //    if (e.Value == null || (long)e.Value == default || (long?)e.Value == default)
-                        //    {
-                        //        e.Value = user.TenantId;
-                        //    }
-                        //    break;
                 }
             }
 
@@ -213,13 +217,6 @@ namespace FreeSql
                         if (e.Value == null || ((string)e.Value).IsNull())
                         {
                             e.Value = user.Nickname;
-                        }
-                        break;
-                    case "UpdateTime":
-                        if ((e.Column.CsType == typeof(DateTime) || e.Column.CsType == typeof(DateTime?))
-                             && (e.Value == null || (DateTime)e.Value == default || (DateTime?)e.Value == default))
-                        {
-                            e.Value = DateTime.Now;
                         }
                         break;
                 }

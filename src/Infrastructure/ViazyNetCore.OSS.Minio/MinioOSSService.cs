@@ -937,7 +937,12 @@ namespace ViazyNetCore.OSS
                     AccessMode accessMode = await this.GetObjectAclAsync(bucketName, objectName);
                     if (accessMode == AccessMode.PublicRead || accessMode == AccessMode.PublicReadWrite)
                     {
-                        return $"{Options.BrowseUrl}/{bucketName}{(objectName.StartsWith("/") ? objectName : $"/{objectName}")}";
+                        if (Options.BrowseUrl.IsNull())
+                        {
+                            return $"{(Options.IsEnableHttps ? "https" : "http ")}://{Options.Endpoint}/{bucketName}{(objectName.StartsWith("/") ? objectName : $"/{objectName}")}";
+                        }
+                        else
+                            return $"{Options.BrowseUrl}/{bucketName}{(objectName.StartsWith("/") ? objectName : $"/{objectName}")}";
                     }
                     else
                     {
