@@ -22,7 +22,7 @@
 - fontend/shopmall-uniapp 前端商城小程序 uni-app项目
 ## 🚀 快速入门
 
-> 前端管理后台使用 Vite + Vue3 + TypeScripe +ElementUI + PureAdmin
+> 前端管理后台使用 Vite + Vue3 + TypeScripe +ElementUI
 > 前端商城使用 uni-app nvue3 + TypeScripe + kv-uview-ui
 > SwaggerUI 项目采用 knife4j-vue 并调整 TypeScripe文档生成
 
@@ -56,22 +56,10 @@ app.UseApiResponseWrapper(option =>
     option.EnableResponseLogging = true;
     option.EnableExceptionLogging = true;
 });
-
-// Environment.IsDevelopment()
- app.UseSpa(spa =>
-    {
-        spa.Options.SourcePath = "client"; //启用的前端项目的路径 相对于当前项目路径
-        //spa.Options.PackageManagerCommand = "npm"; // 执行的 command命令
-        // 开发阶段, 启用 ViteNode 监听端口，前后端可单端口运行，F5 一键启动调试。
-        spa.UseDevServer(new ViteNodeServerOptions()  // dotnet add package ViazyNetCore.Web.DevServer
-        {
-            //Host= "172.0.0.1",
-        });
-    });
+##  InjectionModule 的使用
+> dotnet add package ViazyCoreNet.Core
 ```
-
-```csharp
-[DependsOn(typeof(AutoMapperModule)
+ [DependsOn(typeof(AutoMapperModule)
         , typeof(IdentityModule)
         , typeof(AspNetCoreMvcModule)
         , typeof(AuthorizationModule)
@@ -81,20 +69,37 @@ app.UseApiResponseWrapper(option =>
     public class BloggingManageHostModule : InjectionModule
     {
         …
-        public override void ConfigureServices(ServiceConfigurationContext context)
-        {
-            // dotnet add package ViazyNetCore.Swagger
-            Configure<SwaggerConfig>(options =>
-            {
-                options.Projects.Add(new ProjectConfig
-                {
-                    Name = "博客",
-                    Code = "blogging",
-                    Description = "博客",
-                    Version = "1.0",
-                });
-            });
-            context.Services.AddSwagger();
-        }
     }
 ```
+### 在 **Program** 启动项中添加
+```
+await builder.Services.AddApplicationAsync<BloggingManageHostModule>();
+```
+
+### **IOC** 支持
+> 通过 **InjectionAttribute** 特性注入，默认生命周期为 **Scoped**
+
+```
+[Injection]
+public class CategoryService
+{
+}
+
+[Injection(Lifetime = ServiceLifetime.Singleton)] //更改生命周期
+public class CategoryService
+{
+}
+```
+
+### 对流行使用的 npm 前端应用快速启动。
+```csharp
+app.UseSpa(spa =>
+    {
+        spa.Options.SourcePath = "client"; //启用的前端项目的路径 相对于当前项目路径
+        //spa.Options.PackageManagerCommand = "npm"; // 执行的 command命令
+        // 开发阶段, 启用 ViteNode 监听端口，前后端可单端口运行，F5 一键启动调试。
+        spa.UseDevServer(new ViteNodeServerOptions()  // dotnet add package ViazyNetCore.Web.DevServer
+        {
+            //Host= "172.0.0.1",
+        });
+    });
