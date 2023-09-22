@@ -59,8 +59,11 @@ app.UseApiResponseWrapper(option =>
     option.EnableResponseLogging = true;
     option.EnableExceptionLogging = true;
 });
+```
+
 ##  InjectionModule 的使用
 > dotnet add package ViazyCoreNet.Core
+
 ```
  [DependsOn(typeof(AutoMapperModule)
         , typeof(IdentityModule)
@@ -74,6 +77,7 @@ app.UseApiResponseWrapper(option =>
         …
     }
 ```
+
 ### 在 **Program** 启动项中添加
 ```
 await builder.Services.AddApplicationAsync<BloggingManageHostModule>();
