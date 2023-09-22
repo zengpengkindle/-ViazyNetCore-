@@ -226,7 +226,7 @@ namespace FreeSql
         private static void Aop_CurdAfter(object? sender, CurdAfterEventArgs e)
         {
 #if DEBUG
-            Debug.WriteLine($"ManagedThreadId:{Thread.CurrentThread.ManagedThreadId}; ElapsedMilliseconds:{e.ElapsedMilliseconds}ms,\r\n [SQL:] {e.Sql}");
+            System.Diagnostics.Debug.WriteLine($"ManagedThreadId:{Thread.CurrentThread.ManagedThreadId}; ElapsedMilliseconds:{e.ElapsedMilliseconds}ms,\r\n [SQL:] {e.Sql}");
 #endif
             if (e.ElapsedMilliseconds > 1000)
             {

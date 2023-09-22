@@ -40,14 +40,14 @@ namespace ViazyNetCore.Auth.Jwt
                     SecurityAlgorithms.HmacSha256Signature
                 ),
                 Subject = new ClaimsIdentity(new Claim[] {
-                     new Claim(JwtRegisteredClaimNames.Jti, jti),
-                     new Claim(JwtRegisteredClaimNames.Sid, userId.ToString()),
-                     new Claim(JwtRegisteredClaimNames.Aud, clientName),
+                     new Claim(JwtClaimTypes.JwtId, jti),
+                     new Claim(JwtClaimTypes.SessionId, userId.ToString()),
+                     new Claim(JwtClaimTypes.Audience, clientName),
                      new Claim(ClaimTypes.Name, username),
-                     new Claim(JwtRegisteredClaimNames.Iss, this._option.Issuer),
-                     new Claim(JwtRegisteredClaimNames.Exp, expires.ConvertToJsTime().ToString()),
-                     new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ConvertToJsTime().ToString()),
-                     new Claim(JwtRegisteredClaimNames.Typ, userType.ToString())
+                     new Claim(JwtClaimTypes.Issuer, this._option.Issuer),
+                     new Claim(JwtClaimTypes.Expiration, expires.ConvertToJsTime().ToString()),
+                     new Claim(JwtClaimTypes.NotBefore, DateTime.Now.ConvertToJsTime().ToString()),
+                     new Claim(JwtClaimTypes.Type, userType.ToString())
                 })
             };
             if (roleIds != null)

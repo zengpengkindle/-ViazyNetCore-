@@ -11,16 +11,16 @@ using Newtonsoft.Json;
 
 namespace ViazyNetCore
 {
-    public interface IEntity<TKey>
+    public interface IEntity
+    {
+    }
+
+    public interface IEntity<TKey> : IEntity
     {
         /// <summary>
         /// 主键Id
         /// </summary>
         TKey Id { get; set; }
-    }
-
-    public interface IEntity : IEntity<long>
-    {
     }
 
     public class Entity<TKey> : IEntity<TKey>

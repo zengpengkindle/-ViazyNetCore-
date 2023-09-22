@@ -380,5 +380,30 @@ namespace System
 
             return (T)Convert.ChangeType(obj, typeof(T), CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// 获取指定类型(包括基类型)中的所有常量。
+        /// </summary>
+        /// <returns></returns>
+        public static string[] GetPublicConstantsRecursively(this Type type)
+        {
+            List<string> list = new List<string>();
+            Recursively(list, type, 1);
+            return list.ToArray();
+            static void Recursively(List<string> constants, Type targetType, int currentDepth)
+            {
+                if (currentDepth <= 8)
+                {
+                    constants.AddRange(from x in targetType.GetFields(BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static)
+                                       where x.IsLiteral && !x.IsInitOnly
+                                       select x.GetValue(null).ToString());
+                    Type[] nestedTypes = targetType.GetNestedTypes(BindingFlags.Public);
+                    foreach (Type targetType2 in nestedTypes)
+                    {
+                        Recursively(constants, targetType2, currentDepth + 1);
+                    }
+                }
+            }
+        }
     }
 }

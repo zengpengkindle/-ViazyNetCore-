@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using FreeSql.DataAnnotations;
+using ViazyNetCore.Data.FreeSql;
 
 namespace ViazyNetCore
 {
@@ -14,7 +15,7 @@ namespace ViazyNetCore
     /// 添加接口
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public interface IEntityAdd<TKey>
+    public interface IEntityAdd<TKey> : IHasCreateTime
     {
         /// <summary>
         /// 创建者用户Id
@@ -61,5 +62,16 @@ namespace ViazyNetCore
     {
         [Column(IsPrimary = true, Position = 1, IsIdentity = true)]
         public override long Id { get => base.Id; set => base.Id = value; }
+    }
+
+    public class SnowflakeEntityAdd : EntityAdd<long>
+    {
+        /// <summary>
+        /// 主键Id
+        /// </summary>
+        [Description("主键Id")]
+        [Snowflake]
+        [Column(Position = 1, IsIdentity = false, IsPrimary = true)]
+        public virtual long Id { get; set; }
     }
 }

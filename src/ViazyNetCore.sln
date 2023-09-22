@@ -148,6 +148,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.OSS.Minio", "I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViazyNetCore.EventBus.Redis", "Infrastructure\ViazyNetCore.EventBus.Redis\ViazyNetCore.EventBus.Redis.csproj", "{9020C419-D92E-4DE9-9745-AD73B58EE7DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViazyNetCore.Ddd", "Core\ViazyNetCore.Ddd\ViazyNetCore.Ddd.csproj", "{B154E2EC-B079-46E4-A4B9-3E031A1E6A4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -390,6 +392,10 @@ Global
 		{9020C419-D92E-4DE9-9745-AD73B58EE7DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9020C419-D92E-4DE9-9745-AD73B58EE7DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9020C419-D92E-4DE9-9745-AD73B58EE7DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B154E2EC-B079-46E4-A4B9-3E031A1E6A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B154E2EC-B079-46E4-A4B9-3E031A1E6A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B154E2EC-B079-46E4-A4B9-3E031A1E6A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B154E2EC-B079-46E4-A4B9-3E031A1E6A4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -457,6 +463,7 @@ Global
 		{1B80D0C6-9600-447B-8B0B-0339BA5CC7DF} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{F47A1985-7A1A-4A5C-928E-0305D0DA0E3B} = {F6265F54-C50B-4D42-A77F-218326BF6241}
 		{9020C419-D92E-4DE9-9745-AD73B58EE7DC} = {F6265F54-C50B-4D42-A77F-218326BF6241}
+		{B154E2EC-B079-46E4-A4B9-3E031A1E6A4E} = {6630F746-024C-4CB6-96E6-0B28BB2F16CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C12DDF59-2172-499B-BA40-2AB3EC13088D}

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.AutoMapper\ViazyNetCore.AutoMapper.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.Data.FreeSql\ViazyNetCore.Data.FreeSql.csproj" />
+  </ItemGroup>
+
+</Project>

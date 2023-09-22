@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreeSql.DataAnnotations;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Newtonsoft.Json;
 
 namespace ViazyNetCore
 {
@@ -62,5 +64,16 @@ namespace ViazyNetCore
     {
         [Column(IsPrimary = true, Position = 1, IsIdentity = true)]
         public override long Id { get => base.Id; set => base.Id = value; }
+    }
+
+    public class SnowflakeEntityUpdate : EntityUpdate<long>
+    {
+        /// <summary>
+        /// 主键Id
+        /// </summary>
+        [Description("主键Id")]
+        [Snowflake]
+        [Column(Position = 1, IsIdentity = false, IsPrimary = true)]
+        public virtual long Id { get; set; }
     }
 }

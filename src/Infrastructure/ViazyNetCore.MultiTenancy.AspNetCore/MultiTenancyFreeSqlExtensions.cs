@@ -20,7 +20,7 @@ namespace ViazyNetCore.MultiTenancy.AspNetCore
         {
             var fsql = app.ApplicationServices.GetService<IFreeSql>();
             var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
-            var user = app.ApplicationServices.GetService<IUser>();
+            var user = app.ApplicationServices.GetRequiredService<IUser>();
             var currentTenant = app.ApplicationServices.GetService<ICurrentTenant>();
             var dbOption = app.ApplicationServices.GetService<IOptions<DbConfig>>();
             if (fsql == null)

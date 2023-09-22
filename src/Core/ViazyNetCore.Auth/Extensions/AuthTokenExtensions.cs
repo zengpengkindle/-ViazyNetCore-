@@ -48,7 +48,7 @@ namespace Microsoft.AspNetCore.Http
             Claim[] claims;
             try
             {
-                claims = new JwtSecurityTokenHandler().ReadJwtToken(rawToken).Claims.ToArray();
+                claims = context.User.Claims.ToArray();
             }
             catch (Exception e)
             {
@@ -121,7 +121,7 @@ namespace Microsoft.AspNetCore.Http
         public static long GetUserId(this ClaimsPrincipal claims)
         {
             //ids4用户的唯一标识符
-            var userid = claims.GetFirstValue(JwtRegisteredClaimNames.Sid);
+            var userid = claims.GetFirstValue(JwtClaimTypes.SessionId);
             return userid?.ParseTo<long>() ?? 0;
         }
 
@@ -132,7 +132,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static long GetUserId(this IEnumerable<Claim> claims)
         {
-            var sub = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value;
+            var sub = claims.FirstOrDefault(c => c.Type == JwtClaimTypes.SessionId)?.Value;
             //ids4用户的唯一标识符
             return sub?.ParseTo<long>() ?? 0;
         }
@@ -155,7 +155,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns>返回用户名称</returns>
         public static string GetUserName(this ClaimsPrincipal claims)
         {
-            return claims.GetFirstValue(JwtRegisteredClaimNames.UniqueName);
+            return claims.GetFirstValue(JwtClaimTypes.Name);
         }
         /// <summary>
         /// 获取当前用户的用户名称。
@@ -174,7 +174,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static string? GetUserName(this IEnumerable<Claim> claims)
         {
-            return claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
+            return claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Name)?.Value;
         }
         /// <summary>
         /// 获取当前用户的用户名称
@@ -183,7 +183,7 @@ namespace Microsoft.AspNetCore.Http
         /// <returns></returns>
         public static string? GetNickName(this IEnumerable<Claim> claims)
         {
-            return claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.FamilyName)?.Value;
+            return claims.FirstOrDefault(c => c.Type == JwtClaimTypes.NickName)?.Value;
         }
         #endregion
 
