@@ -108,7 +108,7 @@ if (app.Environment.IsDevelopment())
     app.UseSpa(spa =>
     {
         // 前端文件目录
-        spa.Options.SourcePath = "../../../fontend/ele-admin-ui";
+        spa.Options.SourcePath = "../../../frontend/ele-admin-ui";
         //spa.Options.PackageManagerCommand = "pnpm";
         spa.UseDevServer(new System.Web.DevServer.ViteNodeServerOptions()
         {
