@@ -110,3 +110,5 @@ app.UseSpa(spa =>
             //Host= "172.0.0.1",
         });
     });
+```
+![xmind](./docs/ViazyNetCore.Core.png)
