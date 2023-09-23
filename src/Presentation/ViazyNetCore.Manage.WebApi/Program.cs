@@ -59,15 +59,15 @@ builder.Services.AddApiDescriptor(option =>
 
 //- 添加自动依赖注入
 
-//builder.Services.AddLocalStoreProvider(options =>
-//{
-//    //options.RequestPath
-//    options.StoreRootPath = "../files";
-//    options.RequestPath = "/upload";
-//    options.MediaTypes = new List<MediaType> { MediaType.Image };
-//});
+builder.Services.AddLocalStoreProvider(options =>
+{
+    //options.RequestPath
+    options.StoreRootPath = "../files";
+    options.RequestPath = "/upload";
+    options.MediaTypes = new List<MediaType> { MediaType.Image };
+});
 
-builder.Services.AddMinioOSSService();
+//builder.Services.AddMinioOSSService();
 
 builder.Services.AddSingleton(sp => LockProvider.Default);
 
