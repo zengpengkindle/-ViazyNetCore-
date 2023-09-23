@@ -59,4 +59,12 @@
     <ProjectReference Include="..\..\src\ViazyNetCore.ShopMall.Modules\ViazyNetCore.ShopMall.Modules.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Configs\oss.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
