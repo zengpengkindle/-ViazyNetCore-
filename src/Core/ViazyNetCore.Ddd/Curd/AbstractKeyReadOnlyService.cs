@@ -60,6 +60,7 @@ public abstract class AbstractKeyReadOnlyService<TEntity, TGetOutputDto, TGetLis
 
         if (totalCount > 0)
         {
+            query = ApplyPaging(query, pagination);
             query = ApplySorting(query, pagination);
             var entities = await query.ToListAsync();
             entityDtos = await MapToGetListOutputDtosAsync(entities);
