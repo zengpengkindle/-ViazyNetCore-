@@ -2,41 +2,41 @@
 
 namespace ViazyNetCore.Ddd;
 
-public abstract class AbstractKeyCrudService<TEntity, TEntityDto, TKey>
-    : AbstractKeyCrudService<TEntity, TEntityDto, TKey, TKey>
+public abstract class AbstractKeyCurdService<TEntity, TEntityDto, TKey>
+    : AbstractKeyCurdService<TEntity, TEntityDto, TKey, TKey>
     where TEntity : class, IEntity
 {
-    protected AbstractKeyCrudService(IBaseRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
+    protected AbstractKeyCurdService(IBaseRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
     {
 
     }
 }
 
-public abstract class AbstractKeyCrudService<TEntity, TEntityDto, TKey, TQueryDto>
-    : AbstractKeyCrudService<TEntity, TEntityDto, TKey, TQueryDto, TEntityDto, TEntityDto>
+public abstract class AbstractKeyCurdService<TEntity, TEntityDto, TKey, TQueryDto>
+    : AbstractKeyCurdService<TEntity, TEntityDto, TKey, TQueryDto, TEntityDto, TEntityDto>
     where TEntity : class, IEntity
 {
-    protected AbstractKeyCrudService(IBaseRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
+    protected AbstractKeyCurdService(IBaseRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
     {
 
     }
 }
 
-public abstract class AbstractKeyCrudService<TEntity, TEntityDto, TKey, TQueryDto, TCreateDto>
-    : AbstractKeyCrudService<TEntity, TEntityDto, TKey, TQueryDto, TCreateDto, TCreateDto>
+public abstract class AbstractKeyCurdService<TEntity, TEntityDto, TKey, TQueryDto, TCreateDto>
+    : AbstractKeyCurdService<TEntity, TEntityDto, TKey, TQueryDto, TCreateDto, TCreateDto>
     where TEntity : class, IEntity
 {
-    protected AbstractKeyCrudService(IBaseRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
+    protected AbstractKeyCurdService(IBaseRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
     {
 
     }
 }
 
-public abstract class AbstractKeyCrudService<TEntity, TEntityDto, TKey, TQueryDto, TCreateDto, TUpdateDto>
-    : AbstractKeyCrudService<TEntity, TEntityDto, TEntityDto, TKey, TQueryDto, TCreateDto, TUpdateDto>
+public abstract class AbstractKeyCurdService<TEntity, TEntityDto, TKey, TQueryDto, TCreateDto, TUpdateDto>
+    : AbstractKeyCurdService<TEntity, TEntityDto, TEntityDto, TKey, TQueryDto, TCreateDto, TUpdateDto>
     where TEntity : class, IEntity
 {
-    protected AbstractKeyCrudService(IBaseRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
+    protected AbstractKeyCurdService(IBaseRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
     {
 
     }
@@ -52,7 +52,7 @@ public abstract class AbstractKeyCrudService<TEntity, TEntityDto, TKey, TQueryDt
     }
 }
 
-public abstract class AbstractKeyCrudService<TEntity, TGetOutputDto, TGetListItemDto, TKey, TQueryDto, TCreateDto, TUpdateDto>
+public abstract class AbstractKeyCurdService<TEntity, TGetOutputDto, TGetListItemDto, TKey, TQueryDto, TCreateDto, TUpdateDto>
     : AbstractKeyReadOnlyService<TEntity, TGetOutputDto, TGetListItemDto, TKey, TQueryDto>,
         ICurdService<TGetOutputDto, TGetListItemDto, TKey, TQueryDto, TCreateDto, TUpdateDto>
     where TEntity : class, IEntity
@@ -65,7 +65,7 @@ public abstract class AbstractKeyCrudService<TEntity, TGetOutputDto, TGetListIte
 
     protected virtual string? DeletePolicyName { get; set; }
 
-    protected AbstractKeyCrudService(IBaseRepository<TEntity> repository, IMapper mapper)
+    protected AbstractKeyCurdService(IBaseRepository<TEntity> repository, IMapper mapper)
         : base(repository, mapper)
     {
         Repository = repository;
@@ -77,7 +77,6 @@ public abstract class AbstractKeyCrudService<TEntity, TGetOutputDto, TGetListIte
 
         var entity = await MapToEntityAsync(input);
 
-
         await Repository.InsertAsync(entity);
 
         return await MapToGetOutputDtoAsync(entity);
@@ -88,7 +87,6 @@ public abstract class AbstractKeyCrudService<TEntity, TGetOutputDto, TGetListIte
         await CheckUpdatePolicyAsync();
 
         var entity = await GetEntityByIdAsync(id);
-        //TODO: Check if input has id different than given id and normalize if it's default value, throw ex otherwise
         await MapToEntityAsync(input, entity);
         await Repository.UpdateAsync(entity);
 

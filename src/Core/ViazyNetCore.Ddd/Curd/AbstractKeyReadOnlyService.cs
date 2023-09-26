@@ -71,6 +71,18 @@ public abstract class AbstractKeyReadOnlyService<TEntity, TGetOutputDto, TGetLis
             totalCount
         );
     }
+
+    public virtual async Task<List<TGetListItemDto>> GetListAsync(TQueryDto input)
+    {
+        await CheckGetListPolicyAsync();
+
+        var query = CreateFilteredQuery(input);
+
+        var entities = await query.ToListAsync();
+        var entityDtos = await MapToGetListOutputDtosAsync(entities);
+        return entityDtos;
+    }
+
     protected virtual ISelect<TEntity> ApplySorting(ISelect<TEntity> query, PaginationSort pagination)
     {
         return query;
@@ -93,12 +105,6 @@ public abstract class AbstractKeyReadOnlyService<TEntity, TGetOutputDto, TGetLis
         await CheckPolicyAsync(GetListPolicyName);
     }
 
-    protected virtual IQueryable<TEntity> ApplySorting(IQueryable<TEntity> query, TQueryDto input)
-    {
-        //No sorting
-        return query;
-    }
-
     protected virtual ISelect<TEntity> CreateFilteredQuery(TQueryDto input)
     {
         return ReadOnlyRepository.Select;
@@ -116,12 +122,6 @@ public abstract class AbstractKeyReadOnlyService<TEntity, TGetOutputDto, TGetLis
 
     protected virtual async Task<List<TGetListItemDto>> MapToGetListOutputDtosAsync(List<TEntity> entities)
     {
-        //var dtos = new List<TGetListOutputDto>();
-
-        //foreach (var entity in entities)
-        //{
-        //    dtos.Add(await MapToGetListOutputDtoAsync(entity));
-        //}
         var dtos = this.ObjectMapper.Map<List<TEntity>, List<TGetListItemDto>>(entities);
         return dtos;
     }
