@@ -46,7 +46,7 @@ const {
           </el-button>
         </template>
         <template v-slot="{ size, checkList }">
-          <pure-table
+          <x-table
             ref="tableRef"
             row-key="id"
             showOverflowTooltip
@@ -90,7 +90,7 @@ const {
                 </template>
               </el-popconfirm>
             </template>
-          </pure-table>
+          </x-table>
         </template>
       </PureTableBar>
     </div>

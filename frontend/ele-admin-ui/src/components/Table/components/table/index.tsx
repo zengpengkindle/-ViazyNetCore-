@@ -248,7 +248,7 @@ export default defineComponent({
 
     return () => (
       <div
-        class="pure-table"
+        class="x-table"
         style="width:100%"
         v-loading={unref(loading)}
         {...unref(loadingBackground)}

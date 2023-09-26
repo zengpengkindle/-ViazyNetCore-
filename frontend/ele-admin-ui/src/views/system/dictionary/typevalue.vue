@@ -170,7 +170,7 @@ onMounted(() => {
         </el-button>
       </template>
       <template v-slot="{ size, checkList }">
-        <pure-table
+        <x-table
           align-whole="center"
           table-layout="auto"
           :loading="loading"
@@ -210,7 +210,7 @@ onMounted(() => {
               </template>
             </el-popconfirm>
           </template>
-        </pure-table>
+        </x-table>
       </template>
     </PureTableBar>
     <EditValueDialog

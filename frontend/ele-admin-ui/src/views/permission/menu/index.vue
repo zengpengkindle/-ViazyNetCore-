@@ -80,7 +80,7 @@ const {
         </el-button>
       </template>
       <template v-slot="{ size, checkList }">
-        <pure-table
+        <x-table
           ref="tableRef"
           align-whole="center"
           row-key="id"
@@ -123,7 +123,7 @@ const {
               </template>
             </el-popconfirm>
           </template>
-        </pure-table>
+        </x-table>
       </template>
     </PureTableBar>
     <edit

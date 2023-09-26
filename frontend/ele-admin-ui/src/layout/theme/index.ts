@@ -40,15 +40,15 @@ const themeColors = {
     menuActiveBefore: "#e13c39"
   },
   volcano: {
-    subMenuActiveText: "#fff",
-    menuBg: "#2b0e05",
-    menuHover: "#e85f33",
-    subMenuBg: "#0f0603",
-    subMenuActiveBg: "#e85f33",
-    menuText: "rgb(254 254 254 / 65%)",
-    sidebarLogo: "#441708",
-    menuTitleHover: "#fff",
-    menuActiveBefore: "#e85f33"
+    subMenuActiveText: "#e85f33",
+    menuBg: "#fff",
+    menuHover: "#ffcebd",
+    subMenuBg: "#fff",
+    subMenuActiveBg: "#f3ded6",
+    menuText: "#333",
+    sidebarLogo: "#fff",
+    menuTitleHover: "#f35925",
+    menuActiveBefore: "#000"
   },
   yellow: {
     subMenuActiveText: "#d25f00",
@@ -56,7 +56,7 @@ const themeColors = {
     menuHover: "#f6da4d",
     subMenuBg: "#0f0603",
     subMenuActiveBg: "#f6da4d",
-    menuText: "rgb(254 254 254 / 65%)",
+    menuText: "#7a80b4",
     sidebarLogo: "#443b05",
     menuTitleHover: "#fff",
     menuActiveBefore: "#f6da4d"

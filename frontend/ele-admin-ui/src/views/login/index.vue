@@ -8,7 +8,7 @@ import { useNav } from "@/layout/hooks/useNav";
 import type { FormInstance } from "element-plus";
 import { useLayout } from "@/layout/hooks/useLayout";
 import { useUserStoreHook } from "@/store/modules/user";
-import { bg, avatar, illustration } from "./utils/static";
+import { avatar, illustration } from "./utils/static";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
@@ -34,8 +34,8 @@ dataThemeChange();
 const { title } = useNav();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  username: "",
+  password: ""
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="select-none">
-    <img :src="bg" class="wave" />
+    <!-- <img :src="bg" class="wave" /> -->
     <div class="flex-c absolute right-5 top-3">
       <!-- 主题 -->
       <el-switch
@@ -127,6 +127,7 @@ onBeforeUnmount(() => {
                   clearable
                   v-model="ruleForm.username"
                   placeholder="账号"
+                  autocomplete="on"
                   :prefix-icon="useRenderIcon(User)"
                 />
               </el-form-item>
@@ -138,6 +139,7 @@ onBeforeUnmount(() => {
                   clearable
                   show-password
                   v-model="ruleForm.password"
+                  autocomplete="current-password"
                   placeholder="密码"
                   :prefix-icon="useRenderIcon(Lock)"
                 />

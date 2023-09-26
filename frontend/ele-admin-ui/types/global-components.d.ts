@@ -7,9 +7,13 @@ declare module "vue" {
     IconifyIconOnline: typeof import("../src/components/ReIcon")["IconifyIconOnline"];
     FontIcon: typeof import("../src/components/ReIcon")["FontIcon"];
     Auth: typeof import("../src/components/ReAuth")["Auth"];
-    XStatus: typeof import("../src/components/ui/status.vue")['default'];
-    XImage: typeof import("../src/components/ui/image.vue")['default'];
+    XStatus: typeof import("../src/components/ui/status.vue")["default"];
+    XImage: typeof import("../src/components/ui/image.vue")["default"];
+    XDict: typeof import("../src/components/ui/dict.vue")["default"];
+    XTreeSelect: typeof import("../src/components/ui/tree-select.vue")["default"];
+    XSelect: typeof import("../src/components/ui/select-inpit.vue")["default"];
     XTable: typeof import("@/components/Table")["XTable"];
+    XCofirmButton: typeof import("@/components/ui/cofirm-button.vue")["default"];
   }
 }
 

@@ -40,7 +40,7 @@ const {
           </el-button>
         </template>
         <template v-slot="{ size, checkList }">
-          <pure-table
+          <x-table
             align-whole="center"
             table-layout="auto"
             :loading="loading"
@@ -73,7 +73,7 @@ const {
                 </template>
               </el-popconfirm>
             </template>
-          </pure-table>
+          </x-table>
         </template>
       </PureTableBar>
     </div>

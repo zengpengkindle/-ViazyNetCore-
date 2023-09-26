@@ -388,7 +388,7 @@ onBeforeMount(() => {
 
     <el-divider />
     <el-button
-      type="danger"
+      type="primary"
       style="width: 90%; margin: 24px 15px"
       @click="onReset"
     >

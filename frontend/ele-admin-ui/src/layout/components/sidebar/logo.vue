@@ -18,7 +18,7 @@ const { title } = useNav();
         class="sidebar-logo-link"
         to="/"
       >
-        <FontIcon icon="team-iconlogo" svg style="width: 35px; height: 35px" />
+        <FontIcon icon="icon-logo" svg style="width: 35px; height: 35px" />
         <span class="sidebar-title">{{ title }}</span>
       </router-link>
       <router-link
@@ -28,7 +28,7 @@ const { title } = useNav();
         class="sidebar-logo-link"
         to="/"
       >
-        <FontIcon icon="team-iconlogo" svg style="width: 35px; height: 35px" />
+        <FontIcon icon="icon-logo" svg style="width: 35px; height: 35px" />
         <span class="sidebar-title">{{ title }}</span>
       </router-link>
     </transition>
@@ -60,7 +60,7 @@ const { title } = useNav();
       color: #1890ff;
       font-weight: 600;
       font-size: 20px;
-      margin-top: 10px;
+      margin-top: 5px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
     }
   }

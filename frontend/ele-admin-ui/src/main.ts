@@ -9,11 +9,13 @@ import createGlobal from "@/utils/globals";
 // import { useEcharts } from "@/plugins/echarts";
 import { injectResponsiveStorage } from "@/utils/responsive";
 
-import Table from "@pureadmin/table";
 import Status from "@/components/ui/status.vue";
+import TreeSelect from "@/components/ui/tree-select.vue";
+import Dict from "@/components/ui/dict.vue";
 import XTable from "@/components/Table";
+import XSelectInput from "@/components/ui/select-input.vue";
 import ImageUpload from "@/components/ui/image.vue";
-// import PureDescriptions from "@pureadmin/descriptions";
+import CofirmButton from "@/components/ui/cofirm-button.vue";
 
 // 引入重置样式
 import "./style/reset.scss";
@@ -48,7 +50,11 @@ app.component("FontIcon", FontIcon);
 import { Auth } from "@/components/ReAuth";
 app.component("Auth", Auth);
 app.component("x-status", Status);
+app.component("x-select", XSelectInput);
+app.component("x-tree-select", TreeSelect);
+app.component("x-dict", Dict);
 app.component("x-image", ImageUpload);
+app.component("x-cofirm-button", CofirmButton);
 
 getServerConfig(app).then(async config => {
   app.use(router);
@@ -59,7 +65,6 @@ getServerConfig(app).then(async config => {
   app
     .use(createGlobal())
     // .use(useEcharts)
-    .use(Table)
     .use(XTable); // .use(PureDescriptions)
   app.mount("#app");
 });

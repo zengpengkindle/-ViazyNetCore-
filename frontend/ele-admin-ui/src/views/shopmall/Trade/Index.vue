@@ -205,7 +205,7 @@ const router = useRouter();
           </el-button>
         </template>
         <template v-slot="{ size, checkList }">
-          <pure-table
+          <x-table
             align-whole="center"
             table-layout="auto"
             :loading="loading"
@@ -243,7 +243,7 @@ const router = useRouter();
                 添加发货
               </el-button>
             </template>
-          </pure-table>
+          </x-table>
         </template>
       </PureTableBar>
     </div>
