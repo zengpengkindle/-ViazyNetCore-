@@ -308,7 +308,7 @@ onBeforeMount(() => {
         @click="setLayoutThemeColor(item.themeColor)"
       >
         <el-icon
-          style="margin: 0.1em 0.1em 0 0"
+          style="margin: 0.1em 0.1em 0 0; border: 1px solid #bbb"
           :size="17"
           :color="getThemeColor(item.themeColor)"
         >
