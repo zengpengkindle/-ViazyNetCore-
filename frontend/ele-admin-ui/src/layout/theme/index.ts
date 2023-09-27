@@ -6,7 +6,7 @@ import { type multipleScopeVarsOptions } from "@pureadmin/theme";
 
 /** 预设主题色 */
 const themeColors = {
-  default: {
+  dark: {
     subMenuActiveText: "#fff",
     menuBg: "#001529",
     menuHover: "#4091f7",
@@ -17,7 +17,7 @@ const themeColors = {
     menuTitleHover: "#fff",
     menuActiveBefore: "#4091f7"
   },
-  light: {
+  default: {
     subMenuActiveText: "#165DFF",
     menuBg: "#fff",
     menuHover: "#e0ebf6",

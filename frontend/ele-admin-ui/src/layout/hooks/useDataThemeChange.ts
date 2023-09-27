@@ -13,10 +13,10 @@ import {
 export function useDataThemeChange() {
   const { layoutTheme, layout } = useLayout();
   const themeColors = ref<Array<themeColorsType>>([
-    /* 道奇蓝（默认） */
-    { color: "#1b2a47", themeColor: "default" },
-    /* 亮白色 */
-    { color: "#ffffff", themeColor: "light" },
+    /* 亮白色（默认） */
+    { color: "#ffffff", themeColor: "default" },
+    /* 道奇蓝 */
+    { color: "#1b2a47", themeColor: "dark" },
     /* 猩红色 */
     { color: "#f5222d", themeColor: "dusk" },
     /* 橙红色 */

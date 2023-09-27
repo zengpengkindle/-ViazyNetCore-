@@ -57,7 +57,7 @@ const { title } = useNav();
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align: left;
-      color: #1890ff;
+      color: var(--el-color-primary);
       font-weight: 600;
       font-size: 20px;
       margin-top: 5px;

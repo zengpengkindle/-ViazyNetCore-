@@ -51,7 +51,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             //if (!await this._roleService.ExistsAsync(model.RoleId)) throw new ApiException("角色不存在。");
             var describe = model.Id == 0 ? "添加" : "修改";
 
-            var randPwd = model.Id == 0 ? null : "1231123";// Globals.GetRandomPassword();
+            var randPwd = model.Id == 0 ? "A121212" : null;// Globals.GetRandomPassword();
             var userId = await this._userService.ManageAsync(model, randPwd);
 
             var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
