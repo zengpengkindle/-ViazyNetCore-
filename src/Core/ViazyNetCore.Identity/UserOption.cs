@@ -76,7 +76,7 @@ namespace ViazyNetCore.Identity
         /// <summary>
         /// 用户密码加密方式
         /// </summary>
-        public UserPasswordFormat UserPasswordFormat { get; set; } = UserPasswordFormat.MD5;
+        public UserPasswordFormat UserPasswordFormat { get; set; } = UserPasswordFormat.SHA256;
 
         /// <summary>
         /// 是否启用昵称

@@ -90,7 +90,7 @@ namespace ViazyNetCore.Authorization.Modules
             if (user == null)
                 return false;
 
-            string storedPassword = UserPasswordHelper.EncodePassword(newPassword, user.PasswordSalt, UserPasswordFormat.MD5);
+            string storedPassword = UserPasswordHelper.EncodePassword(newPassword, user.PasswordSalt, _userOption.UserPasswordFormat);
             bool result = await this._userRepository.ResetPassword(user, storedPassword);
 
 
@@ -115,7 +115,7 @@ namespace ViazyNetCore.Authorization.Modules
             if (loginUser == null)
                 throw new ApiException("用户名密码不匹配", (int)UserLoginStatus.InvalidCredentials);
 
-            if (!UserPasswordHelper.CheckPassword(password, loginUser.Password, loginUser.PasswordSalt, UserPasswordFormat.MD5))
+            if (!UserPasswordHelper.CheckPassword(password, loginUser.Password, loginUser.PasswordSalt, _userOption.UserPasswordFormat))
                 throw new ApiException("用户名密码不匹配", (int)UserLoginStatus.InvalidCredentials);
 
             if (loginUser.Status != ComStatus.Enabled)

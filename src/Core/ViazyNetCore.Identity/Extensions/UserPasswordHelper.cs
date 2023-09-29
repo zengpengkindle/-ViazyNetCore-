@@ -20,6 +20,7 @@ namespace ViazyNetCore.Authorization
         /// 标准MD5加密
         /// </summary>
         MD5 = 1,
+        SHA256 = 2,
     }
 
     /// <summary>
@@ -51,6 +52,8 @@ namespace ViazyNetCore.Authorization
                 case UserPasswordFormat.Clear:
                     return password;
                 case UserPasswordFormat.MD5:
+                    return (password + slat.ToString("N")).ToMd5();
+                case UserPasswordFormat.SHA256:
                     return DataSecurity.GenerateSaltedHash(password, slat);
                 default:
                     break;

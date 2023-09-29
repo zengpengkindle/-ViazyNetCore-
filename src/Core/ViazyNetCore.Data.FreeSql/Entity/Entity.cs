@@ -23,7 +23,7 @@ namespace ViazyNetCore
         TKey Id { get; set; }
     }
 
-    public class Entity<TKey> : IEntity<TKey>
+    public abstract class Entity<TKey> : IEntity<TKey>
     {
 
         /// <summary>
@@ -32,11 +32,11 @@ namespace ViazyNetCore
         [Description("主键Id")]
         [Snowflake]
         [Column(Position = 1, IsIdentity = false, IsPrimary = true)]
-        [JsonProperty(Order = -30)]
+        [JsonProperty(Order = 1)]
         public virtual TKey Id { get; set; }
     }
 
-    public class Entity : Entity<long>
+    public abstract class Entity : Entity<long>
     {
     }
 }

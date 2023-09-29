@@ -31,7 +31,7 @@ namespace ViazyNetCore
         DateTime? CreateTime { get; set; }
     }
 
-    public class EntityAdd<TKey> : Entity<TKey>, IEntityAdd<TKey>
+    public abstract class EntityAdd<TKey> : Entity<TKey>, IEntityAdd<TKey>
     {
         /// <summary>
         /// 创建者Id
@@ -58,13 +58,13 @@ namespace ViazyNetCore
     /// <summary>
     /// 实体创建
     /// </summary>
-    public class EntityAdd : EntityAdd<long>
+    public abstract class EntityAdd : EntityAdd<long>
     {
         [Column(IsPrimary = true, Position = 1, IsIdentity = true)]
         public override long Id { get => base.Id; set => base.Id = value; }
     }
 
-    public class SnowflakeEntityAdd : EntityAdd<long>
+    public abstract class SnowflakeEntityAdd : EntityAdd<long>
     {
         /// <summary>
         /// 主键Id

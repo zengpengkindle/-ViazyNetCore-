@@ -1,18 +1,16 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Net.Http.Headers;
-using System.Security.Cryptography;
 using System.Tests;
 using IdentityModel.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ViazyNetCore.CommondTest;
-using static IdentityModel.OidcConstants;
 using ViazyNetCore.RabbitMQ;
 
 var data = new Dictionary<string, string>()
             {
-                { "MQueue:ConnectionStrings:Default", "host=47.98.34.91;Port=5672;virtualHost=caesar;username=ytt;password=mqEeIzfAYNmr2hfFsVK"}
+                { "MQueue:ConnectionStrings:Default", "host=localhost;Port=5672;virtualHost=viazy;username=viazy;password=mqEeIzfAYNmr2hfFsVK"}
                 ,{ "MQueue:Options:ChannelInactiveSeconds", "15"}
             };
 

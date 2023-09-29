@@ -7,7 +7,7 @@ public class AsyncDeterminationInterceptor<TInterceptor> : AsyncDeterminationInt
     where TInterceptor : IProxyInterceptor
 {
     public AsyncDeterminationInterceptor(TInterceptor interceptor)
-        : base(new CastleAsyncAbpInterceptorAdapter<TInterceptor>(interceptor))
+        : base(new CastleAsyncInterceptorAdapter<TInterceptor>(interceptor))
     {
 
     }

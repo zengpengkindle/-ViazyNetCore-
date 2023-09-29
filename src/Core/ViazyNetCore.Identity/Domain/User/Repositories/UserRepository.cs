@@ -157,12 +157,7 @@ namespace ViazyNetCore.Modules
         public Task<BmsUser> GetEnabledUserByIdAsync(long id)
         {
             return this.Select.Where(u => u.Id == id && u.Status == ComStatus.Enabled)
-                .WithTempQuery(u => new BmsUser
-                {
-                    Id = u.Id,
-                    Password = u.Password,
-                    PasswordSalt = u.PasswordSalt,
-                }).FirstAsync();
+                .FirstAsync();
         }
 
         #endregion

@@ -5,12 +5,12 @@ using ViazyNetCore.DynamicProxy;
 
 namespace ViazyNetCore.Castle.DynamicProxy;
 
-public class CastleAsyncAbpInterceptorAdapter<TInterceptor> : AsyncInterceptorBase
+public class CastleAsyncInterceptorAdapter<TInterceptor> : AsyncInterceptorBase
     where TInterceptor : IProxyInterceptor
 {
     private readonly TInterceptor _interceptor;
 
-    public CastleAsyncAbpInterceptorAdapter(TInterceptor interceptor)
+    public CastleAsyncInterceptorAdapter(TInterceptor interceptor)
     {
         _interceptor = interceptor;
     }

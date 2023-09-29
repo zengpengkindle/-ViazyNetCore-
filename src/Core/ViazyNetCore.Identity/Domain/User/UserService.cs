@@ -208,7 +208,8 @@ namespace ViazyNetCore.Modules
         /// <returns>重置成功返回 随机密码,否则抛出异常</returns>
         public async Task<string> ResetPasswordAsync(long id, string randPwd)
         {
-            var password = DataSecurity.GenerateSaltedHash(randPwd, out var salt);
+            var salt = Guid.NewGuid();
+            var password = UserPasswordHelper.EncodePassword(randPwd, salt, this._userOption.UserPasswordFormat);
             await _userRepository.ModifyPasswordAsync(password, salt, id);
             return randPwd;
         }
@@ -226,7 +227,8 @@ namespace ViazyNetCore.Modules
 
             if (user != null && UserPasswordHelper.CheckPassword(args.OldPassword, user.Password, user.PasswordSalt, this._userOption.UserPasswordFormat))
             {
-                var password = DataSecurity.GenerateSaltedHash(args.NewPassword, out var salt);
+                var salt = Guid.NewGuid();
+                var password = UserPasswordHelper.EncodePassword(args.NewPassword, salt, this._userOption.UserPasswordFormat);
                 await _userRepository.ModifyPasswordAsync(password, salt, id);
                 return true;
             }

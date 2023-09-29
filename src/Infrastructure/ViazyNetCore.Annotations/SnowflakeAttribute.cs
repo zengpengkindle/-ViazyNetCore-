@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore
 {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, Inherited = true)]
     public class SnowflakeAttribute : Attribute
     {
         public bool Enable { get; set; } = true;

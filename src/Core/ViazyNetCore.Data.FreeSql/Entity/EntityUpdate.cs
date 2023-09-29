@@ -33,7 +33,7 @@ namespace ViazyNetCore
         DateTime? UpdateTime { get; set; }
     }
 
-    public class EntityUpdate<TKey> : EntityAdd<TKey>, IEntityUpdate<TKey>
+    public abstract class EntityUpdate<TKey> : EntityAdd<TKey>, IEntityUpdate<TKey>
     {
         /// <summary>
         /// 修改者Id
@@ -60,13 +60,13 @@ namespace ViazyNetCore
     /// <summary>
     /// 实体修改
     /// </summary>
-    public class EntityUpdate : EntityUpdate<long>
+    public abstract class EntityUpdate : EntityUpdate<long>
     {
         [Column(IsPrimary = true, Position = 1, IsIdentity = true)]
         public override long Id { get => base.Id; set => base.Id = value; }
     }
 
-    public class SnowflakeEntityUpdate : EntityUpdate<long>
+    public abstract class SnowflakeEntityUpdate : EntityUpdate<long>
     {
         /// <summary>
         /// 主键Id
