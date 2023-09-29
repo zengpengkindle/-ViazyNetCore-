@@ -56,13 +56,12 @@ namespace System
         /// <returns> 44 位加盐散列后的文本。</returns>
         public static string GenerateSaltedHash(string text, Guid salt)
         {
-            var bytes1 = Encoding.UTF8.GetBytes(text);
-            var bytes2 = Encoding.UTF8.GetBytes(salt.ToString("N"));
-            var hash = ArrayPool<byte>.Shared.Rent(bytes1.Length + bytes2.Length);
+            var bytes1 = Encoding.UTF8.GetBytes(text+ salt.ToString("N"));
+            var hash = ArrayPool<byte>.Shared.Rent(bytes1.Length);
             try
             {
                 bytes1.CopyTo(hash, 0);
-                bytes2.CopyTo(hash, bytes1.Length);
+                //bytes2.CopyTo(hash, bytes1.Length);
 
                 return Convert.ToBase64String(Crypto(HashAlgorithms.SHA256, hash));
             }

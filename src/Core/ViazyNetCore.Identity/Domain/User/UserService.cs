@@ -177,23 +177,6 @@ namespace ViazyNetCore.Modules
                 }
             }
 
-            //if (user == null)
-            //{
-            //    this._eventBus.Publish(new OperationLogEventData()
-            //    {
-            //        Data = new OperationLog("", args.Username, args.Username, OperatorTypeEnum.Bms)
-            //        {
-            //            ObjectName = "用户登录",
-            //            ObjectId = args.Auditor.ToString(),
-            //            OperationType = "不存在用户",
-            //            Description = $"用户账号:{args.Username}",
-            //            LogLevel = LogRecordLevel.Error
-            //        },
-            //        EventTime = DateTime.Now
-            //    });
-            //}
-
-            //密码错误 和 账号不存在 都统一一个提示语，防止强行试账号
             var userLoginCheck = this.GetByUsernameCache(args.Username, false, ip, args.Auditor);
             if (LOGIN_MAXCOUNT - userLoginCheck.ErrorCount == 0)
                 throw new ApiException($"您的账号已被锁定，请在 {LOGIN_TIME} 分钟后重试");
@@ -223,16 +206,19 @@ namespace ViazyNetCore.Modules
         /// <returns>修改成功返回 true 值，否则返回 false 值。</returns>
         public async Task<bool> ModifyPasswordAsync(long id, UserModifyPasswordEditDto args)
         {
+            if (args.NewPassword.Length < 6)
+                throw new ApiException("密码长度不能小于6位");
+
             var user = await _userRepository.GetEnabledUserByIdAsync(id);
 
-            if (user != null && UserPasswordHelper.CheckPassword(args.OldPassword, user.Password, user.PasswordSalt, this._userOption.UserPasswordFormat))
+            if (user == null || !UserPasswordHelper.CheckPassword(args.OldPassword, user.Password, user.PasswordSalt, this._userOption.UserPasswordFormat))
             {
-                var salt = Guid.NewGuid();
-                var password = UserPasswordHelper.EncodePassword(args.NewPassword, salt, this._userOption.UserPasswordFormat);
-                await _userRepository.ModifyPasswordAsync(password, salt, id);
-                return true;
+                return false;
             }
-            return false;
+
+            var salt = Guid.NewGuid();
+            var password = UserPasswordHelper.EncodePassword(args.NewPassword, salt, this._userOption.UserPasswordFormat);
+            return await _userRepository.ModifyPasswordAsync(password, salt, id);
         }
 
         #region 密码缓存

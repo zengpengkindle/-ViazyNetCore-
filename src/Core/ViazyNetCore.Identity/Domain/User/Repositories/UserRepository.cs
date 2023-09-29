@@ -55,16 +55,15 @@ namespace ViazyNetCore.Modules
         /// <param name="salt">密码盐。</param>
         /// <param name="password">密码。</param>
         /// <returns>修改成功返回 true 值，否则返回 false 值。</returns>
-        public async Task ModifyPasswordAsync(string password, Guid salt, long id)
+        public async Task<bool> ModifyPasswordAsync(string password, Guid salt, long id)
         {
-            await this.UpdateDiy
-                    .Where(pg => pg.Id == id)
-                    .SetDto(new
-                    {
-                        Password = password,
-                        PasswordSalt = salt,
-                        ModifyTime = DateTime.Now,
-                    }).ExecuteAffrowsAsync();
+            var result = await this.UpdateDiy
+                       .Where(u => u.Id == id)
+                       .Set(p => p.Password == password)
+                       .Set(p => p.PasswordSalt == salt)
+                       .Set(p => p.ModifyTime == DateTime.Now)
+                       .ExecuteAffrowsAsync();
+            return result == 1;
         }
 
         #endregion
@@ -93,35 +92,6 @@ namespace ViazyNetCore.Modules
             return await this.Select.AnyAsync(u => u.Username == userName && u.Id != id);
         }
 
-
-        ///// <summary>
-        ///// 查询所有模型。
-        ///// </summary>
-        ///// <param name="args">查询参数。</param>
-        ///// <returns>模型的集合。</returns>
-        //public Task<PageData<UserFindAllModel>> FindAllAsync(string usernameLike, long roleId, ComStatus? status, Pagination args)
-        //{
-        //    var query = this.Select;
-        //    if (usernameLike.IsNotNull()) query = query.Where(u => u.Username.Contains(usernameLike));
-        //    if (roleId > 0) query = query.Where(u => u.RoleId == roleId);
-        //    if (status.HasValue) query = query.Where(u => u.Status == status.Value);
-
-        //    var query2 = query.From<BmsRole>((u, r) => u.InnerJoin(u => r.Id == u.RoleId)).OrderByDescending((u, r) => u.ModifyTime)
-        //                 .WithTempQuery((u, r) => new UserFindAllModel
-        //                 {
-        //                     Id = u.Id,
-        //                     Username = u.Username,
-        //                     Nickname = u.Nickname,
-        //                     RoleId = u.RoleId,
-        //                     RoleName = r.Name,
-        //                     Status = u.Status,
-        //                     CreateTime = u.CreateTime,
-        //                     ModifyTime = u.ModifyTime,
-        //                 });
-
-        //    return query2.ToPageAsync(args);
-        //}
-
         /// <summary>
         /// 根据用户名获取UserRoleDTO
         /// </summary>
@@ -130,23 +100,6 @@ namespace ViazyNetCore.Modules
         public Task<BmsUser> GetUserByUserName(string userName)
         {
             return this.Select.Where(u => u.Username == userName).FirstAsync();
-
-            //return this.Select.From<BmsRole, BmsUserRole>().InnerJoin((u, r, ur) => u.Id == ur.UserId && r.Id == ur.RoleId)
-            //    .Where((u, r,ur) => u.Username == userName)
-            //    .WithTempQuery((u, r,ur) => new UserRoleDTO
-            //    {
-            //        Id = u.Id,
-            //        Username = u.Username,
-            //        Password = u.Password,
-            //        PasswordSalt = u.PasswordSalt,
-            //        Nickname = u.Nickname,
-            //        //RoleId = r.Id,
-            //        //RoleName = r.Name,
-            //        Status = u.Status,
-            //        GoogleKey = u.GoogleKey,
-            //        ExtendData = u.ExtraData,
-            //        //RoleExtendData = r.ExtraData
-            //    }).FirstAsync();
         }
 
         /// <summary>

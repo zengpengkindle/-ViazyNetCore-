@@ -65,7 +65,7 @@ namespace ViazyNetCore.Modules
         /// <param name="salt">密码盐。</param>
         /// <param name="password">密码。</param>
         /// <returns>重置成功返回 true 值，否则返回 false 值。</returns>
-        Task ModifyPasswordAsync(string password, Guid salt, long id);
+        Task<bool> ModifyPasswordAsync(string password, Guid salt, long id);
 
         /// <summary>
         /// 根据用户编号获取可用的用户账号信息
