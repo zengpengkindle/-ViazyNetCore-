@@ -20,22 +20,24 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddFreeDb(this IServiceCollection services, IConfiguration configuration)
         {
             var dbConfig = configuration.Get<DbConfig>();
+            services.AddSingleton<IUser, User>();
+
+            var user = services.BuildServiceProvider().GetService<IUser>();
 
             services.Configure<DbConfig>(configuration);
 
             var freeSqlCloud = new FreeSqlCloud<string>();
-            FreeSqlExtensions.RegisterDb(freeSqlCloud, dbConfig);
+            FreeSqlExtensions.RegisterDb(freeSqlCloud, dbConfig, user);
             if (dbConfig.Dbs?.Length > 0)
             {
                 foreach (var db in dbConfig.Dbs)
                 {
-                    FreeSqlExtensions.RegisterDb(freeSqlCloud, db);
+                    FreeSqlExtensions.RegisterDb(freeSqlCloud, db, user);
                 }
             }
             services.AddSingleton<IFreeSql>(freeSqlCloud);
             services.AddSingleton(freeSqlCloud);
             services.AddScoped<UnitOfWorkManagerCloud>();
-            services.AddSingleton<IUser, User>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(GuidRepository<>));
             services.AddScoped(typeof(BaseRepository<>), typeof(GuidRepository<>));
 
@@ -73,10 +75,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 },
                 a => a.MemberId == user.Id
             );
-            fsql.Aop.AuditValue += (s, e) =>
-            {
-                FreeSqlExtensions.AopAuditValue(user, e);
-            };
+            //fsql.Aop.AuditValue += (s, e) =>
+            //{
+            //    FreeSqlExtensions.AopAuditValue(user, e);
+            //};
             return app;
         }
     }

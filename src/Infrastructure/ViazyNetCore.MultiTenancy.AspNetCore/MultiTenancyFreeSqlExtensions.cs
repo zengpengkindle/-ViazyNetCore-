@@ -44,10 +44,10 @@ namespace ViazyNetCore.MultiTenancy.AspNetCore
                 },
                 a => a.MemberId == user.Id
             );
-            fsql.Aop.AuditValue += (s, e) =>
-            {
-                FreeSqlExtensions.AopAuditValue(user, e);
-            };
+            //fsql.Aop.AuditValue += (s, e) =>
+            //{
+            //    FreeSqlExtensions.AopAuditValue(user, e);
+            //};
             return app;
         }
     }

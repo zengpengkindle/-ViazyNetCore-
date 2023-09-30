@@ -2,6 +2,7 @@
 using FreeSql.Aop;
 using ViazyNetCore;
 using ViazyNetCore.Data.FreeSql;
+using ViazyNetCore.Data.FreeSql.Extensions;
 
 namespace FreeSql
 {
@@ -31,7 +32,7 @@ namespace FreeSql
             }
         }
 
-        public static void RegisterDb(FreeSqlCloud<string> freeSqlCloud, DbConfig dbConfig)
+        public static void RegisterDb(FreeSqlCloud<string> freeSqlCloud, DbConfig dbConfig, IUser user)
         {
             freeSqlCloud.Register(dbConfig.Key, () =>
             {
@@ -86,10 +87,10 @@ namespace FreeSql
                 }
 
                 #region 审计数据
-
-                //计算服务器时间
-                var serverTime = fsql.Ado.QuerySingle(() => DateTime.UtcNow);
-                var timeOffset = DateTime.UtcNow.Subtract(serverTime);
+                fsql.Aop.AuditValue += (s, e) =>
+                {
+                    AopAuditValue(user, e);
+                };
 
                 if (dbConfig.UseEnumInt)
                 {
@@ -134,7 +135,7 @@ namespace FreeSql
             //雪花Id
             if (e.AuditValueType is AuditValueType.Insert or AuditValueType.InsertOrUpdate)
             {
-                if (e.Property.GetCustomAttribute<SnowflakeAttribute>(false) is SnowflakeAttribute snowflakeAttribute
+                if (e.Property.GetCustomAttribute<SnowflakeAttribute>(true) is SnowflakeAttribute snowflakeAttribute
             && snowflakeAttribute.Enable)
                 {
                     if (e.Column.CsType == typeof(long) && (e.Value == null || (long)e.Value == default || (long?)e.Value == default))

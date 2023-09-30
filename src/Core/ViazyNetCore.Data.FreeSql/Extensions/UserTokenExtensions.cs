@@ -28,7 +28,7 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
         /// <returns></returns>
         public static long GetUserId(this IEnumerable<Claim> claims)
         {
-            var sub = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value;
+            var sub = claims.FirstOrDefault(c => c.Type == JwtClaimTypes.SessionId)?.Value;
             //ids4用户的唯一标识符
             return sub?.ParseTo<long>() ?? 0;
         }
@@ -49,7 +49,7 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
         /// <returns></returns>
         public static string? GetUserName(this IEnumerable<Claim> claims)
         {
-            return claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            return claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Name)?.Value;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
         /// <returns></returns>
         public static string? GetNickName(this IEnumerable<Claim> claims)
         {
-            return claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
+            return claims.FirstOrDefault(c => c.Type == JwtClaimTypes.NickName)?.Value;
         }
         /// <summary>
         /// AuthUser用户信息
@@ -86,7 +86,7 @@ namespace ViazyNetCore.Data.FreeSql.Extensions
         /// <returns></returns>
         public static AuthUserType? GetAuthUserType(this IEnumerable<Claim> claims)
         {
-            var value = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Typ)?.Value;
+            var value = claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Type)?.Value;
             if (string.IsNullOrEmpty(value))
                 return null;
             return Enum.Parse<AuthUserType>(value);
