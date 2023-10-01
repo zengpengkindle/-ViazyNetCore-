@@ -74,8 +74,8 @@ namespace ViazyNetCore.Filter.Descriptor
                        return false;
                    if (x.MethodInfo.IsDefined(typeof(AllowAnonymousAttribute)))
                        return false;
-                   if (!x.ControllerTypeInfo.IsDefined(typeof(ApiControllerAttribute)))
-                       return false;
+                   //if (!x.ControllerTypeInfo.IsDefined(typeof(ApiTitleAttribute)))
+                   //    return false;
                    var settings = x.ControllerTypeInfo.GetCustomAttribute<ApiExplorerSettingsAttribute>();
                    return settings?.IgnoreApi != true;
                })
@@ -99,11 +99,11 @@ namespace ViazyNetCore.Filter.Descriptor
                        //添加业务逻辑带小版本位数为0,去除位数0。
                        apiVersion = v!.MinorVersion == 0 ? v.MajorVersion.ToString() : v?.ToString();
                    }
-                   var controller = x.ControllerTypeInfo.GetCustomAttribute<ApiDescriptorAttribute>();
-                   string controllerDisplayName = controller?.DisplayName ?? x.ControllerName;
+                   var controller = x.ControllerTypeInfo.GetCustomAttribute<ApiTitleAttribute>();
+                   string controllerDisplayName = controller?.Description ?? x.ControllerName;
 
-                   var action = x.MethodInfo.GetCustomAttribute<ApiDescriptorAttribute>();
-                   string actionDisplayName = action?.DisplayName ?? x.ActionName;
+                   var action = x.MethodInfo.GetCustomAttribute<ApiTitleAttribute>();
+                   string actionDisplayName = action?.Description ?? x.ActionName;
                    var descriptor = new ApiDescriptor
                    {
                        ControllerName = x.ControllerName,

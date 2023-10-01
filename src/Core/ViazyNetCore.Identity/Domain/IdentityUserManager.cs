@@ -47,11 +47,6 @@ namespace ViazyNetCore.Identity.Domain
 
         public override Task<bool> CheckPasswordAsync(IdentityUser user, string password)
         {
-            //if (UserPasswordHelper.CheckPassword(password, user.Password, user.PasswordSalt, this._identityOptions.UserPasswordFormat))
-            //{
-            //    return Task.FromResult(true);
-            //}
-            //return Task.FromResult(false);
             return base.CheckPasswordAsync(user, password);
         }
 
@@ -74,6 +69,11 @@ namespace ViazyNetCore.Identity.Domain
         public override Task<IdentityResult> UpdateAsync(IdentityUser user)
         {
             return base.UpdateAsync(user);
+        }
+
+        public override async Task UpdateNormalizedUserNameAsync(IdentityUser user)
+        {
+            await Store.SetNormalizedUserNameAsync(user, user.Username, CancellationToken);
         }
     }
 }

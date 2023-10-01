@@ -80,7 +80,7 @@ namespace ViazyNetCore.Identity.Domain
 
             Check.NotNull(user, nameof(user));
 
-            return Task.FromResult(user.Nickname);
+            return Task.FromResult(user.Username);
         }
 
         public Task<string> GetUserIdAsync(IdentityUser user, CancellationToken cancellationToken)
@@ -107,7 +107,7 @@ namespace ViazyNetCore.Identity.Domain
 
             Check.NotNull(user, nameof(user));
 
-            user.Nickname = normalizedName;
+            //user.Nickname = normalizedName;
 
             return Task.CompletedTask;
         }
@@ -127,6 +127,7 @@ namespace ViazyNetCore.Identity.Domain
         {
             cancellationToken.ThrowIfCancellationRequested();
             await this._userRepository.UpdateAsync(user);
+            await this._userRepository.SaveManyAsync(user, nameof(BmsUser.Claims));
             return IdentityResult.Success;
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace ViazyNetCore.Authorization.Models
 {
-    public class OperationLog : EntityBase
+    public class OperationLog : Entity
     {
         public OperationLog()
         {

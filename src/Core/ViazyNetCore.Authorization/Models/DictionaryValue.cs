@@ -10,7 +10,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 数据字典
     /// </summary>
-    public class DictionaryValue : EntityBase
+    public class DictionaryValue : Entity
     {
 
         /// <summary>

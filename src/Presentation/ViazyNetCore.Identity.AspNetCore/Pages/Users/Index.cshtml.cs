@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ViazyNetCore.Dtos;
@@ -13,10 +14,12 @@ namespace ViazyNetCore.Identity.AspNetCore.Pages.Users;
 public class IndexModel : PageModel
 {
     private readonly IUserService _userService;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public IndexModel(IUserService userService)
+    public IndexModel(IUserService userService, UserManager<IdentityUser> userManager)
     {
         this._userService = userService;
+        this._userManager = userManager;
     }
 
     [BindProperty]
@@ -34,6 +37,7 @@ public class IndexModel : PageModel
         {
             PageIndex = Request.Query["page"].First().ParseTo<int>();
         }
+        if (PageIndex < 1) PageIndex = 1;
         PageData = await _userService.FindAllAsync(new Dtos.UserFindQueryDto
         {
             Page = PageIndex,
@@ -41,5 +45,12 @@ public class IndexModel : PageModel
         });
 
         return Page();
+    }
+
+    [Route("Delete")]
+    public async Task Delete(long id)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        await this._userManager.DeleteAsync(user);
     }
 }

@@ -19,12 +19,7 @@ namespace ViazyNetCore.Identity.Validator
 
         public Task<IdentityResult> ValidateAsync(UserManager<IdentityUser> manager, IdentityUser user, string password)
         {
-            if (user.Password == null)
-            {
-                return Task.FromResult(IdentityResult.Success);
-            }
-
-            return Task.FromResult(IdentityResult.Failed(new IdentityError { Code = "400", Description = "密码错误" }));
+            return Task.FromResult(IdentityResult.Success);
         }
     }
 }

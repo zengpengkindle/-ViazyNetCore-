@@ -1,0 +1,21 @@
+﻿@page
+@model ViazyNetCore.Identity.AspNetCore.Pages.Users.EditModel
+
+<div class="bg-primary m-1 p-1"><h4>修改用户信息</h4></div>
+<div asp-validation-summary="All" class="text-danger"></div>
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <div class="form-group">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" disabled />
+    </div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="NickName"></label>
+        <input asp-for="NickName" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">保存</button>
+    <a asp-action="Index" class="btn btn-secondary">取消</a>
+</form>

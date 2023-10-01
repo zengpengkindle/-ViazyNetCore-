@@ -1,4 +1,6 @@
-﻿using ViazyNetCore.Authorization.Modules;
+﻿using Newtonsoft.Json.Linq;
+using System.Linq.Expressions;
+using ViazyNetCore.Authorization.Modules;
 
 namespace ViazyNetCore.Modules
 {
@@ -111,6 +113,9 @@ namespace ViazyNetCore.Modules
         Task<long> GetUserIdByUserName(string takeOverUserName);
         Task<bool> ResetPassword(BmsUser user, string storedPassword);
         Task<int> ModifyAvatarAsync(long id, string? avatar);
+        Task EnsureCollectionLoadedAsync<TProperty>(BmsUser user
+            , Expression<Func<BmsUser, TProperty>> propertyExpression
+            , CancellationToken cancellationToken) where TProperty : class;
 
         #endregion
 

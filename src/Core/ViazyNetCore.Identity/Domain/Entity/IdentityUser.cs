@@ -17,11 +17,6 @@ namespace ViazyNetCore.Identity.Domain
 
         public virtual ICollection<IdentityUserToken> Tokens { get; protected set; } = new List<IdentityUserToken>();
 
-        /// <summary>
-        /// Navigation property for the claims this user possesses.
-        /// </summary>
-        public virtual ICollection<IdentityUserClaim> Claims { get; protected set; } = new List<IdentityUserClaim>();
-
         public virtual void SetToken(string loginProvider, string name, string value)
         {
             var token = FindToken(loginProvider, name);
@@ -64,6 +59,22 @@ namespace ViazyNetCore.Identity.Domain
             {
                 userClaim.SetClaim(newClaim);
             }
+        }
+
+        public virtual void RemoveClaims(IEnumerable<Claim> claims)
+        {
+            Check.NotNull(claims, nameof(claims));
+            foreach (var claim in claims)
+            {
+                RemoveClaim(claim);
+            }
+        }
+
+        public virtual void RemoveClaim(Claim claim)
+        {
+            Check.NotNull(claim, nameof(claim));
+
+            Claims.RemoveAll(c => c.ClaimValue == claim.Value && c.ClaimType == claim.Type);
         }
     }
 }

@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.Filter;
 using ViazyNetCore.Modules;
 using ViazyNetCore.Swagger;
 
 namespace ViazyNetCore.Authorization
 {
-    [DependsOn(typeof(EventBusModule))]
+    [DependsOn(typeof(EventBusModule),
+        typeof(ApiManagerModule))]
     public class AuthorizationModule : InjectionModule
     {
         public AuthorizationModule()

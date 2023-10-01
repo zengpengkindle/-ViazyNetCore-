@@ -9,6 +9,7 @@
             <th scope="col">用户编号</th>
             <th scope="col">用户名</th>
             <th scope="col">用户昵称</th>
+            <th scope="col">操作</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +19,16 @@
                 <td>@item.Id</td>
                 <th scope="row">@item.Username</th>
                 <td>@item.Nickname</td>
+                <td>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                        <a class="btn btn-sm btn-primary" asp-page="Edit"
+                       asp-route-id="@item.Id">编辑</a>
+                        <button type="submit"
+                            class="btn btn-sm btn-danger">
+                            删除
+                        </button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>

@@ -19,7 +19,7 @@ namespace ViazyNetCore.Identity.Domain
             Check.NotNull(user, nameof(user));
             Check.NotNull(claims, nameof(claims));
 
-            //await UserRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
+            await this._userRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
 
             user.AddClaims(claims);
         }
@@ -29,11 +29,12 @@ namespace ViazyNetCore.Identity.Domain
             cancellationToken.ThrowIfCancellationRequested();
 
             Check.NotNull(user, nameof(user));
+
             var claims = await this._userClaimRepository.GetUserClaim(user.Id);
             user.AddClaims(claims.Select(c => c.ToClaim()));
-            //await UserRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
+            //await this._userRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
+            //user.AddClaims(claims.Select(c => c.ToClaim()));
             user.AddClaim(new Claim(IdentityClaimTypes.Subject, user.Id.ToString()));
-            user.AddClaims(claims.Select(c => c.ToClaim()));
             return user.Claims.Select(c => c.ToClaim()).ToList();
         }
 
@@ -43,13 +44,18 @@ namespace ViazyNetCore.Identity.Domain
 
             Check.NotNull(claim, nameof(claim));
 
-            //return await this._userClaimRepository.GetListByClaimAsync(claim, cancellationToken: cancellationToken);
-            throw new NotImplementedException();
+            return await this._userClaimRepository.GetListByClaimAsync(claim, cancellationToken: cancellationToken);
         }
 
-        public Task RemoveClaimsAsync(IdentityUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        public async Task RemoveClaimsAsync(IdentityUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+            Check.NotNull(claims, nameof(claims));
+
+            await this._userRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
+            user.RemoveClaims(claims);
         }
 
         public async Task ReplaceClaimAsync(IdentityUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
@@ -60,7 +66,7 @@ namespace ViazyNetCore.Identity.Domain
             Check.NotNull(claim, nameof(claim));
             Check.NotNull(newClaim, nameof(newClaim));
 
-            //await UserRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
+            await this._userRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
 
             user.ReplaceClaim(claim, newClaim);
         }

@@ -3,7 +3,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个BmsUserRole。
     /// </summary>
-    public partial class BmsUserRole : EntityBase, ITenant
+    public partial class BmsUserRole : Entity, ITenant
     {
         /// <summary>
         /// 

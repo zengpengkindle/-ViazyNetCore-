@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FreeSql.DataAnnotations;
+using ViazyNetCore.Identity.Domain;
 
 namespace ViazyNetCore.Authorization.Models
 {
@@ -58,5 +59,12 @@ namespace ViazyNetCore.Authorization.Models
         public DateTime ModifyTime { get; set; }
 
         public long TenantId { get; set; }
+
+
+        /// <summary>
+        /// Navigation property for the claims this user possesses.
+        /// </summary>
+        [Navigate(Bind = nameof(IdentityUserClaim.UserId))]
+        public virtual List<IdentityUserClaim> Claims { get; protected set; } = new List<IdentityUserClaim>();
     }
 }

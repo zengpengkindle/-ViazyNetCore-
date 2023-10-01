@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Model
     /// <summary>
     /// 表示一个平台页面。
     /// </summary>
-    public partial class BmsPage : EntityBase, ITenant
+    public partial class BmsPage : Entity, ITenant
     {
         /// <summary>
         /// 设置或获取一个值，表示页面分组编号。

@@ -1,4 +1,6 @@
-﻿using ViazyNetCore.Authorization.Modules;
+﻿using Newtonsoft.Json.Linq;
+using System.Linq.Expressions;
+using ViazyNetCore.Authorization.Modules;
 
 namespace ViazyNetCore.Modules
 {
@@ -230,6 +232,16 @@ namespace ViazyNetCore.Modules
             return this.UpdateDiy.Set(p => p.Avatar == avatar)
                   .Where(p => p.Id == id)
                   .ExecuteAffrowsAsync();
+        }
+
+        public async Task EnsureCollectionLoadedAsync<TProperty>(BmsUser user
+            , Expression<Func<BmsUser, TProperty>> propertyExpression
+            , CancellationToken cancellationToken) where TProperty : class
+        {
+            var bms = await this.Select.Where(p => p.Id == user.Id)
+                .Include(propertyExpression)
+                .FirstAsync();
+            user.Claims.AddRange(bms.Claims);
         }
         #endregion
 

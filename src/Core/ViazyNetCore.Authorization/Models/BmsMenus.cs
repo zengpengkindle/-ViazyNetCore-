@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个菜单
     /// </summary>
-    public partial class BmsMenus : EntityBase<string>, ITenant
+    public partial class BmsMenus : Entity<string>, ITenant
     {
         /// <summary>
         /// 

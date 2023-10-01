@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization.Models
     /// <summary>
     /// 表示一个角色页面。
     /// </summary>
-    public partial class BmsRolePage : EntityBase, ITenant
+    public partial class BmsRolePage : Entity, ITenant
     {
         /// <summary>
         /// 设置或获取一个值，表示角色编号。

@@ -2,7 +2,7 @@
 
 namespace ViazyNetCore.Authorization.Models
 {
-    public class DictionaryType : EntityBase
+    public class DictionaryType : Entity
     {
         /// <summary>
         /// 名称
