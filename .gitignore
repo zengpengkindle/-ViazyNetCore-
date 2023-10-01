@@ -28,3 +28,4 @@ yarn.lock
 /src/nuget/*.nupkg
 /src/Presentation/ViazyNetCore.Manage.WebApi/Configs/oss.Development.json
 /src/Presentation/ViazyNetCore.Oauth.Server/Configs/dbconfig.Development.json
+/src/Presentation/ViazyNetCore.Identity.AspNetCore/appsettings.Development.json
