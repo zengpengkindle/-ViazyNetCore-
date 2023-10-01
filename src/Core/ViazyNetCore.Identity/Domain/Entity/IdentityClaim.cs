@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.OpenIddict.Domain
+namespace ViazyNetCore.Identity.Domain
 {
     public class IdentityClaim : EntityUpdate<long>
     {

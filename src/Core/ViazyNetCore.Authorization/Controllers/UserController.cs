@@ -30,7 +30,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         [ApiTitle("所有查询")]
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public Task<PageData<UserFindAllModel>> FindAllAsync([Required] UserFindQueryDto args)
+        public Task<PageData<Dtos.UserDto>> FindAllAsync([Required] UserFindQueryDto args)
         {
             return this._userService.FindAllAsync(args);
         }
@@ -38,7 +38,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         [ApiTitle("单个查询")]
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public Task<UserFindModel> FindAsync([Required] long id)
+        public Task<UserWithGoogleKeyDto> FindAsync([Required] long id)
         {
             return this._userService.FindAsync(id);
         }
@@ -46,7 +46,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         [ApiTitle("管理")]
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public async Task<UserManageDto> ManageAsync([Required] UserModel model)
+        public async Task<UserManageDto> ManageAsync([Required] Dtos.UserBaseDto model)
         {
             //if (!await this._roleService.ExistsAsync(model.RoleId)) throw new ApiException("角色不存在。");
             var describe = model.Id == 0 ? "添加" : "修改";

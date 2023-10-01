@@ -63,6 +63,7 @@ namespace ViazyNetCore
     public abstract class EntityUpdate : EntityUpdate<long>
     {
         [Column(IsPrimary = true, Position = 1, IsIdentity = true)]
+        [Snowflake(Enable =false)]
         public override long Id { get => base.Id; set => base.Id = value; }
     }
 
@@ -72,7 +73,6 @@ namespace ViazyNetCore
         /// 主键Id
         /// </summary>
         [Description("主键Id")]
-        [Snowflake]
         [Column(Position = 1, IsIdentity = false, IsPrimary = true)]
         public virtual long Id { get; set; }
     }

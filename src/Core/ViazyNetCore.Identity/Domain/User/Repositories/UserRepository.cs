@@ -34,7 +34,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="model">UserModel模型</param>
         /// <returns></returns>
-        public async Task ModifyByUserModelAsync(UserModel model)
+        public async Task ModifyByUserModelAsync(UserBaseDto model)
         {
             await this.UpdateDiy
                     .Where(pg => pg.Id == model.Id)
@@ -166,9 +166,9 @@ namespace ViazyNetCore.Modules
                      .ContinueWith(t => t.Result == 1);
         }
 
-        public Task<UserFindModel> FindByIdAsync(long id)
+        public Task<UserWithGoogleKeyDto> FindByIdAsync(long id)
         {
-            return this.Select.Where(p => p.Id == id).WithTempQuery(p => new UserFindModel
+            return this.Select.Where(p => p.Id == id).WithTempQuery(p => new UserWithGoogleKeyDto
             {
                 Id = p.Id,
                 ExtraData = p.ExtraData,
@@ -178,7 +178,7 @@ namespace ViazyNetCore.Modules
             }).FirstAsync();
         }
 
-        public Task<PageData<UserFindAllModel>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, long? orgId, Pagination args)
+        public Task<PageData<UserDto>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, long? orgId, Pagination args)
         {
             var query = this.Select;
             if (usernameLike.IsNotNull()) query = query.Where(u => u.Username.Contains(usernameLike));
@@ -187,7 +187,7 @@ namespace ViazyNetCore.Modules
             var query2 = query
                 .WhereIf(orgId.GetValueOrDefault() != 0, u => this.Orm.Select<BmsUserOrg>().Where(p => p.OrgId == orgId && p.UserId == u.Id).Any())
                 .OrderByDescending(u => u.ModifyTime)
-                         .WithTempQuery(u => new UserFindAllModel
+                         .WithTempQuery(u => new UserDto
                          {
                              Id = u.Id,
                              Username = u.Username,
@@ -223,6 +223,13 @@ namespace ViazyNetCore.Modules
         public Task<bool> ResetPassword(BmsUser user, string storedPassword)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<int> ModifyAvatarAsync(long id, string? avatar)
+        {
+            return this.UpdateDiy.Set(p => p.Avatar == avatar)
+                  .Where(p => p.Id == id)
+                  .ExecuteAffrowsAsync();
         }
         #endregion
 

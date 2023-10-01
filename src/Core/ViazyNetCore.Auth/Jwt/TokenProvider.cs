@@ -76,6 +76,7 @@ namespace ViazyNetCore.Auth.Jwt
             }
             return result;
         }
+
         public async Task<JwtTokenResult> IssueToken(IUser user, AuthUserType userType, object[]? roleIds)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

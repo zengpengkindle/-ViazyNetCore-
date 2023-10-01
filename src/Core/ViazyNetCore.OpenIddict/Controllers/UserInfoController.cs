@@ -19,7 +19,7 @@ namespace ViazyNetCore.OpenIddict.Controllers;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class UserInfoController : OpenIdDictControllerBase
 {
-    public UserInfoController(SignInManager<Domain.IdentityUser> signInManager
+    public UserInfoController(SignInManager<IdentityUser> signInManager
         , IOpenIddictApplicationManager applicationManager
         , IOpenIddictAuthorizationManager authorizationManager
         , OpenIddictClaimDestinationsManager openIddictClaimDestinationsManager

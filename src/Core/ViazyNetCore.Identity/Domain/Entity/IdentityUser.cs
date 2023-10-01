@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using ViazyNetCore.Authorization.Models;
 
-namespace ViazyNetCore.OpenIddict.Domain
+namespace ViazyNetCore.Identity.Domain
 {
     public class IdentityUser : BmsUser
     {

@@ -11,7 +11,7 @@ using ViazyNetCore.Data.FreeSql.Extensions;
 using ViazyNetCore.Identity.Domain.User.Repositories;
 using ViazyNetCore.Modules;
 
-namespace ViazyNetCore.OpenIddict.Domain
+namespace ViazyNetCore.Identity.Domain
 {
     public partial class IdentityUserStore
         : IUserStore<IdentityUser>

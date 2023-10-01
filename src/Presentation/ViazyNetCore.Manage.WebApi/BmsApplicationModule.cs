@@ -17,7 +17,7 @@ namespace ViazyNetCore.Manage.WebApi
         , typeof(AuthorizationModule)
         , typeof(IdentityModule)
         , typeof(ShopMallManageModule)
-        , typeof(RabbitMQEventBusModule)
+        //, typeof(RabbitMQEventBusModule)
         , typeof(MultiTenancyModule)
         , typeof(EventBusModule)
         )]
@@ -29,16 +29,16 @@ namespace ViazyNetCore.Manage.WebApi
             {
                 options.ApplicationParts.Add(typeof(AuthorizationModule).Assembly);
                 options.ApplicationParts.Add(typeof(ShopMallManageModule).Assembly);
-                options.ApplicationParts.Add(typeof(JobSetup).Assembly);
+                //options.ApplicationParts.Add(typeof(JobSetup).Assembly);
             });
         }
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             Configure<AutoMapperOptions>(options => options.AddMaps<BmsApplicationModule>());
 
-            context.Services.AddMQueue();
-            context.Services.AddJobSetup();
-            context.Services.AddJobTaskSetup();
+            //context.Services.AddMQueue();
+            //context.Services.AddJobSetup();
+            //context.Services.AddJobTaskSetup();
 
             Configure<SwaggerConfig>(options =>
             {

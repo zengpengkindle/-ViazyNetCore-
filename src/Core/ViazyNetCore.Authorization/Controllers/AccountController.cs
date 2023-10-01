@@ -6,6 +6,7 @@ using ViazyNetCore.Auth;
 using ViazyNetCore.Auth.Authorization.ViewModels;
 using ViazyNetCore.Auth.Jwt;
 using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.Identity.Domain;
 using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.Authorization
@@ -31,7 +32,7 @@ namespace ViazyNetCore.Authorization
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<UserTokenDto> LoginAsync([Required][FromBody] UserLoginArgs args, [FromServices] IPermissionService permissionService)
+        public async Task<UserTokenDto> LoginAsync([Required][FromBody] UserLoginInputDto args, [FromServices] IPermissionService permissionService)
         {
             var ip = this._httpContextAccessor.HttpContext!?.GetRequestIP();
             OperationLog operationLog = new OperationLog
@@ -52,7 +53,7 @@ namespace ViazyNetCore.Authorization
                 {
                     var identity = await this._userService.GetUserLoginIdentityAsync(args, ip, false);
                     var permissions = await permissionService.ResolveUserPermission(identity.Id);
-                    var token = await this._tokenProvider.IssueToken(identity, AuthUserType.Normal ,permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
+                    var token = await this._tokenProvider.IssueToken(identity, AuthUserType.Normal, permissions.Select(p => p.PermissionItemKey).Distinct().ToArray());
                     //登陆成功，清空缓存
                     _userService.ClearCache(args.Username);
 
@@ -118,6 +119,35 @@ namespace ViazyNetCore.Authorization
             try
             {
                 var res = await this._userService.ModifyPasswordAsync(authUser.Id, args);
+                if (res)
+                {
+                    this._eventBus.Publish(new OperationLogEventData(operationLog));
+                }
+                return res;
+            }
+            finally
+            {
+                this._tokenProvider.RemoveToken(this._httpContextAccessor.GetAuthUser()!.Id);
+            }
+        }
+
+        [Authorize, ApiTitle("修改密码")]
+        [HttpPost]
+        public async Task<bool> ModifyAvatarAsync([Required] UserAvatarDto args)
+        {
+            var authUser = this._httpContextAccessor.HttpContext!.GetAuthUser();
+            OperationLog operationLog = new OperationLog(this._httpContextAccessor.HttpContext!.GetRequestIP(), authUser!.Id.ToString(), authUser.Username, OperatorType.Bms)
+            {
+                ObjectName = $"{authUser.Username}",
+                ObjectId = authUser.Id.ToString(),
+                OperationType = $"用户修改头像",
+                Description = $"用户名：{authUser.Username}",
+                LogLevel = LogRecordLevel.Warning
+            };
+
+            try
+            {
+                var res = await this._userService.ModifyAvatarAsync(authUser.Id, args);
                 if (res)
                 {
                     this._eventBus.Publish(new OperationLogEventData(operationLog));

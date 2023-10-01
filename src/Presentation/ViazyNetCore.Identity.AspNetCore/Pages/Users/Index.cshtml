@@ -1,0 +1,36 @@
+﻿@page
+@model IndexModel
+<div class="md-4">
+    <a class="btn btn-primary" asp-area="" asp-page="/Users/Create">创建用户</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">用户编号</th>
+            <th scope="col">用户名</th>
+            <th scope="col">用户昵称</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.PageData.Rows)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <th scope="row">@item.Username</th>
+                <td>@item.Nickname</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @if(Model.PageIndex > 1)
+        {
+            <li class="page-item"><a class="page-link" href="">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="?page=@(Model.PageIndex-1)">@(Model.PageIndex - 1)</a></li>
+        }
+        <li class="page-item"><a class="page-link" href="?page=@(Model.PageIndex)">@Model.PageIndex</a></li>
+        <li class="page-item"><a class="page-link" href="?page=@(Model.PageIndex+1)">@(Model.PageIndex + 1)</a></li>
+        <li class="page-item"><a class="page-link" href="?page=@(Model.PageIndex+1)">Next</a></li>
+    </ul>
+</nav>

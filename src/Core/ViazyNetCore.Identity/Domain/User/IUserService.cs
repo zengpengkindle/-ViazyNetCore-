@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ViazyNetCore.Authorization.Models;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Dtos;
+using ViazyNetCore.Identity.Domain;
 
 namespace ViazyNetCore.Modules
 {
@@ -16,7 +17,7 @@ namespace ViazyNetCore.Modules
         /// <param name="model">模型。</param>
         /// <param name="randPwd">随机生成的密码,只有新增的时候用到</param>
         /// <returns>模型的编号。</returns>
-        Task<long> ManageAsync(UserModel model, string randPwd);
+        Task<long> ManageAsync(UserBaseDto model, string randPwd);
 
         /// <summary>
         /// 彻底删除模型。
@@ -30,7 +31,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>模型。</returns>
-        Task<UserFindModel> FindAsync(long id);
+        Task<UserWithGoogleKeyDto> FindAsync(long id);
 
         /// <summary>
         /// 查询修改时间
@@ -51,14 +52,14 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="args">查询参数。</param>
         /// <returns>模型的集合。</returns>
-        Task<PageData<UserFindAllModel>> FindAllAsync(UserFindQueryDto args);
+        Task<PageData<UserDto>> FindAllAsync(UserFindQueryDto args);
 
         /// <summary>
         /// 获取登录标识。
         /// </summary>
         /// <param name="args">登录模型参数。</param>
         /// <returns>登录标识。</returns>
-        Task<BmsIdentity> GetUserLoginIdentityAsync(UserLoginArgs args, string ip, bool enableGoogleToken);
+        Task<BmsIdentity> GetUserLoginIdentityAsync(UserLoginInputDto args, string ip, bool enableGoogleToken);
 
         /// <summary>
         /// 重置指定用户编号的密码。
@@ -81,7 +82,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="username">用户账号</param>
         /// <returns></returns>
-        UserLoginCheck GetByUsernameCache(string username, bool state, string ip = null, long? userId = null);
+        UserLoginCheckDto GetByUsernameCache(string username, bool state, string ip = null, long? userId = null);
 
         /// <summary>
         /// 清除账号登录缓存
@@ -134,6 +135,7 @@ namespace ViazyNetCore.Modules
         Task<IUser<long>> GetUser(long userId);
         Task<IUser<long>> GetUserByUserName(string normalizedUserName);
         Task<IUser<long>> GetUserByCache(long userId);
+        Task<bool> ModifyAvatarAsync(long id, UserAvatarDto args);
     }
 
 }

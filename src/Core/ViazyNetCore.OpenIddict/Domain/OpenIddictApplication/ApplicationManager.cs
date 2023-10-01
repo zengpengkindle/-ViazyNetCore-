@@ -71,5 +71,19 @@ namespace ViazyNetCore.OpenIddict.Domain
 
             return await Store.As<IOpenIdApplicationStore>().GetLogoUriAsync(application.As<OpenIddictApplicationDto>(), cancellationToken);
         }
+        public override ValueTask<OpenIddictApplicationDto> CreateAsync(OpenIddictApplicationDescriptor descriptor, CancellationToken cancellationToken = default)
+        {
+            return base.CreateAsync(descriptor, cancellationToken);
+        }
+
+        public override ValueTask CreateAsync(OpenIddictApplicationDto application, CancellationToken cancellationToken = default)
+        {
+            return base.CreateAsync(application, cancellationToken);
+        }
+
+        public override ValueTask CreateAsync(OpenIddictApplicationDto application, string? secret, CancellationToken cancellationToken = default)
+        {
+            return base.CreateAsync(application, secret, cancellationToken);
+        }
     }
 }

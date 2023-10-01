@@ -12,7 +12,7 @@ using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Authorization.Repositories;
 using ViazyNetCore.Modules;
 
-namespace ViazyNetCore.OpenIddict.Domain
+namespace ViazyNetCore.Identity.Domain
 {
     [Obsolete]
     public class IdentityUserStore2 :

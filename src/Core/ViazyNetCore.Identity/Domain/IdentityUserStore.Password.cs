@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace ViazyNetCore.OpenIddict.Domain
+namespace ViazyNetCore.Identity.Domain
 {
     public partial class IdentityUserStore : IUserPasswordStore<IdentityUser>
     {
@@ -32,7 +32,7 @@ namespace ViazyNetCore.OpenIddict.Domain
             cancellationToken.ThrowIfCancellationRequested();
 
             Check.NotNull(user, nameof(user));
-
+            //user.PasswordSalt=Guid.NewGuid();
             user.Password = passwordHash;
 
             return Task.CompletedTask;

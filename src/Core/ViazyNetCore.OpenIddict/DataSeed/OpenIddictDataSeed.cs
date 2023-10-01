@@ -10,7 +10,7 @@ using ViazyNetCore.OpenIddict.Domain;
 
 namespace ViazyNetCore.OpenIddict.DataSeed
 {
-    public class OpenIddictDataSeed
+    public class OpenIddictDataSeed : IOpenIddictDataSeed
     {
         private readonly ApplicationManager _applicationManager;
 
@@ -18,18 +18,18 @@ namespace ViazyNetCore.OpenIddict.DataSeed
         {
             this._applicationManager = applicationManager;
         }
-        private async Task CreateApplicationAsync(
-       [NotNull] string name,
-       [NotNull] string type,
-       [NotNull] string consentType,
-       string displayName,
-       string secret,
-       List<string> grantTypes,
-       List<string> scopes,
-       string clientUri = null,
-       string redirectUri = null,
-       string postLogoutRedirectUri = null,
-       List<string> permissions = null)
+        public async Task CreateApplicationAsync(
+           [NotNull] string name,
+           [NotNull] string type,
+           [NotNull] string consentType,
+           string displayName,
+           string secret,
+           List<string> grantTypes,
+           List<string> scopes,
+           string? clientUri = null,
+           string? redirectUri = null,
+           string? postLogoutRedirectUri = null,
+           List<string>? permissions = null)
         {
             if (!string.IsNullOrEmpty(secret) && string.Equals(type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
             {
@@ -142,12 +142,12 @@ namespace ViazyNetCore.OpenIddict.DataSeed
 
                 var buildInScopes = new[]
                 {
-                OpenIddictConstants.Permissions.Scopes.Address,
-                OpenIddictConstants.Permissions.Scopes.Email,
-                OpenIddictConstants.Permissions.Scopes.Phone,
-                OpenIddictConstants.Permissions.Scopes.Profile,
-                OpenIddictConstants.Permissions.Scopes.Roles
-            };
+                    OpenIddictConstants.Permissions.Scopes.Address,
+                    OpenIddictConstants.Permissions.Scopes.Email,
+                    OpenIddictConstants.Permissions.Scopes.Phone,
+                    OpenIddictConstants.Permissions.Scopes.Profile,
+                    OpenIddictConstants.Permissions.Scopes.Roles
+                };
 
                 foreach (var scope in scopes)
                 {

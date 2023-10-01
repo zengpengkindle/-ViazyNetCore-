@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
+using ViazyNetCore.Identity.Domain;
 using ViazyNetCore.OpenIddict.AspNetCore;
 using ViazyNetCore.OpenIddict.Domain;
 
@@ -19,7 +20,7 @@ namespace ViazyNetCore.OpenIddict.Controllers;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class AuthorizeController : OpenIdDictControllerBase
 {
-    public AuthorizeController(SignInManager<Domain.IdentityUser> signInManager
+    public AuthorizeController(SignInManager<Identity.Domain.IdentityUser> signInManager
         , IOpenIddictApplicationManager applicationManager
         , IOpenIddictAuthorizationManager authorizationManager
         , OpenIddictClaimDestinationsManager openIddictClaimDestinationsManager

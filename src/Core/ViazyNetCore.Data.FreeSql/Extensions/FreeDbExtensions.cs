@@ -19,33 +19,42 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static void AddFreeDb(this IServiceCollection services, IConfiguration configuration)
         {
-            var dbConfig = configuration.Get<DbConfig>();
             services.AddSingleton<IUser, User>();
-
-            var user = services.BuildServiceProvider().GetService<IUser>();
-
             services.Configure<DbConfig>(configuration);
+            //var serviceProvider = services.BuildServiceProvider();
 
-            var freeSqlCloud = new FreeSqlCloud<string>();
-            FreeSqlExtensions.RegisterDb(freeSqlCloud, dbConfig, user);
-            if (dbConfig.Dbs?.Length > 0)
+            services.AddSingleton(serviceProvider =>
             {
-                foreach (var db in dbConfig.Dbs)
+                var user = serviceProvider.GetService<IUser>();
+                var dbConfig = serviceProvider.GetService<IOptions<DbConfig>>()!.Value;
+
+                var freeSqlCloud = new FreeSqlCloud<string>();
+                FreeSqlExtensions.RegisterDb(freeSqlCloud, dbConfig, user);
+                if (dbConfig.Dbs?.Length > 0)
                 {
-                    FreeSqlExtensions.RegisterDb(freeSqlCloud, db, user);
+                    foreach (var db in dbConfig.Dbs)
+                    {
+                        FreeSqlExtensions.RegisterDb(freeSqlCloud, db, user);
+                    }
                 }
-            }
-            services.AddSingleton<IFreeSql>(freeSqlCloud);
-            services.AddSingleton(freeSqlCloud);
+                var fsql = freeSqlCloud.Use(dbConfig.Key);
+
+                return freeSqlCloud;
+            });
+            services.AddSingleton(serviceProvider =>
+            {
+                var freeSqlCloud = serviceProvider.GetService<FreeSqlCloud<string>>()!;
+                var dbConfig = serviceProvider.GetService<IOptions<DbConfig>>()!.Value;
+                var fsql = freeSqlCloud.Use(dbConfig.Key);
+                return fsql;
+            });
+
             services.AddScoped<UnitOfWorkManagerCloud>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(GuidRepository<>));
             services.AddScoped(typeof(BaseRepository<>), typeof(GuidRepository<>));
 
             services.AddScoped(typeof(IBaseRepository<,>), typeof(DefaultRepository<,>));
             services.AddScoped(typeof(BaseRepository<,>), typeof(DefaultRepository<,>));
-
-            var fsql = freeSqlCloud.Use(dbConfig.Key);
-            services.AddSingleton(provider => fsql);
         }
 
         public static IApplicationBuilder UseFreeSql(this IApplicationBuilder app)
@@ -58,27 +67,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(IFreeSql));
             if (dbOption == null)
                 throw new ArgumentNullException(nameof(DbConfig));
-            //fsql.Aop.CurdAfter += Aop_CurdAfter; ;
-
-            if (dbOption.Value.Tenant)
-            {
-                fsql.GlobalFilter.ApplyOnly<ITenant>(FilterNames.Tenant, a => a.TenantId == user.TenantId);
-            }
-
-            //会员过滤器
-            fsql.GlobalFilter.ApplyOnlyIf<IMember>(FilterNames.Member,
-                () =>
-                {
-                    if (user?.Id > 0 && user.IdentityType != AuthUserType.Member)
-                        return false;
-                    return true;
-                },
-                a => a.MemberId == user.Id
-            );
-            //fsql.Aop.AuditValue += (s, e) =>
-            //{
-            //    FreeSqlExtensions.AopAuditValue(user, e);
-            //};
             return app;
         }
     }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using ViazyNetCore.Authorization.Models;
+using ViazyNetCore.Identity.Domain;
 
 namespace ViazyNetCore.OpenIddict.Domain.Mapper
 {

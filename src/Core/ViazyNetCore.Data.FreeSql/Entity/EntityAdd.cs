@@ -61,6 +61,7 @@ namespace ViazyNetCore
     public abstract class EntityAdd : EntityAdd<long>
     {
         [Column(IsPrimary = true, Position = 1, IsIdentity = true)]
+        [Snowflake(Enable = false)]
         public override long Id { get => base.Id; set => base.Id = value; }
     }
 

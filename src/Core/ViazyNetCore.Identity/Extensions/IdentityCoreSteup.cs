@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ViazyNetCore.Authorization.Repositories;
+using ViazyNetCore.Identity;
+using ViazyNetCore.Identity.Domain;
 using ViazyNetCore.Identity.Domain.User.Repositories;
+using ViazyNetCore.Identity.Validator;
 using ViazyNetCore.Modules;
-using ViazyNetCore.OpenIddict.Domain;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,28 +21,41 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IOrgService, OrgService>();
         }
 
-        public static IdentityBuilder AddOpenIddictIdentity(this IServiceCollection services, Action<IdentityOptions> setupAction)
+        public static IdentityBuilder AddIdentity(this IServiceCollection services, Action<IdentityOptions> setupAction)
         {
-            services.AddIdentityService();
+            //services.AddIdentityService();
 
             services.TryAddScoped<IdentityUserManager>();
-            services.TryAddScoped(typeof(UserManager<ViazyNetCore.OpenIddict.Domain.IdentityUser>), provider => provider.GetService(typeof(IdentityUserManager)));
+            services.TryAddScoped(typeof(UserManager<IdentityUser>), provider => provider.GetService(typeof(IdentityUserManager))!);
 
-            //services.TryAddScoped<SignInManager>();
-            //services.TryAddScoped(typeof(SignInManager<ViazyNetCore.OpenIddict.Domain.IdentityUser>), provider => provider.GetService(typeof(SignInManager)));
+            services.TryAddScoped<SignInManager>();
+            services.TryAddScoped(typeof(SignInManager<IdentityUser>), provider => provider.GetService(typeof(SignInManager))!);
 
             //
             services.TryAddScoped<IdentityUserStore>();
-            services.TryAddScoped(typeof(IUserStore<ViazyNetCore.OpenIddict.Domain.IdentityUser>), provider => provider.GetService(typeof(IdentityUserStore)));
+            services.TryAddScoped(typeof(IUserStore<IdentityUser>), provider => provider.GetService(typeof(IdentityUserStore))!);
 
             services.Configure<ViazyIdentityOptions>(options =>
             {
-                options.ExternalLoginProviders.Add<ViazyExternalLoginProvider>(ViazyExternalLoginProvider.Name);
+                //options.ExternalLoginProviders.Add<ViazyExternalLoginProvider>(ViazyExternalLoginProvider.Name);
             });
 
             return services
-                .AddIdentityCore<ViazyNetCore.OpenIddict.Domain.IdentityUser>(setupAction)
-                .AddSignInManager<SignInManager>();
+                .AddIdentityCore<IdentityUser>(setupAction)
+                .AddSignInManager<SignInManager>()
+                .AddUserManager<IdentityUserManager>()
+                ;
+        }
+
+        public static IdentityBuilder AddPasswordValidator(this IdentityBuilder builder)
+        {
+            builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher>();
+
+            builder.Services.AddScoped<ViazyNetCore.Identity.Validator.SecurityStampValidator>();
+            builder.Services.AddScoped(typeof(SecurityStampValidator<IdentityUser>)
+                , provider => provider.GetService(typeof(ViazyNetCore.Identity.Validator.SecurityStampValidator))!);
+
+            return builder.AddPasswordValidator<PasswordValidator>();
         }
     }
 }

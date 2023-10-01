@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
+using ViazyNetCore.Identity.Domain;
 using ViazyNetCore.OpenIddict.AspNetCore;
 using ViazyNetCore.OpenIddict.Domain;
 
@@ -13,7 +14,7 @@ namespace ViazyNetCore.OpenIddict.Controllers;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class LogoutController : OpenIdDictControllerBase
 {
-    public LogoutController(SignInManager<Domain.IdentityUser> signInManager
+    public LogoutController(SignInManager<Identity.Domain.IdentityUser> signInManager
         , IOpenIddictApplicationManager applicationManager
         , IOpenIddictAuthorizationManager authorizationManager
         , OpenIddictClaimDestinationsManager openIddictClaimDestinationsManager

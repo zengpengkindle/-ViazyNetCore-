@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViazyNetCore.Authorization;
+using ViazyNetCore.Identity.Domain;
 
-namespace ViazyNetCore.OpenIddict.Domain
+namespace ViazyNetCore.Identity
 {
     public class ViazyIdentityOptions
     {
@@ -13,7 +14,7 @@ namespace ViazyNetCore.OpenIddict.Domain
         /// <summary>
         /// 用户密码加密方式
         /// </summary>
-        public UserPasswordFormat UserPasswordFormat { get; set; } = UserPasswordFormat.MD5;
+        public UserPasswordFormat UserPasswordFormat { get; set; } = UserPasswordFormat.SHA256;
 
         public ExternalLoginProviderDictionary ExternalLoginProviders { get; }
 

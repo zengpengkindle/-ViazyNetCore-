@@ -32,7 +32,7 @@ namespace ViazyNetCore.Formatter.Response
         {
             if (awm.IsSwagger(context) || !awm.IsApi(context))
                 await this._next(context);
-            else if (context.WebSockets.IsWebSocketRequest || context.Request.Path.StartsWithSegments("/messageHub", StringComparison.CurrentCultureIgnoreCase))
+            else if (context.WebSockets.IsWebSocketRequest)
             {
                 await this._next(context);
             }

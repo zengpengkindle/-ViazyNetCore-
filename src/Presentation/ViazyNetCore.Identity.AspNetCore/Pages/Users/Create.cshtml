@@ -1,0 +1,39 @@
+﻿@page
+@model CreateModel
+<div class="m-4">
+    <form class="row g-3 needs-validation" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">用户名</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" required />
+        </div>
+        <div class="mb-3">
+            <label for="nickname" class="form-label">昵称</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="请输入昵称" required />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">密码</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" required />
+        </div>
+        <button class="btn btn-primary" type="submit">创建</button>
+    </form>
+</div>
+<script>
+    (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

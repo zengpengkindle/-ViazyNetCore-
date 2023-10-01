@@ -38,5 +38,8 @@ namespace ViazyNetCore
 
     public abstract class Entity : Entity<long>
     {
+        [Snowflake(Enable = false)]
+        [Column(Position = 1, IsIdentity = true, IsPrimary = true)]
+        public override long Id { get => base.Id; set => base.Id = value; }
     }
 }

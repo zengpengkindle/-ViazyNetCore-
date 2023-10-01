@@ -10,8 +10,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
-using ViazyNetCore.OpenIddict.Domain;
-using IdentityUser = ViazyNetCore.OpenIddict.Domain.IdentityUser;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace ViazyNetCore.OpenIddict.Controllers;
@@ -30,7 +28,7 @@ public partial class TokenController
             {
                 await ReplaceEmailToUsernameOfInputIfNeeds(request);
 
-                Domain.IdentityUser user = null;
+                IdentityUser user = null;
 
                 //if (IdentityOptions.Value.ExternalLoginProviders.Any())
                 //{

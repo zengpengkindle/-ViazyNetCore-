@@ -12,7 +12,7 @@ using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Authorization;
 using ViazyNetCore.Modules;
 
-namespace ViazyNetCore.OpenIddict.Domain
+namespace ViazyNetCore.Identity.Domain
 {
     public class IdentityUserManager : UserManager<IdentityUser>
     {
@@ -52,6 +52,27 @@ namespace ViazyNetCore.OpenIddict.Domain
                 return Task.FromResult(true);
             }
             return Task.FromResult(false);
+        }
+
+        public override async Task<IdentityResult> AddPasswordAsync(IdentityUser user, string password)
+        {
+            var result = await base.AddPasswordAsync(user, password);
+            return result;
+        }
+
+        public override Task<IdentityResult> CreateAsync(IdentityUser user, string password)
+        {
+            return base.CreateAsync(user, password);
+        }
+
+        public override Task<IdentityResult> CreateAsync(IdentityUser user)
+        {
+            return base.CreateAsync(user);
+        }
+
+        public override Task<IdentityResult> UpdateAsync(IdentityUser user)
+        {
+            return base.UpdateAsync(user);
         }
     }
 }

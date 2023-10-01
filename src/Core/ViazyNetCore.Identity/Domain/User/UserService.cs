@@ -6,6 +6,7 @@ using ViazyNetCore.Auth;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Authorization.Repositories;
 using ViazyNetCore.Identity;
+using ViazyNetCore.Identity.Domain;
 
 namespace ViazyNetCore.Modules
 {
@@ -40,7 +41,7 @@ namespace ViazyNetCore.Modules
         /// <param name="model">模型。</param>
         /// <param name="randPwd">随机生成的密码,只有新增的时候用到</param>
         /// <returns>模型的编号。</returns>
-        public async Task<long> ManageAsync(UserModel model, string randPwd)
+        public async Task<long> ManageAsync(UserBaseDto model, string randPwd)
         {
             if (await _userRepository.UserExistAsync(model.Username, model.Id))
                 throw new ApiException("用户账号已存在。");
@@ -102,7 +103,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>模型。</returns>
-        public async Task<UserFindModel> FindAsync(long id)
+        public async Task<UserWithGoogleKeyDto> FindAsync(long id)
         {
             var result = await _userRepository.FindByIdAsync(id);
 
@@ -133,7 +134,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="args">查询参数。</param>
         /// <returns>模型的集合。</returns>
-        public Task<PageData<UserFindAllModel>> FindAllAsync(UserFindQueryDto args)
+        public Task<PageData<UserDto>> FindAllAsync(UserFindQueryDto args)
         {
             return _userRepository.FindAllAsync(args.UsernameLike, args.RoleId, args.Status, args.OrgId, args);
         }
@@ -143,7 +144,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="args">登录模型参数。</param>
         /// <returns>登录标识。</returns>
-        public async Task<BmsIdentity> GetUserLoginIdentityAsync(UserLoginArgs args, string ip, bool enableGoogleToken)
+        public async Task<BmsIdentity> GetUserLoginIdentityAsync(UserLoginInputDto args, string ip, bool enableGoogleToken)
         {
             var user = await _userRepository.GetUserByUserName(args.Username);
             if (user != null && user.Status != ComStatus.Deleted)
@@ -228,10 +229,10 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="username">用户账号</param>
         /// <returns></returns>
-        public UserLoginCheck GetByUsernameCache(string username, bool state, string ip = null, long? userId = null)
+        public UserLoginCheckDto GetByUsernameCache(string username, bool state, string ip = null, long? userId = null)
         {
             var cacheKey = GetUsernameCacheKey(username);
-            var result = this._cacheService.GetFromFirstLevel<UserLoginCheck>(cacheKey);
+            var result = this._cacheService.GetFromFirstLevel<UserLoginCheckDto>(cacheKey);
 
             //此账号此时还没有缓存
             if (result == null)
@@ -239,7 +240,7 @@ namespace ViazyNetCore.Modules
                 //正确直接返回
                 if (state == true) { return result; };
                 //错误的话初始值为1
-                UserLoginCheck userLoginCheck = new UserLoginCheck();
+                UserLoginCheckDto userLoginCheck = new UserLoginCheckDto();
                 userLoginCheck.ErrorCount = 1;
                 userLoginCheck.LastForbiddenTime = DateTime.Now;
                 this._cacheService.Set(cacheKey, userLoginCheck, CachingExpirationType.RelativelyStable);
@@ -255,7 +256,7 @@ namespace ViazyNetCore.Modules
                     this.ClearCache(username);
                     //正确可以直接登录，所以直接返回即可
                     if (state == true) { return result; }
-                    UserLoginCheck userLoginCheck = new UserLoginCheck();
+                    UserLoginCheckDto userLoginCheck = new UserLoginCheckDto();
                     userLoginCheck.ErrorCount = 1;
                     userLoginCheck.LastForbiddenTime = DateTime.Now;
                     this._cacheService.Set(cacheKey, userLoginCheck, CachingExpirationType.RelativelyStable);
@@ -391,6 +392,11 @@ namespace ViazyNetCore.Modules
                , () => this._userRepository.GetAsync(userId)
                , CachingExpirationType.ObjectCollection);
             return user;
+        }
+
+        public async Task<bool> ModifyAvatarAsync(long id, UserAvatarDto args)
+        {
+            return (await _userRepository.ModifyAvatarAsync(id, args.Avatar)) > 1;
         }
     }
 }

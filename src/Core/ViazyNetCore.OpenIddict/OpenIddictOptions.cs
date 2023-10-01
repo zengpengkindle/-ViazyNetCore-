@@ -8,6 +8,6 @@ namespace ViazyNetCore.OpenIddict
 {
     public class OpenIddictOptions
     {
-        public string DbKey { get; set; } = "master";
+        public string DbKey { get; set; }
     }
 }

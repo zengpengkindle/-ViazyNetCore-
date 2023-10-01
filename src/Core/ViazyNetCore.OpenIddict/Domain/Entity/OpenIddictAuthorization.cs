@@ -15,11 +15,6 @@ namespace ViazyNetCore.OpenIddict.Domain.Entity
         public virtual long? ApplicationId { get; set; }
 
         /// <summary>
-        /// Gets or sets the UTC creation date of the current authorization.
-        /// </summary>
-        public virtual DateTime? CreationDate { get; set; }
-
-        /// <summary>
         /// Gets or sets the additional properties serialized as a JSON object,
         /// or <c>null</c> if no bag was associated with the current authorization.
         /// </summary>

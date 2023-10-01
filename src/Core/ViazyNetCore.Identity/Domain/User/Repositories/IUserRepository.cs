@@ -28,7 +28,7 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="model">UserModel模型</param>
         /// <returns></returns>
-        Task ModifyByUserModelAsync(UserModel model);
+        Task ModifyByUserModelAsync(UserBaseDto model);
 
         /// <summary>
         /// 根据id彻底删除模型。
@@ -42,14 +42,14 @@ namespace ViazyNetCore.Modules
         /// </summary>
         /// <param name="id">模型的编号。</param>
         /// <returns>模型。</returns>
-        Task<UserFindModel> FindByIdAsync(long id);
+        Task<UserWithGoogleKeyDto> FindByIdAsync(long id);
 
         /// <summary>
         /// 查询所有模型。
         /// </summary>
         /// <param name="args">查询参数。</param>
         /// <returns>模型的集合。</returns>
-        Task<PageData<UserFindAllModel>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, long? orgId, Pagination args);
+        Task<PageData<UserDto>> FindAllAsync(string usernameLike, string roleId, ComStatus? status, long? orgId, Pagination args);
 
         /// <summary>
         /// 根据用户名获取UserRoleDTO
@@ -110,6 +110,7 @@ namespace ViazyNetCore.Modules
         Task<IUser> CreateUser(BmsUser user_object, bool ignoreDisallowedUsername);
         Task<long> GetUserIdByUserName(string takeOverUserName);
         Task<bool> ResetPassword(BmsUser user, string storedPassword);
+        Task<int> ModifyAvatarAsync(long id, string? avatar);
 
         #endregion
 

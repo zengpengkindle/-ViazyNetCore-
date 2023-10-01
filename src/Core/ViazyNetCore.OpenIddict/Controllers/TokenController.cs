@@ -7,7 +7,6 @@ using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using ViazyNetCore.OpenIddict.AspNetCore;
 using ViazyNetCore.OpenIddict.AspNetCore.ExtensionGrantTypes;
-using ViazyNetCore.OpenIddict.Domain;
 
 namespace ViazyNetCore.OpenIddict.Controllers;
 
@@ -16,7 +15,7 @@ namespace ViazyNetCore.OpenIddict.Controllers;
 [ApiExplorerSettings(IgnoreApi = true)]
 public partial class TokenController : OpenIdDictControllerBase
 {
-    public TokenController(SignInManager<Domain.IdentityUser> signInManager
+    public TokenController(SignInManager<IdentityUser> signInManager
         , ILogger<TokenController> logger
         , IOptions<IdentityOptions> options
         , IOptions<ViazyIdentityOptions> identityOptions

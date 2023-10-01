@@ -167,9 +167,9 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         public ValueTask<DateTimeOffset?> GetCreationDateAsync(OpenIddictAuthorizationDto authorization, CancellationToken cancellationToken)
         {
-            return authorization.CreationDate is null
+            return authorization.CreateTime is null
             ? new ValueTask<DateTimeOffset?>(result: null)
-            : new ValueTask<DateTimeOffset?>(DateTime.SpecifyKind(authorization.CreationDate.Value, DateTimeKind.Utc));
+            : new ValueTask<DateTimeOffset?>(DateTime.SpecifyKind(authorization.CreateTime.Value, DateTimeKind.Utc));
         }
 
         public ValueTask<string?> GetIdAsync(OpenIddictAuthorizationDto authorization, CancellationToken cancellationToken)
@@ -284,7 +284,7 @@ namespace ViazyNetCore.OpenIddict.Domain
 
         public ValueTask SetCreationDateAsync(OpenIddictAuthorizationDto authorization, DateTimeOffset? date, CancellationToken cancellationToken)
         {
-            authorization.CreationDate = date?.UtcDateTime;
+            authorization.CreateTime = date?.UtcDateTime;
 
             return default;
         }

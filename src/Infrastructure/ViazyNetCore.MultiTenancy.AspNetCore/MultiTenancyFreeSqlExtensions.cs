@@ -27,27 +27,6 @@ namespace ViazyNetCore.MultiTenancy.AspNetCore
                 throw new ArgumentNullException(nameof(IFreeSql));
             if (dbOption == null)
                 throw new ArgumentNullException(nameof(DbConfig));
-            //fsql.Aop.CurdAfter += Aop_CurdAfter; ;
-
-            // if (dbOption.Value.Tenant && currentTenant != null)
-            {
-                fsql.GlobalFilter.ApplyOnly<ITenant>(FilterNames.Tenant, a => a.TenantId == (currentTenant.Id ?? 0));
-            }
-
-            //会员过滤器
-            fsql.GlobalFilter.ApplyOnlyIf<IMember>(FilterNames.Member,
-                () =>
-                {
-                    if (user?.Id > 0 && user.IdentityType != AuthUserType.Member)
-                        return false;
-                    return true;
-                },
-                a => a.MemberId == user.Id
-            );
-            //fsql.Aop.AuditValue += (s, e) =>
-            //{
-            //    FreeSqlExtensions.AopAuditValue(user, e);
-            //};
             return app;
         }
     }

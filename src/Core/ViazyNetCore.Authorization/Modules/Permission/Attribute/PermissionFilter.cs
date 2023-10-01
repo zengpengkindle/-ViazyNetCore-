@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -30,16 +31,16 @@ namespace ViazyNetCore.Authorization.Modules
             var methodInfo = context.ActionDescriptor as ControllerActionDescriptor;
             if (methodInfo == null)
                 return;
-            var objControllerAttrs = methodInfo.ControllerTypeInfo.GetCustomAttributes(typeof(PermissionAttribute), true);
-            var objMehtodAttrs = methodInfo.MethodInfo.GetCustomAttributes(typeof(PermissionAttribute), true);
+            var objControllerAttr = methodInfo.ControllerTypeInfo.GetCustomAttribute(typeof(PermissionAttribute), true);
+            var objMehtodAttr = methodInfo.MethodInfo.GetCustomAttribute(typeof(PermissionAttribute), true);
 
-            if (objMehtodAttrs.Length > 0)
+            if (objMehtodAttr != null)
             {
-                privilegeAttr = objMehtodAttrs[0] as PermissionAttribute;
+                privilegeAttr = objMehtodAttr as PermissionAttribute;
             }
-            else if (objControllerAttrs.Length > 0)
+            else if (objControllerAttr != null)
             {
-                privilegeAttr = objControllerAttrs[0] as PermissionAttribute;
+                privilegeAttr = objControllerAttr as PermissionAttribute;
             }
 
             if (privilegeAttr != null)

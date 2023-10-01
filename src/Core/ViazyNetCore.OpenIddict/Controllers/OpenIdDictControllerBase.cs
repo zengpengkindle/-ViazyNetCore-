@@ -12,7 +12,7 @@ using OpenIddict.Abstractions;
 using ViazyNetCore.OpenIddict.AspNetCore;
 using ViazyNetCore.OpenIddict.Domain;
 using Microsoft.AspNetCore.Identity;
-using IdentityUser = ViazyNetCore.OpenIddict.Domain.IdentityUser;
+using ViazyNetCore.Identity.Domain;
 
 namespace ViazyNetCore.OpenIddict.Controllers
 {

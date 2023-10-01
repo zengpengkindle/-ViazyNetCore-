@@ -147,11 +147,11 @@ namespace Microsoft.Extensions.DependencyInjection
             ViazyClaimTypes.EmailVerified = OpenIddictConstants.Claims.EmailVerified;
             ViazyClaimTypes.ClientId = OpenIddictConstants.Claims.ClientId;
 
-           var builder= services.AddOpenIddictServer();
+            var builder = services.AddOpenIddictServer();
 
             services.Configure<OpenIddictOptions>(options =>
             {
-                options.DbKey = "master";
+                options.DbKey = options.DbKey ?? "master";
             });
 
             services.AddScoped<DefaultOpenIddictClaimDestinationsProvider>();

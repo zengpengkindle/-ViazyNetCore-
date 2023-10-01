@@ -6,7 +6,8 @@ using ViazyNetCore.Modules;
 
 namespace ViazyNetCore.Authorization.Modules
 {
-    [Injection]
+    //[Injection]
+    [Obsolete]
     public class UsershipService : IUsershipService
     {
         private readonly UserOption _userOption;

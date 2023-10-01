@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Authorization.Modules
 {
-    [Injection]
+    //[Injection]
+    [Obsolete]
     public interface IUsershipService
     {
         /// <summary>

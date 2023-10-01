@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using FreeSql;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using ViazyNetCore.Data.FreeSql;
@@ -48,9 +49,14 @@ namespace ViazyNetCore.OpenIddict.Domain
             return await this._tokenRepository.Select.CountAsync(cancellationToken);
         }
 
-        public virtual ValueTask<long> CountAsync<TResult>(Func<IQueryable<OpenIddictTokenDto>, IQueryable<TResult>> query, CancellationToken cancellationToken)
+        public virtual async ValueTask<long> CountAsync<TResult>(Func<IQueryable<OpenIddictTokenDto>, IQueryable<TResult>> query, CancellationToken cancellationToken)
         {
-            throw new NotSupportedException();
+            return query(CreateQuaryableFilter()).LongCount();
+        }
+
+        protected virtual IQueryable<OpenIddictTokenDto> CreateQuaryableFilter()
+        {
+            return this._tokenRepository.Orm.Select<OpenIddictTokenDto>().AsTable((type, oldname) => "OpenIddictToken").AsQueryable();
         }
 
         public virtual async ValueTask CreateAsync(OpenIddictTokenDto token, CancellationToken cancellationToken)
@@ -180,9 +186,14 @@ namespace ViazyNetCore.OpenIddict.Domain
                 : null);
         }
 
-        public virtual ValueTask<TResult> GetAsync<TState, TResult>(Func<IQueryable<OpenIddictTokenDto>, TState, IQueryable<TResult>> query, TState state, CancellationToken cancellationToken)
+        public virtual async ValueTask<TResult> GetAsync<TState, TResult>(Func<IQueryable<OpenIddictTokenDto>, TState, IQueryable<TResult>> query, TState state, CancellationToken cancellationToken)
         {
-            throw new NotSupportedException();
+            if (query is null)
+            {
+                throw new ArgumentNullException(nameof(query));
+            }
+
+            return query(CreateQuaryableFilter(), state).FirstOrDefault();
         }
 
         public virtual ValueTask<string?> GetAuthorizationIdAsync(OpenIddictTokenDto token, CancellationToken cancellationToken)
@@ -468,7 +479,7 @@ namespace ViazyNetCore.OpenIddict.Domain
 
             try
             {
-                var tokenEntity=this._mapper.Map<OpenIddictTokenDto, OpenIddictToken>(token);
+                var tokenEntity = this._mapper.Map<OpenIddictTokenDto, OpenIddictToken>(token);
                 await this._tokenRepository.UpdateAsync(tokenEntity, cancellationToken: cancellationToken);
             }
             catch (DbException e)

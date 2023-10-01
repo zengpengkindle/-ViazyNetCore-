@@ -18,7 +18,7 @@ namespace ViazyNetCore.OpenIddict.Domain.Dtos
         /// <summary>
         /// Gets or sets the UTC creation date of the current authorization.
         /// </summary>
-        public virtual DateTime? CreationDate { get; set; }
+        public virtual DateTime? CreateTime { get; set; }
 
         /// <summary>
         /// Gets or sets the additional properties serialized as a JSON object,

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FreeSql.DataAnnotations;
 
-namespace ViazyNetCore.OpenIddict.Domain
+namespace ViazyNetCore.Identity.Domain
 {
     public class IdentityUserToken : ITenant
     {

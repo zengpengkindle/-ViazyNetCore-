@@ -28,12 +28,23 @@ namespace ViazyNetCore.Oauth.Server
 
              });
 
-            context.Services.AddOpenIddictIdentity(options =>
+            context.Services.AddIdentity(options =>
             {
-                options.Password = new Microsoft.AspNetCore.Identity.PasswordOptions
-                {
-                    RequireDigit = false,
-                };
+                options.SignIn.RequireConfirmedEmail = false;
+
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+
+                options.User.RequireUniqueEmail = false;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
             });
         }
     }
