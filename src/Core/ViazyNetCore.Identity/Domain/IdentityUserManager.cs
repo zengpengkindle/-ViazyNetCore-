@@ -47,11 +47,12 @@ namespace ViazyNetCore.Identity.Domain
 
         public override Task<bool> CheckPasswordAsync(IdentityUser user, string password)
         {
-            if (UserPasswordHelper.CheckPassword(password, user.Password, user.PasswordSalt, this._identityOptions.UserPasswordFormat))
-            {
-                return Task.FromResult(true);
-            }
-            return Task.FromResult(false);
+            //if (UserPasswordHelper.CheckPassword(password, user.Password, user.PasswordSalt, this._identityOptions.UserPasswordFormat))
+            //{
+            //    return Task.FromResult(true);
+            //}
+            //return Task.FromResult(false);
+            return base.CheckPasswordAsync(user, password);
         }
 
         public override async Task<IdentityResult> AddPasswordAsync(IdentityUser user, string password)

@@ -24,10 +24,6 @@ namespace ViazyNetCore.Identity.Validator
                 return Task.FromResult(IdentityResult.Success);
             }
 
-            if (UserPasswordHelper.CheckPassword(password, user.Password, user.PasswordSalt, this._identityOptions.UserPasswordFormat))
-            {
-                return Task.FromResult(IdentityResult.Success);
-            }
             return Task.FromResult(IdentityResult.Failed(new IdentityError { Code = "400", Description = "密码错误" }));
         }
     }
