@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.AutoMapper\ViazyNetCore.AutoMapper.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ViazyNetCore.MultiTenancy\ViazyNetCore.MultiTenancy.csproj" />
     <ProjectReference Include="..\ViazyNetCore.Core\ViazyNetCore.Core.csproj" />

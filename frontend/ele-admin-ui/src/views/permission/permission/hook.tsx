@@ -36,18 +36,20 @@ export function usePermission() {
     },
     {
       label: "操作",
-      width: 100,
+      width: 150,
       fixed: "right",
       slot: "operation"
     }
   ];
-  const selectRow: Ref<{ pid?: string; name?: string }> = ref({
+  const selectRow: Ref<{ pid?: string; name?: string; type: number }> = ref({
     pid: null,
-    name: null
+    name: null,
+    type: 1
   });
-  function handleUpdate(row: any) {
+  function handleUpdate(row: any, type: number) {
     selectRow.value.pid = row?.key;
     selectRow.value.name = row?.name;
+    selectRow.value.type = type ?? 1;
   }
 
   function handleDelete(row) {

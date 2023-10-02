@@ -28,11 +28,6 @@
         /// </summary>
         public const string Setting = "Setting";
 
-        ///// <summary>
-        ///// 平台币与稳定币兑换
-        ///// </summary>
-        //public const string CreditExchange = "Exchange";
-
         /// <summary>
         /// 文章管理
         /// </summary>
@@ -42,11 +37,6 @@
         /// 匿名
         /// </summary>
         public const string Anonymity = "Anonymity";
-
-        ///// <summary>
-        ///// 抢购活动
-        ///// </summary>
-        //public const string RushActivity = "RushActivity";
 
         /// <summary>
         /// 会员管理

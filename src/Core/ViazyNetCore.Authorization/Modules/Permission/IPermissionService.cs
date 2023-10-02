@@ -1,4 +1,6 @@
-﻿namespace ViazyNetCore.Authorization.Modules
+﻿using ViazyNetCore.Authorization.ViewModels;
+
+namespace ViazyNetCore.Authorization.Modules
 {
     [Injection]
     public interface IPermissionService
@@ -81,6 +83,9 @@
         /// <param name="permissionItemKey">权限项目标识</param>
         /// <returns>有权限操作返回true，否则返回false</returns>
         Task<bool> Check(IUser<long> currentUser, string[] permissionItemKeys);
-
+        Task UpdateApisInPermission(string permissionItemKey, List<ApiItemDto> apis);
+        Task<IEnumerable<BmsPermissionApi>> GetApisInPermissionKey(string permissionItemKey);
+        Task<IEnumerable<BmsPermissionApi>> GetApisInPermissionKeys(string[] permissionItemKeys);
+        Task<bool> CheckApi(IUser<long> currentUser, string path, string httpMethod);
     }
 }

@@ -10,6 +10,8 @@ using ViazyNetCore.Caching;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.Core.System;
 using ViazyNetCore.Data.FreeSql;
+using System.Net.WebSockets;
+using ViazyNetCore.Authorization.ViewModels;
 
 namespace ViazyNetCore.Authorization.Modules
 {
@@ -93,6 +95,34 @@ namespace ViazyNetCore.Authorization.Modules
             await GetPermissionsInUserRole(ownerId, ownerType);
         }
 
+        public async Task AddPermission(string name, string key)
+        {
+            var exists = await ExistsPermissionByPermissionKey(key);
+            if (exists)
+            {
+                throw new ApiException("已存在键名");
+            }
+            await this._freeSql.Insert(new BmsPermission
+            {
+                PermissionId = key,
+                Name = name
+            }).ExecuteAffrowsAsync();
+        }
+
+        public Task<BmsPermission> GetPermissionByPermissionKey(string key)
+        {
+            return this._freeSql.Select<BmsPermission>().Where(p => p.PermissionId == key)
+                .FirstAsync();
+        }
+
+        public Task<bool> ExistsPermissionByPermissionKey(string key)
+        {
+            return this._freeSql.Select<BmsPermission>().Where(p => p.PermissionId == key)
+                .AnyAsync();
+        }
+
+        #region Menus
+
         public async Task RemoveMenu(string menuId)
         {
             await this._freeSql.Select<BmsMenus>().Where(p => p.Id == menuId).ToDelete().ExecuteAffrowsAsync();
@@ -150,33 +180,6 @@ namespace ViazyNetCore.Authorization.Modules
             }
         }
 
-        public async Task AddPermission(string name, string key)
-        {
-            var exists = await ExistsPermissionByPermissionKey(key);
-            if (exists)
-            {
-                throw new ApiException("已存在键名");
-            }
-            await this._freeSql.Insert(new BmsPermission
-            {
-                PermissionId = key,
-                Name = name
-            }).ExecuteAffrowsAsync();
-        }
-
-        public Task<BmsPermission> GetPermissionByPermissionKey(string key)
-        {
-            return this._freeSql.Select<BmsPermission>().Where(p => p.PermissionId == key)
-                .FirstAsync();
-        }
-
-        public Task<bool> ExistsPermissionByPermissionKey(string key)
-        {
-            return this._freeSql.Select<BmsPermission>().Where(p => p.PermissionId == key)
-                .AnyAsync();
-        }
-
-        #region Menus
         public async Task UpdateMenusInPermission(string permissionItemKey, string[] menuIds)
         {
 
@@ -240,6 +243,87 @@ namespace ViazyNetCore.Authorization.Modules
 
         #endregion
 
+        #region Apis
+        public async Task UpdateApisInPermission(string permissionItemKey, List<ApiItemDto> apis)
+        {
+            await this._freeSql.Select<BmsPermissionApi>()
+                .Where(p => p.PermissionItemKey == permissionItemKey).ToDelete().ExecuteAffrowsAsync();
+
+            if (apis != null)
+            {
+                foreach (var api in apis)
+                {
+                    //获取的权限等于空或者不包含当前要更改的权限项
+
+                    await this._freeSql.Insert(new BmsPermissionApi
+                    {
+                        Path = api.Path,
+                        HttpMethod = api.HttpMethod,
+                        PermissionItemKey = permissionItemKey
+                    }).ExecuteAffrowsAsync();
+                }
+            }
+            //更新缓存
+            string cacheKey = GetCacheKey_GetApisInPermissionKey(permissionItemKey);
+            this._cacheService.Remove(cacheKey);
+            await GetApisInPermissionKey(permissionItemKey);
+        }
+
+        public async Task<IEnumerable<BmsPermissionApi>> GetApisInPermissionKey(string permissionItemKey)
+        {
+            string cacheKey = GetCacheKey_GetApisInPermissionKey(permissionItemKey);
+            var bmsApis = this._cacheService.Get<List<BmsPermissionApi>>(cacheKey);
+
+            if (bmsApis == null)
+            {
+                bmsApis = await this._freeSql.Select<BmsPermissionApi>()
+                   .Where(m => m.PermissionItemKey == permissionItemKey)
+                   .ToListAsync();
+                this._cacheService.Set(cacheKey, bmsApis, CachingExpirationType.ObjectCollection);
+            }
+            return bmsApis;
+        }
+
+        public async Task<IEnumerable<BmsPermissionApi>> GetApisInPermissionKeys(string[] permissionItemKeys)
+        {
+            permissionItemKeys = permissionItemKeys.Distinct().ToArray();
+            //修改为根据单个查询，记录缓存。
+            IEnumerable<BmsPermissionApi> bmsApis = new List<BmsPermissionApi>();
+            foreach (var key in permissionItemKeys)
+            {
+                var bmsMenusByPermissionKey = await GetApisInPermissionKey(key);
+                bmsApis = bmsApis.Union(bmsMenusByPermissionKey);
+            }
+            return bmsApis;
+        }
+
+        /// <summary>
+        /// 检查用户是否有权限进行某项操作
+        /// </summary>
+        /// <param name="currentUser">当前用户</param>
+        /// <param name="path">请求路径</param>
+        /// <param name="path">请求方法</param>
+        /// <returns>有权限操作返回true，否则返回false</returns>
+        public async Task<bool> CheckApi(IUser<long> currentUser, string path, string httpMethod)
+        {
+            if (currentUser == null)
+                return false;
+
+            if (await this._roleService.IsSuperAdministrator(currentUser))
+                return true;
+            //获取用户的所有权限
+            var resolvedUserPermission = await ResolveUserPermission(currentUser.Id);
+            if (resolvedUserPermission == null)
+                return false;
+            //判断用户的所有权限里有没有当前权限
+            var apis = await GetApisInPermissionKeys(resolvedUserPermission.Select(n => n.PermissionItemKey).ToArray());
+            return apis.Any(p =>
+            p.Path.Equals(path, StringComparison.InvariantCultureIgnoreCase)
+            && p.HttpMethod.Equals(httpMethod, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        #endregion
+
         /// <summary>
         /// 解析用户的所有权限
         /// </summary>
@@ -253,7 +337,7 @@ namespace ViazyNetCore.Authorization.Modules
             if (user == null)
                 return permissions;
 
-            IList<long> roleIdsOfUser = await _roleService.GetRoleIdsOfUser(userId);
+            IList<long> roleIdsOfUser = await _roleService.GetRoleIdsOfUserByCache(userId);
 
             //if(user.IsModerated)
             //    roleIdsOfUser.Add(RoleIds.Instance().ModeratedUser());
@@ -318,6 +402,10 @@ namespace ViazyNetCore.Authorization.Modules
         private string GetCacheKey_GetMenusInPermissionKey(string permissionItemKey)
         {
             return string.Format("MenusInPermissionKey:PermissionItemKey:{0}", permissionItemKey);
+        }
+        private string GetCacheKey_GetApisInPermissionKey(string permissionItemKey)
+        {
+            return string.Format("ApisInPermissionKey:PermissionItemKey:{0}", permissionItemKey);
         }
     }
 }

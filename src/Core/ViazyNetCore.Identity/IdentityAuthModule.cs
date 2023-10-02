@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using ViazyNetCore.AutoMapper;
 
 namespace ViazyNetCore.Identity
 {
+    [DependsOn(typeof(AutoMapperModule))]
     public class IdentityAuthModule : InjectionModule
     {
         public IdentityAuthModule()

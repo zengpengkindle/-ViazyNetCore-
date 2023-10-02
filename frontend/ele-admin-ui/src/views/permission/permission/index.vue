@@ -5,10 +5,12 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import PureTable from "@pureadmin/table";
 import { ElButton, ElPopconfirm } from "element-plus";
 import { ref } from "vue";
-import tree from "./tree.vue";
+import MenuTree from "./menutree.vue";
+import ApisTree from "./apistree.vue";
 
 import Delete from "@iconify-icons/ep/delete";
 import EditPen from "@iconify-icons/ep/edit-pen";
+import DataBoard from "@iconify-icons/ep/data-board";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 
 const tableRef = ref();
@@ -55,8 +57,16 @@ const {
                 link
                 type="primary"
                 :size="size"
-                @click="handleUpdate(row)"
+                @click="handleUpdate(row, 1)"
                 :icon="useRenderIcon(EditPen)"
+              />
+              <el-button
+                class="reset-margin"
+                link
+                type="primary"
+                :size="size"
+                @click="handleUpdate(row, 2)"
+                :icon="useRenderIcon(DataBoard)"
               />
               <el-popconfirm title="是否确认删除?">
                 <template #reference>
@@ -76,7 +86,16 @@ const {
       </PureTableBar>
     </div>
     <div class="float-right w-[59%]">
-      <tree :pid="selectRow.pid" :pname="selectRow.name" />
+      <menu-tree
+        v-if="selectRow.type == 1"
+        :pid="selectRow.pid"
+        :pname="selectRow.name"
+      />
+      <apis-tree
+        v-if="selectRow.type == 2"
+        :pid="selectRow.pid"
+        :pname="selectRow.name"
+      />
     </div>
   </div>
 </template>

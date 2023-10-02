@@ -12,6 +12,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
     /// <summary>
     /// 用户管理
     /// </summary>
+    [ApiPermission("用户管理")]
     public class UserController : DynamicControllerBase
     {
         private readonly IUserService _userService;
@@ -27,7 +28,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             this._options = options;
         }
 
-        [ApiTitle("所有查询")]
+        [ApiPermission("所有查询")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public Task<PageData<Dtos.UserDto>> FindAllAsync([Required] UserFindQueryDto args)
@@ -35,7 +36,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             return this._userService.FindAllAsync(args);
         }
 
-        [ApiTitle("单个查询")]
+        [ApiPermission("单个查询")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public Task<UserWithGoogleKeyDto> FindAsync([Required] long id)
@@ -43,7 +44,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             return this._userService.FindAsync(id);
         }
 
-        [ApiTitle("管理")]
+        [ApiPermission("管理")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<UserManageDto> ManageAsync([Required] Dtos.UserBaseDto model)
@@ -68,7 +69,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             return new UserManageDto() { UserId = userId, UserName = model.Username, Password = randPwd };
         }
 
-        [ApiTitle("删除")]
+        [ApiPermission("删除")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<bool> RemoveAsync([Required] long id)
@@ -93,7 +94,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ApiTitle("重置密码")]
+        [ApiPermission("重置密码")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<string> ResetPasswordAsync(long id)
@@ -111,7 +112,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             return res;
         }
 
-        [ApiTitle("重置登录限制")]
+        [ApiPermission("重置登录限制")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public bool ResetTime(string username)

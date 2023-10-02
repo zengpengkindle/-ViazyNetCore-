@@ -3,9 +3,12 @@ import { http } from "@/utils/http";
  * ApiGroupDescriptor
  */
 export interface ApiGroupDescriptor {
+  isIndeterminate: boolean;
   controllerName: string;
   displayControllerName: string;
   apis: Array<ApiDescriptor>;
+  checks: Array<string>;
+  allcheck: boolean;
 }
 
 /**

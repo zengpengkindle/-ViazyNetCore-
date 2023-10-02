@@ -34,7 +34,7 @@ namespace ViazyNetCore.Identity.Domain
             user.AddClaims(claims.Select(c => c.ToClaim()));
             //await this._userRepository.EnsureCollectionLoadedAsync(user, u => u.Claims, cancellationToken);
             //user.AddClaims(claims.Select(c => c.ToClaim()));
-            user.AddClaim(new Claim(IdentityClaimTypes.Subject, user.Id.ToString()));
+            //user.AddClaim(new Claim(IdentityClaimTypes.Subject, user.Id.ToString()));
             return user.Claims.Select(c => c.ToClaim()).ToList();
         }
 

@@ -17,13 +17,13 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost]
-        public Task<PageData<RoleFindAllModel>> FindRoles(FindRolesParameters args)
+        public Task<PageData<RoleQueryDto>> FindRoles(RolePageQueryDto args)
         {
             return this._roleService.FindRoles(args);
         }
 
         [HttpPost]
-        public Task<List<RoleSimpleModel>> GetAll()
+        public Task<List<RoleNameDto>> GetAll()
         {
             return this._roleService.GetAllAsync();
         }
@@ -43,7 +43,7 @@ namespace ViazyNetCore.Authrozation
         }
 
         [HttpPost]
-        public async Task<bool> UpdateRole(UpdateBmsRoleArgs args)
+        public async Task<bool> UpdateRole(BmsRoleUpdateRequest args)
         {
             var role = args.CopyTo<BmsRole>();
             await this._roleService.UpdateAsync(role);
@@ -61,7 +61,7 @@ namespace ViazyNetCore.Authrozation
         [HttpPost]
         public Task<List<long>> GetUserRoleIds(long userId)
         {
-            return this._roleService.GetRoleIdsOfUser(userId);
+            return this._roleService.GetRoleIdsOfUserByCache(userId);
         }
 
         [HttpPost]
@@ -70,10 +70,5 @@ namespace ViazyNetCore.Authrozation
             await this._roleService.UpdateUserToRoles(userId, roleIds);
             return true;
         }
-    }
-
-    public class FindRolesParameters : Pagination
-    {
-        public string? NameLike { get; set; }
     }
 }

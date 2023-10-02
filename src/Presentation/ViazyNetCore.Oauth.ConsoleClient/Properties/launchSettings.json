@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ViazyNetCore.Oauth.ConsoleClient": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61660;http://localhost:61661"
+    }
+  }
+}

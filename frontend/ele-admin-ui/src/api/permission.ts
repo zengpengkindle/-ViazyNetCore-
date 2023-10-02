@@ -65,6 +65,18 @@ export interface BmsMenus {
 
   id: string;
 }
+export interface ApiItemDto {
+  path: string;
+  httpMethod: string;
+}
+
+/**
+ * PermissionApiUpdateDto
+ */
+export interface PermissionApiUpdateDto {
+  permissionKey: string | null;
+  apis: Array<ApiItemDto> | null;
+}
 
 export class PermissionApi {
   /**
@@ -166,6 +178,28 @@ export class PermissionApi {
       method: "post",
       data: param1,
       params: { roleId }
+    });
+  }
+  /**
+   * 无
+   */
+  public getApisInPermissionKey(
+    permissionKey?: string
+  ): Promise<Array<ApiItemDto>> {
+    return http.request({
+      url: "/api/Permission/getApisInPermissionKey",
+      method: "post",
+      params: { permissionKey }
+    });
+  }
+
+  public updateApisInPermission(
+    param1?: PermissionApiUpdateDto
+  ): Promise<boolean> {
+    return http.request({
+      url: "/api/Permission/updateApisInPermission",
+      method: "post",
+      data: param1
     });
   }
 }

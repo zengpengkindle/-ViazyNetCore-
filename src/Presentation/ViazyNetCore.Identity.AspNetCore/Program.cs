@@ -6,6 +6,7 @@ builder.Services.AddFreeDb(builder.Configuration.GetSection("dbConfig"));
 // Add services to the container.
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
+
 builder.Services.AddCaching();
 
 await builder.AddApplicationAsync<AspNetCoreIdentityModules>();

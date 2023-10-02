@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ViazyNetCore.EventBus.Redis": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61686;http://localhost:61687"
+    }
+  }
+}

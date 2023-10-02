@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ViazyNetCore.Dapr": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61666;http://localhost:61667"
+    }
+  }
+}

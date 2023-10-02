@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ViazyNetCore.Auth.Authorization.ViewModels;
 using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.Authorization.ViewModels;
 
 namespace ViazyNetCore.Authrozation
 {
@@ -273,6 +274,24 @@ namespace ViazyNetCore.Authrozation
                 treeModel.Children.Add(tree);
             }
         }
+        #endregion
+
+        #region Api
+        [HttpPost]
+        public async Task<List<ApiItemDto>> GetApisInPermissionKey(string permissionKey)
+        {
+            var result = await this._permissionService.GetApisInPermissionKey(permissionKey);
+
+            return result.Select(p => new ApiItemDto { Path = p.Path, HttpMethod = p.HttpMethod }).ToList();
+        }
+
+        [HttpPost]
+        public async Task<bool> UpdateApisInPermission(PermissionApiUpdateDto updateDto)
+        {
+            await this._permissionService.UpdateApisInPermission(updateDto.PermissionKey, updateDto.Apis);
+            return true;
+        }
+
         #endregion
     }
 }

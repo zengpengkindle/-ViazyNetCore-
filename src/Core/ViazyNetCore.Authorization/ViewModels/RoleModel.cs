@@ -3,7 +3,7 @@
     /// <summary>
     /// 表示一个角色模型。
     /// </summary>
-    public class RoleModel: RoleSimpleModel
+    public class RoleModel: RoleNameDto
     {
         /// <summary>
         /// 设置或获取一个值，表示状态（0禁用，1启用，-1删除）。
