@@ -111,4 +111,8 @@ app.UseSpa(spa =>
         });
     });
 ```
+### 组件概览
 ![xmind](./docs/ViazyNetCore.Core.png)
+
+### 权限管理
+![xmind](./docs/ViazyNetCore.Premission.png)

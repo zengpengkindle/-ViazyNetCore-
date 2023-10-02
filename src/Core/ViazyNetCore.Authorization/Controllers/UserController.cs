@@ -44,7 +44,7 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             return this._userService.FindAsync(id);
         }
 
-        [ApiPermission("管理")]
+        [ApiPermission("编辑用户")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<UserManageDto> ManageAsync([Required] Dtos.UserBaseDto model)
