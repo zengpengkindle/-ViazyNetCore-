@@ -30,6 +30,8 @@ namespace ViazyNetCore.Filter.Descriptor
         /// <param name="id">Url地址Md5</param>
         /// <returns></returns>
         Task<bool> AnyAsync(string id);
+        List<string> GetPermissionKeys();
+
         /// <summary>
         /// 获取所有Api列表缓存key
         /// </summary>

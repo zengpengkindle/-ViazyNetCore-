@@ -28,7 +28,6 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             this._options = options;
         }
 
-        [ApiPermission("所有查询")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public Task<PageData<Dtos.UserDto>> FindAllAsync([Required] UserFindQueryDto args)
@@ -44,7 +43,6 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             return this._userService.FindAsync(id);
         }
 
-        [ApiPermission("编辑用户")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<UserManageDto> ManageAsync([Required] Dtos.UserBaseDto model)
@@ -69,7 +67,6 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             return new UserManageDto() { UserId = userId, UserName = model.Username, Password = randPwd };
         }
 
-        [ApiPermission("删除")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<bool> RemoveAsync([Required] long id)
@@ -94,7 +91,6 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ApiPermission("重置密码")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public async Task<string> ResetPasswordAsync(long id)
@@ -112,7 +108,6 @@ namespace ViazyNetCore.Manage.WebApi.Controllers.Authorization
             return res;
         }
 
-        [ApiPermission("重置登录限制")]
         [HttpPost]
         [Permission(PermissionIds.User)]
         public bool ResetTime(string username)

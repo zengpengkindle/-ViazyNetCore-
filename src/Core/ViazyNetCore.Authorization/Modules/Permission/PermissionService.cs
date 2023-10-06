@@ -95,10 +95,10 @@ namespace ViazyNetCore.Authorization.Modules
             await GetPermissionsInUserRole(ownerId, ownerType);
         }
 
-        public async Task AddPermission(string name, string key)
+        public async Task AddPermission(string name, string key, bool isIgnore = false)
         {
             var exists = await ExistsPermissionByPermissionKey(key);
-            if (exists)
+            if (exists && !isIgnore)
             {
                 throw new ApiException("已存在键名");
             }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using ViazyNetCore.Authorization;
 
 namespace ViazyNetCore.Filter.Descriptor
 {
@@ -35,6 +36,7 @@ namespace ViazyNetCore.Filter.Descriptor
         /// 获取所有Api列表缓存key
         /// </summary>
         public string GetAllApiKey => $"{_options.CachePrefix}:GetApiDescriptors";
+        public string GetAllPrimissionKey => $"{_options.CachePrefix}:GetApiPrimissions";
 
         /// <summary>
         /// 根据ApiId获取缓存Key
@@ -130,6 +132,29 @@ namespace ViazyNetCore.Filter.Descriptor
                .OrderBy(x => x.ControllerName)
                .ToList();
                 return apiGroupDescriptors;
+            });
+            return data;
+        }
+
+        public List<string> GetPermissionKeys()
+        {
+            var data = this._cache.GetOrCreate(this.GetAllPrimissionKey, options =>
+            {
+                var primssions = new List<string>();
+                options.SlidingExpiration = TimeSpan.FromDays(1);
+                _actionDescriptorCollectionProvider.ActionDescriptors.Items
+                .Select(x => x as ControllerActionDescriptor)
+                .Each(x =>
+                {
+                    if (x == null) return;
+                    x.EndpointMetadata.Where(p => p is PermissionAttribute)
+                     .Each(p =>
+                     {
+                         var keys = (p as PermissionAttribute).PermissionKeys;
+                         primssions.Concat(keys);
+                     });
+                });
+                return primssions.Distinct().ToList();
             });
             return data;
         }
