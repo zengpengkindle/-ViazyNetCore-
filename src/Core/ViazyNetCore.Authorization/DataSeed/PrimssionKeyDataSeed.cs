@@ -11,7 +11,7 @@ using ViazyNetCore.Filter.Descriptor;
 
 namespace ViazyNetCore.Authorization
 {
-    public class PrimssionKeyDataSeed
+    public class PrimssionKeyDataSeed : IPrimssionKeyDataSeed
     {
         private readonly IApiManager _apiManager;
         private readonly PermissionService _permissionService;

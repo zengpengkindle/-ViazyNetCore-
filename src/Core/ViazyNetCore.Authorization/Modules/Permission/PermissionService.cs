@@ -98,8 +98,12 @@ namespace ViazyNetCore.Authorization.Modules
         public async Task AddPermission(string name, string key, bool isIgnore = false)
         {
             var exists = await ExistsPermissionByPermissionKey(key);
-            if (exists && !isIgnore)
+            if (exists)
             {
+                if (isIgnore)
+                {
+                    return;
+                }
                 throw new ApiException("已存在键名");
             }
             await this._freeSql.Insert(new BmsPermission

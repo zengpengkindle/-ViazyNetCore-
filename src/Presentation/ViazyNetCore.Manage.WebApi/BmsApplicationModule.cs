@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.AspNetCore;
@@ -59,13 +60,16 @@ namespace ViazyNetCore.Manage.WebApi
                 });
             });
             context.Services.AddSwagger();
-
+            context.Services.AddTransient<IPrimssionKeyDataSeed, PrimssionKeyDataSeed>();
             //context.Services.AddSingleton<TunnelWorksMultiTenancyMiddleware>();
             //context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
         }
-        public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
+        public override async Task OnApplicationInitializationAsync([NotNull] ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
+
+            var dataSeed = app.ApplicationServices.GetService<IPrimssionKeyDataSeed>();
+            await dataSeed.CreatePrimissionKeyAsync();
             //app.UseMiddleware<TunnelWorksMultiTenancyMiddleware>();
         }
     }

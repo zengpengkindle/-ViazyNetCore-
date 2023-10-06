@@ -5,7 +5,7 @@ namespace ViazyNetCore.Authorization
     /// <summary>
     /// 表示一个角色权限。
     /// </summary>
-    [Index("uk_BmsPermission_Name", "Name ASC", IsUnique = true)]
+    [Index("uk_BmsPermission_PermissionId_TenantId", "PermissionId ASC,TenantId ASC", IsUnique = true)]
     public partial class BmsPermission : Entity, ITenant
     {
         /// <summary>

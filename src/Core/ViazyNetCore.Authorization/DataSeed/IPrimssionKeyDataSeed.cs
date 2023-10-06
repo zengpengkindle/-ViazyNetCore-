@@ -8,6 +8,6 @@ namespace ViazyNetCore.Authorization
 {
     public interface IPrimssionKeyDataSeed
     {
-
+        Task CreatePrimissionKeyAsync();
     }
 }
