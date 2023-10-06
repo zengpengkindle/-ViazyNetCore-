@@ -50,7 +50,7 @@ namespace ViazyNetCore.Authorization.Modules
 
         Task<string> UpdateMenus(BmsMenus menu);
 
-        Task AddPermission(string name, string key);
+        Task AddPermission(string name, string key, bool isIgnore = false);
 
         Task<BmsPermission> GetPermissionByPermissionKey(string key);
 

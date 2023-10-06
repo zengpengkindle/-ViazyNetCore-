@@ -76,7 +76,7 @@ namespace ViazyNetCore.OpenIddict.AspNetCore.ExtensionGrantTypes
             var userId = principal.FindUserId();
             var userManager = context.HttpContext.RequestServices.GetRequiredService<IdentityUserManager>();
             var user = await userManager.GetByIdAsync(userId.Value);
-            var userClaimsPrincipalFactory = context.HttpContext.RequestServices.GetRequiredService<IUserClaimsPrincipalFactory<Domain.IdentityUser>>();
+            var userClaimsPrincipalFactory = context.HttpContext.RequestServices.GetRequiredService<IUserClaimsPrincipalFactory<IdentityUser>>();
             var claimsPrincipal = await userClaimsPrincipalFactory.CreateAsync(user);
             claimsPrincipal.SetScopes(principal.GetScopes());
             claimsPrincipal.SetResources(await GetResourcesAsync(context, principal.GetScopes()));
