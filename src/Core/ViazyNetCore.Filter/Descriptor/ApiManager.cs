@@ -77,6 +77,8 @@ namespace ViazyNetCore.Filter.Descriptor
                        return false;
                    if (!x.ControllerTypeInfo.IsDefined(typeof(ApiPermissionAttribute)))
                        return false;
+                   if (!x.MethodInfo.IsDefined(typeof(ApiPermissionAttribute)))
+                       return false;
                    var settings = x.ControllerTypeInfo.GetCustomAttribute<ApiExplorerSettingsAttribute>();
                    return settings?.IgnoreApi != true;
                })
@@ -104,6 +106,8 @@ namespace ViazyNetCore.Filter.Descriptor
                    string controllerDisplayName = controller?.DisplayName ?? x.ControllerName;
 
                    var action = x.MethodInfo.GetCustomAttribute<ApiPermissionAttribute>();
+                   if (action == null) return null;
+
                    string actionDisplayName = action?.DisplayName ?? x.ActionName;
                    var descriptor = new ApiDescriptor
                    {
@@ -117,7 +121,9 @@ namespace ViazyNetCore.Filter.Descriptor
                        ServiceName = _options.ServiceName
                    };
                    return descriptor;
-               }).GroupBy(c => c.ControllerName).Select(c =>
+               })
+               .Where(c => c != null)
+               .GroupBy(c => c.ControllerName).Select(c =>
                {
                    var first = c.FirstOrDefault();
                    var descriptor = new ApiGroupDescriptor()
