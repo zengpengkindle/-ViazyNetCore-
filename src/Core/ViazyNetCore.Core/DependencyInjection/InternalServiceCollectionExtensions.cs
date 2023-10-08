@@ -23,26 +23,12 @@ namespace ViazyNetCore.DependencyInjection
 
 
         internal static void AddApplicationCoreServices(this IServiceCollection services,
-           IApplication abpApplication,
+           IApplication application,
            ApplicationCreationOptions applicationCreationOptions)
         {
             var moduleLoader = new ModuleLoader();
-            //var assemblyFinder = new AssemblyFinder(abpApplication);
-            //var typeFinder = new TypeFinder(assemblyFinder);
-
-            //if (!services.IsAdded<IConfiguration>())
-            //{
-            //    services.ReplaceConfiguration(
-            //        ConfigurationHelper.BuildConfiguration(
-            //            applicationCreationOptions.Configuration
-            //        )
-            //    );
-            //}
 
             services.TryAddSingleton<IModuleLoader>(moduleLoader);
-            //services.TryAddSingleton<IAssemblyFinder>(assemblyFinder);
-            //services.TryAddSingleton<ITypeFinder>(typeFinder);
-            //services.TryAddSingleton<IInitLoggerFactory>(new DefaultInitLoggerFactory());
 
             services.AddAssemblyOf<IApplication>();
 

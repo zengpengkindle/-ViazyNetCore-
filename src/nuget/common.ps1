@@ -76,6 +76,7 @@ $projects = (
 	"Core/ViazyNetCore.AttachmentProvider",
 	"Core/ViazyNetCore.Auth",
 	"Core/ViazyNetCore.Authorization",
+	"Core/ViazyNetCore.Filter",
 	"Core/ViazyNetCore.Caching",
 	"Core/ViazyNetCore.Data.FreeSql",
 	"Core/ViazyNetCore.Identity",

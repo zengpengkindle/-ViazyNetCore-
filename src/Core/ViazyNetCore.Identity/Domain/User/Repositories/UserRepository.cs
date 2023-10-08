@@ -197,6 +197,8 @@ namespace ViazyNetCore.Modules
                              Status = u.Status,
                              CreateTime = u.CreateTime,
                              ModifyTime = u.ModifyTime,
+                             ExtraData = u.ExtraData,
+                             OrgId = u.Id,
                          });
 
             return query2.ToPageAsync(args);

@@ -13,7 +13,7 @@ internal static class XModuleHelper
     public static List<Type> FindAllModuleTypes(Type startupModuleType, ILogger logger)
     {
         var moduleTypes = new List<Type>();
-        logger.Log(LogLevel.Information, "Loaded ABP modules:");
+        logger.Log(LogLevel.Information, "Loaded modules:");
         AddModuleAndDependenciesRecursively(moduleTypes, startupModuleType, logger);
         return moduleTypes;
     }

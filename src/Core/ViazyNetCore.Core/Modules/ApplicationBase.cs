@@ -231,7 +231,7 @@ namespace ViazyNetCore.Modules
         {
             if (_configuredServices)
             {
-                throw new Exception("Services have already been configured! If you call ConfigureServicesAsync method, you must have set AbpApplicationCreationOptions.SkipConfigureServices to true before.");
+                throw new Exception("Services have already been configured! If you call ConfigureServicesAsync method, you must have set ApplicationCreationOptions.SkipConfigureServices to true before.");
             }
         }
 

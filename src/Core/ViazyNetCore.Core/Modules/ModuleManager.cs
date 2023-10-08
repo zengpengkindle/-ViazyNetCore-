@@ -50,7 +50,7 @@ namespace ViazyNetCore.Modules
                 }
             }
 
-            _logger.LogInformation("Initialized all ABP modules.");
+            _logger.LogInformation("Initialized all modules.");
         }
 
         public void InitializeModules(ApplicationInitializationContext context)
@@ -70,7 +70,7 @@ namespace ViazyNetCore.Modules
                 }
             }
 
-            _logger.LogInformation("Initialized all ABP modules.");
+            _logger.LogInformation("Initialized all modules.");
         }
 
         public virtual async Task ShutdownModulesAsync(ApplicationShutdownContext context)
