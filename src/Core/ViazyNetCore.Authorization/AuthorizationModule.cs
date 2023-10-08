@@ -38,6 +38,8 @@ namespace ViazyNetCore.Authorization
                 options.AddAssemblyOptions(typeof(DynamicControllerBase).Assembly);
             });
             context.Services.RegisterEventHanldersDependencies(new[] { typeof(AuthorizationModule).Assembly }, ServiceLifetime.Scoped);
+
+            context.Services.AddTransient<IPrimssionKeyDataSeed, PrimssionKeyDataSeed>();
         }
 
         public override void PreConfigureServices(ServiceConfigurationContext context)

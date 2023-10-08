@@ -60,7 +60,6 @@ namespace ViazyNetCore.Manage.WebApi
                 });
             });
             context.Services.AddSwagger();
-            context.Services.AddTransient<IPrimssionKeyDataSeed, PrimssionKeyDataSeed>();
             //context.Services.AddSingleton<TunnelWorksMultiTenancyMiddleware>();
             //context.Services.RegisterDistributedEventHanldersDependencies(new[] { typeof(BmsApplicationModule).Assembly }, ServiceLifetime.Scoped);
         }

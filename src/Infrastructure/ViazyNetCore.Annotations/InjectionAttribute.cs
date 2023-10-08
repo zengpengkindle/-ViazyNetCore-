@@ -29,6 +29,8 @@ namespace ViazyNetCore
         /// 获取或设置一个值，表示依赖注入的生命周期。
         /// </summary>
         public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Scoped;
+        public bool ReplaceServices { get; set; }
+        public bool TryRegister { get; set; }
 
         /// <summary>
         /// 初始化一个 <see cref="InjectionAttribute"/> 类的新实例。

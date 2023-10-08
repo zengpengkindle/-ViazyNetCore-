@@ -221,8 +221,8 @@ const router = useRouter();
             }"
             default-expand-all
             @selection-change="handleSelectionChange"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @page-size-change="handleSizeChange"
+            @page-current-change="handleCurrentChange"
           >
             <template #operation="{ row }">
               <el-button

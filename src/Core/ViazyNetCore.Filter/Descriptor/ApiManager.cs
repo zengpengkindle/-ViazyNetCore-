@@ -139,19 +139,16 @@ namespace ViazyNetCore.Filter.Descriptor
         {
             var data = this._cache.GetOrCreate(this.GetAllPrimissionKey, options =>
             {
-                var primssions = new List<string>();
                 options.SlidingExpiration = TimeSpan.FromDays(1);
-                _actionDescriptorCollectionProvider.ActionDescriptors.Items
-                .Select(x => x as ControllerActionDescriptor)
-                .Each(x =>
+                var primssions = _actionDescriptorCollectionProvider.ActionDescriptors.Items
+                .Where(x => x is ControllerActionDescriptor)
+                .SelectMany(x =>
                 {
-                    if (x == null) return;
-                    x.EndpointMetadata.Where(p => p is PermissionAttribute)
-                     .Each(p =>
-                     {
-                         var keys = (p as PermissionAttribute).PermissionKeys;
-                         primssions.Concat(keys);
-                     });
+                    return x.EndpointMetadata.Where(p => p is PermissionAttribute)
+                      .SelectMany(p =>
+                      {
+                          return (p as PermissionAttribute).PermissionKeys;
+                      });
                 });
                 return primssions.Distinct().ToList();
             });

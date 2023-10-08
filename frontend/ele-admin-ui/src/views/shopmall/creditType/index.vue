@@ -55,8 +55,8 @@ const {
               color: 'var(--el-text-color-primary)'
             }"
             @selection-change="handleSelectionChange"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @page-size-change="handleSizeChange"
+            @page-current-change="handleCurrentChange"
           >
             <template #operation="{ row }">
               <el-popconfirm title="是否确认删除?" @confirm="handleDelete(row)">

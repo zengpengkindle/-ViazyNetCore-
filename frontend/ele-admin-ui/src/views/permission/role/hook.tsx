@@ -157,10 +157,12 @@ export function useRole() {
 
   function handleSizeChange(val: number) {
     console.log(`${val} items per page`);
+    onSearch();
   }
 
   function handleCurrentChange(val: number) {
     console.log(`current page: ${val}`);
+    onSearch();
   }
 
   function handleSelectionChange(val) {
@@ -171,7 +173,7 @@ export function useRole() {
     loading.value = true;
     const data = await RoleApi.apiRoleFindRoles({
       ...form,
-      page: pagination.pageCount,
+      page: pagination.currentPage,
       limit: pagination.pageSize
     });
     dataList.value = data.rows;

@@ -308,10 +308,12 @@ export function useTrade() {
 
   function handleSizeChange(val: number) {
     console.log(`${val} items per page`);
+    onSearch();
   }
 
   function handleCurrentChange(val: number) {
     console.log(`current page: ${val}`);
+    onSearch();
   }
 
   function handleSelectionChange(val) {

@@ -18,7 +18,7 @@ namespace ViazyNetCore.DependencyInjection
                 return;
             }
 
-            var dependencyAttribute = GetDependencyAttributeOrNull(type);
+            var dependencyAttribute = GetInjectionAttributeOrNull(type);
             var lifeTime = GetLifeTimeOrNull(type, dependencyAttribute);
 
             if (lifeTime == null)

@@ -59,12 +59,12 @@ namespace ViazyNetCore.DependencyInjection
             //}
         }
 
-        protected virtual DependencyAttribute GetDependencyAttributeOrNull(Type type)
+        protected virtual InjectionAttribute GetInjectionAttributeOrNull(Type type)
         {
-            return type.GetCustomAttribute<DependencyAttribute>(true);
+            return type.GetCustomAttribute<InjectionAttribute>(true);
         }
 
-        protected virtual ServiceLifetime? GetLifeTimeOrNull(Type type, DependencyAttribute dependencyAttribute)
+        protected virtual ServiceLifetime? GetLifeTimeOrNull(Type type, InjectionAttribute dependencyAttribute)
         {
             return dependencyAttribute?.Lifetime ?? GetServiceLifetimeFromClassHierarchy(type) ?? GetDefaultLifeTimeOrNull(type);
         }
@@ -76,20 +76,6 @@ namespace ViazyNetCore.DependencyInjection
             {
                 return iattr.Lifetime;
             }
-            //if (typeof(ITransientDependency).GetTypeInfo().IsAssignableFrom(type))
-            //{
-            //    return ServiceLifetime.Transient;
-            //}
-
-            //if (typeof(ISingletonDependency).GetTypeInfo().IsAssignableFrom(type))
-            //{
-            //    return ServiceLifetime.Singleton;
-            //}
-
-            //if (typeof(IScopedDependency).GetTypeInfo().IsAssignableFrom(type))
-            //{
-            //    return ServiceLifetime.Scoped;
-            //}
 
             return null;
         }
