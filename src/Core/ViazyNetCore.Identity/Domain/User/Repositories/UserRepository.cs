@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
 using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.Identity.Domain;
 
 namespace ViazyNetCore.Modules
 {
@@ -229,9 +230,12 @@ namespace ViazyNetCore.Modules
             throw new NotImplementedException();
         }
 
-        public Task<int> ModifyAvatarAsync(long id, string? avatar)
+        public Task<int> ModifyAvatarAsync(long id, UserUpdateDto updateDto)
         {
-            return this.UpdateDiy.Set(p => p.Avatar == avatar)
+            return this.UpdateDiy
+                .Set(p => p.Avatar == updateDto.Avatar)
+                .Set(p => p.Nickname == updateDto.NickName)
+                .Set(p => p.ExtraData == updateDto.ExtraData)
                   .Where(p => p.Id == id)
                   .ExecuteAffrowsAsync();
         }

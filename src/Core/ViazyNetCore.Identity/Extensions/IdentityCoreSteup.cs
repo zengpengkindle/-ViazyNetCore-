@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using ViazyNetCore.Authorization.Repositories;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Identity.Domain;
+using ViazyNetCore.Identity.Domain.Models;
 using ViazyNetCore.Identity.Domain.User.Repositories;
 using ViazyNetCore.Identity.Validator;
 using ViazyNetCore.Modules;
@@ -21,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IOrgService, OrgService>();
         }
 
-        public static IdentityBuilder AddIdentity(this IServiceCollection services, Action<IdentityOptions> setupAction)
+        public static IdentityBuilder AddIdentity(this IServiceCollection services)
         {
             //services.AddIdentityService();
 
@@ -35,15 +36,21 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IdentityUserStore>();
             services.TryAddScoped(typeof(IUserStore<IdentityUser>), provider => provider.GetService(typeof(IdentityUserStore))!);
 
+            services.TryAddScoped<RoleStore>();
+            services.TryAddScoped(typeof(IRoleStore<BmsRole>), provider => provider.GetService(typeof(RoleStore))!);
+
             services.Configure<ViazyIdentityOptions>(options =>
             {
                 //options.ExternalLoginProviders.Add<ViazyExternalLoginProvider>(ViazyExternalLoginProvider.Name);
             });
 
             return services
-                .AddIdentityCore<IdentityUser>(setupAction)
+                .AddIdentityCore<IdentityUser>()
+                .AddRoles<BmsRole>()
                 .AddSignInManager<SignInManager>()
                 .AddUserManager<IdentityUserManager>()
+                .AddRoleManager<RoleManager>()
+                .AddDefaultTokenProviders()
                 ;
         }
 
@@ -51,9 +58,9 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher>();
 
-            builder.Services.AddScoped<ViazyNetCore.Identity.Validator.SecurityStampValidator>();
+            builder.Services.AddScoped<ViazySecurityStampValidator>();
             builder.Services.AddScoped(typeof(SecurityStampValidator<IdentityUser>)
-                , provider => provider.GetService(typeof(ViazyNetCore.Identity.Validator.SecurityStampValidator))!);
+                , provider => provider.GetService(typeof(ViazySecurityStampValidator))!);
 
             return builder.AddPasswordValidator<PasswordValidator>();
         }

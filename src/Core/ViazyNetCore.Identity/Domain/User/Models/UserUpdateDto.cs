@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace ViazyNetCore.Identity.Domain
 {
-    public class UserAvatarDto
+    public class UserUpdateDto
     {
         public string? Avatar { get; set; }
+        public string NickName { get; set; }
+
+        public string? ExtraData { get; set; }
     }
 }

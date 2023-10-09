@@ -25,5 +25,6 @@ namespace ViazyNetCore.Authorization.Modules
         public List<string> Permissions { get; internal set; }
 
         public long TenantId { get; set; }
+        public string Avatar { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace ViazyNetCore.Authrozation
         [HttpPost]
         public Task<PageData<RoleQueryDto>> FindRoles(RolePageQueryDto args)
         {
-            return this._roleService.FindRoles(args);
+            return this._roleService.FindRoles(args, args);
         }
 
         [HttpPost]

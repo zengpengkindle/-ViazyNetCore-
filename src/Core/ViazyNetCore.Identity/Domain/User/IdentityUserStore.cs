@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Authorization.Repositories;
+using ViazyNetCore.Caching;
 using ViazyNetCore.Data.FreeSql.Extensions;
 using ViazyNetCore.Identity.Domain.User.Repositories;
 using ViazyNetCore.Modules;
@@ -19,18 +20,24 @@ namespace ViazyNetCore.Identity.Domain
         private readonly IUserRepository _userRepository;
         private readonly IdentityUserClaimRepository _userClaimRepository;
         private readonly IUserService _userService;
+        private readonly ICacheService _cacheService;
+        private readonly RoleService _roleService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMapper _mapper;
 
         public IdentityUserStore(IUserRepository userRepository
             , IdentityUserClaimRepository userClaimRepository
             , IUserService userService
+            , ICacheService cacheService
+            , RoleService roleService
             , IServiceProvider serviceProvider
             , IMapper mapper)
         {
             this._userRepository = userRepository;
             this._userClaimRepository = userClaimRepository;
             this._userService = userService;
+            this._cacheService = cacheService;
+            this._roleService = roleService;
             this._serviceProvider = serviceProvider;
             this._mapper = mapper;
         }
@@ -64,14 +71,15 @@ namespace ViazyNetCore.Identity.Domain
         public async Task<IdentityUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             var user = await this._userService.GetUser(userId.ParseTo<long>());
-            return this._mapper.Map<IdentityUser>(user);
+            var result = this._mapper.Map<IdentityUser>(user);
+            return result;
         }
-
 
         public async Task<IdentityUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
             var user = await this._userService.GetUserByUserName(normalizedUserName);
-            return this._mapper.Map<IdentityUser>(user);
+            var result = this._mapper.Map<IdentityUser>(user);
+            return result;
         }
 
         public Task<string> GetNormalizedUserNameAsync(IdentityUser user, CancellationToken cancellationToken)

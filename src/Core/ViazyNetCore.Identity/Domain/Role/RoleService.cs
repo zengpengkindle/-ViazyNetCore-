@@ -84,13 +84,9 @@ namespace ViazyNetCore.Authorization.Modules
             return this._roleRepository.GetAsync(roleId);
         }
 
-        public Task<PageData<RoleQueryDto>> FindRoles(RolePageQueryDto args)
+        public Task<PageData<RoleQueryDto>> FindRoles(RolePageQueryDto args, Pagination pagination)
         {
-            return this._roleRepository.FindAllAsync(args.NameLike, ComStatus.Enabled, new Pagination
-            {
-                Limit = args.Limit,
-                Page = args.Page,
-            });
+            return this._roleRepository.FindAllAsync(args.NameLike, ComStatus.Enabled, pagination);
         }
 
         public async Task<List<RoleNameDto>> GetAllAsync()
@@ -109,6 +105,11 @@ namespace ViazyNetCore.Authorization.Modules
                 .SetSource(item)
                 .UpdateColumns(p => new { p.Name, p.UpdateUserId, p.UpdateUserName, p.UpdateTime, p.Status, p.ExtraData })
                 .ExecuteAffrowsAsync();
+        }
+
+        public Task<BmsRole> GetByNameAsync(string roleName)
+        {
+            return this._roleRepository.Where(p => p.Name == roleName).FirstAsync();
         }
     }
 }

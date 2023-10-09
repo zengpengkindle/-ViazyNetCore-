@@ -135,7 +135,7 @@ namespace ViazyNetCore.Modules
         Task<IUser<long>> GetUser(long userId);
         Task<IUser<long>> GetUserByUserName(string normalizedUserName);
         Task<IUser<long>> GetUserByCache(long userId);
-        Task<bool> ModifyAvatarAsync(long id, UserAvatarDto args);
+        Task<bool> UpdateUserInfoAsync(long id, UserUpdateDto args);
     }
 
 }

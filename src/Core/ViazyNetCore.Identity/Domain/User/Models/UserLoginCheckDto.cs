@@ -16,6 +16,6 @@ namespace ViazyNetCore.Dtos
         /// <summary>
         /// 设置或获取一个值，表示此账号起始禁用时间。
         /// </summary>
-        public DateTime LastForbiddenTime { get; set; }
+        public DateTime? LastForbiddenTime { get; set; }
     }
 }

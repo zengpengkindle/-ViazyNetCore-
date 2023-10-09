@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
 using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.Identity.Domain;
 
 namespace ViazyNetCore.Modules
 {
@@ -112,7 +113,7 @@ namespace ViazyNetCore.Modules
         Task<IUser> CreateUser(BmsUser user_object, bool ignoreDisallowedUsername);
         Task<long> GetUserIdByUserName(string takeOverUserName);
         Task<bool> ResetPassword(BmsUser user, string storedPassword);
-        Task<int> ModifyAvatarAsync(long id, string? avatar);
+        Task<int> ModifyAvatarAsync(long id, UserUpdateDto updateDto);
         Task EnsureCollectionLoadedAsync<TProperty>(BmsUser user
             , Expression<Func<BmsUser, TProperty>> propertyExpression
             , CancellationToken cancellationToken) where TProperty : class;

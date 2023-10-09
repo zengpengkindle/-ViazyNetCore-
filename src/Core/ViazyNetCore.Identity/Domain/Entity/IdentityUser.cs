@@ -13,7 +13,8 @@ namespace ViazyNetCore.Identity.Domain
     public class IdentityUser : BmsUser
     {
         public bool TwoFactorEnabled { get; set; }
-        public string SecurityStamp { get; internal set; }
+
+        public ICollection<long> Roles { get; set; }
 
         public virtual ICollection<IdentityUserToken> Tokens { get; protected set; } = new List<IdentityUserToken>();
 
@@ -29,11 +30,11 @@ namespace ViazyNetCore.Identity.Domain
                 token.Value = value;
             }
         }
+
         public virtual IdentityUserToken? FindToken(string loginProvider, string name)
         {
             return this.Tokens.FirstOrDefault(t => t.LoginProvider == loginProvider && t.Name == name);
         }
-
 
         public virtual void AddClaims(IEnumerable<Claim> claims)
         {

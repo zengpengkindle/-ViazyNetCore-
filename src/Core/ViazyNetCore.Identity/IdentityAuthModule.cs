@@ -10,24 +10,16 @@ using ViazyNetCore.AutoMapper;
 
 namespace ViazyNetCore.Identity
 {
-    [DependsOn(typeof(AutoMapperModule))]
+    [DependsOn(typeof(IdentityModule))]
     public class IdentityAuthModule : InjectionModule
     {
         public IdentityAuthModule()
         {
         }
+
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            Configure<AutoMapperOptions>(options => options.AddMaps<IdentityModule>());
-
-            context.Services
-               .AddAuthentication(o =>
-               {
-                   o.DefaultScheme = IdentityConstants.ApplicationScheme;
-                   o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-               });
-
-            context.Services.AddIdentity(options =>
+            Configure<IdentityOptions>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = false;
 
@@ -44,8 +36,17 @@ namespace ViazyNetCore.Identity
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
-            })
-            .AddPasswordValidator(); ;
+            });
+            context.Services
+               .AddAuthentication(o =>
+               {
+                   o.DefaultScheme = IdentityConstants.ApplicationScheme;
+                   o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+               });
+
+            context.Services.AddIdentity()
+            .AddPasswordValidator()
+            .AddErrorDescriber<CustomIdentityErrorDescriber>();
         }
     }
 }

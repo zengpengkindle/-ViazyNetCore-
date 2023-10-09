@@ -11,9 +11,9 @@ using Microsoft.Extensions.Options;
 
 namespace ViazyNetCore.Identity.Validator
 {
-    public class SecurityStampValidator : SecurityStampValidator<IdentityUser>
+    public class ViazySecurityStampValidator : SecurityStampValidator<IdentityUser>
     {
-        public SecurityStampValidator(IOptions<SecurityStampValidatorOptions> options
+        public ViazySecurityStampValidator(IOptions<SecurityStampValidatorOptions> options
             , SignInManager<IdentityUser> signInManager
             , ISystemClock clock
             , ILoggerFactory logger) : base(options, signInManager, clock, logger)

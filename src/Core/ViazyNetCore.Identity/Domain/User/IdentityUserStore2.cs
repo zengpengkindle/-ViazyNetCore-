@@ -240,7 +240,7 @@ namespace ViazyNetCore.Identity.Domain
 
             Check.NotNull(user, nameof(user));
 
-            return Task.FromResult(user.SecurityStamp);
+            return Task.FromResult(user.PasswordSalt.ToString("N"));
         }
 
         public Task<string> GetTokenAsync(IdentityUser user, string loginProvider, string name, CancellationToken cancellationToken)

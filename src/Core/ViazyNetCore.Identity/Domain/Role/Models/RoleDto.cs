@@ -1,13 +1,14 @@
-using FreeSql.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ViazyNetCore.Authorization
+namespace ViazyNetCore.Identity.Domain.Models
 {
-    /// <summary>
-    /// 表示一个角色。
-    /// </summary>
-    [Index("uk_BmsRole_Name", "Name Asc,TenantId Asc", IsUnique = true)]
-    public partial class BmsRole : EntityUpdate, ITenant
+    public class RoleDto
     {
+        public long Id { get; set; }
         /// <summary>
         /// 设置或获取一个值，表示名称。
         /// </summary>

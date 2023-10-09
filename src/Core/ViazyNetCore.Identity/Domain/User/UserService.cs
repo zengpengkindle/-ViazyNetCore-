@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using ViazyNetCore.Authorization.Repositories;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Identity.Domain;
+using ViazyNetCore.Data.FreeSql.Extensions;
 
 namespace ViazyNetCore.Modules
 {
@@ -129,6 +130,18 @@ namespace ViazyNetCore.Modules
             return _userRepository.Where(p => p.Id == id).WithTempQuery(p => p.Username).FirstAsync();
         }
 
+        public async Task<BmsIdentity> GetUserIdentity(long id)
+        {
+            var user = await this.GetUser(id) as BmsUser;
+            return new BmsIdentity
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Nickname = user.Nickname,
+                Avatar = user.Avatar
+            };
+        }
+
         /// <summary>
         /// 查询所有模型。
         /// </summary>
@@ -170,6 +183,7 @@ namespace ViazyNetCore.Modules
                         Id = user.Id,
                         Username = user.Username,
                         Nickname = user.Nickname,
+                        Avatar = user.Avatar,
                         //RoleId = user.RoleId,
                         //RoleName = user.RoleName ?? "超级管理员",
                         BindGoogleAuth = !enableGoogleToken || user.GoogleKey.IsNotNull(),
@@ -248,7 +262,7 @@ namespace ViazyNetCore.Modules
             }
             else
             {
-                TimeSpan minuteSpan = new TimeSpan(DateTime.Now.Ticks - result.LastForbiddenTime.Ticks);
+                TimeSpan minuteSpan = new TimeSpan(DateTime.Now.Ticks - result.LastForbiddenTime.Value.Ticks);
                 var PastMinutes = minuteSpan.TotalMinutes;
                 //大于规定时间，直接清除缓存，此时是允许继续登录操作的
                 if (PastMinutes >= LOGIN_TIME)
@@ -280,18 +294,6 @@ namespace ViazyNetCore.Modules
                         if (result.ErrorCount == 5)
                         {
                             var objectId = userId?.ToString() ?? username;
-                            //this._eventBus.Publish(new OperationLogEventData()
-                            //{
-                            //    Data = new OperationLog(ip, objectId, username, OperatorTypeEnum.Bms)
-                            //    {
-                            //        ObjectName = "用户登录",
-                            //        ObjectId = objectId,
-                            //        OperationType = "验证码错误次数过多",
-                            //        Description = $"用户账号:{username}",
-                            //        LogLevel = LogRecordLevel.Error
-                            //    },
-                            //    EventTime = DateTime.Now
-                            //});
                         }
                         this._cacheService.Set(cacheKey, result, CachingExpirationType.RelativelyStable);
 
@@ -394,9 +396,14 @@ namespace ViazyNetCore.Modules
             return user;
         }
 
-        public async Task<bool> ModifyAvatarAsync(long id, UserAvatarDto args)
+        public async Task<bool> UpdateUserInfoAsync(long userId, UserUpdateDto args)
         {
-            return (await _userRepository.ModifyAvatarAsync(id, args.Avatar)) > 1;
+            var result = await _userRepository.ModifyAvatarAsync(userId, args);
+
+            var cacheKey = this.GetCacheKey_GetUser(userId);
+            this._cacheService.Remove(cacheKey);
+
+            return result > 1;
         }
     }
 }
