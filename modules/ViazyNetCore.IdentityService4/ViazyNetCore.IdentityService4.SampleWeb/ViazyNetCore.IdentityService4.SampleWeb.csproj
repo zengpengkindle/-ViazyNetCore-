@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ViazyNetCore.AspNetCore" Version="$(ViazyNetCoreVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ViazyNetCore.IdentityService4.FreeSql\ViazyNetCore.IdentityService4.FreeSql.csproj" />
   </ItemGroup>
 
