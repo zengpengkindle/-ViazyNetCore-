@@ -86,8 +86,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure(option);
             services.Configure(name, option);
 
-            services.AddOptions<OSSOptions>();
-
             services.TryAddSingleton<IObjectStorageService, MinioOSSService>();
             services.TryAddSingleton<IMinioOSSService, MinioOSSService>();
 

@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ViazyNetCore.Authorization.Modules;
 using ViazyNetCore.Filter;
 using ViazyNetCore.Identity;
+using ViazyNetCore.Identity.Domain;
 using ViazyNetCore.Modules;
 using ViazyNetCore.Swagger;
 
@@ -20,6 +23,13 @@ namespace ViazyNetCore.Authorization
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            //context.Services.TryAddScoped<PhoneNumberTokenProvider<Identity.Domain.IdentityUser>>();
+            //Configure<IdentityOptions>(options =>
+            //{
+            //    options.Tokens.ProviderMap.AddIfNotContains(new KeyValuePair<string, TokenProviderDescriptor>(IdentityUserManager.ResetPasswordTokenPurpose,
+            //        new TokenProviderDescriptor(typeof(PhoneNumberTokenProvider<Identity.Domain.IdentityUser>))));
+            //});
+
             Configure<AutoMapperOptions>(options => options.AddMaps<AuthorizationModule>());
             Configure<MvcOptions>(options =>
             {

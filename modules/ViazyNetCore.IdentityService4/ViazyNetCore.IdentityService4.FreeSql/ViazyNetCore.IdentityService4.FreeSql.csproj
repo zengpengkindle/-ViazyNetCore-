@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityServer4" Version="4.1.2" />
+    <PackageReference Include="ViazyNetCore.Data.FreeSql" Version="$(ViazyNetCoreVersion)" />
+    <PackageReference Include="ViazyNetCore.Ddd" Version="$(ViazyNetCoreVersion)" />
+    <PackageReference Include="ViazyNetCore.Identity" Version="$(ViazyNetCoreVersion)" />
+  </ItemGroup>
+
+</Project>

@@ -177,7 +177,9 @@ namespace ViazyNetCore.Modules
                 ExtraData = p.ExtraData,
                 Nickname = p.Nickname,
                 Status = p.Status,
-                Username = p.Username
+                Username = p.Username,
+                PhoneNumber = p.PhoneNumber,
+                GoogleKey = p.GoogleKey,
             }).FirstAsync();
         }
 
@@ -194,6 +196,7 @@ namespace ViazyNetCore.Modules
                          {
                              Id = u.Id,
                              Username = u.Username,
+                             PhoneNumber = u.PhoneNumber,
                              Nickname = u.Nickname,
                              Status = u.Status,
                              CreateTime = u.CreateTime,
@@ -225,17 +228,19 @@ namespace ViazyNetCore.Modules
             return this.Select.Where(p => p.Username == username).WithTempQuery(p => p.Id).FirstAsync();
         }
 
-        public Task<bool> ResetPassword(BmsUser user, string storedPassword)
+        public Task<int> UpdateUserInfoAsync(long id, UserUpdateDto updateDto)
         {
-            throw new NotImplementedException();
+            return this.UpdateDiy
+                .Set(p => p.Nickname == updateDto.NickName)
+                .Set(p => p.ExtraData == updateDto.ExtraData)
+                  .Where(p => p.Id == id)
+                  .ExecuteAffrowsAsync();
         }
 
-        public Task<int> ModifyAvatarAsync(long id, UserUpdateDto updateDto)
+        public Task<int> UpdateUserAvatarAsync(long id, UserAvatarDto updateDto)
         {
             return this.UpdateDiy
                 .Set(p => p.Avatar == updateDto.Avatar)
-                .Set(p => p.Nickname == updateDto.NickName)
-                .Set(p => p.ExtraData == updateDto.ExtraData)
                   .Where(p => p.Id == id)
                   .ExecuteAffrowsAsync();
         }

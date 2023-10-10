@@ -110,13 +110,16 @@ namespace ViazyNetCore.Modules
 
         #region 判断
         Task ActivateUsers(IEnumerable<long> userIds, ComStatus status);
-        Task<IUser> CreateUser(BmsUser user_object, bool ignoreDisallowedUsername);
+
         Task<long> GetUserIdByUserName(string takeOverUserName);
-        Task<bool> ResetPassword(BmsUser user, string storedPassword);
-        Task<int> ModifyAvatarAsync(long id, UserUpdateDto updateDto);
+
+        Task<int> UpdateUserInfoAsync(long id, UserUpdateDto updateDto);
+
         Task EnsureCollectionLoadedAsync<TProperty>(BmsUser user
             , Expression<Func<BmsUser, TProperty>> propertyExpression
             , CancellationToken cancellationToken) where TProperty : class;
+
+        Task<int> UpdateUserAvatarAsync(long id, UserAvatarDto updateDto);
 
         #endregion
 

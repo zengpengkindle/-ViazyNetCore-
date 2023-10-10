@@ -17,6 +17,8 @@ namespace ViazyNetCore.Authorization.Models
         /// </summary>
         public string Username { get; set; }
 
+        public string PhoneNumber { get; set; }
+
         /// <summary>
         /// 设置或获取一个值，表示密码。
         /// </summary>
@@ -43,7 +45,7 @@ namespace ViazyNetCore.Authorization.Models
         /// 是否被管制
         /// </summary>
         [Column(IsIgnore = true)]
-        public bool IsModerated => false;
+        public bool IsModerated => Status != ComStatus.Enabled;
 
         public string GoogleKey { get; internal set; }
 

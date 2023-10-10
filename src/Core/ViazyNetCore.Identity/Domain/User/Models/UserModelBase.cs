@@ -18,6 +18,8 @@ namespace ViazyNetCore.Dtos
         [MaxLength(50), Required]
         public string Username { get; set; }
 
+        public string PhoneNumber { get; set; }
+
         /// <summary>
         /// 设置或获取一个值，表示用户昵称。
         /// </summary>

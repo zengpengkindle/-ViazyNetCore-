@@ -398,7 +398,17 @@ namespace ViazyNetCore.Modules
 
         public async Task<bool> UpdateUserInfoAsync(long userId, UserUpdateDto args)
         {
-            var result = await _userRepository.ModifyAvatarAsync(userId, args);
+            var result = await _userRepository.UpdateUserInfoAsync(userId, args);
+
+            var cacheKey = this.GetCacheKey_GetUser(userId);
+            this._cacheService.Remove(cacheKey);
+
+            return result > 1;
+        }
+
+        public async Task<bool> UpdateAvatarAsync(long userId, UserAvatarDto args)
+        {
+            var result = await _userRepository.UpdateUserAvatarAsync(userId, args);
 
             var cacheKey = this.GetCacheKey_GetUser(userId);
             this._cacheService.Remove(cacheKey);

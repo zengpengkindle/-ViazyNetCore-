@@ -28,12 +28,12 @@ namespace Newtonsoft.Json
             serializerSettings.ContractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new CamelCaseNamingStrategy(),
-            }; ;
+            };
             serializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
             //serializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            serializerSettings.Converters = new List<JsonConverter>() { new LongJsonConverter(),new NullableEnumConverter() };
+            serializerSettings.Converters = new List<JsonConverter>() { new LongJsonConverter(), new NullableEnumConverter(), new LocalDateTimeConverter() };
             serializerSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
-            serializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+            //serializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             return serializerSettings;
         }
     }

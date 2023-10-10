@@ -12,7 +12,6 @@ namespace ViazyNetCore.Identity.Domain
         public Task<string> GetPasswordHashAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
             Check.NotNull(user, nameof(user));
 
             return Task.FromResult(user.Password);
@@ -21,7 +20,6 @@ namespace ViazyNetCore.Identity.Domain
         public Task<bool> HasPasswordAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
             Check.NotNull(user, nameof(user));
 
             return Task.FromResult(user.Password != null);
@@ -30,7 +28,6 @@ namespace ViazyNetCore.Identity.Domain
         public Task SetPasswordHashAsync(IdentityUser user, string passwordHash, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
             Check.NotNull(user, nameof(user));
             //user.PasswordSalt=Guid.NewGuid();
             user.Password = passwordHash;

@@ -52,10 +52,6 @@ namespace ViazyNetCore.Authorization
                 OperatorType = OperatorType.Bms,
                 OperatorIP = ip,
             };
-            if (args.Mark.IsNotNull() && args.Mark != "tools")
-            {
-                throw new ApiException("无效登录方式!");
-            }
             try
             {
                 using (GA.Lock("UserLoginArgs" + args.Username))
@@ -155,12 +151,17 @@ namespace ViazyNetCore.Authorization
 
             try
             {
-                var res = await this._userService.ModifyPasswordAsync(authUser.Id, args);
-                if (res)
+                var user = await this._userManager.FindByIdAsync(authUser!.Id.ToString());
+                var res = await this._userManager.ChangePasswordAsync(user, args.OldPassword, args.NewPassword);
+                if (res.Succeeded)
                 {
                     this._eventBus.Publish(new OperationLogEventData(operationLog));
+                    return true;
                 }
-                return res;
+                else
+                {
+                    throw new ApiException(res.Errors?.First().Description ?? "修改失败");
+                }
             }
             finally
             {
