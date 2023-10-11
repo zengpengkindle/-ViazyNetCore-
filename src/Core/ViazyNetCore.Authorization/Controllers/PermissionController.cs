@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ViazyNetCore.Auth.Authorization.ViewModels;
 using ViazyNetCore.Authorization.Modules;
-using ViazyNetCore.Authorization.ViewModels;
 
 namespace ViazyNetCore.Authrozation
 {

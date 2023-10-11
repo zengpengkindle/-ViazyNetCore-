@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ViazyNetCore.Auth;
-using ViazyNetCore.Authorization.Dtos;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Modules;
 

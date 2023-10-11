@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ViazyNetCore.Caching\ViazyNetCore.Caching.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.Data.FreeSql\ViazyNetCore.Data.FreeSql.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.Ddd\ViazyNetCore.Ddd.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.Identity\ViazyNetCore.Identity.csproj" />
+  </ItemGroup>
+
+</Project>

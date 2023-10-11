@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ViazyNetCore.Authorization.Modules;
+using ViazyNetCore.CmsKit.Domain;
 using ViazyNetCore.Filter;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Identity.Domain;
@@ -14,7 +15,7 @@ namespace ViazyNetCore.Authorization
 {
     [DependsOn(typeof(EventBusModule),
         typeof(ApiManagerModule),
-        typeof(IdentityAuthModule))]
+        typeof(CmsKitDomainModules))]
     public class AuthorizationModule : InjectionModule
     {
         public AuthorizationModule()

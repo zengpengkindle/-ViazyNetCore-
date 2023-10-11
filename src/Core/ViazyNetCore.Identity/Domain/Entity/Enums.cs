@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.Authorization
+namespace ViazyNetCore
 {
     /// <summary>
     /// 权限许可类型

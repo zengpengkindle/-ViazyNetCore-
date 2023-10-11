@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ViazyNetCore.Authorization.Modules;
-using ViazyNetCore.Authorization.ViewModels;
 
 namespace ViazyNetCore.Authorization
 {

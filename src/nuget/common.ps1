@@ -81,6 +81,7 @@ $projects = (
 	"Core/ViazyNetCore.Data.FreeSql",
 	"Core/ViazyNetCore.Identity",
 	"Core/ViazyNetCore.Ddd",
+	"Core/ViazyNetCore.CmsKit.Domain",
 	# "Core/ViazyNetCore.OpenIddict",
 	
 	#Infrastructure
