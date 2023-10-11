@@ -84,15 +84,15 @@ app.UseStaticFiles();
 app.UseStoreProvider();
 app.UseRouting();
 // Configure the HTTP response wrapper.
-app.UseApiResponseWrapper(option =>
-{
-    option.IsApiOnly = false;
-    option.EnableResponseLogging = true;
-    option.EnableExceptionLogging = true;
-    option.BypassHTMLValidation = true;
+//app.UseApiResponseWrapper(option =>
+//{
+//    option.IsApiOnly = false;
+//    option.EnableResponseLogging = true;
+//    option.EnableExceptionLogging = true;
+//    option.BypassHTMLValidation = true;
 
-    option.IsDebug = app.Environment.IsDevelopment();
-});
+//    option.IsDebug = app.Environment.IsDevelopment();
+//});
 
 app.UseAuthentication();
 app.UseAuthorization();

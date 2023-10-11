@@ -12,16 +12,6 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IdentityCoreSteup
     {
-        public static void AddIdentityService(this IServiceCollection services)
-        {
-            services.TryAddScoped<IdentityUserClaimRepository>();
-            services.TryAddScoped<IUserRepository, UserRepository>();
-            services.TryAddScoped<IUserService, UserService>();
-            services.TryAddScoped<IOrgRepository, OrgRepository>();
-            services.TryAddScoped<IUserOrgRepository, UserOrgRepository>();
-            services.TryAddScoped<IOrgService, OrgService>();
-        }
-
         public static IdentityBuilder AddIdentity(this IServiceCollection services)
         {
             //services.AddIdentityService();

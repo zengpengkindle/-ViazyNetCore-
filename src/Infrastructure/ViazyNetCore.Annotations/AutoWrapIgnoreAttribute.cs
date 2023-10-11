@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ViazyNetCore.Formatter.Response.Filters
+namespace ViazyNetCore
 {
     public class AutoWrapIgnoreAttribute : Attribute
     {

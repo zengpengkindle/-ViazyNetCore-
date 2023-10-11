@@ -9,15 +9,18 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using ViazyNetCore.AspNetCore.Extensions;
 using ViazyNetCore.DynamicControllers;
 using ViazyNetCore.Modules;
 using ViazyNetCore.Mvc;
 
 namespace ViazyNetCore.AspNetCore
 {
-    [DependsOn(typeof(AspNetCoreModule))]
+    [DependsOn(typeof(AspNetCoreModule)
+        , typeof(SerializerModule))]
     public class AspNetCoreMvcModule : InjectionModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
@@ -27,18 +30,21 @@ namespace ViazyNetCore.AspNetCore
             AddAspNetServices(context.Services);
 
             var appOptions = context.Services.ExecutePreConfiguredActions<AppOptions>();
+            Configure<AppOptions>(options => options = appOptions);
 
-            void mvcConfigure(MvcOptions options)
-            {
-                options.Conventions.Add(new DynamicControllerGroupConvention());
-            }
+            context.Services.AddOptions<MvcOptions>()
+                .Configure<IServiceProvider>((mvcOptions, serviceProvider) =>
+                {
+                    mvcOptions.Conventions.Add(new DynamicControllerGroupConvention());
+                    mvcOptions.AddMvcDefault(context.Services);
+                });
 
             var mvcBuilder = appOptions.AppType switch
             {
-                AppType.Controllers => services.AddControllers(mvcConfigure),
-                AppType.ControllersWithViews => services.AddControllersWithViews(mvcConfigure),
-                AppType.MVC => services.AddMvc(mvcConfigure),
-                _ => services.AddControllers(mvcConfigure)
+                AppType.Controllers => services.AddControllers(),
+                AppType.ControllersWithViews => services.AddControllersWithViews(),
+                AppType.MVC => services.AddMvc(),
+                _ => services.AddControllers()
             };
 
             //Add feature providers

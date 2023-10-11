@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using ViazyNetCore.AutoMapper;
 
 namespace ViazyNetCore.Identity
 {
@@ -37,12 +31,15 @@ namespace ViazyNetCore.Identity
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
             });
+
+            Configure<AuthenticationOptions>(o =>
+                {
+                    o.DefaultScheme = o.DefaultScheme ?? IdentityConstants.ApplicationScheme;
+                    o.DefaultSignInScheme = o.DefaultSignInScheme ?? IdentityConstants.ExternalScheme;
+                });
+
             context.Services
-               .AddAuthentication(o =>
-               {
-                   o.DefaultScheme = IdentityConstants.ApplicationScheme;
-                   o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-               });
+               .AddAuthentication();
 
             context.Services.AddIdentity()
             .AddPasswordValidator()

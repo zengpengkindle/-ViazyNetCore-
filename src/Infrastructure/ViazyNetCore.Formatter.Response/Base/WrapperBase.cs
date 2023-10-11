@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using ViazyNetCore.Formatter.Response.Filters;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace ViazyNetCore.Formatter.Response

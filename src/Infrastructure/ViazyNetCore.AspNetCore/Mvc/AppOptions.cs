@@ -10,6 +10,7 @@ namespace ViazyNetCore
 {
     public class AppOptions
     {
+        public string ApplicationName { get; set; }
         public AppType AppType { get; set; } = AppType.Controllers;
         public string[] CorUrls { get; set; }
         public bool Tenant { get; set; } = false;

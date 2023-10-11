@@ -18,7 +18,7 @@ namespace ViazyNetCore.Serializer
         /// <returns>序列化之后的结果。</returns>
         public string Serialize(object instance)
         {
-            return JsonConvert.SerializeObject(instance);
+            return JSON.Stringify(instance);
         }
 
         /// <summary>
