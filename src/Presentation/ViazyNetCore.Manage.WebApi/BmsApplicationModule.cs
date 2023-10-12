@@ -3,6 +3,7 @@ using System.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using ViazyNetCore.AspNetCore;
+using ViazyNetCore.AspNetCore.Core;
 using ViazyNetCore.AutoMapper;
 using ViazyNetCore.Identity;
 using ViazyNetCore.Manage.WebApi.Middlewares;

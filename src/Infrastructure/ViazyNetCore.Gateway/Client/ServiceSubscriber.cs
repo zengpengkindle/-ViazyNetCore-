@@ -21,7 +21,7 @@ namespace ViazyNetCore.Gateway.Client
 
         #region Equality members
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var model = obj as ServiceSubscriber;
             if (model == null)

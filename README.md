@@ -23,8 +23,8 @@
 - ViazyNetCore.MultiTenancy 多租户模块
 - ViazyNetCore.Dapr Dapr边车应用
 -
-- fontend/ele-admin-ui vue3 管理后台-前端UI
-- fontend/shopmall-uniapp 前端商城小程序 uni-app项目
+- frontend/ele-admin-ui vue3 管理后台-前端UI
+- frontend/shopmall-uniapp 前端商城小程序 uni-app项目
 ## 🚀 快速入门
 
 > 前端管理后台使用 Vite + Vue3 + TypeScript + ElementUI

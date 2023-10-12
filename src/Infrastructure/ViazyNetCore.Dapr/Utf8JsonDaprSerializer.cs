@@ -17,7 +17,7 @@ namespace ViazyNetCore.Dapr
         }
         public object Deserialize(byte[] value, Type type)
         {
-            return _jsonSerializer.Deserialize(Encoding.UTF8.GetString(value), type);
+            return _jsonSerializer.Deserialize(value, type);
         }
 
         public object Deserialize(string value, Type type)

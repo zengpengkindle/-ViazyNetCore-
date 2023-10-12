@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using ViazyNetCore.AspNetCore.Mvc.Wrap;
+using ViazyNetCore.AspNetCore.Core.Wrap;
 
 namespace ViazyNetCore.AspNetCore.Mvc.ExceptionFilters;
 

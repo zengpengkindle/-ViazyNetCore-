@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ViazyNetCore.AspNetCore.Mvc.Wrap;
+using ViazyNetCore.AspNetCore.Core.Wrap;
 
 namespace ViazyNetCore.AspNetCore.Mvc.Filterrs
 {

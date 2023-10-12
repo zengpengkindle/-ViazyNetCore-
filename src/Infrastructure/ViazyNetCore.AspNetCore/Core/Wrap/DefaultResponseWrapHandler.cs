@@ -10,9 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ViazyNetCore.AspNetCore.Mvc;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
-namespace ViazyNetCore.AspNetCore.Mvc.Wrap
+namespace ViazyNetCore.AspNetCore.Core.Wrap
 {
     [ExposeServices(typeof(IResponseWrapHandler))]
     [Injection(Lifetime = ServiceLifetime.Transient, TryRegister = true, ReplaceServices = true)]
@@ -122,7 +123,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
 
         #region Private Members
 
-        private string ConvertToSuccessJSONString(HttpContext context, object content, string httpMethod)
+        public virtual string ConvertToSuccessJSONString(HttpContext context, object content, string httpMethod)
         {
             var apiResponse = new ApiResponse()
             {
@@ -139,7 +140,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
             return _serializer.Serialize(apiResponse);
         }
 
-        private string ConvertToFailJSONString(HttpContext context, string message, string httpMethod, int errCodes = 10000)
+        public virtual string ConvertToFailJSONString(HttpContext context, string message, string httpMethod, int errCodes = 10000)
         {
             var apiResponse = new ApiResponse()
             {
@@ -157,7 +158,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
             return _serializer.Serialize(apiResponse);
         }
 
-        private string ConvertToUnauthorizedAccessExceptionString()
+        public virtual string ConvertToUnauthorizedAccessExceptionString()
         {
             var apiResponse = new ApiResponse()
             {
@@ -168,7 +169,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
             return _serializer.Serialize(apiResponse);
         }
 
-        private string ConvertToSingleSignOnExceptionString()
+        public virtual string ConvertToSingleSignOnExceptionString()
         {
             var apiResponse = new ApiResponse()
             {
@@ -179,7 +180,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
             return _serializer.Serialize(apiResponse);
         }
 
-        private string ConvertToPaymentRequiredExceptionString()
+        public virtual string ConvertToPaymentRequiredExceptionString()
         {
             var apiResponse = new ApiResponse()
             {
@@ -190,7 +191,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
             return _serializer.Serialize(apiResponse);
         }
 
-        private string ConvertToForbiddenExceptionString()
+        public virtual string ConvertToForbiddenExceptionString()
         {
             var apiResponse = new ApiResponse()
             {
@@ -202,7 +203,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
             return _serializer.Serialize(apiResponse);
         }
 
-        private string ConvertToNotAcceptableExceptionString()
+        public virtual string ConvertToNotAcceptableExceptionString()
         {
             var apiResponse = new ApiResponse()
             {
@@ -214,7 +215,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
             return _serializer.Serialize(apiResponse);
         }
 
-        private string ConvertToNotFoundExceptionString()
+        public virtual string ConvertToNotFoundExceptionString()
         {
             var apiResponse = new ApiResponse()
             {
@@ -226,7 +227,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
             return _serializer.Serialize(apiResponse);
         }
 
-        private string ConvertToExceptionJSONString(string exceptionMessage, string? stackTrace)
+        public virtual string ConvertToExceptionJSONString(string exceptionMessage, string? stackTrace)
         {
             var apiResponse = new ApiResponse()
             {
@@ -241,7 +242,7 @@ namespace ViazyNetCore.AspNetCore.Mvc.Wrap
 
         private string ConvertToJSONString(object rawJSON) => _serializer.Serialize(rawJSON);
 
-        private string GetUnsucessfulErrorMessage(int statusCode) =>
+        public virtual string GetUnsucessfulErrorMessage(int statusCode) =>
            statusCode switch
            {
                Status204NoContent => ResponseMessage.NotContent,

@@ -60,7 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             services.AddSingleton<TokenProvider>();
-            services.AddSingleton<CustomJwtBearerEvents>();
+            services.AddSingleton<CustomJwtBearerEvents>();  
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

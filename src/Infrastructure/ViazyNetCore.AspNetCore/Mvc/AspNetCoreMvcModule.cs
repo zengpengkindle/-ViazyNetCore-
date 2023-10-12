@@ -12,7 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using ViazyNetCore.AspNetCore.Core;
 using ViazyNetCore.AspNetCore.Extensions;
+using ViazyNetCore.AspNetCore.Middleware;
 using ViazyNetCore.DynamicControllers;
 using ViazyNetCore.Modules;
 using ViazyNetCore.Mvc;
@@ -82,6 +84,8 @@ namespace ViazyNetCore.AspNetCore
         public override void OnApplicationInitialization([NotNull] ApplicationInitializationContext context)
         {
             //AddApplicationParts(context);
+            var app = context.GetApplicationBuilder();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
         }
 
         private static void AddApplicationParts(ApplicationInitializationContext context)

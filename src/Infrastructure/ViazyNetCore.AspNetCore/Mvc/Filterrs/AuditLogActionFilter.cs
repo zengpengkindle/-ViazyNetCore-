@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ViazyNetCore.AspNetCore.Mvc.Auditing;
+using ViazyNetCore.AspNetCore.Core.Auditing;
 
 namespace ViazyNetCore.AspNetCore.Mvc.Filterrs
 {

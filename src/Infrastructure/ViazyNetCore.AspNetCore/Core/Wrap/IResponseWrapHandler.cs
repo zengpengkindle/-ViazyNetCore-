@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace ViazyNetCore.AspNetCore.Mvc.Wrap
+namespace ViazyNetCore.AspNetCore.Core.Wrap
 {
     public interface IResponseWrapHandler
     {

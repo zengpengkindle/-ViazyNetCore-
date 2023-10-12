@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 
-namespace ViazyNetCore.AspNetCore.Mvc.Auditing
+namespace ViazyNetCore.AspNetCore.Core.Auditing
 {
     [Injection(Lifetime = Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
     public class AuditingHelper : IAuditingHelper

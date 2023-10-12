@@ -1,4 +1,4 @@
-﻿namespace ViazyNetCore.AspNetCore.Mvc.Wrap
+﻿namespace ViazyNetCore.AspNetCore.Core.Wrap
 {
     internal class ResponseMessage
     {

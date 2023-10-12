@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.AspNetCore.Mvc.Auditing
+namespace ViazyNetCore.AspNetCore.Core.Auditing
 {
     public class AuditLogInfo
     {

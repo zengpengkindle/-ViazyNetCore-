@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViazyNetCore.AspNetCore.Mvc.Auditing
+namespace ViazyNetCore.AspNetCore.Core.Auditing
 {
     public interface IAuditingHelper
     {
