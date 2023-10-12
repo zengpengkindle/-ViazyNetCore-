@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ViazyNetCore.Data.FreeSql\ViazyNetCore.Data.FreeSql.csproj" />
+    <ProjectReference Include="..\ViazyNetCore.AspNetCore\ViazyNetCore.AspNetCore.csproj" />
     <ProjectReference Include="..\ViazyNetCore.DynamicControllers\ViazyNetCore.DynamicControllers.csproj" />
   </ItemGroup>
 

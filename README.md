@@ -116,3 +116,6 @@ app.UseSpa(spa =>
 
 ### 权限管理
 ![xmind](./docs/ViazyNetCore.Premission.png)
+
+### 提供个联系方式吧
+QQ 群: 107129971
