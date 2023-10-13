@@ -25,7 +25,7 @@ namespace ViazyNetCore.Authorization.Controllers
 
         [HttpPost]
         [Permission(PermissionIds.User)]
-        public Task<List<OrgListDto>> GetListAsync(string key)
+        public Task<List<OrgListDto>> GetListAsync(string? key)
         {
             return _orgService.GetListAsync(key);
         }

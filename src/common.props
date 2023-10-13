@@ -1,7 +1,7 @@
 ﻿<Project>
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
-		<Version>1.5.2-preview3.0</Version>
+		<Version>1.5.2-preview5.0</Version>
 		<NoWarn>$(NoWarn);CS1591;CS0436</NoWarn>
 		<Authors>Viazy</Authors>
 	</PropertyGroup>
