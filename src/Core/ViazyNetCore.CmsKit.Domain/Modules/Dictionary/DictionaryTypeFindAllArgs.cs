@@ -11,6 +11,6 @@ namespace ViazyNetCore.CmsKit
         /// <summary>
         /// 名称或
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

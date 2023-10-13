@@ -13,7 +13,7 @@
         /// <summary>
         /// 所属部门Ids
         /// </summary>
-        public List<long> OrgIds { get; set; }
+        public List<long>? OrgIds { get; set; }
 
         /// <summary>
         /// 主属部门Id
