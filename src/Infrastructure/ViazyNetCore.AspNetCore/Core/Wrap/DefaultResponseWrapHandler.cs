@@ -54,7 +54,7 @@ namespace ViazyNetCore.AspNetCore.Core.Wrap
                 else if (apiException.StatusCode == Status400BadRequest)
                 {
                     httpStatusCode = Status400BadRequest;
-                    jsonString = this.ConvertToFailJSONString(context, exception.Message, context.Request.Method);
+                    jsonString = this.ConvertToBadRequestExceptionString(exception.Message);
                 }
                 else
                 {
@@ -155,6 +155,23 @@ namespace ViazyNetCore.AspNetCore.Core.Wrap
                 }
             };
 
+            return _serializer.Serialize(apiResponse);
+        }
+
+        public virtual string ConvertToBadRequestExceptionString(object data)
+        {
+            var apiResponse = new ApiResponse()
+            {
+                StatusCode = Status400BadRequest,
+                Message = ResponseMessage.BadRequest,
+                Version = GetApiVersion(),
+                Data = new WrapperData()
+                {
+                    Success = false,
+                    Result = data,
+                    Message = ResponseMessage.BadRequest
+                }
+            };
             return _serializer.Serialize(apiResponse);
         }
 

@@ -72,7 +72,6 @@ namespace ViazyNetCore.Authorization
         }
 
         [HttpPost]
-        [Permission(PermissionIds.Setting)]
         [Route("getvalues")]
         public async Task<List<DictionaryValueViewResult>> FindAllValuesAsync(string code)
         {

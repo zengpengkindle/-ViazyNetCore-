@@ -7,11 +7,15 @@ namespace ViazyNetCore.CmsKit
         /// <summary>
         /// 字典名称
         /// </summary>
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
         public string Name { get; set; }
 
         /// <summary>
         /// 字典编码
         /// </summary>
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
         public string Code { get; set; }
 
         /// <summary>

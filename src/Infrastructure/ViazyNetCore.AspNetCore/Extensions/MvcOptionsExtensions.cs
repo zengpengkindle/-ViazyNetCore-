@@ -20,6 +20,7 @@ namespace ViazyNetCore.AspNetCore.Extensions
         private static void AddActionFilters(MvcOptions options)
         {
             options.Filters.AddService<AuditLogActionFilter>();
+            options.Filters.AddService<ValidationActionFilter>();
             options.Filters.AddService<ResponseWrapActionFilter>();
             options.Filters.AddService<ControllerExceptionFilter>();
         }

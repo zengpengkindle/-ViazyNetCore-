@@ -66,6 +66,14 @@ namespace ViazyNetCore.AspNetCore
                 options.SerializerSettings.InitializeDefault();
             });
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+                //options.InvalidModelStateResponseFactory = (context) =>
+                //{
+                //};
+            });
+
         }
 
         public override void PostConfigureServices(ServiceConfigurationContext context)
