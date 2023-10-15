@@ -75,18 +75,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton(options);
             storeOptionsAction?.Invoke(options);
 
-            if(options.ResolveDbContextOptions != null)
-            {
-                services.AddFreeDbContext<TContext>(options: options.ConfigureDbContext);
-
-            }
-            else
-            {
-                services.AddFreeDbContext<TContext>(dbCtxBuilder =>
-                {
-                    options.ConfigureDbContext?.Invoke(dbCtxBuilder);
-                });
-            }
+            ConfigurationDbContextBase<TContext>(services, options);
             services.AddScoped<IConfigurationDbContext, TContext>();
 
             return services;
@@ -106,22 +95,27 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton(storeOptions);
             storeOptionsAction?.Invoke(storeOptions);
 
-            if(storeOptions.ResolveDbContextOptions != null)
-            {
-                services.AddFreeDbContext<TContext>(storeOptions.ConfigureDbContext);
-            }
-            else
-            {
-                services.AddFreeDbContext<TContext>(dbCtxBuilder =>
-                {
-                    storeOptions.ConfigureDbContext?.Invoke(dbCtxBuilder);
-                });
-            }
+            ConfigurationDbContextBase<TContext>(services, storeOptions);
 
             services.AddScoped<IPersistedGrantDbContext, TContext>();
             //services.AddTransient<TokenCleanupService>();
 
             return services;
+        }
+
+        private static void ConfigurationDbContextBase<TContext>(IServiceCollection services, StoreOptionsBase options) where TContext : DbContext
+        {
+            if(options.ResolveDbContextOptions != null)
+            {
+                services.AddFreeDbContext<TContext>(options: options.ConfigureDbContext);
+            }
+            else
+            {
+                services.AddFreeDbContext<TContext>(dbCtxBuilder =>
+                {
+                    options.ConfigureDbContext?.Invoke(dbCtxBuilder);
+                });
+            }
         }
     }
 }

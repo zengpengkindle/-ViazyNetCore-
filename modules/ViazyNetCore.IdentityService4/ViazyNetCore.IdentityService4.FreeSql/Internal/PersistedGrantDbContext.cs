@@ -11,7 +11,7 @@ namespace ViazyNetCore.IdentityService4.FreeSql
 {
     public class PersistedGrantDbContext : PersistedGrantDbContext<PersistedGrantDbContext>
     {
-        public PersistedGrantDbContext(IFreeSql<PersistedGrantDbContext> freeSql, OperationalStoreOptions storeOptions)
+        public PersistedGrantDbContext(IFreeSql freeSql, OperationalStoreOptions storeOptions)
             : base(freeSql, storeOptions)
         {
         }
@@ -20,14 +20,14 @@ namespace ViazyNetCore.IdentityService4.FreeSql
     public class PersistedGrantDbContext<TContext> : DbContext, IPersistedGrantDbContext
         where TContext : DbContext, IPersistedGrantDbContext
     {
-        private readonly IFreeSql<PersistedGrantDbContext> _freeSql;
+        private readonly IFreeSql _freeSql;
         private readonly OperationalStoreOptions _storeOptions;
 
-        public PersistedGrantDbContext(IFreeSql<PersistedGrantDbContext> freeSql, OperationalStoreOptions storeOptions)
+        public PersistedGrantDbContext(IFreeSql freeSql, OperationalStoreOptions storeOptions)
             : base(freeSql, null)
         {
             this._freeSql = freeSql;
-            if (storeOptions == null) throw new ArgumentNullException(nameof(storeOptions));
+            if(storeOptions == null) throw new ArgumentNullException(nameof(storeOptions));
             this._storeOptions = storeOptions;
 
             OnModelCreating(_freeSql.CodeFirst);
@@ -45,14 +45,14 @@ namespace ViazyNetCore.IdentityService4.FreeSql
 
         protected new void OnModelCreating(ICodeFirst codefirst)
         {
-            if (codefirst.IsAutoSyncStructure)
+            if(codefirst.IsAutoSyncStructure)
             {
                 var items = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(p => p.PropertyType.FullName.StartsWith(typeof(DbSet<object>).FullName.Split('`')[0])).ToList();
                 List<Type> entityTypes = new List<Type>();
-                foreach (var item in items)
+                foreach(var item in items)
                 {
-                    if (item.PropertyType.GenericTypeArguments == null
+                    if(item.PropertyType.GenericTypeArguments == null
                         || item.PropertyType.GenericTypeArguments.Length != 1)
                         continue;
                     entityTypes.Add(item.PropertyType.GenericTypeArguments[0]);
@@ -62,7 +62,7 @@ namespace ViazyNetCore.IdentityService4.FreeSql
         }
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            builder.UseFreeSql(orm: _freeSql);
+            builder.UseFreeSql(orm: _freeSql.UseDb(_storeOptions.DbName));
             base.OnConfiguring(builder);
         }
     }

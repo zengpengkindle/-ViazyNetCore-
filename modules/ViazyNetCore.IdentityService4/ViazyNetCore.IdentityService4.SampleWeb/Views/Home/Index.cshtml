@@ -1,0 +1,95 @@
+@using System.Diagnostics
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "首页";
+}
+
+<div class="alert alert-info" role="alert">
+    欢迎使用IdentityServer4
+</div>
+<div class="row">
+    <div class="col-md-6 col-lg-6">
+        <div class="card card-bordered">
+            <header class="card-header">
+                <div class="card-title">登录</div>
+            </header>
+            <div class="callout callout-success">用你的账号登录授权中心。</div>
+            <div class="card-body">
+                @if(User?.Identity.IsAuthenticated == true)
+                {
+                    <a class="btn btn-warning btn-w-lg" href="~/account/logout">退出@(string.IsNullOrEmpty(User?.Identity.Name) ? "" : $"({User?.Identity.Name})")</a>
+                }
+                else
+                {
+                    <a class="btn btn-success btn-w-lg" href="~/account/login">登录</a>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-6">
+        <div class="card card-shadowed">
+            <header class="card-header">
+                <div class="card-title">授权</div>
+            </header>
+
+            <div class="callout callout-success">查看你的授权的应用和网站等。</div>
+            <div class="card-body">
+                <a class="btn btn-info btn-w-lg" href="~/grants">授权</a>
+            </div>
+        </div>
+    </div>
+   @* <div class="col-md-6 col-lg-4">
+        <div class="card card-hover-shadow">
+            <header class="card-header">
+                <div class="card-title">发现文档</div>
+            </header>
+            <div class="callout callout-info">查看认证服务器的终端节点等信息。</div>
+            <div class="card-body">
+                <a class="btn btn-secondary btn-w-lg" href="~/.well-known/openid-configuration" target="_blank">发现文档</a>
+            </div>
+        </div>
+    </div>*@
+</div>
+<!-- .row -->
+@section scripts
+    {
+    <script type="text/javascript" src="~/lib/light/js/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="~/lib/light/js/bootstrap-notify.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery/jquery.cookie-1.4.1.min.js"></script>
+    <script>
+        showCookieTip();
+
+        function showCookieTip() {
+            var status = $.cookie('AllowCookieStatus');
+            if (status === "yes") {
+                return;
+            }
+
+            $.notify({
+                message: '为确保您在我们的网站上获得最佳体验，本网站将会使用Cookie让您保持登录状态。<a href="https://www.cookiesandyou.com/" target="_blank">了解更多</a>',
+            }, {
+                type: "success",
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "right"
+                },
+                offset: 0,
+                spacing: 10,
+                delay: 0,
+                animate: {
+                    enter: '',
+                    exit: 'animated fadeOutDown'
+                },
+                template: '<div data-notify="container" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-{0}" role="alert" style="padding:0.6rem 1.25rem">' +
+                    '<a class="btn btn-primary btn-xs" href="javascript:closeCookieTip()" aria-hidden="true" data-notify="dismiss" style="float: right;">同意</a>' +
+                    '<span data-notify="message">{2}</span></div>',
+            });
+        }
+
+        function closeCookieTip() {
+            $.cookie('AllowCookieStatus', 'yes', { path: '/', expires: 7 });
+        }
+    </script>
+}

@@ -5,7 +5,7 @@
 #pragma warning disable 1591
 
 using FreeSql.DataAnnotations;
-using ViazyNetCore.IdentityService4.Models;
+using IdentityServer4.Models;
 using System;
 using System.Collections.Generic;
 
@@ -160,7 +160,7 @@ namespace ViazyNetCore.IdentityService4.FreeSql.Entities
         
         public int RefreshTokenExpiration { get; set; } = (int)TokenExpiration.Absolute;
         
-        public int AccessTokenType { get; set; } = (int)Models.AccessTokenType.Jwt;
+        public int AccessTokenType { get; set; } = (int)IdentityServer4.Models.AccessTokenType.Jwt;
         
         public bool EnableLocalLogin { get; set; } = true;
 

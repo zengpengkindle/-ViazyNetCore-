@@ -47,7 +47,7 @@ namespace ViazyNetCore.IdentityService4.FreeSql.Stores
             if(resources == null)
                 return new List<ApiResource>();
 
-            var result = resources.Select(x => this._mapper.Map<Entities.ApiResource, IdentityServer4.Models.ApiResource>(x)).ToList();
+            var result = resources.Select(x => this._mapper.Map<Entities.ApiResource, ApiResource>(x)).ToList();
             if(result.Any())
             {
                 Logger.LogDebug("Found {apis} API resource in database", result.Select(x => x.Name));
@@ -72,7 +72,7 @@ namespace ViazyNetCore.IdentityService4.FreeSql.Stores
             if(resources == null)
                 return new List<ApiResource>();
 
-            var models = resources.Select(x => this._mapper.Map<Entities.ApiResource, IdentityServer4.Models.ApiResource>(x));
+            var models = resources.Select(x => this._mapper.Map<Entities.ApiResource, ApiResource>(x));
             return models;
         }
 
@@ -87,7 +87,7 @@ namespace ViazyNetCore.IdentityService4.FreeSql.Stores
             if(resources == null)
                 return new List<ApiScope>();
 
-            return resources.Select(x => this._mapper.Map<Entities.ApiScope, IdentityServer4.Models.ApiScope>(x)).ToArray();
+            return resources.Select(x => this._mapper.Map<Entities.ApiScope, ApiScope>(x)).ToArray();
         }
 
         public async Task<IEnumerable<IdentityResource>> FindIdentityResourcesByScopeNameAsync(IEnumerable<string> scopeNames)
@@ -100,7 +100,7 @@ namespace ViazyNetCore.IdentityService4.FreeSql.Stores
             if(resources == null)
                 return new List<IdentityResource>();
 
-            return resources.Select(x => this._mapper.Map<Entities.IdentityResource, IdentityServer4.Models.IdentityResource>(x)).ToArray();
+            return resources.Select(x => this._mapper.Map<Entities.IdentityResource, IdentityResource>(x)).ToArray();
         }
 
         public async Task<Resources> GetAllResourcesAsync()
@@ -124,10 +124,10 @@ namespace ViazyNetCore.IdentityService4.FreeSql.Stores
                     .IncludeMany(x => x.Properties.Where(q => q.ScopeId == x.Id))
                     .NoTracking();
 
-                var result = new IdentityServer4.Models.Resources(
-                    (await identity.ToListAsync()).Select(x => this._mapper.Map<Entities.IdentityResource, IdentityServer4.Models.IdentityResource>(x)),
-                    (await apis.ToListAsync()).Select(x => this._mapper.Map<Entities.ApiResource, IdentityServer4.Models.ApiResource>(x)),
-                    (await scopes.ToListAsync()).Select(x => this._mapper.Map<Entities.ApiScope, IdentityServer4.Models.ApiScope>(x))
+                var result = new Resources(
+                    (await identity.ToListAsync()).Select(x => this._mapper.Map<Entities.IdentityResource, IdentityResource>(x)),
+                    (await apis.ToListAsync()).Select(x => this._mapper.Map<Entities.ApiResource, ApiResource>(x)),
+                    (await scopes.ToListAsync()).Select(x => this._mapper.Map<Entities.ApiScope, ApiScope>(x))
                 );
                 return result;
             }, CachingExpirationType.SingleObject);

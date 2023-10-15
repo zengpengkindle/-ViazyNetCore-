@@ -7,22 +7,24 @@ namespace ViazyNetCore.IdentityService4.FreeSql
 {
     public class ConfigurationDbContext : ConfigurationDbContext<ConfigurationDbContext>
     {
-        public ConfigurationDbContext(IFreeSql<ConfigurationDbContext> freeSql, ConfigurationStoreOptions storeOptions)
+        public ConfigurationDbContext(IFreeSql freeSql, ConfigurationStoreOptions storeOptions)
             : base(freeSql, storeOptions)
         {
         }
+
+
     }
 
     public class ConfigurationDbContext<TContext> : DbContext, IConfigurationDbContext
         where TContext : DbContext, IConfigurationDbContext
     {
-        private readonly IFreeSql<ConfigurationDbContext> _freeSql;
+        private readonly IFreeSql _freeSql;
         private readonly ConfigurationStoreOptions _storeOptions;
 
-        public ConfigurationDbContext(IFreeSql<ConfigurationDbContext> freeSql, ConfigurationStoreOptions storeOptions)
+        public ConfigurationDbContext(IFreeSql freeSql, ConfigurationStoreOptions storeOptions)
             : base(freeSql, null)
         {
-            this._freeSql = freeSql ?? throw new ArgumentNullException(nameof(IFreeSql<ConfigurationDbContext>));
+            this._freeSql = freeSql ?? throw new ArgumentNullException(nameof(IFreeSql));
             this._storeOptions = storeOptions ?? throw new ArgumentNullException(nameof(ConfigurationStoreOptions));
 
             OnModelCreating(_freeSql.CodeFirst);
@@ -99,7 +101,7 @@ namespace ViazyNetCore.IdentityService4.FreeSql
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            builder.UseFreeSql(orm: _freeSql);
+            builder.UseFreeSql(orm: _freeSql.UseDb(_storeOptions.DbName));
             base.OnConfiguring(builder);
         }
 

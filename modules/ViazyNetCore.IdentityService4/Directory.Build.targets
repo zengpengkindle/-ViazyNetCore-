@@ -1,5 +1,5 @@
 ﻿<Project>
   <PropertyGroup>
-    <ViazyNetCoreVersion>1.4.1-preview1.0</ViazyNetCoreVersion>
+    <ViazyNetCoreVersion>1.5.2-preview6.1</ViazyNetCoreVersion>
   </PropertyGroup>
 </Project>

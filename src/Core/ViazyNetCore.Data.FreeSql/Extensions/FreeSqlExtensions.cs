@@ -73,6 +73,11 @@ namespace FreeSql
 
                 #endregion 监听所有命令
 
+                if (dbConfig.Buider != null)
+                {
+                    dbConfig.Buider.Invoke(freeSqlBuilder);
+                }
+
                 var fsql = freeSqlBuilder.Build();
 
                 //软删除过滤器

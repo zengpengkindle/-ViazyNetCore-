@@ -91,6 +91,7 @@ namespace ViazyNetCore.Data.FreeSql
         /// 是否启用租户
         /// </summary>
         public bool Tenant { get; set; }
+        public Action<FreeSqlBuilder>? Buider { get; set; }
     }
 
     /// <summary>

@@ -1,10 +1,21 @@
+using ViazyNetCore.IdentityService4.SampleWeb;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Configuration.ConfigBuild(builder.Environment);
+builder.Services.AddCaching()
+    .UseDistributedMemoryCache();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(120);
+});
+
+await builder.AddApplicationAsync<ViazyNetCoreIdentityService4SampleWebModule>();
 
 var app = builder.Build();
-
+app.InitializeApplication();
 // Configure the HTTP request pipeline.
 if(!app.Environment.IsDevelopment())
 {
@@ -18,8 +29,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.Run();
